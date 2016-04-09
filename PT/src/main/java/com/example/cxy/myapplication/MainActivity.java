@@ -1,14 +1,23 @@
 package com.example.cxy.myapplication;
 
-import android.app.Activity;
 
+
+import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
+
+
+
 
 public class MainActivity extends Activity {
+
 
     //用于输出调试信息的TAG
     public static final String TAG="PT_GAME";
@@ -16,20 +25,53 @@ public class MainActivity extends Activity {
     public  static final String PREFS_STRING="PT_PROGRESS";
     //游戏进度数据要传递给GameView
     private GameView myView;
+    protected GestureDetector mGestureDetector;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //隐去Android顶部状态栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        //隐去Android顶部状态栏
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        //隐去程序标题栏
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        //隐去程序标题栏
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         myView=new GameView(this);
-        loadGameProgress();
-        //设置显示GameView界面
-        setContentView(myView);
 
+        loadGameProgress();
+
+        //设置显示GameView界面
+       setContentView(myView);
+        Log.i("Life","onCreate()");
+        mGestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener(){
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+//                if(e1.getRawX() - e2.getRawX() > 200){
+//                    showNext();//向左滑动，显示图片列表
+//                    return true;
+//                }
+
+                if(e2.getRawX() - e1.getRawX() > 200){
+                    showNext();//向右滑动，显示图片列表
+                    return true;
+                }
+
+                return super.onFling(e1, e2, velocityX, velocityY);
+            }
+        });
+    }
+
+    public void showNext() {
+        Intent intent = new Intent(this, MapListActivity.class);
+        startActivity(intent);
+        //finish();
+        //调用此方法让动画效果生效
+        //overridePendingTransition(R.anim.tran_next_in, R.anim.tran_next_out);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        mGestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -38,6 +80,18 @@ public class MainActivity extends Activity {
         super.onPause();
         //Activity结束之前保存游戏进度
         saveGameProgress();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        loadGameProgress();
+        Log.i("Life","onRestart");
+        if (GameView.isFinish){
+            myView=new GameView(this);
+            setContentView(myView);
+            Log.i("Life","更新了界面");
+        }
     }
 
     @Override

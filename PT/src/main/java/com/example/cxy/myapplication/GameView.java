@@ -41,6 +41,8 @@ public class GameView extends View {
     private double pw;
     private double ph;
     private Paint paint;
+    protected static int imageId=R.mipmap.pic02;
+    protected  static boolean isFinish=true;
 
     public List<PuzzleCell> puzzleCells=new ArrayList<PuzzleCell>();
 
@@ -101,6 +103,7 @@ public class GameView extends View {
         if (touchedCell!=null){
             touchedCell.draw(canvas);
         }
+        System.out.println("调用了OnDraw（）方法");
 
         //绘制打乱的拼图块区域
         // canvas.drawRect(cellsRect,paint);
@@ -194,6 +197,8 @@ public class GameView extends View {
             case MotionEvent.ACTION_MOVE:
                 //如果有拼图块被触摸滑动，则移动拼图块
                 if (touchedCell!=null){
+                    System.out.println("方块移动了");
+                    isFinish=false;
                     //拼图块原位置区域
                     Rect rect1=new Rect(touchedCell.x0,touchedCell.y0,
                             touchedCell.x0+touchedCell.width,touchedCell.y0+touchedCell.height);
@@ -230,7 +235,10 @@ public class GameView extends View {
                 //重绘整个界面，通知系统更新显示
                 drawPuzzle(backCanvas);   //backCanvas将改变backDrawing
                 invalidate();               //会自动调用onDraw()方法
+
+              //  System.out.println("执行了invalidate()方法");
                 if (checkWin()){
+                    isFinish=true;
                     AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
                     builder.setMessage("再来一局？");
                     builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
@@ -319,7 +327,7 @@ public class GameView extends View {
         //背景图经过缩放处理，原图像可要求释放掉
         bg.recycle();
         //加载拼图图片，按拼图区域大小缩放，然后释放原始拼图图像
-        Bitmap pic=BitmapFactory.decodeResource(getResources(),R.mipmap.pic02);
+        Bitmap pic=BitmapFactory.decodeResource(getResources(),imageId);        //-------选择拼图图片
         puzzImage=Bitmap.createScaledBitmap(pic,puzzRect.width(),puzzRect.height(),false);
         pic.recycle();
         //创建后台界面图像，大小与屏幕相同，且像素格式为32位（Alpha、R\G\B)

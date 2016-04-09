@@ -25,7 +25,7 @@ public class PuzzleCell {
      * 将当前拼图块绘制出来
      */
     public void draw(Canvas canvas){
-
+         System.out.println("画移动之后的方块");
         canvas.drawBitmap(image,x0,y0,null);
     }
 
