@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.activity.CiYuActivity"
+   >
+    <TextView
+        android:id="@+id/ci_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:background="#D3D3D3"
+        android:textSize="25sp"
+       android:paddingTop="20dp"
+        android:paddingLeft="15dp"
+        android:paddingBottom="20dp"
+       />
+    <TextView
+        android:id="@+id/ci_pinyin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="15dp"
+        android:textColor="#000"
+        android:padding="15dp"
+        android:layout_below="@+id/ci_title"/>
+    <TextView
+        android:id="@+id/ci_jieshi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:layout_below="@+id/ci_pinyin"/>
+    <FrameLayout
+        android:id="@+id/containerCi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>

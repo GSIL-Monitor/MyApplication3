@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.activity.MainActivity">
+
+    <EditText
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入完整的搜索内容或者关键字"
+        />
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv"
+        android:paddingTop="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnZi"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            style="@style/ButtonStyle"
+            android:text="字   典"
+
+            />
+        <Button
+            android:id="@+id/btnCi"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            style="@style/ButtonStyle"
+            android:text="词   语"
+            android:layout_marginLeft="10dp"
+            />
+        <Button
+            android:id="@+id/btnIdiom"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            style="@style/ButtonStyle"
+            android:text="成   语"
+            android:layout_marginLeft="10dp"/>
+        <Button
+            android:id="@+id/btnPoem"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            style="@style/ButtonStyle"
+            android:text="诗   词"
+            android:layout_marginLeft="10dp"
+         />
+
+
+    </LinearLayout>
+
+    <ListView
+
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout"
+        android:dividerHeight="3dp"
+        android:scrollbars="none"
+        android:layout_marginTop="10dp">
+
+    </ListView>
+</RelativeLayout>

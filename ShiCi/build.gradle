@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion '25.0.0'
+
+
+
+    defaultConfig {
+        applicationId "com.cxy.yuwen"
+        minSdkVersion 9
+        targetSdkVersion 24
+        versionCode 8
+        versionName "2.5.1"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/json-1.0.jar')
+    /* compile 'mi-appstore:xiaomi-update-sdk:2.6+'*/
+
+    /**
+     *   下面是sdk的依赖包
+     */
+    compile files('libs/AdSdk.jar')
+
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+}

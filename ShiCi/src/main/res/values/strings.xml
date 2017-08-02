@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">语文助手</string>
+    <string name="content">中国日报网7月17日电 由于近期土耳其局势发生剧烈动荡，外交部和中国驻土耳其使馆提醒中国公民近期暂勿前往土耳其，在土中国公民和机构保持高度警惕，加强安全防范和应急准备，尽量减少外出，避免前往人群密集场所。如遇紧急状况，请及时报警并与中国驻土使领馆联系。</string>
+    <drawable name="clr_normal">#008bcc</drawable>
+    <drawable name="clr_pressed">#cc66c5</drawable>
+    <drawable name="clr_focused">#FF0000</drawable>
+</resources>

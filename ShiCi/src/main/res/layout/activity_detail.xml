@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.activity.ShiciActivity">
+    <ScrollView
+        android:id="@+id/myScrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout
+            android:id="@+id/banner_shici"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:textSize="25sp"
+        android:text="标题"
+        android:textColor="#000"
+        android:background="#F5F5F5"
+        android:textAlignment="center"/>
+    <TextView
+        android:id="@+id/zuozhe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        android:layout_marginRight="50dp"
+        android:textSize="15sp"
+        android:gravity="end"
+        android:textColor="#000"
+        android:layout_marginTop="10dp"
+        android:text="作者"/>
+      <!--  android:textColor="#000"-->
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:textAlignment="gravity"
+        android:paddingLeft="15dp"
+        android:paddingTop="25dp"
+        android:paddingBottom="15dp"
+        android:lineSpacingExtra="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/content"
+        android:background="#D3D3D3"/>
+    <TextView
+        android:id="@+id/zhushi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:lineSpacingExtra="10dp"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:text="俄罗斯政府网站公布消息称，俄总理梅德韦杰夫责令成立快速反应小组以防止俄罗斯地铁遭到非法干扰和破坏。消息中提到，配备特殊装备的机动巡逻队将全天候执勤，其任务是对非法干扰地铁运行的事件做出快速处置"/>
+            <FrameLayout
+                android:id="@+id/container3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+</ScrollView>
+
+
+
+
+</RelativeLayout>
