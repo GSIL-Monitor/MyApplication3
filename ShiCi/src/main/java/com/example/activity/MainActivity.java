@@ -1,5 +1,6 @@
 package com.example.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,13 +42,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Adapter adapter;
     public static int mark;//查询的标志
     public  String httpUrl = "";
-    public static  boolean isLoadFinished=true;
     public static final String tag="INFO";
     public static String httpUrl1 = "http://api.avatardata.cn/TangShiSongCi/LookUp?key=9b42454896f54202be3767fd55930654";
     private static final int MSG_LOAD_SUCCESS = 100;   //指示数据已获取
     private static final int MSG_LOADED_fail = 0;   //指示数据未获取
     public static final int FLAG_CI=1,FLAG_IDIOM=2,FLAG_POEM=3;
     private int pageNum = 1;    //要查询的页数   pageSize=50
+    private int pages=0;
     private boolean isBottom;
 
     Article    article;
@@ -163,14 +164,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (isBottom) {
                           footer.setVisibility(View.VISIBLE);
+                        if(pageNum<=pages){
+                            Connection connection = new Connection();
+                            connection.start();
 
-                        //加载数据的方法代码.......
-                        //这里面的代码通常是根据mPageNum加载不同的数据
-                        // 对mPageNum处理: mPageNum++
-                        Connection connection = new Connection();
-                        connection.start();
+                        }else{
+                            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+                            builder.setMessage("没有更多内容了!");
+                            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    footer.setVisibility(View.GONE);
+                                }
+                            });
 
-                        isLoadFinished=true;
+                            AlertDialog alertDialog=builder.create();
+                            alertDialog.setCancelable(false);
+                            alertDialog.show();
+
+
+                        }
 
                     }
                 }
@@ -426,51 +440,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public int getList(String url) throws Exception {
        // Log.i(tag,pageNum+"");
-        int flag=1;
-        String jsonData= OkHttpUtil.get(url+"&page="+pageNum++);
-        JSONObject jsonObject = new JSONObject(jsonData);
-        int errorCode = jsonObject.getInt("error_code");
-        int total=jsonObject.getInt("total");     //总记录数
-        if (errorCode == 0&&total>0) {
-            JSONArray result = jsonObject.getJSONArray("result");
-            for (int i = 0; i < result.length(); i++) {
-                JSONObject item = result.getJSONObject(i);
-                if(mark==FLAG_IDIOM) {
-                    String name = item.getString("name");
-                    Chengyu chengyu = new Chengyu();
-                    chengyu.setName(name);
-                    list.add(chengyu);
-                }
-                if(mark==FLAG_POEM){
-                    String name = item.getString("name");
-                    String id = item.getString("id");
-                    Article article = new Article();
-                    article.setId(id);
-                    article.setTitle(name);
-                    list.add(article);
-                }
-                if(mark==FLAG_CI){
-                    String name = item.getString("words");
-                    String content = item.getString("content");
-                    CiYu ciYu = new CiYu();
-                    ciYu.setName(name);
-                    ciYu.setContent(content);
-                    list.add(ciYu);
-                }
-            }
-           // list=listObject;
+        int flag=1;    //0:没有查到相关数据
+        JSONObject jsonObject;
+        if(pageNum==1){                //第一次查询
+            String jsonData= OkHttpUtil.get(url);
+            jsonObject = new JSONObject(jsonData);
+            int errorCode = jsonObject.getInt("error_code");
+            int total=jsonObject.getInt("total");     //总记录数
+            if (errorCode == 0&&total>0) {      //说明查到了数据
+                //计算一共有多少页
+                pages=total/20==0?(total/20):(total/20+1);
+                pageNum++;
 
-        }else {
-            Log.i(tag,"没有查到相关数据");
-            flag=0;
+
+            }else {
+                Log.i(tag,"没有查到相关数据");
+                flag=0;
+                return flag;
+
+            }
+
+        }else{
+            String jsonData= OkHttpUtil.get(url+"&page="+pageNum++);
+            jsonObject = new JSONObject(jsonData);
 
         }
-
+        jsonObjectToList(jsonObject);
         return flag;
     }
 
+    public void  jsonObjectToList(JSONObject jsonObject)  throws JSONException{
 
-
+        JSONArray result = jsonObject.getJSONArray("result");
+        for (int i = 0; i < result.length(); i++) {
+            JSONObject item = result.getJSONObject(i);
+            if(mark==FLAG_IDIOM) {
+                String name = item.getString("name");
+                Chengyu chengyu = new Chengyu();
+                chengyu.setName(name);
+                list.add(chengyu);
+            }
+            if(mark==FLAG_POEM){
+                String name = item.getString("name");
+                String id = item.getString("id");
+                Article article = new Article();
+                article.setId(id);
+                article.setTitle(name);
+                list.add(article);
+            }
+            if(mark==FLAG_CI){
+                String name = item.getString("words");
+                String content = item.getString("content");
+                CiYu ciYu = new CiYu();
+                ciYu.setName(name);
+                ciYu.setContent(content);
+                list.add(ciYu);
+            }
+        }
+    }
 
 
     public Article getContent(String data,Article article) throws JSONException {
