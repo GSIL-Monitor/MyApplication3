@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.example.activity.MainActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,7 +45,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
             android:name="com.example.activity.CiYuActivity"
-            android:parentActivityName="com.example.activity.MainActivity"></activity>
+            android:parentActivityName="com.example.activity.MainActivity" />
         <!--
         <provider android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.activity.selfupdate.fileprovider"
@@ -56,11 +57,14 @@
         </provider>
         -->
         <activity android:name="com.example.activity.TestActivity">
-          <!--  <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
     </application>
 

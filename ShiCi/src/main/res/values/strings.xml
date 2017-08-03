@@ -4,4 +4,10 @@
     <drawable name="clr_normal">#008bcc</drawable>
     <drawable name="clr_pressed">#cc66c5</drawable>
     <drawable name="clr_focused">#FF0000</drawable>
+    <string name="title_activity_main2">TestActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

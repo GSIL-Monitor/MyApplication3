@@ -5,16 +5,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.myapp.tool.Adapter;
@@ -32,7 +39,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener{
 
     private TextView textView;
     private ListView listView;
@@ -57,15 +64,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //底部加载更多布局
     View footer;
-
+    private String title;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       //  XiaomiUpdateAgent.update(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main);
+
+        title=(String) getTitle();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
 
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        android.support.v7.app.ActionBarDrawerToggle toggle = new android.support.v7.app.ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle.syncState();
+        drawer.setDrawerListener(toggle);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         textView = (TextView) findViewById(R.id.tv);
         listView = (ListView) findViewById(R.id.lv);
@@ -529,6 +549,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.setting) {
+            // Handle the setting action
+            // Fragment contentFragment=new Fragment1();
+            //  FragmentManager fm=getSupportFragmentManager();
+            //   fm.beginTransaction().replace(R.layout.content_main,contentFragment).commit();
+
+            Log.i(tag,"点击了设置");
+        } else if (id == R.id.feedback) {
+            Toast.makeText(MainActivity.this, "你点击了反馈", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.collect) {
+            Toast.makeText(MainActivity.this, "你点击了收藏", Toast.LENGTH_SHORT).show();
+        }
 
 
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }
