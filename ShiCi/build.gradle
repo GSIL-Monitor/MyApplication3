@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    //为了解决部分第三方库重复打包了META-INF的问题
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    lintOptions {
+        abortOnError false
+    }
     compileSdkVersion 24
     buildToolsVersion '25.0.0'
 
@@ -8,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId "com.cxy.yuwen"
-        minSdkVersion 9
+        minSdkVersion 12
         targetSdkVersion 24
         versionCode 8
         versionName "2.5.1"
@@ -29,18 +37,18 @@ android {
 
 
 dependencies {
+    /*导入本地jar包*/
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile files('libs/json-1.0.jar')
-    /* compile 'mi-appstore:xiaomi-update-sdk:2.6+'*/
-
-    /**
-     *   下面是sdk的依赖包
-     */
-    compile files('libs/AdSdk.jar')
-
+    /* // LeanCloud 基础包
+                    compile ('cn.leancloud.android:avoscloud-sdk:v4.4.3')
+                    // LeanCloud 用户反馈包
+                    compile ('cn.leancloud.android:avoscloud-feedback:v4.4.3@aar')*/
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:24.2.1'
+    testCompile 'org.testng:testng:6.9.6'
+    testCompile 'junit:junit:4.12'
+
 }

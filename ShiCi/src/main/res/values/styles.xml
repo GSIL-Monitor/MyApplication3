@@ -8,10 +8,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ButtonStyle">
+    <style name="ActionbarTheme" parent="@android:style/Theme.Holo.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ButtonStyle" >
         <item name="android:background">@drawable/button</item>
         <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textSize">15sp</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">

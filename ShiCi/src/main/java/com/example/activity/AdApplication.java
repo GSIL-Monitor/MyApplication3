@@ -23,6 +23,9 @@ public class AdApplication extends Application {
         AdSdk.setDebugOn();
        // AdSdk.setMockOn();
         AdSdk.initialize(this, APP_ID);
+
+       /* // 初始化参数依次为 this, AppId, AppKey
+        AVOSCloud.initialize(this,"KJGGY9fOzH01hTfclDUVfByh-gzGzoHsz","wtAGkizq5yOV6iLbIi0E9zIy");*/
     }
 
 }

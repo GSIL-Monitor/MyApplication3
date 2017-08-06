@@ -21,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.myapp.tool.Adapter;
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static int mark;//查询的标志
     public  String httpUrl = "";
     public static final String tag="INFO";
+    public  static final String appUrl="http://a.app.qq.com/o/simple.jsp?pkgname=com.cxy.yuwen";
     public static String httpUrl1 = "http://api.avatardata.cn/TangShiSongCi/LookUp?key=9b42454896f54202be3767fd55930654";
     private static final int MSG_LOAD_SUCCESS = 100;   //指示数据已获取
     private static final int MSG_LOADED_fail = 0;   //指示数据未获取
@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int pageNum = 1;    //要查询的页数   pageSize=50
     private int pages=0;
     private boolean isBottom;
+
+
 
     Article    article;
     Chengyu chengYu;
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
 
         textView = (TextView) findViewById(R.id.tv);
         listView = (ListView) findViewById(R.id.lv);
@@ -555,21 +558,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.setting) {
+        /*if (id == R.id.setting) {
             // Handle the setting action
             // Fragment contentFragment=new Fragment1();
             //  FragmentManager fm=getSupportFragmentManager();
             //   fm.beginTransaction().replace(R.layout.content_main,contentFragment).commit();
 
             Log.i(tag,"点击了设置");
-        } else if (id == R.id.feedback) {
-            Toast.makeText(MainActivity.this, "你点击了反馈", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.collect) {
+        }
+        if (id == R.id.collect) {
             Toast.makeText(MainActivity.this, "你点击了收藏", Toast.LENGTH_SHORT).show();
+        }*/
+        if (id == R.id.feedback) {
+           // Toast.makeText(MainActivity.this, "你点击了反馈", Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(MainActivity.this,FeedbackActivity.class);
+            startActivity(intent);
+
+        }
+
+        if(id==R.id.share){
+
+            Intent sendIntent=new Intent(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "语文助手这个App真不错，快来下载\n"+appUrl);
+            sendIntent.setType("text/plain");
+            sendIntent.setType("text/plain");
+            startActivity(Intent.createChooser(sendIntent,"share"));
         }
 
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

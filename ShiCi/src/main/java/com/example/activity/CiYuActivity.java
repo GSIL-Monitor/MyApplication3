@@ -30,7 +30,7 @@ public class CiYuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ci_yu);
+        setContentView(R.layout.activity_ciyu);
         // 当系统为6.0以上时，需要申请权限
         mPermissionHelper = new PermissionHelper(this);
         mPermissionHelper.setOnApplyPermissionListener(new PermissionHelper.OnApplyPermissionListener() {
