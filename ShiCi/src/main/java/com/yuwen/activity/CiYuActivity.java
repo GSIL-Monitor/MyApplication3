@@ -1,4 +1,4 @@
-package com.example.activity;
+package com.yuwen.activity;
 
 import android.content.Intent;
 import android.os.Build;
@@ -8,16 +8,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.example.myapplication.R;
-import com.myapp.tool.CiYu;
-import com.myapp.tool.PermissionHelper;
 import com.xiaomi.ad.AdListener;
 import com.xiaomi.ad.NativeAdInfoIndex;
 import com.xiaomi.ad.NativeAdListener;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
+import com.yuwen.myapplication.R;
+import com.yuwen.tool.CiYu;
+import com.yuwen.tool.PermissionHelper;
 
 import java.util.List;
 

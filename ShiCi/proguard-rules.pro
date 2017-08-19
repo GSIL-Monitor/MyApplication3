@@ -19,5 +19,6 @@
 -dontwarn android.support.**
 -dontwarn com.squareup.**
 -dontwarn okio.**
--keep class com.wandoujia.ads.sdk.** { *; }
+#这里com.xiaomi.mipushdemo.DemoMessageRreceiver改成app中定义的完整类名
+-keep class com.yuwen.receiver.MessageReceiver {*;}
 
