@@ -18,8 +18,8 @@ android {
         applicationId "com.cxy.yuwen"
         minSdkVersion 12
         targetSdkVersion 24
-        versionCode 8
-        versionName "2.5.1"
+        versionCode 10
+        versionName "2.5.3"
 
     }
     buildTypes {
@@ -39,10 +39,7 @@ android {
 dependencies {
     /*导入本地jar包*/
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    /* // LeanCloud 基础包
-                    compile ('cn.leancloud.android:avoscloud-sdk:v4.4.3')
-                    // LeanCloud 用户反馈包
-                    compile ('cn.leancloud.android:avoscloud-feedback:v4.4.3@aar')*/
+
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
@@ -50,5 +47,5 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     testCompile 'org.testng:testng:6.9.6'
     testCompile 'junit:junit:4.12'
-
+    compile files('libs/MiPush_SDK_Client_3_4_5.jar')
 }

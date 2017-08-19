@@ -11,7 +11,8 @@
         android:textColor="#000"
         android:text="皇"
         android:background="#D3D3D3"
-        android:textSize="35sp"/>
+        android:textSize="35sp"
+        android:textIsSelectable="true"/>
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -29,7 +30,7 @@
         android:textColor="#000"
         android:lineSpacingExtra="10dp"
         android:layout_margin="15dp"
-
+        android:textIsSelectable="true"
         android:text="字典详情"/>
 
     <FrameLayout

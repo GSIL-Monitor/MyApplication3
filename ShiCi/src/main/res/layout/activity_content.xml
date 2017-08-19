@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.activity.MainActivity"
+    tools:context="com.yuwen.activity.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
 
@@ -32,7 +32,7 @@
             android:id="@+id/btnZi"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             style="@style/ButtonStyle"
             android:text="字   典"
 
@@ -41,7 +41,7 @@
             android:id="@+id/btnCi"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             style="@style/ButtonStyle"
             android:text="词   语"
             android:layout_marginLeft="10dp"
@@ -50,7 +50,7 @@
             android:id="@+id/btnIdiom"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             style="@style/ButtonStyle"
             android:text="成   语"
             android:layout_marginLeft="10dp"/>
@@ -58,7 +58,7 @@
             android:id="@+id/btnPoem"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             style="@style/ButtonStyle"
             android:text="诗   词"
             android:layout_marginLeft="10dp"

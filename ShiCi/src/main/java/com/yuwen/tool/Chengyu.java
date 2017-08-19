@@ -1,4 +1,4 @@
-package com.myapp.tool;
+package com.yuwen.tool;
 
 import java.io.Serializable;
 

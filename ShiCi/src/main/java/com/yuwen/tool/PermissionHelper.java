@@ -1,4 +1,4 @@
-package com.myapp.tool;
+package com.yuwen.tool;
 
 import android.Manifest;
 import android.app.Activity;
@@ -47,6 +47,7 @@ public class PermissionHelper {
 	private final static int WRITE_EXTERNAL_STORAGE_CODE = 102;
 
 	private final static int REQUEST_OPEN_APPLICATION_SETTINGS_CODE = 12345;
+
 
 	/**
 	 * 有米 Android SDK 所需要向用户申请的权限列表

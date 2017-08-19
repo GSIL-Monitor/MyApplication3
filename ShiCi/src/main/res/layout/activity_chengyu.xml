@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.activity.ChengyuActivity">
+    tools:context="com.yuwen.activity.ChengyuActivity">
 
     <ScrollView
+        android:id="@+id/sc_chengyu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -14,7 +15,6 @@
             android:id="@+id/banner_chengyu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -22,9 +22,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:paddingLeft="20dp"
                 android:text="德高望重"
                 android:textColor="#000"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                tools:textIsSelectable="true" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -32,15 +34,18 @@
                 android:layout_marginTop="30dp"
                 android:background="#D3D3D3"
                 android:text="拼音"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:paddingLeft="10dp"/>
 
             <TextView
                 android:id="@+id/pinyin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:paddingLeft="10dp"
                 android:text="de gao wang zhong"
                 android:textColor="#000"
+                android:textIsSelectable="true"
                 android:textSize="18sp" />
 
             <TextView
@@ -49,17 +54,8 @@
                 android:layout_marginTop="10dp"
                 android:background="#D3D3D3"
                 android:text="成语解释"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/jieshi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:lineSpacingExtra="10dp"
-                android:text="不是哦哈佛和国际覅国际化几个熊国均"
-                android:textColor="#000"
-                android:textSize="18sp" />
+                android:textSize="15sp"
+                android:paddingLeft="10dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -67,7 +63,20 @@
                 android:layout_marginTop="10dp"
                 android:background="#D3D3D3"
                 android:text="成语出处"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:paddingLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/jieshi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="10dp"
+                android:paddingLeft="10dp"
+                android:text="不是哦哈佛和国际覅国际化几个熊国均"
+                android:textColor="#000"
+                android:textIsSelectable="true"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/from"
@@ -75,8 +84,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:lineSpacingExtra="10dp"
+                android:paddingLeft="10dp"
                 android:text="《战国策·秦策四》：“积薄而为厚，聚少而为多。”《汉书·董仲舒传》：“聚少成多，积小致巨。"
                 android:textColor="#000"
+                android:textIsSelectable="true"
                 android:textSize="18sp" />
 
             <TextView
@@ -85,7 +96,8 @@
                 android:layout_marginTop="10dp"
                 android:background="#D3D3D3"
                 android:text="举例"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:paddingLeft="10dp"/>
 
             <TextView
                 android:id="@+id/example"
@@ -93,14 +105,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:lineSpacingExtra="10dp"
+                android:paddingLeft="10dp"
                 android:text="《战国策·秦策四》：“积薄而为厚，聚少而为多。”《汉书·董仲舒传》：“聚少成多，积小致巨。"
                 android:textColor="#000"
+                android:textIsSelectable="true"
                 android:textSize="18sp" />
             <FrameLayout
                 android:id="@+id/container2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="15dp"
+                android:paddingLeft="10dp"
               />
             <TextView
                 android:layout_marginTop="15dp"
@@ -108,7 +123,8 @@
                 android:layout_height="wrap_content"
                 android:background="#D3D3D3"
                 android:text="语法"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:paddingLeft="10dp"/>
 
             <TextView
                 android:id="@+id/yufa"
@@ -118,7 +134,9 @@
                 android:lineSpacingExtra="10dp"
                 android:text=" 连动式；作谓语、宾语、分句；用于事物的逐渐聚积"
                 android:textColor="#000"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:paddingLeft="10dp"
+                android:textIsSelectable="true"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -126,7 +144,8 @@
                 android:layout_marginTop="10dp"
                 android:background="#D3D3D3"
                 android:text="引证解释"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:paddingLeft="10dp"/>
 
             <TextView
                 android:id="@+id/yinzheng"
@@ -136,7 +155,9 @@
                 android:lineSpacingExtra="10dp"
                 android:text=" 连动式；作谓语、宾语、分句；用于事物的逐渐聚积"
                 android:textColor="#000"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:paddingLeft="10dp"
+                android:textIsSelectable="true"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -144,7 +165,8 @@
                 android:layout_marginTop="10dp"
                 android:background="#D3D3D3"
                 android:text="同义词"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:paddingLeft="10dp"/>
 
             <TextView
                 android:id="@+id/tongyi"
@@ -153,7 +175,9 @@
                 android:layout_marginTop="8dp"
                 android:text="年高德劭"
                 android:textColor="#000"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:paddingLeft="10dp"
+                android:textIsSelectable="true"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -161,7 +185,8 @@
                 android:layout_marginTop="10dp"
                 android:background="#D3D3D3"
                 android:text="反义词"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:paddingLeft="10dp"/>
 
             <TextView
                 android:id="@+id/fanyi"
@@ -171,7 +196,9 @@
                 android:paddingBottom="50dp"
                 android:text="年高德劭"
                 android:textColor="#000"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:paddingLeft="10dp"
+                android:textIsSelectable="true"/>
 
         </LinearLayout>
     </ScrollView>

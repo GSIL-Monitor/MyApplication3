@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.activity.CiYuActivity"
+    tools:context="com.yuwen.activity.CiYuActivity"
    >
     <TextView
         android:id="@+id/ci_title"
@@ -15,6 +15,7 @@
        android:paddingTop="20dp"
         android:paddingLeft="15dp"
         android:paddingBottom="20dp"
+        android:textIsSelectable="true"
        />
     <TextView
         android:id="@+id/ci_pinyin"
@@ -24,7 +25,8 @@
         android:layout_marginTop="15dp"
         android:textColor="#000"
         android:padding="15dp"
-        android:layout_below="@+id/ci_title"/>
+        android:layout_below="@+id/ci_title"
+        android:textIsSelectable="true"/>
     <TextView
         android:id="@+id/ci_jieshi"
         android:layout_width="match_parent"
@@ -34,7 +36,8 @@
         android:layout_marginTop="15dp"
         android:paddingLeft="15dp"
         android:paddingRight="10dp"
-        android:layout_below="@+id/ci_pinyin"/>
+        android:layout_below="@+id/ci_pinyin"
+        android:textIsSelectable="true"/>
     <FrameLayout
         android:id="@+id/containerCi"
         android:layout_width="match_parent"

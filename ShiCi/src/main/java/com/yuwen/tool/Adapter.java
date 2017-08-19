@@ -1,4 +1,4 @@
-package com.myapp.tool;
+package com.yuwen.tool;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,9 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import com.example.activity.MainActivity;
-import com.example.myapplication.R;
+import com.yuwen.activity.MainActivity;
+import com.yuwen.myapplication.R;
 
 import java.util.List;
 

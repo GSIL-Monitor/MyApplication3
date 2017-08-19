@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-import com.myapp.tool.Email;
+import com.yuwen.tool.Email;
 
 import org.junit.Test;
 
