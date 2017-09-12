@@ -1,0 +1,219 @@
+-- Merging decision tree log ---
+manifest
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:2:1-140:13
+	package
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:2:11-45
+	android:versionName
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:5:2-29
+		INJECTED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml
+		INJECTED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml
+	android:versionCode
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:4:2-27
+		INJECTED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml
+		INJECTED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml
+	xmlns:android
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:3:2-60
+uses-sdk
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:7:2-9:35
+MERGED from [com.android.support:support-v4:25.0.1] C:\Users\cxy\.android\build-cache\220db1b982e9f52e026ab20ede1154a6f564908e\output\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.0.1] C:\Users\cxy\.android\build-cache\80565de01c74697cbb8dc9a0229d793556732fbd\output\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:25.0.1] C:\Users\cxy\.android\build-cache\9752dd79fca1c3b5325a29a34547d05ec266eab5\output\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-ui:25.0.1] C:\Users\cxy\.android\build-cache\5cf84faf9ee8b0aebf4bb700f2d5be13713047d4\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:25.0.1] C:\Users\cxy\.android\build-cache\0f00420e6ac43a4162bf79dcb87d01cca39c5d9b\output\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-compat:25.0.1] C:\Users\cxy\.android\build-cache\d8ddc2494ec7c13bdc727caa804c50f8c0862b83\output\AndroidManifest.xml:21:5-23:58
+	tools:overrideLibrary
+		ADDED from [com.android.support:support-v4:25.0.1] C:\Users\cxy\.android\build-cache\220db1b982e9f52e026ab20ede1154a6f564908e\output\AndroidManifest.xml:23:9-51
+	android:targetSdkVersion
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:9:3-32
+	android:minSdkVersion
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:8:3-28
+uses-permission#android.permission.INTERNET
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:12:2-64
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:12:19-61
+uses-permission#android.permission.READ_PHONE_STATE
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:13:2-72
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:13:19-69
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:14:2-76
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:14:19-73
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:15:2-73
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:15:19-70
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:16:2-78
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:16:19-75
+uses-permission#com.android.launcher.permission.INSTALL_SHORTCUT
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:28:2-85
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:28:19-82
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:29:2-77
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:29:19-74
+application
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:31:2-139:17
+MERGED from [com.android.support:support-v4:25.0.1] C:\Users\cxy\.android\build-cache\220db1b982e9f52e026ab20ede1154a6f564908e\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-fragment:25.0.1] C:\Users\cxy\.android\build-cache\80565de01c74697cbb8dc9a0229d793556732fbd\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-media-compat:25.0.1] C:\Users\cxy\.android\build-cache\9752dd79fca1c3b5325a29a34547d05ec266eab5\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-core-ui:25.0.1] C:\Users\cxy\.android\build-cache\5cf84faf9ee8b0aebf4bb700f2d5be13713047d4\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-core-utils:25.0.1] C:\Users\cxy\.android\build-cache\0f00420e6ac43a4162bf79dcb87d01cca39c5d9b\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-compat:25.0.1] C:\Users\cxy\.android\build-cache\d8ddc2494ec7c13bdc727caa804c50f8c0862b83\output\AndroidManifest.xml:25:5-20
+	android:label
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:35:3-35
+	android:hardwareAccelerated
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:33:3-37
+	android:allowBackup
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:32:3-29
+	android:icon
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:34:3-32
+	android:theme
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:36:3-34
+activity#com.youmi.android.addemo.BaseActivity
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:38:3-39:15
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:38:13-41
+activity#com.youmi.android.addemo.SplashActivity
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:41:3-51:15
+	android:screenOrientation
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:45:4-40
+	android:label
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:44:4-36
+	android:configChanges
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:43:4-87
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:42:4-34
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:46:4-50:21
+action#android.intent.action.MAIN
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:47:5-57
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:47:13-54
+category#android.intent.category.LAUNCHER
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:49:5-65
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:49:15-62
+activity#com.youmi.android.addemo.MainActivity
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:53:3-57:15
+	android:label
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:56:4-36
+	android:configChanges
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:55:4-87
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:54:4-32
+activity#com.youmi.android.addemo.SpotAdActivity
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:59:3-63:15
+	android:label
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:62:4-36
+	android:configChanges
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:61:4-87
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:60:4-34
+activity#com.youmi.android.addemo.SlideableSpotAdActivity
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:65:3-69:15
+	android:label
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:68:4-36
+	android:configChanges
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:67:4-87
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:66:4-43
+activity#com.youmi.android.addemo.NativeSpotAdActivity
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:71:3-75:15
+	android:label
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:74:4-36
+	android:configChanges
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:73:4-87
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:72:4-40
+activity#com.youmi.android.addemo.VideoAdActivity
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:77:3-83:15
+	android:screenOrientation
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:82:4-40
+	android:label
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:80:4-36
+	android:resizeableActivity
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:81:4-38
+	android:configChanges
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:79:4-87
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:78:4-35
+activity#com.youmi.android.addemo.NativeVideoAdActivity
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:85:3-89:15
+	android:label
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:88:4-36
+	android:configChanges
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:87:4-87
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:86:4-41
+activity#net.youmi.android.normal.video.VideoActivity
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:92:3-99:15
+	android:screenOrientation
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:96:4-41
+	android:resizeableActivity
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:95:4-38
+	android:configChanges
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:94:4-87
+	android:theme
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:98:4-51
+	android:taskAffinity
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:97:4-27
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:93:4-63
+activity#net.youmi.android.AdBrowser
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:102:3-106:15
+	android:configChanges
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:104:4-87
+	android:theme
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:105:4-51
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:103:4-46
+service#net.youmi.android.AdService
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:108:3-111:14
+	android:exported
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:110:4-28
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:109:4-46
+receiver#net.youmi.android.AdReceiver
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:113:3-120:15
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:113:13-56
+intent-filter#android.intent.action.PACKAGE_ADDED+android.intent.action.PACKAGE_INSTALL
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:114:4-119:21
+action#android.intent.action.PACKAGE_ADDED
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:115:5-66
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:115:13-63
+action#android.intent.action.PACKAGE_INSTALL
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:116:5-68
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:116:13-65
+data
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:118:5-38
+	android:scheme
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:118:11-35
+provider#android.support.v4.content.FileProvider
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:123:3-131:15
+	android:authorities
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:125:4-63
+	android:grantUriPermissions
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:127:4-38
+	android:exported
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:126:4-28
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:124:4-58
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:128:4-130:45
+	android:resource
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:130:5-42
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:129:5-55
+meta-data#YOUMI_CHANNEL
+ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:134:3-137:16
+	android:value
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:136:4-21
+	android:name
+		ADDED from E:\AndroidStudio_Workspace\MyApplication3\normaldemo\AndroidManifest.xml:135:4-32

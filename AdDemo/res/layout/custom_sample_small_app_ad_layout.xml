@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="115dp"
+    android:background="#ffffffff">
+
+    <RelativeLayout
+        android:id="@+id/top"
+        android:layout_width="333dp"
+        android:layout_height="52dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="17dp">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="52dp"
+            android:layout_height="52dp" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_toRightOf="@id/icon"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="最美海报"
+            android:textColor="#E5000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/title"
+            android:layout_below="@id/title"
+            android:ellipsize="end"
+            android:lines="2"
+            android:maxWidth="171dp"
+            android:text="唯品会，一家专门做特卖的网站，你手中的网购神器！"
+            android:textColor="#7f000000"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/install"
+            android:layout_width="74dp"
+            android:layout_height="27dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/install_btn_bg"
+            android:gravity="center"
+            android:text="立即安装"
+            android:textColor="#ffffff"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom"
+        android:layout_width="333dp"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@id/top"
+        android:layout_below="@id/top">
+
+        <ImageView
+            android:id="@+id/popularize"
+            android:layout_width="33dp"
+            android:layout_height="17dp"
+            android:layout_centerVertical="true"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/sourceDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="13dp"
+            android:layout_toRightOf="@id/popularize"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="some extra information"
+            android:textColor="#7f000000"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+</RelativeLayout>

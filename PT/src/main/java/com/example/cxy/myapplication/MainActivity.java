@@ -63,6 +63,7 @@ public class MainActivity extends Activity {
     public void showNext() {
         Intent intent = new Intent(this, MapListActivity.class);
         startActivity(intent);
+        overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
         //finish();
         //调用此方法让动画效果生效
         //overridePendingTransition(R.anim.tran_next_in, R.anim.tran_next_out);

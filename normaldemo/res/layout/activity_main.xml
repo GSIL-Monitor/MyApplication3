@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@drawable/bg_activity"
+	>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+
+		<TextView
+			android:id="@+id/tv_main_top_tag"
+			style="@style/style_text"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="30dp"
+			android:text="@string/tv_main_top_tag"
+			android:textSize="24sp"
+			/>
+
+		<TextView
+			android:id="@+id/tv_main_version_info"
+			style="@style/style_text"
+			android:layout_below="@id/tv_main_top_tag"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="12dp"
+			android:text="@string/tv_main_version_info"
+			android:textSize="18sp"
+			/>
+
+		<Button
+			android:id="@+id/btn_main_show_spot_ad"
+			style="@style/style_button"
+			android:layout_below="@id/tv_main_version_info"
+			android:layout_marginTop="40dp"
+			android:text="@string/btn_main_show_spot_ad"
+			/>
+
+		<Button
+			android:id="@+id/btn_main_show_slideable_spot_ad"
+			style="@style/style_button"
+			android:layout_below="@id/btn_main_show_spot_ad"
+			android:layout_marginTop="12dp"
+			android:text="@string/btn_main_show_slideable_spot_ad"
+			/>
+
+		<Button
+			android:id="@+id/btn_main_show_native_spot_ad"
+			style="@style/style_button"
+			android:layout_below="@id/btn_main_show_slideable_spot_ad"
+			android:layout_marginTop="12dp"
+			android:text="@string/btn_main_show_native_spot_ad"
+			/>
+
+		<Button
+			android:id="@+id/btn_main_show_video_ad"
+			style="@style/style_button"
+			android:layout_below="@id/btn_main_show_native_spot_ad"
+			android:layout_marginTop="12dp"
+			android:text="@string/btn_main_show_video_ad"
+			/>
+
+		<Button
+			android:id="@+id/btn_main_show_native_video_ad"
+			style="@style/style_button"
+			android:layout_below="@id/btn_main_show_video_ad"
+			android:layout_marginTop="12dp"
+			android:text="@string/btn_main_show_native_video_ad"
+			/>
+
+		<Button
+			android:id="@+id/btn_main_check_ad_settings"
+			style="@style/style_button"
+			android:layout_below="@id/btn_main_show_native_video_ad"
+			android:layout_marginTop="12dp"
+			android:text="@string/btn_main_check_ad_settings"
+			/>
+
+		<LinearLayout
+			android:id="@+id/ll_main_banner"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+			android:orientation="horizontal"
+			>
+		</LinearLayout >
+
+		<TextView
+			style="@style/style_text"
+			android:layout_above="@id/ll_main_banner"
+			android:layout_centerHorizontal="true"
+			android:layout_marginBottom="24dp"
+			android:text="@string/tv_main_bottom_tag"
+			android:textSize="16sp"
+			/>
+	</RelativeLayout >
+
+</ScrollView >
