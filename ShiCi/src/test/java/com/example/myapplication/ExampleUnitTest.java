@@ -20,4 +20,6 @@ public class ExampleUnitTest {
         //assertEquals(true,Email.postEmail("第一封电子邮件"));
         assertTrue(Email.postEmail("第一封电子邮件"));
     }
+
+
 }

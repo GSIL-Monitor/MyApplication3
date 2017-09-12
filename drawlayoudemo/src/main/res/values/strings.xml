@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">DrawLayouDemo</string>
+
+    <string name="navigation_drawer_open">打开侧边栏</string>
+    <string name="navigation_drawer_close">关闭侧边栏</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
