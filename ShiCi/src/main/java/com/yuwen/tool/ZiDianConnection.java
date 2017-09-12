@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by cxy on 2016/7/18.
  */
-public class ZiDian {
+public class ZiDianConnection {
     public static final String DEF_CHATSET = "UTF-8";
     public static final int DEF_CONN_TIMEOUT = 30000;
     public static final int DEF_READ_TIMEOUT = 30000;
@@ -34,7 +34,7 @@ public class ZiDian {
         params.put("word",str);//填写需要查询的汉字，UTF8 urlencode编码
 
         params.put("dtype","");//返回数据的格式,xml或json，默认json
-        if (flag==1){
+        if (flag==1){          //字典
             params.put("key",APPKEY);//应用APPKEY(应用详细页查询)
             try {
                 result =net(url, params, "GET");
@@ -45,8 +45,8 @@ public class ZiDian {
 
         }
 
-        else if (flag==2){
-            params.put("key",APPKEY2);//应用APPKEY(应用详细页查询)
+        else if (flag==2){      //成语
+            params.put("key",APPKEY2);
             try {
                 result =net(url2, params, "GET");
                 System.out.println(result);

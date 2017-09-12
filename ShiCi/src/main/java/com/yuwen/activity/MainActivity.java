@@ -19,16 +19,20 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.yuwen.BmobBean.User;
+import com.yuwen.Entity.Article;
+import com.yuwen.Entity.Chengyu;
+import com.yuwen.Entity.CiYu;
+import com.yuwen.Entity.Zi;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.Adapter;
-import com.yuwen.tool.Article;
-import com.yuwen.tool.Chengyu;
-import com.yuwen.tool.CiYu;
 import com.yuwen.tool.OkHttpUtil;
-import com.yuwen.tool.ZiDian;
+import com.yuwen.tool.Utils;
+import com.yuwen.tool.ZiDianConnection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,11 +43,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener{
 
-    private TextView textView;
+    private TextView textView,btnToLogin;
     private ListView listView;
     private Button btnZi,btnChengyu,btnPoem,btnCi;
+    private NavigationView navigationView;
     private String text = "";
     private List list = new ArrayList();
     private Adapter adapter;
@@ -58,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int pageNum = 1;    //要查询的页数   pageSize=50
     private int pages=0;
     private boolean isBottom;
+    private LinearLayout layout;
 
     public static List<String> logList = new CopyOnWriteArrayList<String>();
 
@@ -65,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Article    article;
     Chengyu chengYu;
     CiYu ciYu;
+    User user;
 
     //底部加载更多布局
     View footer;
@@ -77,6 +87,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
       //  XiaomiUpdateAgent.update(this);
         setContentView(R.layout.main);
 
+        // 注:自v3.5.2开始，数据sdk内部缝合了统计sdk，开发者无需额外集成，传渠道参数即可，不传默认没开启数据统计功能
+        Bmob.initialize(this, Utils.BmobApplicationId,"bmob");
+
+        user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
+
         title=(String) getTitle();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -88,10 +103,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toggle.syncState();
         drawer.setDrawerListener(toggle);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        btnToLogin=(TextView) headerLayout.findViewById(R.id.btn_to_login);
+        layout=(LinearLayout) headerLayout.findViewById(R.id.clickLayout);
+        layout.setOnClickListener(this);
+        if (user!=null) {
+          btnToLogin.setText(user.getUsername());
+        }else{
+
+        }
+
         navigationView.setNavigationItemSelectedListener(this);
-
-
         textView = (TextView) findViewById(R.id.tv);
         listView = (ListView) findViewById(R.id.lv);
         btnZi = (Button) findViewById(R.id.btnZi);
@@ -105,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnCi.setOnClickListener(this);
         btnChengyu.setOnClickListener(this);
         btnPoem.setOnClickListener(this);
+        btnToLogin.setOnClickListener(this);
 
         //将底部加载一个加载更多的布局
         footer = LayoutInflater.from(this).inflate(R.layout.foot_boot, null);
@@ -126,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void run() {
 
-                            String dataChengyu= ZiDian.getRequest1(nameStr,2);
+                            String dataChengyu= ZiDianConnection.getRequest1(nameStr,2);
                             try {
                                 chengYu = getChengYuContent(dataChengyu,chengYu);
                                 Intent intent=new Intent(MainActivity.this,ChengyuActivity.class);
@@ -240,12 +264,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Runnable zidian=new Runnable() {
         @Override
         public void run() {
-            String dataZidian= ZiDian.getRequest1(text,1);
+            String dataZidian= ZiDianConnection.getRequest1(text,1);
             try {
-                String  content= getDataZidian(dataZidian);
+                Zi zi= getDataZidian(dataZidian);
                 Intent intent=new Intent(MainActivity.this,ZidianActivity.class);
-                intent.putExtra("content",content);
-                intent.putExtra("zi",text);
+
+                zi.setName(text);
+
+                intent.putExtra("zi",zi);
+
                 startActivity(intent);
 
             } catch (JSONException e) {
@@ -258,53 +285,66 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        text = textView.getText().toString();
-        footer.setVisibility(View.GONE);
-        list.clear();
-        adapter.notifyDataSetChanged();
+        if(v.getId()==R.id.btn_to_login){
+            if (user!=null){  //用户详情
+                Intent intent=new Intent(MainActivity.this,SettingInfomationActivity.class);
+                startActivity(intent);
+            }else{   //跳转到注册界面
+                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
+
+        }
+        else if (v.getId()==R.id.clickLayout){
+            Intent intent=new Intent(MainActivity.this,SettingInfomationActivity.class);
+            startActivity(intent);
+        }
+        else {
+            text = textView.getText().toString();
+            footer.setVisibility(View.GONE);
+            list.clear();
+            adapter.notifyDataSetChanged();
 
 
+            if (text == null || text.length() <= 0) {
 
-        if (text == null || text.length() <= 0) {
+                new AlertDialog.Builder(MainActivity.this).setMessage("请输入要查询的内容!").setPositiveButton("确定", null).create().show();
 
-            new AlertDialog.Builder(MainActivity.this).setMessage("请输入要查询的内容!").setPositiveButton("确定", null).create().show();
+            } else {
+                //   Log.i(tag,listviewState+"");
 
-        }else {
-         //   Log.i(tag,listviewState+"");
+                pageNum = 1;
+                switch (v.getId()) {
+                    case R.id.btnZi:    //字典
+                        if (text.length() > 1) {
+                            new AlertDialog.Builder(MainActivity.this).setMessage("字典查询只能输入一个汉字！").setPositiveButton("确定", null).create().show();
+                        } else {
+                            new Thread(zidian).start();
 
-            pageNum=1;
-            switch (v.getId()) {
-                case R.id.btnZi:    //字典
-                    if(text.length()>1){
-                        new AlertDialog.Builder(MainActivity.this).setMessage("字典查询只能输入一个汉字！").setPositiveButton("确定", null).create().show();
-                    }
-                    else{
-                        new Thread(zidian).start();
+                        }
 
-                    }
+                        break;
+                    case R.id.btnIdiom:    //成语
+                        mark = FLAG_IDIOM;
+                        Connection conn = new Connection();
+                        conn.start();
 
-                    break;
-                case R.id.btnIdiom:    //成语
-                    mark=FLAG_IDIOM;
-                    Connection conn = new Connection();
-                    conn.start();
+                        break;
+                    case R.id.btnPoem:     //诗词
 
-                    break;
-                case R.id.btnPoem:     //诗词
+                        mark = FLAG_POEM;
+                        Connection connection = new Connection();
+                        connection.start();
+                        break;
+                    case R.id.btnCi:    //词语
+                        mark = FLAG_CI;
+                        Connection connect = new Connection();
+                        connect.start();
+                        break;
 
-                    mark=FLAG_POEM;
-                    Connection connection = new Connection();
-                    connection.start();
-                    break;
-                case R.id.btnCi:    //词语
-                    mark=FLAG_CI;
-                    Connection connect = new Connection();
-                    connect.start();
-                    break;
-
+                }
             }
         }
-
     }
 
     /**
@@ -312,9 +352,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param dataZidian
      * @throws JSONException
      */
-    public String getDataZidian(String dataZidian)throws JSONException{
+    public Zi getDataZidian(String dataZidian)throws JSONException{
+
+         // Log.i(AdApplication.TAG,dataZidian);
           StringBuffer xiangjie=new StringBuffer();
-           JSONObject object = new JSONObject(dataZidian);
+          JSONObject object = new JSONObject(dataZidian);
+           Zi zi=new Zi();
            if(object.getInt("error_code")==0){
                //System.out.println(object.get("result"));
                JSONObject result=object.getJSONObject("result");
@@ -322,14 +365,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                for (int i=1;i<xiangJie.length();i++){
                     xiangjie.append(xiangJie.getString(i)+"\r\n\r\n");
                }
+               zi.setContent(xiangjie.toString());
+               String id=result.getString("id");
+               Log.i(AdApplication.TAG,id);
+               zi.setId(id);
 
 
            }else{
                System.out.println(object.get("error_code")+":"+object.getInt("reason"));
            }
-        return xiangjie.toString();
+        return zi;
     }
 
+    //设置成语内容
     public Chengyu getChengYuContent(String str,Chengyu chengyu) throws JSONException{
         String pinyin,jieshi,from,example,yufa,yinzheng;
         StringBuffer tongyi=new StringBuffer();
@@ -513,7 +561,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 article.setTitle(name);
                 list.add(article);
             }
-            if(mark==FLAG_CI){
+            if(mark==FLAG_CI){   //词语
                 String name = item.getString("words");
                 String content = item.getString("content");
                 CiYu ciYu = new CiYu();
@@ -568,9 +616,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             Log.i(tag,"点击了设置");
         }
+       */
         if (id == R.id.collect) {
-            Toast.makeText(MainActivity.this, "你点击了收藏", Toast.LENGTH_SHORT).show();
-        }*/
+            Intent intent=new Intent(MainActivity.this,CollectActivity.class);
+            startActivity(intent);
+
+        }
         if (id == R.id.feedback) {
            // Toast.makeText(MainActivity.this, "你点击了反馈", Toast.LENGTH_SHORT).show();
             Intent intent=new Intent(MainActivity.this,FeedbackActivity.class);
@@ -586,6 +637,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent,"share"));
         }
+
+
+
 
 
         drawer.closeDrawer(GravityCompat.START);

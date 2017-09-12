@@ -1,4 +1,4 @@
-package com.yuwen.tool;
+package com.yuwen.Entity;
 
 import java.io.Serializable;
 
@@ -15,6 +15,15 @@ public class Chengyu implements Serializable{
     private String yinzheng;
     private String tongyi;
     private String fanyi;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getExample() {
         return example;

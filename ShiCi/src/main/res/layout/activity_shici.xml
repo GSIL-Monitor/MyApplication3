@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.yuwen.activity.ShiciActivity">
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="HardcodedText"
+        tools:context="com.yuwen.activity.ShiciActivity"
+        android:id="@+id/shiCiLayout">
     <ScrollView
         android:id="@+id/myScrollView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         >
         <LinearLayout
-            android:id="@+id/banner_shici"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingRight="4dp"
             >
     <TextView
         android:id="@+id/title"
@@ -32,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="textEnd"
-        android:layout_marginRight="50dp"
+        android:layout_marginRight="45dp"
         android:textSize="15sp"
         android:gravity="end"
         android:textColor="#000"
@@ -64,9 +71,12 @@
         android:textColor="#000"
         android:lineSpacingExtra="10dp"
         android:layout_marginTop="20dp"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:textIsSelectable="true"
         android:text="俄罗斯政府网站公布消息称"/>
+
             <FrameLayout
                 android:id="@+id/container3"
                 android:layout_width="match_parent"
@@ -75,6 +85,18 @@
 </ScrollView>
 
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/shiciFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/btn_star_big_on"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="280dp"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
 
-</RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,48 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="HardcodedText"
     tools:context="com.yuwen.activity.CiYuActivity"
-   >
-    <TextView
-        android:id="@+id/ci_title"
-        android:layout_width="match_parent"
+    android:id="@+id/ciYuConstraintLayout">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/ciYuFb"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:background="#D3D3D3"
-        android:textSize="25sp"
-       android:paddingTop="20dp"
-        android:paddingLeft="15dp"
-        android:paddingBottom="20dp"
-        android:textIsSelectable="true"
-       />
-    <TextView
-        android:id="@+id/ci_pinyin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginTop="15dp"
-        android:textColor="#000"
-        android:padding="15dp"
-        android:layout_below="@+id/ci_title"
-        android:textIsSelectable="true"/>
-    <TextView
-        android:id="@+id/ci_jieshi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:textSize="18sp"
-        android:layout_marginTop="15dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="10dp"
-        android:layout_below="@+id/ci_pinyin"
-        android:textIsSelectable="true"/>
-    <FrameLayout
-        android:id="@+id/containerCi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/btn_star_big_on"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="276dp"
+        android:layout_marginRight="3dp"
+        app:layout_constraintRight_toRightOf="parent"
         />
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/ci_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D3D3D3"
+            android:paddingBottom="20dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="20dp"
+            android:textColor="#000"
+            android:textIsSelectable="true"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/ci_pinyin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ci_title"
+            android:layout_marginTop="15dp"
+            android:padding="15dp"
+            android:textColor="#000"
+            android:textIsSelectable="true"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/ci_jieshi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ci_pinyin"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="10dp"
+            android:textColor="#000"
+            android:textIsSelectable="true"
+            android:textSize="18sp" />
+
+        <FrameLayout
+            android:id="@+id/containerCi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

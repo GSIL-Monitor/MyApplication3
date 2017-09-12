@@ -1,4 +1,4 @@
-package com.yuwen.tool;
+package com.yuwen.Entity;
 
 import java.io.Serializable;
 
