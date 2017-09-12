@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\timepicker_down_normal.9.png",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\drawable-hdpi\\timepicker_down_normal.9.png"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\btn_base_back_normal.9.png",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\drawable-hdpi\\btn_base_back_normal.9.png"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\timepicker_up_normal.9.png",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\drawable-hdpi\\timepicker_up_normal.9.png"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\bg_vertical_line.png",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\drawable-hdpi\\bg_vertical_line.png"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\btn_base_back_click.9.png",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\drawable-hdpi\\btn_base_back_click.9.png"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\bg_base_title_bar.png",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\drawable-hdpi\\bg_base_title_bar.png"
+    }
+]

@@ -1,0 +1,62 @@
+[
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\tqq_info_activity.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\tqq_info_activity.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\account_info_activity.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\account_info_activity.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\image_picker_layout.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\image_picker_layout.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\social_api_activity.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\social_api_activity.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\qq_share_activity.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\qq_share_activity.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\other_api_activity.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\other_api_activity.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\wpa_activity.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\wpa_activity.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\qq_favorites_dataline_activity.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\qq_favorites_dataline_activity.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\qzone_share_activity.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\qzone_share_activity.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\blog_activity.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\blog_activity.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\qq_troopbar_activity.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\qq_troopbar_activity.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\avatar_activity.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\avatar_activity.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\pic_list_layout.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\pic_list_layout.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\base_activity_with_titlebar.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\base_activity_with_titlebar.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\layout-hdpi-v4\\pic_album_list_item.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\layout-hdpi\\pic_album_list_item.xml"
+    }
+]
