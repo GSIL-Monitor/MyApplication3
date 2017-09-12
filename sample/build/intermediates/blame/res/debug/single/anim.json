@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\anim\\zoomin.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\anim\\zoomin.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\anim\\shake.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\anim\\shake.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\anim\\cycle_7.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\anim\\cycle_7.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\anim\\push_up_in.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\anim\\push_up_in.xml"
+    },
+    {
+        "merged": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\build\\intermediates\\res\\merged\\debug\\anim\\zoomout.xml",
+        "source": "E:\\Documnet\\AndroidWorkspace\\MyApplication\\MyApplication3\\sample\\res\\anim\\zoomout.xml"
+    }
+]
