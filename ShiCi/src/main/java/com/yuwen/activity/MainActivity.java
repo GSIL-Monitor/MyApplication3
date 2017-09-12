@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnCi.setOnClickListener(this);
         btnChengyu.setOnClickListener(this);
         btnPoem.setOnClickListener(this);
-        btnToLogin.setOnClickListener(this);
+       // btnToLogin.setOnClickListener(this);
 
         //将底部加载一个加载更多的布局
         footer = LayoutInflater.from(this).inflate(R.layout.foot_boot, null);
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.btn_to_login){
+        /*if(v.getId()==R.id.btn_to_login){
             if (user!=null){  //用户详情
                 Intent intent=new Intent(MainActivity.this,SettingInfomationActivity.class);
                 startActivity(intent);
@@ -294,10 +294,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
             }
 
-        }
-        else if (v.getId()==R.id.clickLayout){
-            Intent intent=new Intent(MainActivity.this,SettingInfomationActivity.class);
-            startActivity(intent);
+        }*/
+        if (v.getId()==R.id.clickLayout){
+            if (user!=null){  //用户详情
+                Intent intent=new Intent(MainActivity.this,SettingInfomationActivity.class);
+                startActivity(intent);
+            }else{   //跳转到注册界面
+                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
+
         }
         else {
             text = textView.getText().toString();

@@ -104,7 +104,7 @@
        android:src="@drawable/qq"/>
 
         <TextView
-            android:id="@+id/btn_qq"
+            android:id="@+id/tv_qq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
