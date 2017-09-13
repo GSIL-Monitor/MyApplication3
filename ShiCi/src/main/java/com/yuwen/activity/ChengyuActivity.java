@@ -3,13 +3,20 @@ package com.yuwen.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.xiaomi.ad.AdListener;
 import com.xiaomi.ad.NativeAdInfoIndex;
 import com.xiaomi.ad.NativeAdListener;
@@ -17,8 +24,10 @@ import com.xiaomi.ad.adView.InterstitialAd;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
+import com.yuwen.Entity.Chengyu;
 import com.yuwen.myapplication.R;
-import com.yuwen.tool.Chengyu;
+import com.yuwen.tool.DBHelper;
+import com.yuwen.tool.DBOperate;
 import com.yuwen.tool.PermissionHelper;
 
 import java.util.List;
@@ -32,12 +41,15 @@ public class ChengyuActivity extends AppCompatActivity {
     TextView nametv,pinyintv,jiehsitv,fromtv,exampletv,yufatv,yinzhengtv,tongyitv,fanyitv;
     ScrollView scrollView;
     private InterstitialAd mInterstitialAd;
-    boolean adFlag;
+    boolean adFlag,isFirst=true;;
     private PermissionHelper mPermissionHelper;
+    private FloatingActionButton fb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chengyu);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
         // 当系统为6.0以上时，需要申请权限
         mPermissionHelper = new PermissionHelper(this);
         mPermissionHelper.setOnApplyPermissionListener(new PermissionHelper.OnApplyPermissionListener() {
@@ -75,9 +87,10 @@ public class ChengyuActivity extends AppCompatActivity {
         fanyitv=(TextView)findViewById(R.id.fanyi);
         scrollView=(ScrollView)findViewById(R.id.sc_chengyu);
         final ViewGroup container = (ViewGroup) findViewById(R.id.container2);
+        fb=(FloatingActionButton)findViewById(R.id.chengYuFb);
         mInterstitialAd = new InterstitialAd(getApplicationContext(),getWindow().getDecorView());
         Intent intent=this.getIntent();
-        Chengyu chengyu=(Chengyu) intent.getSerializableExtra("chengyu");
+        final Chengyu chengyu=(Chengyu) intent.getSerializableExtra("chengyu");
 
         nametv.setText(chengyu.getName());
         pinyintv.setText(chengyu.getPinyin());
@@ -142,29 +155,18 @@ public class ChengyuActivity extends AppCompatActivity {
         });
 
         //初始化插屏广告
-       // initAd();
-     /*   scrollView.setOnTouchListener(new View.OnTouchListener() {
+        initAd();
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // 判断 scrollView 当前滚动位置在顶部
-                if(scrollView.getScrollY() <= 0){
+                if(scrollView.getScrollY() <= 0&&!isFirst){
                     Log.e(TAG2, "滑到了顶部!");
-                    initAd();
-                    adFlag=true;
-
-
-
-                }
-                // 判断scrollview 滑动到底部
-                // scrollY 的值和子view的高度一样，滑动到了底部
-                if (scrollView.getChildAt(0).getHeight() - scrollView.getHeight()== scrollView.getScrollY()){
-
-                    Log.e(TAG2, "滑到了底部!");
                     if (adFlag){
                         try {
                             if (!mInterstitialAd.isReady()) {
                                 adFlag=false;
-                                Log.e(TAG2, "ad is not ready!");
+                                Log.e(TAG, "ad is not ready!");
                             } else {
                                 mInterstitialAd.show();
                             }
@@ -177,15 +179,51 @@ public class ChengyuActivity extends AppCompatActivity {
 
 
                 }
+                // 判断scrollview 滑动到底部
+                // scrollY 的值和子view的高度一样，滑动到了底部
+                if (scrollView.getChildAt(0).getHeight() - scrollView.getHeight()== scrollView.getScrollY()){
 
+                    Log.e(TAG2, "滑到了底部!");
+                    isFirst=false;
+                    initAd();
+                    adFlag=true;
+                }
 
                 return false;
             }
         });
-*/
+
+        fb.setOnClickListener(new View.OnClickListener() {
+            DBOperate dBOperate=null;
+
+            @Override
+            public void onClick(View view) {
+                //添加收藏action
+                DBHelper dbHelper=new DBHelper(ChengyuActivity.this);
+                dBOperate=new DBOperate(dbHelper);
+                Gson gson = new Gson();
+                String json=gson.toJson(chengyu);
 
 
-         }
+
+                dBOperate.insert("3",chengyu.getName(),json);    //插入到数据库
+                ConstraintLayout layout=(ConstraintLayout)findViewById(R.id.chengYuConLayout);
+
+                Snackbar.make(layout, "已收藏该成语", Snackbar.LENGTH_LONG).setAction("查看我的收藏", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent=new Intent(ChengyuActivity.this,CollectActivity.class);
+                        startActivity(intent);
+                    }
+                }).show();
+
+            }
+        });
+
+
+    }
+
+
     public void initAd(){
         try {
             if (mInterstitialAd.isReady()) {
@@ -244,5 +282,14 @@ public class ChengyuActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mPermissionHelper.onActivityResult(requestCode, resultCode, data);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+
+        }
+
+        return true;
     }
 }

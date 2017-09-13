@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/et_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:hint="请输入用户名"
+            android:paddingLeft="20dip"
+            android:paddingRight="10dip"
+            android:singleLine="true"
+            android:textColor="#ff444444"
+            android:textColorHint="#ffcccccc"
+            android:textSize="16sp" >
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/et_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_account"
+            android:layout_marginTop="10dp"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:paddingLeft="20dip"
+            android:paddingRight="10dip"
+            android:singleLine="true"
+            android:textColor="#ff444444"
+            android:textColorHint="#ffcccccc"
+            android:textSize="16sp" />
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            style="@style/ButtonStyle"
+            android:text="登录"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_below="@id/et_pwd"
+            android:layout_margin="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_login"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="忘记密码"
+                android:textColor="#4285F4"
+                />
+           <TextView
+
+               android:id="@+id/tv_register"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="新用户注册"
+               android:textColor="#4285F4"/>
+           <!-- <Button
+                android:id="@+id/btn_register"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1.0"
+                android:background="@drawable/selector_logout"
+                android:text="注册"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />-->
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+   <ImageView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:src="@drawable/qq"/>
+
+        <TextView
+            android:id="@+id/tv_qq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="16sp"
+            android:text="使用QQ账号登录"
+            android:textColor="#4285F4"
+            />
+
+      <!--  <Button
+            android:id="@+id/btn_weixin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/find_friend_icon_tencent"
+            android:clickable="true"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:textSize="16sp" />-->
+    </LinearLayout>
+
+</RelativeLayout>

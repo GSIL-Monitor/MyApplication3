@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_brower"
+        android:icon="@mipmap/browser_web"
+
+        android:title="在浏览器中打开"/>
+    <item
+        android:id="@+id/menu_item_share"
+
+        android:title="分享"
+        app:actionProviderClass=
+            "android.support.v7.widget.ShareActionProvider" />
+    <item
+        android:id="@+id/collect"
+        android:icon="@mipmap/ic_star_black_24dp"
+
+        android:title="收藏"/>
+
+</menu>

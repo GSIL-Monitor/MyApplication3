@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/vertical_splash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="竖版开屏广告"/>
+    <Button
+        android:id="@+id/horizontal_splash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="横版开屏广告"/>
+    <Button
+        android:id="@+id/vertical_interstitial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="竖版插屏广告" />
+
+    <Button
+        android:id="@+id/horizontal_interstitial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="横版插屏广告" />
+
+    <Button
+        android:id="@+id/news_feed_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="定制信息流广告" />
+
+    <Button
+        android:id="@+id/standard_news_feed_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="标准信息流广告" />
+
+    <Button
+        android:id="@+id/standard_news_feed_list_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="信息流LIST" />
+
+    <Button
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="banner广告" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="接入时，主要修改如下：\n1.拷贝AndroidManifest.xml里权限声明和AdActivity声明\n2.拷贝assets里AdServer.apk和analytics_core.apk到游戏的assets目录 \n3.拷贝AdSdk.jar到游戏的libs目录 \n4.参考AdApplication初始化AdSdk\n5.参考InterstitialAdActivity 接入插屏广告\n6.参考SplashAdActivity 接入开屏广告\n7.参考StandardNewsFeedActivity 接入信息流广告\n8.参考BannerActivity 接入banner广告" />
+
+</LinearLayout>

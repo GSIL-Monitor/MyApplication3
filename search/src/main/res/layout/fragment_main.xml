@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="vertical">
+
+
+   <!-- <include layout="@layout/toolbar_layout" />-->
+
+    <ImageView
+        android:src="@mipmap/default_select_photo"
+        android:id="@+id/main_frag_picture_iv"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
+         />
+    <Button
+        android:id="@+id/enterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:text="录 入"
+        style="@style/ButtonStyle"/>
+
+    <Button
+        android:id="@+id/identifyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="识 别"
+        style="@style/ButtonStyle"/>
+
+</LinearLayout>

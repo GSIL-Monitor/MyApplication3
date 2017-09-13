@@ -5,60 +5,58 @@
     android:orientation="vertical"
     android:gravity="center_horizontal">
 
+    <ScrollView
+        android:id="@+id/myScrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#990000">
+        >
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:layout_marginLeft="5dp">
 
-            <TextView
+        <TextView
                 android:id="@+id/news_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:singleLine="true"
                 android:text="TextView"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:textStyle="bold"
+                android:textAlignment="center"
+                android:textColor="#000"
                 />
 
+
+
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:text="Medium Text"
+                android:textColor="#000"
                 android:id="@+id/news_pubDate" />
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp"
-            android:src="@mipmap/browser_web"
-            android:id="@+id/imageViewBrowser" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@mipmap/back"
-            android:layout_marginRight="3dp"
-            android:id="@+id/imageViewBack" />
 
     </LinearLayout>
 
     <WebView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/newsDetail" />
+        android:layout_height="wrap_content"
+        android:layout_marginRight="3dp"
+
+        android:id="@+id/newsDetail"
+
+        />
+
+</LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

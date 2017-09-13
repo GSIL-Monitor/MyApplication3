@@ -3,18 +3,28 @@ package com.yuwen.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 import com.xiaomi.ad.AdListener;
 import com.xiaomi.ad.NativeAdInfoIndex;
 import com.xiaomi.ad.NativeAdListener;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
+import com.yuwen.Entity.Zi;
 import com.yuwen.myapplication.R;
+import com.yuwen.tool.DBHelper;
+import com.yuwen.tool.DBOperate;
 import com.yuwen.tool.PermissionHelper;
 
 import java.util.List;
@@ -26,13 +36,18 @@ public class ZidianActivity extends AppCompatActivity {
     private final static String APP_POSITION_ID = "35e0adcb1e64ae7d3d2f964f71ff8b2f";
     private PermissionHelper mPermissionHelper;
 
-    TextView tv1,tv2;
+    private TextView tv1,tv2;
+    private ConstraintLayout layout;
+    private Zi zi=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.zidian);
-    // 当系统为6.0以上时，需要申请权限
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
+
+        // 当系统为6.0以上时，需要申请权限
         mPermissionHelper = new PermissionHelper(this);
         mPermissionHelper.setOnApplyPermissionListener(new PermissionHelper.OnApplyPermissionListener() {
             @Override
@@ -57,18 +72,49 @@ public class ZidianActivity extends AppCompatActivity {
 
             }
         }
+        layout=(ConstraintLayout) findViewById(R.id.zidianConlayout);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.ziFb);
 
         final ViewGroup container = (ViewGroup) findViewById(R.id.container1);
 
         tv1=(TextView)findViewById(R.id.title);
         tv2=(TextView)findViewById(R.id.ziidan);
 
-        Intent intent=this.getIntent();
-        String content=intent.getStringExtra("content");
-        String zi=intent.getStringExtra("zi");
 
-        tv1.setText(zi);
+        Intent intent=this.getIntent();
+        zi=(Zi) intent.getSerializableExtra("zi");
+        String content=zi.getContent();
+        String name=zi.getName();
+
+        tv1.setText(name);
         tv2.setText(content);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            DBOperate dBOperate=null;
+
+            @Override
+            public void onClick(View view) {
+                //添加收藏action
+                DBHelper dbHelper=new DBHelper(ZidianActivity.this);
+                dBOperate=new DBOperate(dbHelper);
+                Gson gson = new Gson();
+                String json=gson.toJson(zi);
+
+
+
+                dBOperate.insert("1",zi.getName(),json);    //插入到数据库
+
+                Snackbar.make(layout, "已收藏该生字", Snackbar.LENGTH_LONG).setAction("查看我的收藏", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent=new Intent(ZidianActivity.this,CollectActivity.class);
+                        startActivity(intent);
+                    }
+                }).show();
+
+            }
+        });
+
         final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
 
         container.post(new Runnable() {
@@ -136,5 +182,15 @@ public class ZidianActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mPermissionHelper.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+
+        }
+
+        return true;
     }
 }

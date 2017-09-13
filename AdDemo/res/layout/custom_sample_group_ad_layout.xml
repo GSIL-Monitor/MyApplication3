@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="182dp"
+    android:background="#FFFFFFFF">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="334dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="小蚁智能摄像机能看能听能说,手机远程观看更便捷"
+        android:textColor="#E5000000"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/image_group"
+        android:layout_width="334dp"
+        android:layout_height="72dp"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp">
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="108dp"
+            android:layout_height="72dp"
+            android:layout_alignParentLeft="true" />
+
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="108dp"
+            android:layout_height="72dp"
+            android:layout_centerInParent="true" />
+
+        <ImageView
+            android:id="@+id/image3"
+            android:layout_width="108dp"
+            android:layout_height="72dp"
+            android:layout_toRightOf="@id/image2"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="334dp"
+        android:layout_height="match_parent"
+        android:layout_below="@id/image_group"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/popularize"
+            android:layout_width="33dp"
+            android:layout_height="17dp"
+            android:gravity="center"
+            android:layout_centerVertical="true" />
+        <TextView
+            android:id="@+id/summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="51人品 | 81.13万人下载"
+            android:textSize="10sp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:layout_toRightOf="@id/popularize"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_marginLeft="13dp"
+            android:textColor="#7f000000"/>
+        <TextView
+            android:id="@+id/install"
+            android:layout_width="74dp"
+            android:layout_height="27dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/install_btn_bg"
+            android:text="立即安装"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</RelativeLayout>

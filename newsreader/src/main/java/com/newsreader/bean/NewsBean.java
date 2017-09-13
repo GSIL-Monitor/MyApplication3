@@ -11,6 +11,7 @@ public class NewsBean implements Serializable {
     public String link;
     public String description;
     public String pubDate;
-    public String guid;
+    public String content;
+   // public String guid;
 
 }

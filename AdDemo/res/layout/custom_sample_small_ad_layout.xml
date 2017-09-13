@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#ffffffff"
+    android:layout_height="100dp">
+
+    <RelativeLayout
+        android:id="@+id/text"
+        android:layout_width="214dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="13dp">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="214dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp"
+            android:textColor="#e5000000"
+            android:lines="2"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:text="印度苦行僧裸体游行 庆祝扫地焚香节圣水沐浴"/>
+
+        <ImageView
+            android:id="@+id/popularize"
+            android:layout_width="33dp"
+            android:layout_height="17dp"
+            android:layout_alignLeft="@id/title"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="17dp"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:layout_alignParentBottom="true"
+            android:text="企业名"
+            android:layout_toRightOf="@id/popularize"
+            android:textSize="10sp"
+            android:layout_marginBottom="20dp"
+            android:textColor="#66000000"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/small_pic"
+        android:layout_width="108dp"
+        android:layout_height="72dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/text"
+        android:layout_marginLeft="12dp"/>
+</RelativeLayout>

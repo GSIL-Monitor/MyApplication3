@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">NewsReader</string>
+    <string name="app_name">今日焦点</string>
     <string name="title_activity_news">NewsActivity</string>
+    <string name="send_to">分享这篇新闻至：</string>
+    <string name="navigation_drawer_open">打开</string>
+    <string name="navigation_drawer_close">关闭</string>
 </resources>

@@ -1,0 +1,108 @@
+apply plugin: 'com.android.application'
+
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.android.tools.build:gradle:2.3.3'
+	}
+}
+
+def buildTime() {
+	return new Date().format('yyyy-MM-dd');
+}
+
+dependencies {
+	compile fileTree(dir: 'libs', include: '*.jar')
+	
+	compile 'com.android.support:support-v4:25.0.1'
+}
+
+android {
+
+	compileSdkVersion 24
+	buildToolsVersion "25.0.0"
+
+	compileOptions {
+		encoding "UTF-8"
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+
+	defaultConfig {
+		//设置支持的 SO 库构架
+//		ndk {
+//			abiFilters 'armeabi'//, 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+//		}
+		jackOptions {
+			enabled true
+		}
+	}
+
+	sourceSets {
+		main {
+			manifest.srcFile 'AndroidManifest.xml'
+			java.srcDirs = ['src']
+			resources.srcDirs = ['src']
+			aidl.srcDirs = ['src']
+			renderscript.srcDirs = ['src']
+			res.srcDirs = ['res']
+			assets.srcDirs = ['assets']
+			jniLibs.srcDirs = ['libs']
+		}
+
+		// Move the tests to tests/java, tests/res, etc...
+		instrumentTest.setRoot('tests')
+
+		// Move the build types to build-types/<type>
+		// For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+		// This moves them out of them default location under src/<type>/... which would
+		// conflict with src/ being used by the main source set.
+		// Adding new build types or product flavors should be accompanied
+		// by a similar customization.
+		debug.setRoot('build-types/debug')
+		release.setRoot('build-types/release')
+	}
+
+	signingConfigs {
+		releaseConfig {
+			storeFile file("YoumiKeyStore.keystore");
+			storePassword "youmisdk"
+			keyAlias "youmiandroidsdk"
+			keyPassword "youmisdk"
+		}
+	}
+
+
+	buildTypes {
+		release {
+			buildConfigField "boolean", "ISDEBUG", "false"
+			debuggable false
+			minifyEnabled true
+			zipAlignEnabled true
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+			signingConfig signingConfigs.releaseConfig
+		}
+
+		debug {
+
+			buildConfigField "boolean", "ISDEBUG", "true"
+			debuggable true
+			signingConfig signingConfigs.releaseConfig
+		}
+	}
+
+	applicationVariants.all { variant ->
+		variant.outputs.each { output ->
+			if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+				if (output.outputFile.name.contains(variant.buildType.name)) {
+					def apkFile = new File(output.outputFile.getParent(),
+							"YoumiNormalDemo_${variant.buildType.name}_${variant.versionName}_${buildTime()}.apk")
+					output.outputFile = apkFile
+				}
+			}
+		}
+	}
+
+}

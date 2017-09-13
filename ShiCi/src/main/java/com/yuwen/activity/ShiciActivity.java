@@ -3,13 +3,20 @@ package com.yuwen.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 import com.xiaomi.ad.AdListener;
 import com.xiaomi.ad.NativeAdInfoIndex;
 import com.xiaomi.ad.NativeAdListener;
@@ -17,8 +24,10 @@ import com.xiaomi.ad.adView.InterstitialAd;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
+import com.yuwen.Entity.Article;
 import com.yuwen.myapplication.R;
-import com.yuwen.tool.Article;
+import com.yuwen.tool.DBHelper;
+import com.yuwen.tool.DBOperate;
 import com.yuwen.tool.PermissionHelper;
 
 import java.util.List;
@@ -38,12 +47,14 @@ public class ShiciActivity extends AppCompatActivity {
     ScrollView scrollView;
     private PermissionHelper mPermissionHelper;
     boolean adFlag,isFirst=true;
+    FloatingActionButton fb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_shici);
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
 
 
        // 当系统为6.0以上时，需要申请权限
@@ -76,6 +87,7 @@ public class ShiciActivity extends AppCompatActivity {
         zhushi=(TextView)findViewById(R.id.zhushi);
         scrollView=(ScrollView) findViewById(R.id.myScrollView);
         final ViewGroup container = (ViewGroup) findViewById(R.id.container3);
+        fb=(FloatingActionButton)findViewById(R.id.shiciFab);
 
         //接收intent传递过来的数据
         Intent intent = this.getIntent();
@@ -188,24 +200,33 @@ public class ShiciActivity extends AppCompatActivity {
                 return false;
             }
         });
-     /*   content.setOnClickListener(new View.OnClickListener() {
+
+        fb.setOnClickListener(new View.OnClickListener() {
+            DBOperate dBOperate=null;
+
             @Override
             public void onClick(View view) {
-                try {
-                    if (!mInterstitialAd.isReady()) {
-                        content.setEnabled(false);
-                        Log.e(TAG, "ad is not ready!");
-                    } else {
-                        mInterstitialAd.show();
+                //添加收藏action
+                DBHelper dbHelper=new DBHelper(ShiciActivity.this);
+                dBOperate=new DBOperate(dbHelper);
+                Gson gson = new Gson();
+                String json=gson.toJson(article);
+
+
+
+                dBOperate.insert("4",article.getTitle(),json);    //插入到数据库
+                ConstraintLayout layout=(ConstraintLayout)findViewById(R.id.shiCiLayout);
+
+                Snackbar.make(layout, "已收藏该诗词", Snackbar.LENGTH_LONG).setAction("查看我的收藏", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent=new Intent(ShiciActivity.this,CollectActivity.class);
+                        startActivity(intent);
                     }
-                } catch (Exception e) {
-                } finally {
-                    //单次预缓存的广告无论结果只显示一次,请求新的广告需要再次调用预缓存接口
-                    content.setEnabled(false);
-                }
+                }).show();
+
             }
         });
-*/
 
 
     }
@@ -273,6 +294,14 @@ public class ShiciActivity extends AppCompatActivity {
    }//
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
 
+        }
+
+        return true;
+    }
 
 }

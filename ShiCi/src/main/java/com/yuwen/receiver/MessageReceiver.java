@@ -18,6 +18,7 @@ import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
 import com.yuwen.activity.AdApplication;
 import com.yuwen.activity.MainActivity;
+import com.yuwen.activity.PushActivity;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.Utils;
 
@@ -107,9 +108,17 @@ public class MessageReceiver extends PushMessageReceiver {
             Intent intent=new Intent(uri);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
-        }else{
-            Intent intent=new Intent(context,MainActivity.class);
+        }else{    //跳转到接受推送消息的Activity
+        /*    Intent intent=new Intent(context,MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);*/
+
+            String title=message.getTitle();   //推送标题
+            String description=message.getDescription();   //详细描述
+            Intent intent=new Intent(context, PushActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("title",title);
+            intent.putExtra("description",description);
             context.startActivity(intent);
         }
     }
@@ -225,16 +234,16 @@ public class MessageReceiver extends PushMessageReceiver {
             }
         } else {
             log = message.getReason();
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.obj = log;
+                    AdApplication.getHandler().sendMessage(msg);
+                    }
+
+@SuppressLint("SimpleDateFormat")
+private static String getSimpleDate() {
+        return new SimpleDateFormat("MM-dd hh:mm:ss").format(new Date());
         }
 
-        Message msg = Message.obtain();
-        msg.obj = log;
-        AdApplication.getHandler().sendMessage(msg);
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private static String getSimpleDate() {
-        return new SimpleDateFormat("MM-dd hh:mm:ss").format(new Date());
-    }
-
-}
+        }

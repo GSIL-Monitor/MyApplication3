@@ -3,19 +3,28 @@ package com.yuwen.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 import com.xiaomi.ad.AdListener;
 import com.xiaomi.ad.NativeAdInfoIndex;
 import com.xiaomi.ad.NativeAdListener;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
+import com.yuwen.Entity.CiYu;
 import com.yuwen.myapplication.R;
-import com.yuwen.tool.CiYu;
+import com.yuwen.tool.DBHelper;
+import com.yuwen.tool.DBOperate;
 import com.yuwen.tool.PermissionHelper;
 
 import java.util.List;
@@ -30,6 +39,8 @@ public class CiYuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ciyu);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
         // 当系统为6.0以上时，需要申请权限
         mPermissionHelper = new PermissionHelper(this);
         mPermissionHelper.setOnApplyPermissionListener(new PermissionHelper.OnApplyPermissionListener() {
@@ -58,7 +69,7 @@ public class CiYuActivity extends AppCompatActivity {
         final ViewGroup container = (ViewGroup) findViewById(R.id.containerCi);
 
         Intent intent=this.getIntent();
-        CiYu ciYu=(CiYu) intent.getSerializableExtra("ciYu");
+        final CiYu ciYu=(CiYu) intent.getSerializableExtra("ciYu");
        // Log.i("info",ciYu.getName());
        // Log.i("info",ciYu.getContent());
         tvTitle.setText(ciYu.getName());
@@ -117,6 +128,35 @@ public class CiYuActivity extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.ciYuFb);
+        fab.setOnClickListener(new View.OnClickListener() {
+            DBOperate dBOperate=null;
+
+            @Override
+            public void onClick(View view) {
+                //添加收藏action
+                DBHelper dbHelper=new DBHelper(CiYuActivity.this);
+                dBOperate=new DBOperate(dbHelper);
+                Gson gson = new Gson();
+                String json=gson.toJson(ciYu);
+
+
+
+                dBOperate.insert("2",ciYu.getName(),json);    //插入到数据库
+                ConstraintLayout layout=(ConstraintLayout)findViewById(R.id.ciYuConstraintLayout);
+
+                Snackbar.make(layout, "已收藏该词语", Snackbar.LENGTH_LONG).setAction("查看我的收藏", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent=new Intent(CiYuActivity.this,CollectActivity.class);
+                        startActivity(intent);
+                    }
+                }).show();
+
+            }
+        });
+
+
     }
 
     @Override
@@ -129,5 +169,15 @@ public class CiYuActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mPermissionHelper.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+
+        }
+
+        return true;
     }
 }

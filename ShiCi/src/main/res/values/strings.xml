@@ -12,12 +12,12 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_feedback">FeedbackActivity</string>
     <string name="feedbackHint">
-       你有任何疑问或者建议，都可以在这里进行反馈。\n\n
-       欢迎使用以下方式直接联系我：\n
-        微信：15751773125 \n
-        QQ：1746569077  \n
-        邮箱：caoxingyu2016@qq.com   \n\n
-        P.S. 页面中的广告，只需点击下载，无需安装，你的每一次点击都将鼓励我继续为大家开发出更多的功能，谢谢支持！
+       你对语文助手有任何意见或者建议，都可以在这里进行反馈。
+
+    </string>
+    <string name="QQHint">
+
+       语文助手官方QQ群：497594319，欢迎加入，我们一起讨论和交流！
     </string>
     <string name="ok">确认</string>
     <string name="cancel">取消</string>

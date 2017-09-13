@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
 import com.google.gson.JsonObject;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.Email;
@@ -103,4 +104,7 @@ public class FeedbackActivity extends AppCompatActivity {
             }
         }
     };
+
+
+
 }
