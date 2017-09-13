@@ -1,1 +1,1 @@
-include ':newsreader', ':drawlayoudemo', ':ShiCi', ':sample'
+include ':newsreader', ':drawlayoudemo', ':ShiCi'
