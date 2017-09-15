@@ -21,6 +21,8 @@ import com.xiaomi.ad.NativeAdListener;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
+import com.yuwen.BmobBean.Collect;
+import com.yuwen.BmobBean.User;
 import com.yuwen.Entity.Zi;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.DBHelper;
@@ -28,6 +30,10 @@ import com.yuwen.tool.DBOperate;
 import com.yuwen.tool.PermissionHelper;
 
 import java.util.List;
+
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 public class ZidianActivity extends AppCompatActivity {
     public static final String TAG = "AD-StandardNewsFeed";
@@ -95,6 +101,34 @@ public class ZidianActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //添加收藏action
+                User user= BmobUser.getCurrentUser(User.class);
+                Collect  collect=new Collect();
+                collect.setName(zi.getName());
+                collect.setUser(user);
+                collect.setType(Collect.ZI);
+                collect.setContent(zi);
+
+                collect.save(new SaveListener<String>(){
+                    @Override
+                    public void done(String s, BmobException e) {
+                        if(e==null){
+                            Log.i("bmob","收藏保存成功");
+                        }else{
+                            Log.i("bmob","收藏保存失败："+e.getMessage());
+                        }
+                    }
+                });
+
+
+                Snackbar.make(layout, "已收藏该生字", Snackbar.LENGTH_LONG).setAction("查看我的收藏", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent=new Intent(ZidianActivity.this,CollectActivity.class);
+                        startActivity(intent);
+                    }
+                }).show();
+
+               /*保存到本地
                 DBHelper dbHelper=new DBHelper(ZidianActivity.this);
                 dBOperate=new DBOperate(dbHelper);
                 Gson gson = new Gson();
@@ -110,7 +144,7 @@ public class ZidianActivity extends AppCompatActivity {
                         Intent intent=new Intent(ZidianActivity.this,CollectActivity.class);
                         startActivity(intent);
                     }
-                }).show();
+                }).show();*/
 
             }
         });

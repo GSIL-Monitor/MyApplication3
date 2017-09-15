@@ -10,9 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.google.gson.Gson;
+import com.yuwen.BmobBean.Collect;
+import com.yuwen.BmobBean.User;
 import com.yuwen.Entity.Article;
 import com.yuwen.Entity.Chengyu;
 import com.yuwen.Entity.CiYu;
@@ -24,14 +27,21 @@ import com.yuwen.tool.DBOperate;
 import com.yuwen.tool.Divider;
 import com.yuwen.tool.RecyclerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 
 public class CollectActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-    private List<CollectBean> list;
+    private List<Collect> list=new ArrayList<Collect>();
     private  DBHelper dbHelper;
     private DBOperate dbOperate;
     @Override
@@ -63,36 +73,57 @@ public class CollectActivity extends AppCompatActivity {
         //创建适配器，并且设置
         dbHelper=new DBHelper(CollectActivity.this);
         dbOperate=new DBOperate(dbHelper) ;
-        list=dbOperate.query();
+        //查询数据
+        User user= BmobUser.getCurrentUser(User.class);
+        BmobQuery<Collect> query = new BmobQuery<Collect>();
+
+        query.addWhereEqualTo("user", user);    // 查询当前用户的所有收藏内容
+        //返回50条数据，如果不加上这条语句，默认返回10条数据
+        query.setLimit(50);
+
+        query.findObjects(new FindListener<Collect>() {
+            @Override
+            public void done(List<Collect> queryList, BmobException e) {
+                if(e==null){
+                    Log.i("bmob","查询成功：共"+queryList.size()+"条数据。");
+
+                      list.addAll(queryList);
+                }else{
+                    Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+                }
+            }
+        });
+
+
+
         mAdapter = new RecyclerAdapter(CollectActivity.this,list);
         mAdapter.setOnItemClickListener(new RecyclerAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onItemClick(int position, CollectBean bean) {    //点击事件
-                 String type=bean.getType();
-                 if ("1".equals(type)){    //字典
-                     Gson gson=new Gson();
-                     Zi zi=gson.fromJson(bean.getContent(),Zi.class);
+            public void onItemClick(int position, Collect bean) {    //点击事件
+                 Integer type=bean.getType();
+                 if (type.equals(1)){    //字典
+                     //Gson gson=new Gson();
+                     Zi zi=(Zi) bean.getContent();
                      Intent intent=new Intent(CollectActivity.this,ZidianActivity.class);
                      intent.putExtra("zi",zi);
                      startActivity(intent);
                 }
-                if ("2".equals(type)){    //词语
-                    Gson gson=new Gson();
-                    CiYu ciYu=gson.fromJson(bean.getContent(),CiYu.class);
+                if (type.equals(2)){    //词语
+                    CiYu ciYu=(CiYu) bean.getContent();
                     Intent intent=new Intent(CollectActivity.this,CiYuActivity.class);
                     intent.putExtra("ciYu",ciYu);
                     startActivity(intent);
                 }
-                if ("3".equals(type)){    //成语
-                    Gson gson=new Gson();
-                    Chengyu chengyu=gson.fromJson(bean.getContent(),Chengyu.class);
+                if (type.equals(3)){    //成语
+                    Chengyu chengyu=(Chengyu)bean.getContent();
                     Intent intent=new Intent(CollectActivity.this,ChengyuActivity.class);
                     intent.putExtra("chengyu",chengyu);
                     startActivity(intent);
                 }
-                if ("4".equals(type)){    //诗词
-                    Gson gson=new Gson();
-                    Article article=gson.fromJson(bean.getContent(),Article.class);
+                if (type.equals(4)){    //诗词
+                    /*Gson gson=new Gson();
+                    Article article=gson.fromJson(bean.getContent(),Article.class);*/
+                    Article article=(Article)bean.getContent();
                     Intent intent=new Intent(CollectActivity.this,ShiciActivity.class);
                     intent.putExtra("article",article);
                     startActivity(intent);
@@ -100,7 +131,7 @@ public class CollectActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onItemLongClick(final int position, final CollectBean bean) {   //长按事件
+            public void onItemLongClick(final int position, final Collect bean) {   //长按事件
 
                 ConstraintLayout layout=(ConstraintLayout) findViewById(R.id.collet_constraint);
                 Snackbar.make(layout, "确定要删除该项吗？", Snackbar.LENGTH_LONG).setAction("确定", new View.OnClickListener() {
@@ -108,7 +139,17 @@ public class CollectActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         //执行删除操作
 
-                        dbOperate.deleteById(bean.getId());
+                       bean.delete(new UpdateListener() {
+                           @Override
+                           public void done(BmobException e) {
+                               if(e==null){
+                                   Log.i("bmob","删除成功");
+                               }else{
+                                   Log.i("bmob","删除失败："+e.getMessage()+","+e.getErrorCode());
+                               }
+                           }
+                       });
+
 
                         //更新RecycleView
                         list.remove(position);

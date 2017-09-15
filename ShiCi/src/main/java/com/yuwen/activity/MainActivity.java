@@ -2,6 +2,7 @@ package com.yuwen.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,16 +14,21 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.tencent.connect.UserInfo;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.UiError;
 import com.yuwen.BmobBean.User;
 import com.yuwen.Entity.Article;
 import com.yuwen.Entity.Chengyu;
@@ -31,6 +37,7 @@ import com.yuwen.Entity.Zi;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.Adapter;
 import com.yuwen.tool.OkHttpUtil;
+import com.yuwen.tool.Util;
 import com.yuwen.tool.Utils;
 import com.yuwen.tool.ZiDianConnection;
 
@@ -45,6 +52,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
+
+import static com.yuwen.activity.LoginActivity.mTencent;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener{
 
@@ -62,14 +71,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static String httpUrl1 = "http://api.avatardata.cn/TangShiSongCi/LookUp?key=9b42454896f54202be3767fd55930654";
     private static final int MSG_LOAD_SUCCESS = 100;   //指示数据已获取
     private static final int MSG_LOADED_fail = 0;   //指示数据未获取
+    private static final int MSG_QQ_Name = 1;   //指示数据未获取
+    private static final int MSG_QQ_Image = 2;   //指示数据未获取
     public static final int FLAG_CI=1,FLAG_IDIOM=2,FLAG_POEM=3;
     private int pageNum = 1;    //要查询的页数   pageSize=50
     private int pages=0;
     private boolean isBottom;
     private LinearLayout layout;
+   // private ImageView mUserLogo;
 
     public static List<String> logList = new CopyOnWriteArrayList<String>();
 
+    //String json = "";
+  //  String from = "";
 
     Article    article;
     Chengyu chengYu;
@@ -84,8 +98,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  XiaomiUpdateAgent.update(this);
+
         setContentView(R.layout.main);
+      //  json = getIntent().getStringExtra("json");
+      //  from = getIntent().getStringExtra("from");
 
         // 注:自v3.5.2开始，数据sdk内部缝合了统计sdk，开发者无需额外集成，传渠道参数即可，不传默认没开启数据统计功能
         Bmob.initialize(this, Utils.BmobApplicationId,"bmob");
@@ -106,13 +122,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_main);
         btnToLogin=(TextView) headerLayout.findViewById(R.id.btn_to_login);
+      //  mUserLogo=(ImageView)headerLayout.findViewById(R.id.imageView);
         layout=(LinearLayout) headerLayout.findViewById(R.id.clickLayout);
         layout.setOnClickListener(this);
-        if (user!=null) {
-          btnToLogin.setText(user.getUsername());
-        }else{
-
-        }
 
         navigationView.setNavigationItemSelectedListener(this);
         textView = (TextView) findViewById(R.id.tv);
@@ -137,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //加入到ListView的底部
         listView.addFooterView(footer);
 
-
+        setUser();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -281,7 +293,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+public void setUser(){
+    if (user!=null) {
 
+            btnToLogin.setText(user.getUsername());
+
+    }else{   //user为null
+
+    }
+
+}
 
     @Override
     public void onClick(View v) {
@@ -313,8 +334,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
             if (text == null || text.length() <= 0) {
+                Util.showResultDialog(MainActivity.this, "请输入要查询的内容!", "提示");
 
-                new AlertDialog.Builder(MainActivity.this).setMessage("请输入要查询的内容!").setPositiveButton("确定", null).create().show();
+             //   new AlertDialog.Builder(MainActivity.this).setMessage("请输入要查询的内容!").setPositiveButton("确定", null).create().show();
 
             } else {
                 //   Log.i(tag,listviewState+"");
@@ -323,7 +345,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (v.getId()) {
                     case R.id.btnZi:    //字典
                         if (text.length() > 1) {
-                            new AlertDialog.Builder(MainActivity.this).setMessage("字典查询只能输入一个汉字！").setPositiveButton("确定", null).create().show();
+                            Util.showResultDialog(MainActivity.this, "字典查询只能输入一个汉字！", "提示");
+
+                            //  new AlertDialog.Builder(MainActivity.this).setMessage("字典查询只能输入一个汉字！").setPositiveButton("确定", null).create().show();
                         } else {
                             new Thread(zidian).start();
 
@@ -449,8 +473,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     break;
                 case MSG_LOADED_fail:
-                    new AlertDialog.Builder(MainActivity.this).setMessage("查询不到相关内容，请重新输入！").setPositiveButton("确定", null).create().show();
+                    Util.showResultDialog(MainActivity.this, "查询不到相关内容，请重新输入！", "提示");
+                   // new AlertDialog.Builder(MainActivity.this).setMessage("查询不到相关内容，请重新输入！").setPositiveButton("确定", null).create().show();
                     break;
+               /* case MSG_QQ_Name:
+                    JSONObject response = (JSONObject) msg.obj;
+                    try {
+                        btnToLogin.setText(response.getString("nickname"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case MSG_QQ_Image:
+                    Bitmap bitmap = (Bitmap)msg.obj;
+                    mUserLogo.setImageBitmap(bitmap);
+                    break;*/
             }
         }
     };
@@ -653,4 +690,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    //返回事件
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            // 退出程序
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+           //System.exit(0);
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 }

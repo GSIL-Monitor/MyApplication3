@@ -1,15 +1,23 @@
 package com.yuwen.tool;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.UiError;
+import com.yuwen.BmobBean.User;
 
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class BaseUIListener implements IUiListener {
 	private Context mContext;
@@ -23,9 +31,10 @@ public class BaseUIListener implements IUiListener {
         public void handleMessage(Message msg) {
             switch (msg.what) {
             case ON_COMPLETE:
-                JSONObject response = (JSONObject)msg.obj;
-                Util.showResultDialog(mContext, response.toString(), "onComplete");
-                Util.dismissDialog();
+
+
+			//	Util.showResultDialog(mContext, response.toString(), "onComplete");
+             //  Util.dismissDialog();
                 break;
             case ON_ERROR:
                 UiError e = (UiError)msg.obj;

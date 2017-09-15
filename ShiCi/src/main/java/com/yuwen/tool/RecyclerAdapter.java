@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.yuwen.BmobBean.Collect;
 import com.yuwen.Entity.CollectBean;
 import com.yuwen.myapplication.R;
 
@@ -19,10 +20,10 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
 
     private LayoutInflater mInflater;
-    private List<CollectBean> collectBeanlist;
+    private List<Collect> collectBeanlist;
     private OnRecyclerItemClickListener itemClickListener;
 
-    public RecyclerAdapter(Context context,List<CollectBean> list){
+    public RecyclerAdapter(Context context,List<Collect> list){
         this.mInflater=LayoutInflater.from(context);
         this.collectBeanlist=list;
     }
@@ -51,7 +52,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
      */
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final CollectBean bean=collectBeanlist.get(position);
+        final Collect bean=collectBeanlist.get(position);
         holder.item_tv.setText(bean.getName());
         holder.item_tv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,8 +89,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
      */
     public interface OnRecyclerItemClickListener{
 
-        void onItemClick(int position,CollectBean bean);
-        void onItemLongClick(int position,CollectBean bean);
+        void onItemClick(int position,Collect bean);
+        void onItemLongClick(int position,Collect bean);
     }
 
 
