@@ -1,9 +1,10 @@
-package com.yuwen.activity;
+package com.yuwen;
 
 /**
  * Created by cxy on 2017/4/18.
  */
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
@@ -18,7 +19,9 @@ import com.xiaomi.ad.AdSdk;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
+import com.yuwen.activity.MainActivity;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -26,7 +29,8 @@ import java.util.List;
  * 1.请将 APP_ID 值替换成您在小米开发者网站上申请的 AppID。
  * 2.调试广告时，需要调用 AdSdk.setMockOn()；正式发布时，请勿调用 AdSdk.setMockOn()
  */
-public class AdApplication extends Application {
+public class MyApplication extends Application {
+
     //请注意，千万要把以下的 APP_ID 替换成您在小米开发者网站上申请的 AppID。否则，可能会影响你的应用广告收益。
     /**
      * AppID： 2882303761517566012
@@ -40,11 +44,14 @@ public class AdApplication extends Application {
     private static DemoHandler sHandler = null;
     private static MainActivity sMainActivity = null;
 
+    private List<Activity> activitys = null;
+    private static MyApplication instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
         AdSdk.setDebugOn();
-       // AdSdk.setMockOn();
+        // AdSdk.setMockOn();
         AdSdk.initialize(this, APP_ID);
 
         // 注册push服务，注册成功后会向DemoMessageReceiver发送广播
@@ -78,6 +85,43 @@ public class AdApplication extends Application {
 
 
     }
+
+
+
+    public MyApplication() {
+        activitys = new LinkedList<Activity>();
+    }
+
+    /**
+     * 单例模式中获取唯一的MyApplication实例
+     *
+     * @return
+     */
+    public static MyApplication getInstance() {
+        if (null == instance) {
+            instance = new MyApplication();
+        }
+        return instance;
+    }
+    public void addActivity(Activity activity) {
+        if (activitys != null && activitys.size() > 0) {
+            if(!activitys.contains(activity)){
+                activitys.add(activity);
+            }
+        }else{
+            activitys.add(activity);
+        }
+    }
+    // 遍历所有Activity并finish
+    public void exit() {
+        if (activitys != null && activitys.size() > 0) {
+            for (Activity activity : activitys) {
+                activity.finish();
+            }
+        }
+        System.exit(0);
+    }
+
 
 
     private boolean shouldInit() {

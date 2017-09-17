@@ -1,6 +1,5 @@
 package com.yuwen.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,26 +10,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.tencent.connect.UserInfo;
-import com.tencent.connect.auth.QQToken;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 import com.yuwen.BmobBean.User;
+import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
-import com.yuwen.tool.BaseApiListener;
 import com.yuwen.tool.BaseUIListener;
 import com.yuwen.tool.Util;
 import com.yuwen.tool.Utils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.bmob.v3.BmobUser;
@@ -51,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        MyApplication.getInstance().addActivity(this);
         if (mTencent == null) {
             mTencent = Tencent.createInstance(Utils.TencentAppId, this);
         }
@@ -87,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                          Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                          startActivity(intent);
                      }else{
-                         Log.i(AdApplication.TAG,e.toString());
+                         Log.i(MyApplication.TAG,e.toString());
                      }
                  }
              });

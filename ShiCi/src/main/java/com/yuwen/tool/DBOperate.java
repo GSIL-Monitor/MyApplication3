@@ -5,7 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.yuwen.Entity.CollectBean;
-import com.yuwen.activity.AdApplication;
+import com.yuwen.MyApplication;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +37,9 @@ public class DBOperate {
               return;
         }else{
             String sql = "insert into collect_table(type,name,content) values('"+type+"','"+name+"','"+content+"')";
-            Log.i(AdApplication.TAG,sql);
+            Log.i(MyApplication.TAG,sql);
             sqlDatabase.execSQL(sql);
-            Log.i(AdApplication.TAG,"插入成功");
+            Log.i(MyApplication.TAG,"插入成功");
         }
 
 
@@ -54,7 +55,7 @@ public class DBOperate {
         Cursor cursor = sqlDatabase.query ("collect_table",null,null,null,null,null,"createTime desc");
         //判断游标是否为空
         if (cursor==null||cursor.getCount()<=0){
-            Log.i(AdApplication.TAG,"没有查询到相关数据");
+            Log.i(MyApplication.TAG,"没有查询到相关数据");
         }
         while(cursor.moveToNext()) {
 
@@ -72,7 +73,7 @@ public class DBOperate {
                 CollectBean  collectBean=new CollectBean(id,type,name,content,createTime,updateTime);
                 list.add(collectBean);
 
-                Log.i(AdApplication.TAG,collectBean.toString());
+                Log.i(MyApplication.TAG,collectBean.toString());
 
         }
 
@@ -94,15 +95,15 @@ public class DBOperate {
       //  Cursor cursor = sqlDatabase.query ("collect_table",columns,selection,selectionArgs,null,null,null);
         //判断游标是否为空
         if (cursor==null||cursor.getCount()<=0){
-            Log.i(AdApplication.TAG,"没有查询到相关数据");
+            Log.i(MyApplication.TAG,"没有查询到相关数据");
         }
-        Log.i(AdApplication.TAG,cursor.toString());
+        Log.i(MyApplication.TAG,cursor.toString());
         while(cursor.moveToNext()) {
 
             //获得count
 
             count = cursor.getLong(0);
-            Log.i(AdApplication.TAG,"数量"+count+"");
+            Log.i(MyApplication.TAG,"数量"+count+"");
 
         }
 
@@ -112,9 +113,9 @@ public class DBOperate {
     public void deleteById(int id) {
         String sql = "delete from collect_table where id="+id;
 
-        Log.i(AdApplication.TAG,sql);
+        Log.i(MyApplication.TAG,sql);
         sqlDatabase.execSQL(sql);
-        Log.i(AdApplication.TAG,"删除成功");
+        Log.i(MyApplication.TAG,"删除成功");
 
     }
 

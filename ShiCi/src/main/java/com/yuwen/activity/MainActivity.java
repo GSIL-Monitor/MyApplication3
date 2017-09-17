@@ -2,7 +2,6 @@ package com.yuwen.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,26 +13,22 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.tencent.connect.UserInfo;
-import com.tencent.tauth.IUiListener;
-import com.tencent.tauth.UiError;
 import com.yuwen.BmobBean.User;
 import com.yuwen.Entity.Article;
 import com.yuwen.Entity.Chengyu;
 import com.yuwen.Entity.CiYu;
 import com.yuwen.Entity.Zi;
+import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.Adapter;
 import com.yuwen.tool.OkHttpUtil;
@@ -52,8 +47,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
-
-import static com.yuwen.activity.LoginActivity.mTencent;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener{
 
@@ -100,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main);
+        MyApplication.getInstance().addActivity(this);
       //  json = getIntent().getStringExtra("json");
       //  from = getIntent().getStringExtra("from");
 
@@ -306,16 +300,7 @@ public void setUser(){
 
     @Override
     public void onClick(View v) {
-        /*if(v.getId()==R.id.btn_to_login){
-            if (user!=null){  //用户详情
-                Intent intent=new Intent(MainActivity.this,SettingInfomationActivity.class);
-                startActivity(intent);
-            }else{   //跳转到注册界面
-                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
-                startActivity(intent);
-            }
 
-        }*/
         if (v.getId()==R.id.clickLayout){
             if (user!=null){  //用户详情
                 Intent intent=new Intent(MainActivity.this,SettingInfomationActivity.class);
@@ -397,7 +382,7 @@ public void setUser(){
                }
                zi.setContent(xiangjie.toString());
                String id=result.getString("id");
-               Log.i(AdApplication.TAG,id);
+               Log.i(MyApplication.TAG,id);
                zi.setId(id);
 
 
@@ -476,18 +461,7 @@ public void setUser(){
                     Util.showResultDialog(MainActivity.this, "查询不到相关内容，请重新输入！", "提示");
                    // new AlertDialog.Builder(MainActivity.this).setMessage("查询不到相关内容，请重新输入！").setPositiveButton("确定", null).create().show();
                     break;
-               /* case MSG_QQ_Name:
-                    JSONObject response = (JSONObject) msg.obj;
-                    try {
-                        btnToLogin.setText(response.getString("nickname"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case MSG_QQ_Image:
-                    Bitmap bitmap = (Bitmap)msg.obj;
-                    mUserLogo.setImageBitmap(bitmap);
-                    break;*/
+
             }
         }
     };
@@ -649,6 +623,7 @@ public void setUser(){
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         /*if (id == R.id.setting) {
@@ -661,8 +636,19 @@ public void setUser(){
         }
        */
         if (id == R.id.collect) {
-            Intent intent=new Intent(MainActivity.this,CollectActivity.class);
-            startActivity(intent);
+            if (user!=null){
+                Intent intent=new Intent(MainActivity.this,CollectActivity.class);
+                startActivity(intent);
+            }else{
+                Util.showConfirmCancelDialog(MainActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent1);
+                    }
+                });
+            }
+
 
         }
         if (id == R.id.feedback) {
@@ -680,17 +666,31 @@ public void setUser(){
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent,"share"));
         }
-
-
+        if (id==R.id.exit){   //推出
+            MyApplication.getInstance().exit();
+        }
 
 
 
         drawer.closeDrawer(GravityCompat.START);
+
+
         return true;
     }
 
 
-    //返回事件
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+   /* //返回事件
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -704,5 +704,5 @@ public void setUser(){
         }
 
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 }

@@ -20,8 +20,8 @@ android {
         applicationId "com.cxy.yuwen"
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode 13
-        versionName "2.5.6"
+        versionCode 14
+        versionName "2.5.7"
 
     }
     buildTypes {
@@ -41,15 +41,15 @@ android {
 dependencies {
     /*导入本地jar包*/
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/MiPush_SDK_Client_3_4_5.jar')
+    compile files('libs/open_sdk_r5793_lite.jar')
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:24.2.1'
-    testCompile 'org.testng:testng:6.9.6'
-    testCompile 'junit:junit:4.12'
-    compile files('libs/MiPush_SDK_Client_3_4_5.jar')
     compile 'cn.bmob.android:bmob-sdk:3.5.5'
     compile 'cn.bmob.android:http-legacy:1.0'
-    compile files('libs/open_sdk_r5793_lite.jar')
+    testCompile 'org.testng:testng:6.9.6'
+    testCompile 'junit:junit:4.12'
 }

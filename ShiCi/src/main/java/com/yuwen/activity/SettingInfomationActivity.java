@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 
 import cn.bmob.v3.BmobUser;
@@ -17,6 +18,7 @@ public class SettingInfomationActivity extends AppCompatActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_infomation);
+        MyApplication.getInstance().addActivity(this);
         btnLogout=(Button)findViewById(R.id.btn_logout);
         btnLogout.setOnClickListener(this);
     }

@@ -44,6 +44,7 @@ public class Zi implements Serializable {
         return "Zi{" +
                 "name='" + name + '\'' +
                 ", content='" + content + '\'' +
+                ", id='" + id + '\'' +
                 '}';
     }
 }

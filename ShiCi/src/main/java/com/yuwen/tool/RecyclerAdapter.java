@@ -11,6 +11,7 @@ import com.yuwen.BmobBean.Collect;
 import com.yuwen.Entity.CollectBean;
 import com.yuwen.myapplication.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,10 +21,10 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
 
     private LayoutInflater mInflater;
-    private List<Collect> collectBeanlist;
+    private ArrayList<Collect> collectBeanlist;
     private OnRecyclerItemClickListener itemClickListener;
 
-    public RecyclerAdapter(Context context,List<Collect> list){
+    public RecyclerAdapter(Context context,ArrayList<Collect> list){
         this.mInflater=LayoutInflater.from(context);
         this.collectBeanlist=list;
     }

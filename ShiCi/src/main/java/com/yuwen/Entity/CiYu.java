@@ -34,4 +34,13 @@ public class CiYu implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @Override
+    public String toString() {
+        return "CiYu{" +
+                "name='" + name + '\'' +
+                ", content='" + content + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }

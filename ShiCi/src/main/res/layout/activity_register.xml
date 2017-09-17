@@ -98,7 +98,7 @@
         app:layout_constraintTop_toBottomOf="@id/et_place"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:hint="你最喜欢的人是？"
+        android:hint="你最喜欢的明星是？"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"/>
 

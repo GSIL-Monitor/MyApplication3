@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.yuwen.BmobBean.User;
+import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.Utils;
 
@@ -25,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        MyApplication.getInstance().addActivity(this);
 
         etName=(EditText)findViewById(R.id.et_userName);
         etPassword=(EditText)findViewById(R.id.et_password);
@@ -66,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if(e==null){
                             new AlertDialog.Builder(RegisterActivity.this).setMessage("注册成功！").setPositiveButton("确定", null).create().show();
                         }else{
-                            Log.i(AdApplication.TAG,e.toString());
+                            Log.i(MyApplication.TAG,e.toString());
                             new AlertDialog.Builder(RegisterActivity.this).setMessage("用户名已存在，请重新输入！").setPositiveButton("确定", null).create().show();
                         }
                     }

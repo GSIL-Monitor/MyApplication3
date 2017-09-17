@@ -11,7 +11,7 @@ public class Collect extends BmobObject{
 
     private Integer type;
     private String name;
-    private Object content;
+    private String content;
     private User user;
 
 
@@ -31,11 +31,11 @@ public class Collect extends BmobObject{
         this.name = name;
     }
 
-    public Object getContent() {
+    public String getContent() {
         return content;
     }
 
-    public void setContent(Object content) {
+    public void setContent(String content) {
         this.content = content;
     }
 

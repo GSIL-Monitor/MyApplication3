@@ -62,32 +62,36 @@
             android:orientation="horizontal"
             android:paddingLeft="10dip"
             android:paddingRight="10dip" >
-
+<!--
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="忘记密码"
                 android:textColor="#4285F4"
-                />
-           <TextView
-
-               android:id="@+id/tv_register"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="新用户注册"
-               android:textColor="#4285F4"/>
-           <!-- <Button
-                android:id="@+id/btn_register"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1.0"
-                android:background="@drawable/selector_logout"
-                android:text="注册"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />-->
+                />-->
+            <!-- <Button
+                 android:id="@+id/btn_register"
+                 android:layout_width="wrap_content"
+                 android:layout_height="48dp"
+                 android:layout_marginLeft="10dp"
+                 android:layout_weight="1.0"
+                 android:background="@drawable/selector_logout"
+                 android:text="注册"
+                 android:textColor="#FFFFFF"
+                 android:textSize="18sp" />-->
         </LinearLayout>
+
+        <TextView
+
+            android:id="@+id/tv_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新用户注册"
+            android:textColor="#4285F4"
+            android:layout_below="@+id/btn_login"
+            android:layout_alignRight="@+id/btn_login"
+            android:layout_alignEnd="@+id/btn_login" />
     </RelativeLayout>
 
     <LinearLayout

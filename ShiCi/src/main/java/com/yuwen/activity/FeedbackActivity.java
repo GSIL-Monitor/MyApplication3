@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.gson.JsonObject;
+import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.Email;
 
@@ -26,6 +27,7 @@ public class FeedbackActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
+        MyApplication.getInstance().addActivity(this);
         ActionBar bar= getSupportActionBar();
         bar.setTitle("用户反馈");
 

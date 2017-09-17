@@ -16,7 +16,7 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
-import com.yuwen.activity.AdApplication;
+import com.yuwen.MyApplication;
 import com.yuwen.activity.MainActivity;
 import com.yuwen.activity.PushActivity;
 import com.yuwen.myapplication.R;
@@ -67,7 +67,7 @@ public class MessageReceiver extends PushMessageReceiver {
 
     @Override
     public void onReceivePassThroughMessage(Context context, MiPushMessage message) {
-        Log.v(AdApplication.TAG,
+        Log.v(MyApplication.TAG,
                 "onReceivePassThroughMessage is called. " + message.toString());
         String log = context.getString(R.string.recv_passthrough_message, message.getContent());
         MainActivity.logList.add(0, getSimpleDate() + " " + log);
@@ -80,12 +80,12 @@ public class MessageReceiver extends PushMessageReceiver {
 
         Message msg = Message.obtain();
         msg.obj = log;
-        AdApplication.getHandler().sendMessage(msg);
+        MyApplication.getHandler().sendMessage(msg);
     }
 
     @Override
     public void onNotificationMessageClicked(Context context, MiPushMessage message) {
-        Log.v(AdApplication.TAG,
+        Log.v(MyApplication.TAG,
                 "onNotificationMessageClicked is called. " + message.toString());
         String log = context.getString(R.string.click_notification_message, message.getContent());
         MainActivity.logList.add(0, getSimpleDate() + " " + log);
@@ -100,10 +100,10 @@ public class MessageReceiver extends PushMessageReceiver {
         if (message.isNotified()) {
             msg.obj = log;
         }
-        AdApplication.getHandler().sendMessage(msg);
+        MyApplication.getHandler().sendMessage(msg);
 
         if (!Utils.isEmpty(message.getExtra().get("activityUri"))){
-            Log.v(AdApplication.TAG,message.getExtra().get("activityUri"));
+            Log.v(MyApplication.TAG,message.getExtra().get("activityUri"));
             String uri=message.getExtra().get("activityUri");   //Action
             Intent intent=new Intent(uri);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -125,7 +125,7 @@ public class MessageReceiver extends PushMessageReceiver {
 
     @Override
     public void onNotificationMessageArrived(Context context, MiPushMessage message) {
-        Log.v(AdApplication.TAG,
+        Log.v(MyApplication.TAG,
                 "onNotificationMessageArrived is called. " + message.toString());
         String log = context.getString(R.string.arrive_notification_message, message.getContent());
         MainActivity.logList.add(0, getSimpleDate() + " " + log);
@@ -138,12 +138,12 @@ public class MessageReceiver extends PushMessageReceiver {
 
         Message msg = Message.obtain();
         msg.obj = log;
-      //  AdApplication.getHandler().sendMessage(msg);
+      //  MyApplication.getHandler().sendMessage(msg);
     }
 
     @Override
     public void onCommandResult(Context context, MiPushCommandMessage message) {
-        Log.v(AdApplication.TAG,
+        Log.v(MyApplication.TAG,
                 "onCommandResult is called. " + message.toString());
         String command = message.getCommand();
         List<String> arguments = message.getCommandArguments();
@@ -214,12 +214,12 @@ public class MessageReceiver extends PushMessageReceiver {
 
         Message msg = Message.obtain();
         msg.obj = log;
-        AdApplication.getHandler().sendMessage(msg);
+        MyApplication.getHandler().sendMessage(msg);
     }
 
     @Override
     public void onReceiveRegisterResult(Context context, MiPushCommandMessage message) {
-        Log.v(AdApplication.TAG,
+        Log.v(MyApplication.TAG,
                 "onReceiveRegisterResult is called. " + message.toString());
         String command = message.getCommand();
         List<String> arguments = message.getCommandArguments();
@@ -238,7 +238,7 @@ public class MessageReceiver extends PushMessageReceiver {
 
                     Message msg = Message.obtain();
                     msg.obj = log;
-                    AdApplication.getHandler().sendMessage(msg);
+                    MyApplication.getHandler().sendMessage(msg);
                     }
 
 @SuppressLint("SimpleDateFormat")

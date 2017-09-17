@@ -11,6 +11,9 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- 保持CPU 运转，屏幕和键盘灯有可能是关闭的,用于文件上传和下载 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <!-- the following 2 com.xiaomi.mipushdemo should be changed to your package name -->
     <permission
         android:name="com.cxy.yuwen.permission.MIPUSH_RECEIVE"
@@ -20,7 +23,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="com.yuwen.activity.AdApplication"
+        android:name="com.yuwen.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
@@ -127,18 +130,20 @@
             android:parentActivityName="com.yuwen.activity.MainActivity" />
         <activity
             android:name="com.yuwen.activity.RegisterActivity"
-            android:parentActivityName="com.yuwen.activity.LoginActivity"></activity>
-
-        <activity android:name="com.yuwen.activity.SettingInfomationActivity"
-            android:parentActivityName="com.yuwen.activity.MainActivity"></activity>
+            android:parentActivityName="com.yuwen.activity.LoginActivity" />
+        <activity
+            android:name="com.yuwen.activity.SettingInfomationActivity"
+            android:parentActivityName="com.yuwen.activity.MainActivity" />
         <activity
             android:name="com.tencent.tauth.AuthActivity"
-            android:noHistory="true"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="tencent你的AppId" />
             </intent-filter>
         </activity>
@@ -147,7 +152,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
+        <activity android:name="com.yuwen.activity.BasicActivity"></activity>
     </application>
 
 </manifest>

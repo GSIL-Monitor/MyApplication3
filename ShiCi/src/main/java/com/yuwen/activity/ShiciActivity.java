@@ -1,5 +1,6 @@
 package com.yuwen.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,15 +25,23 @@ import com.xiaomi.ad.adView.InterstitialAd;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
+import com.yuwen.BmobBean.Collect;
+import com.yuwen.BmobBean.User;
 import com.yuwen.Entity.Article;
+import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.DBHelper;
 import com.yuwen.tool.DBOperate;
 import com.yuwen.tool.PermissionHelper;
+import com.yuwen.tool.Util;
 
 import java.util.List;
 
-public class ShiciActivity extends AppCompatActivity {
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+
+public class ShiciActivity extends BasicActivity {
     public static final String TAG = "AD-StandardNewsFeed";
     public static final String TAG2 = "AD-StandardFeed";
 
@@ -53,12 +62,15 @@ public class ShiciActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_shici);
+        MyApplication.getInstance().addActivity(this);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
 
 
        // 当系统为6.0以上时，需要申请权限
-        mPermissionHelper = new PermissionHelper(this);
+        checkPermmion(this);
+      /*  mPermissionHelper = new PermissionHelper(this);
         mPermissionHelper.setOnApplyPermissionListener(new PermissionHelper.OnApplyPermissionListener() {
             @Override
             public void onAfterApplyAllPermission() {
@@ -79,6 +91,7 @@ public class ShiciActivity extends AppCompatActivity {
 
             }
         }
+*/
 
 
         title=(TextView)findViewById(R.id.title);
@@ -207,23 +220,47 @@ public class ShiciActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //添加收藏action
-                DBHelper dbHelper=new DBHelper(ShiciActivity.this);
-                dBOperate=new DBOperate(dbHelper);
-                Gson gson = new Gson();
-                String json=gson.toJson(article);
+                User user= BmobUser.getCurrentUser(User.class);
+                if (user==null){
+                    Util.showConfirmCancelDialog(ShiciActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent1 = new Intent(ShiciActivity.this, LoginActivity.class);
+                            startActivity(intent1);
+                        }
+                    });
+                }
+                else{
+                    Collect collect=new Collect();
+                    collect.setName(article.getTitle());
+                    collect.setUser(user);
+                    collect.setType(Collect.SHICI);
+                    Gson gson = new Gson();
+                    String json=gson.toJson(article);
+                    collect.setContent(json);
+
+                    collect.save(new SaveListener<String>(){
+                        @Override
+                        public void done(String s, BmobException e) {
+                            if(e==null){
+                                Log.i("bmob","收藏保存成功");
+
+                                ConstraintLayout layout=(ConstraintLayout)findViewById(R.id.shiCiLayout);
+                                Snackbar.make(layout, "已收藏该诗词", Snackbar.LENGTH_LONG).setAction("查看我的收藏", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent=new Intent(ShiciActivity.this,CollectActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }).show();
+                            }else{
+                                Log.i("bmob","收藏保存失败："+e.getMessage());
+                            }
+                        }
+                    });
+                }
 
 
-
-                dBOperate.insert("4",article.getTitle(),json);    //插入到数据库
-                ConstraintLayout layout=(ConstraintLayout)findViewById(R.id.shiCiLayout);
-
-                Snackbar.make(layout, "已收藏该诗词", Snackbar.LENGTH_LONG).setAction("查看我的收藏", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent=new Intent(ShiciActivity.this,CollectActivity.class);
-                        startActivity(intent);
-                    }
-                }).show();
 
             }
         });
@@ -232,7 +269,7 @@ public class ShiciActivity extends AppCompatActivity {
     }
 
 
-    @Override
+   /* @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         mPermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -242,7 +279,7 @@ public class ShiciActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mPermissionHelper.onActivityResult(requestCode, resultCode, data);
-    }
+    }*/
 
 
    public void initAd(){

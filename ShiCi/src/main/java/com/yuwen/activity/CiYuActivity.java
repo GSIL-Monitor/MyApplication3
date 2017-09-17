@@ -1,5 +1,6 @@
 package com.yuwen.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,16 +22,24 @@ import com.xiaomi.ad.NativeAdListener;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
+import com.yuwen.BmobBean.Collect;
+import com.yuwen.BmobBean.User;
 import com.yuwen.Entity.CiYu;
+import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.DBHelper;
 import com.yuwen.tool.DBOperate;
 import com.yuwen.tool.PermissionHelper;
+import com.yuwen.tool.Util;
 
 import java.util.List;
 
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
-public class CiYuActivity extends AppCompatActivity {
+
+public class CiYuActivity extends BasicActivity {
     TextView tvTitle,tvPinyin,tvJieshi;
     private PermissionHelper mPermissionHelper;
     public static final String TAG = "AD-StandardNewsFeed";
@@ -39,39 +48,21 @@ public class CiYuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ciyu);
+        MyApplication.getInstance().addActivity(this);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
         // 当系统为6.0以上时，需要申请权限
-        mPermissionHelper = new PermissionHelper(this);
-        mPermissionHelper.setOnApplyPermissionListener(new PermissionHelper.OnApplyPermissionListener() {
-            @Override
-            public void onAfterApplyAllPermission() {
+        checkPermmion(this);
 
-            }
-        });
-        if (Build.VERSION.SDK_INT < 23) {
-            // 如果系统版本低于23，直接跑应用的逻辑
-
-        } else {
-            // 如果权限全部申请了，那就直接跑应用逻辑
-            if (mPermissionHelper.isAllRequestedPermissionGranted()) {
-
-            } else {
-                // 如果还有权限为申请，而且系统版本大于23，执行申请权限逻辑
-                Log.i("info", "Some of requested permissions hasn't been granted, so apply permissions first.");
-                mPermissionHelper.applyPermissions();
-
-            }
-        }
-        tvTitle=(TextView)findViewById(R.id.ci_title);
-        tvPinyin=(TextView)findViewById(R.id.ci_pinyin);
-        tvJieshi=(TextView)findViewById(R.id.ci_jieshi);
+        tvTitle = (TextView) findViewById(R.id.ci_title);
+        tvPinyin = (TextView) findViewById(R.id.ci_pinyin);
+        tvJieshi = (TextView) findViewById(R.id.ci_jieshi);
         final ViewGroup container = (ViewGroup) findViewById(R.id.containerCi);
 
-        Intent intent=this.getIntent();
-        final CiYu ciYu=(CiYu) intent.getSerializableExtra("ciYu");
-       // Log.i("info",ciYu.getName());
-       // Log.i("info",ciYu.getContent());
+        Intent intent = this.getIntent();
+        final CiYu ciYu = (CiYu) intent.getSerializableExtra("ciYu");
+        // Log.i("info",ciYu.getName());
+        // Log.i("info",ciYu.getContent());
         tvTitle.setText(ciYu.getName());
         tvPinyin.setText(ciYu.getContent().split("<br>")[0]);
         tvJieshi.setText(ciYu.getContent().split("<br>")[1]);
@@ -130,36 +121,61 @@ public class CiYuActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.ciYuFb);
         fab.setOnClickListener(new View.OnClickListener() {
-            DBOperate dBOperate=null;
+            //  DBOperate dBOperate=null;
 
             @Override
             public void onClick(View view) {
-                //添加收藏action
-                DBHelper dbHelper=new DBHelper(CiYuActivity.this);
-                dBOperate=new DBOperate(dbHelper);
-                Gson gson = new Gson();
-                String json=gson.toJson(ciYu);
+                User user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
+                if (user == null) {   //未登录
+                    Util.showConfirmCancelDialog(CiYuActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent1 = new Intent(CiYuActivity.this, LoginActivity.class);
+                            startActivity(intent1);
+                        }
+                    });
+                } else {
+                    //添加收藏action
+                    // User user= BmobUser.getCurrentUser(User.class);
+                    Collect collect = new Collect();
+                    collect.setName(ciYu.getName());
+                    collect.setUser(user);
+                    collect.setType(Collect.CIYU);
+                    Gson gson = new Gson();
+                    String json = gson.toJson(ciYu);
+                    collect.setContent(json);
+
+                    collect.save(new SaveListener<String>() {
+                        @Override
+                        public void done(String s, BmobException e) {
+                            if (e == null) {
+                                Log.i("bmob", "收藏保存成功");
+
+                                ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.ciYuConstraintLayout);
+
+                                Snackbar.make(layout, "已收藏该词语", Snackbar.LENGTH_LONG).setAction("查看我的收藏", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(CiYuActivity.this, CollectActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }).show();
+                            } else {
+                                Log.i("bmob", "收藏保存失败：" + e.getMessage());
+                            }
+                        }
+                    });
 
 
-
-                dBOperate.insert("2",ciYu.getName(),json);    //插入到数据库
-                ConstraintLayout layout=(ConstraintLayout)findViewById(R.id.ciYuConstraintLayout);
-
-                Snackbar.make(layout, "已收藏该词语", Snackbar.LENGTH_LONG).setAction("查看我的收藏", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent=new Intent(CiYuActivity.this,CollectActivity.class);
-                        startActivity(intent);
-                    }
-                }).show();
-
+                }
             }
-        });
 
+
+        });
 
     }
 
-    @Override
+  /*  @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         mPermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -169,7 +185,7 @@ public class CiYuActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mPermissionHelper.onActivityResult(requestCode, resultCode, data);
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
