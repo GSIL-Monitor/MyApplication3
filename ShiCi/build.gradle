@@ -52,4 +52,5 @@ dependencies {
     compile 'cn.bmob.android:http-legacy:1.0'
     testCompile 'org.testng:testng:6.9.6'
     testCompile 'junit:junit:4.12'
+    compile files('libs/BmobPay_v3.2.0_170602.jar')
 }

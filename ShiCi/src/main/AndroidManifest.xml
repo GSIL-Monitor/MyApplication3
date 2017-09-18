@@ -147,6 +147,7 @@
                 <data android:scheme="tencent你的AppId" />
             </intent-filter>
         </activity>
+        <activity android:name="cn.bmob.pay.v3.act.PayAct" />
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"

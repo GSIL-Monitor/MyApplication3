@@ -20,9 +20,12 @@ import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.yuwen.activity.MainActivity;
+import com.yuwen.tool.Utils;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import c.b.BP;
 
 /**
  * 您可以参考本类中的代码来接入小米游戏广告SDK。在接入过程中，有如下事项需要注意：
@@ -52,7 +55,8 @@ public class MyApplication extends Application {
         super.onCreate();
         AdSdk.setDebugOn();
         // AdSdk.setMockOn();
-        AdSdk.initialize(this, APP_ID);
+        AdSdk.initialize(this, APP_ID);   //小米广告
+        BP.init(Utils.BmobApplicationId);   //Bmob支付
 
         // 注册push服务，注册成功后会向DemoMessageReceiver发送广播
         // 可以从DemoMessageReceiver的onCommandResult方法中MiPushCommandMessage对象参数中获取注册信息
