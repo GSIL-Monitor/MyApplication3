@@ -28,9 +28,10 @@ public class SettingInfomationActivity extends AppCompatActivity implements View
         switch (view.getId()) {
             case R.id.btn_logout:    //logout
                 BmobUser.logOut();   //清除缓存用户对象
-                BmobUser currentUser = BmobUser.getCurrentUser(); // 现在的currentUser是null了
+
                 Intent intent=new Intent(SettingInfomationActivity.this,MainActivity.class);
                 startActivity(intent);
+
                 break;
 
 
