@@ -144,7 +144,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="tencent你的AppId" />
+                <data android:scheme="1106093430" />
             </intent-filter>
         </activity>
         <activity android:name="cn.bmob.pay.v3.act.PayAct" />
@@ -153,7 +153,8 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name="com.yuwen.activity.BasicActivity"></activity>
+        <activity android:name="com.yuwen.activity.BasicActivity" />
+        <activity android:name="com.yuwen.activity.CompositionActivity"></activity>
     </application>
 
 </manifest>

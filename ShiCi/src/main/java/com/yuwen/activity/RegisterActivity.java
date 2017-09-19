@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.yuwen.BmobBean.User;
 import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
+import com.yuwen.tool.Util;
 import com.yuwen.tool.Utils;
 
 import cn.bmob.v3.exception.BmobException;
@@ -41,7 +42,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-
+        //密码正则表达式 6-20 位，字母、数字、字符
+        String regStr = "^([A-Z]|[a-z]|[0-9]|[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“'。，、？]){6,20}$";
         if (view.getId()==R.id.btn_register) {  //注册
             userName=etName.getText().toString();
             password=etPassword.getText().toString();
@@ -53,6 +55,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 new AlertDialog.Builder(RegisterActivity.this).setMessage("内容不能为空！").setPositiveButton("确定", null).create().show();
             } else if (!password2.equals(password)) {
                 new AlertDialog.Builder(RegisterActivity.this).setMessage("两次输入的密码必须一致！").setPositiveButton("确定", null).create().show();
+            }else if (!password.matches(regStr)){
+
+                Util.showResultDialog(RegisterActivity.this,"密码至少为6位，可以包含数字、字母和字符！","提示");
+
+
+
             }
             else{ //注册
                 User user = new User();

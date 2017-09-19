@@ -80,7 +80,7 @@ public class CollectActivity extends AppCompatActivity {
         BmobQuery<Collect> query = new BmobQuery<Collect>();
 
         query.addWhereEqualTo("user", user);    // 查询当前用户的所有收藏内容
-        query.order("type,-createdAt");      //按照创建时间排序
+        query.order("-createdAt");      //按照创建时间排序
         //返回50条数据，如果不加上这条语句，默认返回10条数据
         query.setLimit(50);
 

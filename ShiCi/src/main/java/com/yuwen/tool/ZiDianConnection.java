@@ -21,9 +21,9 @@ public class ZiDianConnection {
     public static final int DEF_READ_TIMEOUT = 30000;
     public static String userAgent =  "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36";
     //配置您申请的KEY
-    public static final String APPKEY ="18ca6e0f7bf1252047279c5458e53649";
+    public static final String APPKEY_ZI ="18ca6e0f7bf1252047279c5458e53649";
 
-    public static final String APPKEY2 ="78a86fe8b36ca8daff509c33f0345c10";
+    public static final String APPKEY_CHENGYU ="78a86fe8b36ca8daff509c33f0345c10";
 
     //1.根据汉字查询字典
     public static String getRequest1(String str,int flag){
@@ -35,7 +35,7 @@ public class ZiDianConnection {
 
         params.put("dtype","");//返回数据的格式,xml或json，默认json
         if (flag==1){          //字典
-            params.put("key",APPKEY);//应用APPKEY(应用详细页查询)
+            params.put("key",APPKEY_ZI);//应用APPKEY(应用详细页查询)
             try {
                 result =net(url, params, "GET");
                 System.out.println(result);
@@ -46,7 +46,7 @@ public class ZiDianConnection {
         }
 
         else if (flag==2){      //成语
-            params.put("key",APPKEY2);
+            params.put("key",APPKEY_CHENGYU);
             try {
                 result =net(url2, params, "GET");
                 System.out.println(result);
