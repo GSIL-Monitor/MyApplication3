@@ -667,7 +667,11 @@ public void setUser(){
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent,"share"));
         }
-        if (id==R.id.exit){   //推出
+        if (id==R.id.composition) {  //作文大全
+            Intent intent = new Intent(MainActivity.this, CompositionActivity.class);
+            startActivity(intent);
+        }
+        if (id==R.id.exit){   //退出
             MyApplication.getInstance().exit();
         }
 
