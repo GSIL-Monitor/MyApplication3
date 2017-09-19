@@ -48,7 +48,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends BasicActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener{
 
     private TextView textView,btnToLogin;
     private ListView listView;
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.main);
         MyApplication.getInstance().addActivity(this);
+
       //  json = getIntent().getStringExtra("json");
       //  from = getIntent().getStringExtra("from");
 
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+       //s checkPermmion(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         android.support.v7.app.ActionBarDrawerToggle toggle = new android.support.v7.app.ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -623,7 +624,7 @@ public void setUser(){
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         // Handle navigation view item clicks here.
-
+        drawer.closeDrawer(GravityCompat.START);
         int id = item.getItemId();
 
         /*if (id == R.id.setting) {
@@ -672,7 +673,7 @@ public void setUser(){
 
 
 
-        drawer.closeDrawer(GravityCompat.START);
+     //   drawer.closeDrawer(GravityCompat.START);
 
 
         return true;
