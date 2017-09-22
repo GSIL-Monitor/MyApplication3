@@ -154,10 +154,11 @@
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name="com.yuwen.activity.BasicActivity" />
-        <activity android:name="com.yuwen.activity.CompositionActivity"
-                  android:parentActivityName="com.yuwen.activity.MainActivity">
-
-        </activity>
+        <activity
+            android:name="com.yuwen.activity.CompositionActivity"
+            android:parentActivityName="com.yuwen.activity.MainActivity"></activity>
+        <activity android:name="com.yuwen.activity.MemberActivity"
+            android:parentActivityName="com.yuwen.activity.MainActivity"></activity>
     </application>
 
 </manifest>

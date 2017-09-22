@@ -68,18 +68,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
         }
          if (view.getId()==R.id.btn_login){  //登录
+             Util.showProgressDialog(LoginActivity.this,null,"登录中，请稍候！");
              String userName=etUserName.getText().toString();
              String password=etPassword.getText().toString();
 
              User user=new User();
              user.setUsername(userName);
-             user.setPassword(password);
+             user.setPassword(Utils.encryptBySHA(password));
 
              user.login(new SaveListener<BmobUser>() {
 
                  @Override
                  public void done(BmobUser bmobUser, BmobException e) {
                      if(e==null){  //login success
+                         Util.dismissDialog();
                          Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                          startActivity(intent);
                      }else{

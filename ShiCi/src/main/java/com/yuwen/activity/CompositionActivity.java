@@ -3,10 +3,13 @@ package com.yuwen.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
@@ -32,21 +35,28 @@ public class CompositionActivity extends BasicActivity
     private Spinner spinnerGrade,spinnerType,spinnerFontSum,spinnerLevel;
     private List<Map<String,Object>>  gradeList,typeList,fontSumList,levelList;
     private SimpleAdapter gradeAdapter,typeAdapter,fontSumAdapter,levelAdapter;
-    private static String url="http://zuowen.api.juhe.cn/zuowen/typeList";
+    private static String urlType="http://zuowen.api.juhe.cn/zuowen/typeList";
+    private static String urlBase="http://zuowen.api.juhe.cn/zuowen/baseList";
     public static final String APPKEY_COMPOSITION ="cf7b0e43bbe17e82cc632163361ccfcf";  //作文
     private  final String TAg="zuowen";
+    private Button btnConfirm;
+    private Integer gradeId,typeId,wordId,level,page;
+    private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_composition);
         MyApplication.getInstance().addActivity(this);
+        ActionBar bar= getSupportActionBar();
+        bar.setTitle("作文大全");
         checkPermmion(this);
 
         spinnerGrade=(Spinner)findViewById(R.id.grade);
         spinnerType=(Spinner)findViewById(R.id.comTheme);
         spinnerFontSum=(Spinner)findViewById(R.id.fontNum);
         spinnerLevel=(Spinner)findViewById(R.id.comLevel);
-
+        btnConfirm=(Button)findViewById(R.id.btnConfirm);
+        listView=(ListView)findViewById(R.id.comListview);
 
         Map<String,Object> gradeMap=new HashMap<String,Object>();
         gradeMap.put("name","年级");
@@ -98,6 +108,48 @@ public class CompositionActivity extends BasicActivity
         spinnerFontSum.setOnItemSelectedListener(itemSelectedListener);
         spinnerLevel.setOnItemSelectedListener(itemSelectedListener);
 
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+               final  Map mapBase=new HashMap<String,Object>();
+                mapBase.put("key",APPKEY_COMPOSITION);
+                if (gradeId != null) {
+                    mapBase.put("gradeId",gradeId);
+                }
+                if (typeId!=null){
+                    mapBase.put("typeId",typeId);
+
+                }
+                if (wordId!=null){
+                    mapBase.put("wordId",wordId);
+                }
+                if (level!=null){
+                    mapBase.put("level",level);
+                }
+
+                Thread baseThread=new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        {
+
+                            try {
+                                //发送请求
+                                String baseData=ZiDianConnection.net(urlBase,mapBase,"GET");
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+
+
+            }
+        });
+
+
+
         Thread thread=new Thread(runnable);
         thread.start();
 
@@ -113,22 +165,22 @@ public class CompositionActivity extends BasicActivity
                Map mapGrade=new HashMap<String,Object>();
                mapGrade.put("key",APPKEY_COMPOSITION);
                mapGrade.put("id",1);
-               String gradeData=ZiDianConnection.net(url,mapGrade,"GET");
+               String gradeData=ZiDianConnection.net(urlType,mapGrade,"GET");
 
                Map mapType=new HashMap<String,Object>();
                mapType.put("key",APPKEY_COMPOSITION);
                mapType.put("id",2);
-               String typeData=ZiDianConnection.net(url,mapType,"GET");
+               String typeData=ZiDianConnection.net(urlType,mapType,"GET");
 
                Map mapFont=new HashMap<String,Object>();
                mapFont.put("key",APPKEY_COMPOSITION);
                mapFont.put("id",3);
-               String fontData=ZiDianConnection.net(url,mapFont,"GET");
+               String fontData=ZiDianConnection.net(urlType,mapFont,"GET");
 
                Map mapLevel=new HashMap<String,Object>();
                mapLevel.put("key",APPKEY_COMPOSITION);
                mapLevel.put("id",4);
-               String levelData=ZiDianConnection.net(url,mapLevel,"GET");
+               String levelData=ZiDianConnection.net(urlType,mapLevel,"GET");
 
                resolveJson(gradeData,typeData,fontData,levelData);
 
@@ -266,17 +318,22 @@ public void resolveJson(String gradeData,String typeData,String fontData, String
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             if (adapterView.getId()==R.id.grade){
-                   Util.toastMessage(CompositionActivity.this,gradeList.get(i).get("name").toString());
+                  // Util.toastMessage(CompositionActivity.this,gradeList.get(i).get("name").toString());
+                   gradeId=(Integer)gradeList.get(i).get("id");
+
                }
             if (adapterView.getId()==R.id.comTheme){
-                Util.toastMessage(CompositionActivity.this,typeList.get(i).get("name").toString());
+                //Util.toastMessage(CompositionActivity.this,typeList.get(i).get("name").toString());
+                typeId=(Integer)typeList.get(i).get("id");
             }
             if (adapterView.getId()==R.id.fontNum){
-                Util.toastMessage(CompositionActivity.this,fontSumList.get(i).get("name").toString());
+                //Util.toastMessage(CompositionActivity.this,fontSumList.get(i).get("name").toString());
+                wordId=(Integer)fontSumList.get(i).get("id");
             }
 
             if (adapterView.getId()==R.id.comLevel){
-                Util.toastMessage(CompositionActivity.this,levelList.get(i).get("name").toString());
+                //Util.toastMessage(CompositionActivity.this,levelList.get(i).get("name").toString());
+                level=(Integer)levelList.get(i).get("id");
             }
 
 

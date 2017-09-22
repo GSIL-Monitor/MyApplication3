@@ -19,6 +19,10 @@
 
        语文助手官方QQ群：497594319，欢迎加入，我们一起讨论和交流！
     </string>
+    <string name="memberIntro">
+
+      会员用户每天可以无限次查询作文，更多会员权益敬请期待！
+    </string>
     <string name="ok">确认</string>
     <string name="cancel">取消</string>
     <string name="set_alias">设置别名</string>

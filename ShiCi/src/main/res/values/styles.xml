@@ -15,9 +15,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ButtonStyle" >
+    <style name="ButtonStyle">
         <item name="android:background">@drawable/button</item>
         <item name="android:textColor">#FFFFFF</item>
+
 
     </style>
 
@@ -29,5 +30,15 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="BottomDialog" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="BottomDialog.Animation" parent="Animation.AppCompat.Dialog">
+        <item name="android:windowEnterAnimation">@anim/tranlate_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/tranlate_dialog_out</item>
+    </style>
 
 </resources>

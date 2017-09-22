@@ -22,6 +22,9 @@ android {
         targetSdkVersion 24
         versionCode 14
         versionName "2.5.7"
+       /* jackOptions {
+            enabled true
+        }*/
 
     }
     buildTypes {
@@ -31,18 +34,22 @@ android {
     }
     sourceSets {
         main {
-            jniLibs.srcDirs = ['libs']
+            jniLibs.srcDirs = ['libs']//将so文件目录指向libs目录
         }
     }
+/*
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }*/
 }
 
 
 
 dependencies {
     /*导入本地jar包*/
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile files('libs/MiPush_SDK_Client_3_4_5.jar')
-    compile files('libs/open_sdk_r5793_lite.jar')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
@@ -52,5 +59,4 @@ dependencies {
     compile 'cn.bmob.android:http-legacy:1.0'
     testCompile 'org.testng:testng:6.9.6'
     testCompile 'junit:junit:4.12'
-    compile files('libs/BmobPay_v3.2.0_170602.jar')
 }
