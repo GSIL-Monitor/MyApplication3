@@ -667,17 +667,18 @@ public void setUser(){
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent,"share"));
         }
-        if (id==R.id.composition) {  //作文大全
-            Intent intent = new Intent(MainActivity.this, CompositionActivity.class);
-            startActivity(intent);
-        }
+
         if (id==R.id.exit){   //退出
             MyApplication.getInstance().exit();
+        }
+        /*if (id==R.id.composition) {  //作文大全
+            Intent intent = new Intent(MainActivity.this, CompositionActivity.class);
+            startActivity(intent);
         }
         if (id==R.id.member_recharge){  //会员充值
             Intent intent=new Intent(MainActivity.this,MemberActivity.class);
             startActivity(intent);
-        }
+        }*/
 
 
 

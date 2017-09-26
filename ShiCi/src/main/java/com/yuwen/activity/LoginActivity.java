@@ -85,6 +85,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                          Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                          startActivity(intent);
                      }else{
+                         Util.dismissDialog();
+                         Util.showResultDialog(LoginActivity.this,"用户名或密码错误,请重新输入！",null);
                          Log.i(MyApplication.TAG,e.toString());
                      }
                  }
