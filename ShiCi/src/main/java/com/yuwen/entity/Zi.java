@@ -1,4 +1,4 @@
-package com.yuwen.Entity;
+package com.yuwen.entity;
 
 import java.io.Serializable;
 
@@ -65,6 +65,7 @@ public class Zi implements Serializable {
     }
 
     public String getJianjie() {
+        jianjie=jianjie.replace("<br>","\n");
         return jianjie;
     }
 
@@ -73,6 +74,7 @@ public class Zi implements Serializable {
     }
 
     public String getXiangjie() {
+        xiangjie=xiangjie.replace("<br>","\n");
         return xiangjie;
     }
 

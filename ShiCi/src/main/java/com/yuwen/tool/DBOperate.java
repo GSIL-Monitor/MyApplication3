@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.yuwen.Entity.CollectBean;
+import com.yuwen.entity.CollectBean;
 import com.yuwen.MyApplication;
 
 

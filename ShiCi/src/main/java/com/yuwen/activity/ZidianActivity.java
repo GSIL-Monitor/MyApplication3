@@ -2,38 +2,37 @@ package com.yuwen.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.xiaomi.ad.AdListener;
 import com.xiaomi.ad.NativeAdInfoIndex;
 import com.xiaomi.ad.NativeAdListener;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
-import com.yuwen.BmobBean.Collect;
-import com.yuwen.BmobBean.User;
-import com.yuwen.Entity.Zi;
+import com.yuwen.adapter.ZidianAdapter;
+import com.yuwen.bmobBean.Collect;
+import com.yuwen.bmobBean.User;
+import com.yuwen.entity.Zi;
 import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
-import com.yuwen.tool.DBHelper;
-import com.yuwen.tool.DBOperate;
+import com.yuwen.tool.Adapter;
 import com.yuwen.tool.NetworkConnection;
-import com.yuwen.tool.PermissionHelper;
 import com.yuwen.tool.Util;
-import com.yuwen.tool.Utils;
 
 
 import org.json.JSONArray;
@@ -59,6 +58,9 @@ public class ZidianActivity extends BasicActivity {
     private ConstraintLayout layout;
     private Zi zi=null;
     private String queryText;  // 要查询的内容
+    private ListView listView;
+    private BaseAdapter adapter;
+    private static final int MSG_LOAD_SUCCESS=100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,20 +74,28 @@ public class ZidianActivity extends BasicActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
 
 
-        layout=(ConstraintLayout) findViewById(R.id.zidianConlayout);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.ziFb);
+       /* layout=(ConstraintLayout) findViewById(R.id.zidianConlayout);*/
+        listView=(ListView)findViewById(R.id.zidianLv);
+       // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.ziFb);
 
-        final ViewGroup container = (ViewGroup) findViewById(R.id.container1);
+     //   final ViewGroup container = (ViewGroup) findViewById(R.id.container1);
 
-        tv1=(TextView)findViewById(R.id.title);
-        tv2=(TextView)findViewById(R.id.ziidan);
+       /* tv1=(TextView)findViewById(R.id.title);
+        tv2=(TextView)findViewById(R.id.ziidan);*/
 
 
         Intent intent=this.getIntent();
         queryText=intent.getStringExtra("queryText");
+        ziList=new ArrayList<Zi>();
+        adapter = new ZidianAdapter(this, ziList);
+        listView.setAdapter(adapter);
+        Thread thread=new Thread(zidianRunnable);
+        thread.start();
 
 
 
+
+/*
         fab.setOnClickListener(new View.OnClickListener() {
           //  DBOperate dBOperate=null;
 
@@ -138,7 +148,7 @@ public class ZidianActivity extends BasicActivity {
 
 
 
-               /*保存到本地
+               *//*保存到本地
                 DBHelper dbHelper=new DBHelper(ZidianActivity.this);
                 dBOperate=new DBOperate(dbHelper);
                 Gson gson = new Gson();
@@ -154,12 +164,12 @@ public class ZidianActivity extends BasicActivity {
                         Intent intent=new Intent(ZidianActivity.this,CollectActivity.class);
                         startActivity(intent);
                     }
-                }).show();*/
+                }).show();*//*
 
             }
-        });
+        });*/
 
-        final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
+       /* final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
 
         container.post(new Runnable() {
             @Override
@@ -211,12 +221,12 @@ public class ZidianActivity extends BasicActivity {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
 
 
     }
 
-    Runnable zidian=new Runnable() {
+    Runnable zidianRunnable=new Runnable() {
         @Override
         public void run() {
             Map map=new HashMap<String,String>();
@@ -225,7 +235,7 @@ public class ZidianActivity extends BasicActivity {
 
 
             try {
-                String dataZidian= NetworkConnection.net(NetworkConnection.URL_ZI,map,null);
+                String dataZidian= NetworkConnection.net(NetworkConnection.URL_ZI,map,"GET");
                 parseJsonData(dataZidian);
 
 
@@ -241,14 +251,14 @@ public class ZidianActivity extends BasicActivity {
      */
    public  void parseJsonData(String str){
        try {
-           ziList=new ArrayList<Zi>();
+
            JSONObject jsonObject = new JSONObject(str);
            if(jsonObject.getInt("error_code")==0){
                JSONArray dataArray=jsonObject.getJSONArray("result");
                for (int i=0;i<dataArray.length();i++){
                    JSONObject ziData=dataArray.getJSONObject(i);
                    Zi zi=new Zi();
-                   zi.setId(ziData.getString("id"));
+                  // zi.setId(ziData.getString("id"));
                    zi.setHanzi(ziData.getString("hanzi"));
                    zi.setPinyin(ziData.getString("pinyin"));
                    zi.setDuyin(ziData.getString("duyin"));
@@ -261,7 +271,7 @@ public class ZidianActivity extends BasicActivity {
 
                }
 
-
+               mUIHandler.sendEmptyMessage(MSG_LOAD_SUCCESS);
            }
 
        } catch (JSONException e) {
@@ -270,7 +280,22 @@ public class ZidianActivity extends BasicActivity {
 
    }
 
+    private Handler mUIHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_LOAD_SUCCESS:
+                   // footer.setVisibility(View.GONE);
+                    //更新ListView显示
+                    adapter.notifyDataSetChanged();
 
+
+                    break;
+
+
+            }
+        }
+    };
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){

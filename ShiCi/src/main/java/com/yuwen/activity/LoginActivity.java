@@ -19,7 +19,7 @@ import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
-import com.yuwen.BmobBean.User;
+import com.yuwen.bmobBean.User;
 import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.BaseUIListener;

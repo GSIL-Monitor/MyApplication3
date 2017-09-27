@@ -22,11 +22,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.yuwen.BmobBean.User;
-import com.yuwen.Entity.Article;
-import com.yuwen.Entity.Chengyu;
-import com.yuwen.Entity.CiYu;
-import com.yuwen.Entity.Zi;
+import com.yuwen.bmobBean.User;
+import com.yuwen.entity.Article;
+import com.yuwen.entity.Chengyu;
+import com.yuwen.entity.CiYu;
+import com.yuwen.entity.Zi;
 import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.Adapter;
@@ -162,7 +162,7 @@ public class MainActivity extends BasicActivity implements View.OnClickListener,
                             map.put("word",nameStr);
 
                             try {
-                                String dataChengyu= NetworkConnection.net(NetworkConnection.URL_CHENGYU,map,null);
+                                String dataChengyu= NetworkConnection.net(NetworkConnection.URL_CHENGYU,map,"GET");
                                 chengYu = getChengYuContent(dataChengyu,chengYu);
                                 Intent intent=new Intent(MainActivity.this,ChengyuActivity.class);
                                 intent.putExtra("chengyu",chengYu);
@@ -272,30 +272,7 @@ public class MainActivity extends BasicActivity implements View.OnClickListener,
       });
     }
 
-    /*Runnable zidian=new Runnable() {
-        @Override
-        public void run() {
-            Map map=new HashMap<String,String>();
-            map.put("key",NetworkConnection.APPKEY_ZI);
-            map.put("content",text);
 
-
-            try {
-                String dataZidian= NetworkConnection.net(NetworkConnection.URL_ZI,map,null);
-                Zi zi= getDataZidian(dataZidian);
-                Intent intent=new Intent(MainActivity.this,ZidianActivity.class);
-
-                zi.setName(text);
-
-                intent.putExtra("zi",zi);
-
-                startActivity(intent);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };*/
 
 public void setUser(){
     if (user!=null) {
