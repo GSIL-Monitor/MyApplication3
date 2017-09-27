@@ -10,7 +10,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,10 +30,10 @@ import com.yuwen.Entity.Zi;
 import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.Adapter;
+import com.yuwen.tool.NetworkConnection;
 import com.yuwen.tool.OkHttpUtil;
 import com.yuwen.tool.Util;
 import com.yuwen.tool.Utils;
-import com.yuwen.tool.ZiDianConnection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +41,9 @@ import org.json.JSONObject;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.bmob.v3.Bmob;
@@ -156,15 +157,18 @@ public class MainActivity extends BasicActivity implements View.OnClickListener,
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+                            Map map=new HashMap<String,String>();
+                            map.put("key",NetworkConnection.APPKEY_CHENGYU);
+                            map.put("word",nameStr);
 
-                            String dataChengyu= ZiDianConnection.getRequest1(nameStr,2);
                             try {
+                                String dataChengyu= NetworkConnection.net(NetworkConnection.URL_CHENGYU,map,null);
                                 chengYu = getChengYuContent(dataChengyu,chengYu);
                                 Intent intent=new Intent(MainActivity.this,ChengyuActivity.class);
                                 intent.putExtra("chengyu",chengYu);
                                 startActivity(intent);
 
-                            } catch (JSONException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
@@ -268,11 +272,16 @@ public class MainActivity extends BasicActivity implements View.OnClickListener,
       });
     }
 
-    Runnable zidian=new Runnable() {
+    /*Runnable zidian=new Runnable() {
         @Override
         public void run() {
-            String dataZidian= ZiDianConnection.getRequest1(text,1);
+            Map map=new HashMap<String,String>();
+            map.put("key",NetworkConnection.APPKEY_ZI);
+            map.put("content",text);
+
+
             try {
+                String dataZidian= NetworkConnection.net(NetworkConnection.URL_ZI,map,null);
                 Zi zi= getDataZidian(dataZidian);
                 Intent intent=new Intent(MainActivity.this,ZidianActivity.class);
 
@@ -282,11 +291,11 @@ public class MainActivity extends BasicActivity implements View.OnClickListener,
 
                 startActivity(intent);
 
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    };
+    };*/
 
 public void setUser(){
     if (user!=null) {
@@ -330,15 +339,11 @@ public void setUser(){
                 pageNum = 1;
                 switch (v.getId()) {
                     case R.id.btnZi:    //字典
-                        if (text.length() > 1) {
-                            Util.showResultDialog(MainActivity.this, "字典查询只能输入一个汉字！", "提示");
+                        Intent intent=new Intent(MainActivity.this,ZidianActivity.class);
 
-                            //  new AlertDialog.Builder(MainActivity.this).setMessage("字典查询只能输入一个汉字！").setPositiveButton("确定", null).create().show();
-                        } else {
-                            new Thread(zidian).start();
+                        intent.putExtra("queryText",text);
 
-                        }
-
+                        startActivity(intent);
                         break;
                     case R.id.btnIdiom:    //成语
                         mark = FLAG_IDIOM;
@@ -363,6 +368,7 @@ public void setUser(){
         }
     }
 
+
     /**
      * 解析获取到的字典数据
      * @param dataZidian
@@ -375,7 +381,7 @@ public void setUser(){
           JSONObject object = new JSONObject(dataZidian);
            Zi zi=new Zi();
            if(object.getInt("error_code")==0){
-               //System.out.println(object.get("result"));
+               /*//System.out.println(object.get("result"));
                JSONObject result=object.getJSONObject("result");
                JSONArray xiangJie=result.getJSONArray("jijie");
                for (int i=1;i<xiangJie.length();i++){
@@ -384,7 +390,8 @@ public void setUser(){
                zi.setContent(xiangjie.toString());
                String id=result.getString("id");
                Log.i(MyApplication.TAG,id);
-               zi.setId(id);
+               zi.setId(id);*/
+
 
 
            }else{

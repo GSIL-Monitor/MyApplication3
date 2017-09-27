@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.xiaomi.ad.AdListener;
 import com.xiaomi.ad.NativeAdInfoIndex;
 import com.xiaomi.ad.NativeAdListener;
@@ -29,11 +30,20 @@ import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.DBHelper;
 import com.yuwen.tool.DBOperate;
+import com.yuwen.tool.NetworkConnection;
 import com.yuwen.tool.PermissionHelper;
 import com.yuwen.tool.Util;
 import com.yuwen.tool.Utils;
 
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -41,14 +51,14 @@ import cn.bmob.v3.listener.SaveListener;
 
 public class ZidianActivity extends BasicActivity {
     public static final String TAG = "AD-StandardNewsFeed";
-
     //for app
     private final static String APP_POSITION_ID = "35e0adcb1e64ae7d3d2f964f71ff8b2f";
-    private PermissionHelper mPermissionHelper;
 
+    private List<Zi> ziList;
     private TextView tv1,tv2;
     private ConstraintLayout layout;
     private Zi zi=null;
+    private String queryText;  // 要查询的内容
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +82,9 @@ public class ZidianActivity extends BasicActivity {
 
 
         Intent intent=this.getIntent();
-        zi=(Zi) intent.getSerializableExtra("zi");
-        String content=zi.getContent();
-        String name=zi.getName();
+        queryText=intent.getStringExtra("queryText");
 
-        tv1.setText(name);
-        tv2.setText(content);
+
 
         fab.setOnClickListener(new View.OnClickListener() {
           //  DBOperate dBOperate=null;
@@ -209,22 +216,59 @@ public class ZidianActivity extends BasicActivity {
 
     }
 
+    Runnable zidian=new Runnable() {
+        @Override
+        public void run() {
+            Map map=new HashMap<String,String>();
+            map.put("key", NetworkConnection.APPKEY_ZI);
+            map.put("content",queryText);
 
 
-/*
-      @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        mPermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
+            try {
+                String dataZidian= NetworkConnection.net(NetworkConnection.URL_ZI,map,null);
+                parseJsonData(dataZidian);
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        mPermissionHelper.onActivityResult(requestCode, resultCode, data);
-    }
 
-  */
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    /**
+     * 解析数据字符串
+     * @param str
+     */
+   public  void parseJsonData(String str){
+       try {
+           ziList=new ArrayList<Zi>();
+           JSONObject jsonObject = new JSONObject(str);
+           if(jsonObject.getInt("error_code")==0){
+               JSONArray dataArray=jsonObject.getJSONArray("result");
+               for (int i=0;i<dataArray.length();i++){
+                   JSONObject ziData=dataArray.getJSONObject(i);
+                   Zi zi=new Zi();
+                   zi.setId(ziData.getString("id"));
+                   zi.setHanzi(ziData.getString("hanzi"));
+                   zi.setPinyin(ziData.getString("pinyin"));
+                   zi.setDuyin(ziData.getString("duyin"));
+                   zi.setBushou(ziData.getString("bushou"));
+                   zi.setBihua(ziData.getString("bihua"));
+                   zi.setJianjie(ziData.getString("jianjie"));
+                   zi.setXiangjie(ziData.getString("xiangjie"));
+
+                   ziList.add(zi);
+
+               }
+
+
+           }
+
+       } catch (JSONException e) {
+           e.printStackTrace();
+       }
+
+   }
 
 
     @Override
