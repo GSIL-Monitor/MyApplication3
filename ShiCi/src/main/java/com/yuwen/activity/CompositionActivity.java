@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -15,8 +14,7 @@ import android.widget.Spinner;
 
 import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
-import com.yuwen.tool.Util;
-import com.yuwen.tool.ZiDianConnection;
+import com.yuwen.tool.NetworkConnection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 
 public class CompositionActivity extends BasicActivity
@@ -135,7 +132,7 @@ public class CompositionActivity extends BasicActivity
 
                             try {
                                 //发送请求
-                                String baseData=ZiDianConnection.net(urlBase,mapBase,"GET");
+                                String baseData= NetworkConnection.net(urlBase,mapBase,"GET");
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -165,22 +162,22 @@ public class CompositionActivity extends BasicActivity
                Map mapGrade=new HashMap<String,Object>();
                mapGrade.put("key",APPKEY_COMPOSITION);
                mapGrade.put("id",1);
-               String gradeData=ZiDianConnection.net(urlType,mapGrade,"GET");
+               String gradeData= NetworkConnection.net(urlType,mapGrade,"GET");
 
                Map mapType=new HashMap<String,Object>();
                mapType.put("key",APPKEY_COMPOSITION);
                mapType.put("id",2);
-               String typeData=ZiDianConnection.net(urlType,mapType,"GET");
+               String typeData= NetworkConnection.net(urlType,mapType,"GET");
 
                Map mapFont=new HashMap<String,Object>();
                mapFont.put("key",APPKEY_COMPOSITION);
                mapFont.put("id",3);
-               String fontData=ZiDianConnection.net(urlType,mapFont,"GET");
+               String fontData= NetworkConnection.net(urlType,mapFont,"GET");
 
                Map mapLevel=new HashMap<String,Object>();
                mapLevel.put("key",APPKEY_COMPOSITION);
                mapLevel.put("id",4);
-               String levelData=ZiDianConnection.net(urlType,mapLevel,"GET");
+               String levelData= NetworkConnection.net(urlType,mapLevel,"GET");
 
                resolveJson(gradeData,typeData,fontData,levelData);
 
