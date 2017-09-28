@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -232,12 +234,26 @@ public class ChengyuActivity extends BasicActivity {
             }
         });
 
+        final TranslateAnimation mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        mShowAction.setDuration(500);
+
+        final TranslateAnimation mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f);
+        mHiddenAction.setDuration(500);
         yinzhengjs.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View view) {
                 if (yinzhengtv.getVisibility()==View.GONE){
+                    yinzhengtv.startAnimation(mShowAction);
                     yinzhengtv.setVisibility(View.VISIBLE);
                 }else {
+                    yinzhengtv.startAnimation(mHiddenAction);
                     yinzhengtv.setVisibility(View.GONE);
                 }
 

@@ -44,7 +44,9 @@
                 android:background="#D3D3D3"
                 android:text="拼音"
                 android:textSize="15sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
 
             <TextView
                 android:id="@+id/pinyin"
@@ -65,7 +67,9 @@
                 android:background="#D3D3D3"
                 android:text="成语解释"
                 android:textSize="15sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
             <TextView
                 android:id="@+id/jieshi"
                 android:layout_width="match_parent"
@@ -87,7 +91,9 @@
                 android:background="#D3D3D3"
                 android:text="成语出处"
                 android:textSize="15sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
 
             <TextView
                 android:id="@+id/from"
@@ -109,7 +115,9 @@
                 android:background="#D3D3D3"
                 android:text="举例"
                 android:textSize="15sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
 
             <TextView
                 android:id="@+id/example"
@@ -131,7 +139,9 @@
                 android:background="#D3D3D3"
                 android:text="语法"
                 android:textSize="15sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
 
             <TextView
                 android:id="@+id/yufa"
@@ -154,7 +164,9 @@
                 android:background="#D3D3D3"
                 android:text="引证解释"
                 android:textSize="15sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
 
             <TextView
                 android:id="@+id/yinzheng"
@@ -176,7 +188,9 @@
                 android:background="#D3D3D3"
                 android:text="同义词"
                 android:textSize="15sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
 
             <TextView
                 android:id="@+id/tongyi"
@@ -197,7 +211,9 @@
                 android:background="#D3D3D3"
                 android:text="反义词"
                 android:textSize="15sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
 
             <TextView
                 android:id="@+id/fanyi"

@@ -13,6 +13,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,7 +27,7 @@ import com.xiaomi.ad.NativeAdListener;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
-//import com.yuwen.adapter.ZidianAdapter;
+import com.yuwen.adapter.ZidianAdapter;
 import com.yuwen.bmobBean.Collect;
 import com.yuwen.bmobBean.User;
 import com.yuwen.entity.Zi;
@@ -62,6 +65,9 @@ public class ZidianActivity extends BasicActivity {
     private BaseAdapter adapter;
     private static final int MSG_LOAD_SUCCESS=100;
 
+    TranslateAnimation mShowAction;
+    TranslateAnimation mHiddenAction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,13 +93,33 @@ public class ZidianActivity extends BasicActivity {
         Intent intent=this.getIntent();
         queryText=intent.getStringExtra("queryText");
         ziList=new ArrayList<Zi>();
-       // adapter = new ZidianAdapter(this, ziList);
+        adapter = new ZidianAdapter(this, ziList);
         listView.setAdapter(adapter);
         Thread thread=new Thread(zidianRunnable);
         thread.start();
 
+        mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        mShowAction.setDuration(500);
 
+        mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f);
+        mHiddenAction.setDuration(500);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView tvXj=(TextView)view.findViewById(R.id.xiangjie);
+                if (tvXj.getVisibility()==View.VISIBLE){
+                    tvXj.setVisibility(View.GONE);
+                }else{
+                    tvXj.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
 /*
         fab.setOnClickListener(new View.OnClickListener() {
