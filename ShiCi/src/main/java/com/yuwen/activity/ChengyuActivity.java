@@ -45,7 +45,7 @@ public class ChengyuActivity extends BasicActivity {
     //for app
     private final static String APP_POSITION_ID = "babc24ad9259219380f42c1d625a49d5";
     private static final String CHAPING_ID = "75e8e9b5dfc5d08c07c3b3ef0aaa2a9f";   //插屏广告id
-    TextView nametv,pinyintv,jiehsitv,fromtv,exampletv,yufatv,yinzhengtv,tongyitv,fanyitv;
+    TextView nametv,pinyintv,jiehsitv,fromtv,exampletv,yufatv,yinzhengtv,tongyitv,fanyitv,yinzhengjs;
     ScrollView scrollView;
     private InterstitialAd mInterstitialAd;
     boolean adFlag,isFirst=true;;
@@ -60,30 +60,7 @@ public class ChengyuActivity extends BasicActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
         // 当系统为6.0以上时，需要申请权限
         checkPermmion(this);
-       /* mPermissionHelper = new PermissionHelper(this);
-        mPermissionHelper.setOnApplyPermissionListener(new PermissionHelper.OnApplyPermissionListener() {
-            @Override
-            public void onAfterApplyAllPermission() {
-                Log.i(TAG, "All of requested permissions has been granted, so run app logic.");
-                //  AdManager.getInstance(MainActivity.this).init(appId, appSecret,false, true);
-            }
-        });
-        if (Build.VERSION.SDK_INT < 23) {
-            // 如果系统版本低于23，直接跑应用的逻辑
-            Log.d(TAG, "The api level of system is lower than 23, so run app logic directly.");
-            //AdManager.getInstance(MainActivity.this).init(appId, appSecret,false, true);
-        } else {
-            // 如果权限全部申请了，那就直接跑应用逻辑
-            if (mPermissionHelper.isAllRequestedPermissionGranted()) {
-                Log.d(TAG, "All of requested permissions has been granted, so run app logic directly.");
-                //  AdManager.getInstance(MainActivity.this).init(appId, appSecret,false, true);
-            } else {
-                // 如果还有权限为申请，而且系统版本大于23，执行申请权限逻辑
-                Log.i(TAG, "Some of requested permissions hasn't been granted, so apply permissions first.");
-                mPermissionHelper.applyPermissions();
 
-            }
-        }*/
 
         nametv=(TextView)findViewById(R.id.chengyuTitle);
         pinyintv=(TextView)findViewById(R.id.pinyin);
@@ -95,6 +72,8 @@ public class ChengyuActivity extends BasicActivity {
         tongyitv=(TextView) findViewById(R.id.tongyi);
         fanyitv=(TextView)findViewById(R.id.fanyi);
         scrollView=(ScrollView)findViewById(R.id.sc_chengyu);
+        yinzhengjs=(TextView)findViewById(R.id.yinzhengjs);     //引证解释
+
         final ViewGroup container = (ViewGroup) findViewById(R.id.container2);
         fb=(FloatingActionButton)findViewById(R.id.chengYuFb);
         mInterstitialAd = new InterstitialAd(getApplicationContext(),getWindow().getDecorView());
@@ -253,6 +232,17 @@ public class ChengyuActivity extends BasicActivity {
             }
         });
 
+        yinzhengjs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (yinzhengtv.getVisibility()==View.GONE){
+                    yinzhengtv.setVisibility(View.VISIBLE);
+                }else {
+                    yinzhengtv.setVisibility(View.GONE);
+                }
+
+            }
+        });
 
     }
 

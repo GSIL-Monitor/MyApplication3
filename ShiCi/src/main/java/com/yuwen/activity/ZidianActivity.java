@@ -24,7 +24,7 @@ import com.xiaomi.ad.NativeAdListener;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
-import com.yuwen.adapter.ZidianAdapter;
+//import com.yuwen.adapter.ZidianAdapter;
 import com.yuwen.bmobBean.Collect;
 import com.yuwen.bmobBean.User;
 import com.yuwen.entity.Zi;
@@ -87,7 +87,7 @@ public class ZidianActivity extends BasicActivity {
         Intent intent=this.getIntent();
         queryText=intent.getStringExtra("queryText");
         ziList=new ArrayList<Zi>();
-        adapter = new ZidianAdapter(this, ziList);
+       // adapter = new ZidianAdapter(this, ziList);
         listView.setAdapter(adapter);
         Thread thread=new Thread(zidianRunnable);
         thread.start();

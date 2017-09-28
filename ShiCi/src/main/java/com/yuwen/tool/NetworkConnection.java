@@ -27,38 +27,7 @@ public class NetworkConnection {
     public static final String URL_ZI="http://api.avatardata.cn/XinHuaZiDian/LookUp";
     public static final String URL_CHENGYU="http://v.juhe.cn/chengyu/query";
 
-   /* //1.根据汉字查询字典
-    public static String getRequest1(String str,int flag){
-        String result =null;
-        String url ="http://v.juhe.cn/xhzd/query";//请求接口地址
-        String url2="http://v.juhe.cn/chengyu/query";
-        Map params = new HashMap();//请求参数
-        params.put("word",str);//填写需要查询的汉字，UTF8 urlencode编码
 
-        params.put("dtype","");//返回数据的格式,xml或json，默认json
-        if (flag==1){          //字典
-            params.put("key",APPKEY_ZI);//应用APPKEY(应用详细页查询)
-            try {
-                result =net(url, params, "GET");
-                System.out.println(result);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        else if (flag==2){      //成语
-            params.put("key",APPKEY_CHENGYU);
-            try {
-                result =net(url2, params, "GET");
-                System.out.println(result);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-*/
     /**
      *
      * @param strUrl 请求地址
