@@ -1,4 +1,4 @@
-package com.yuwen.BmobBean;
+package com.yuwen.bmobBean;
 
 import cn.bmob.v3.BmobUser;
 

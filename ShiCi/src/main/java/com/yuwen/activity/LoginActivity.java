@@ -19,7 +19,7 @@ import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
-import com.yuwen.BmobBean.User;
+import com.yuwen.bmobBean.User;
 import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.BaseUIListener;
@@ -85,6 +85,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                          Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                          startActivity(intent);
                      }else{
+                         Util.dismissDialog();
+                         Util.showResultDialog(LoginActivity.this,"用户名或密码错误,请重新输入！",null);
                          Log.i(MyApplication.TAG,e.toString());
                      }
                  }

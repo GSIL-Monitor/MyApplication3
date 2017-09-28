@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.yuwen.BmobBean.User;
+import com.yuwen.bmobBean.User;
 import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.Util;

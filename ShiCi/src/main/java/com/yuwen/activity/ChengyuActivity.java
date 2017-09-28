@@ -2,13 +2,11 @@ package com.yuwen.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -25,10 +23,11 @@ import com.xiaomi.ad.adView.InterstitialAd;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
-import com.yuwen.BmobBean.Collect;
-import com.yuwen.BmobBean.User;
-import com.yuwen.Entity.Chengyu;
+import com.yuwen.bmobBean.Collect;
+import com.yuwen.bmobBean.User;
+import com.yuwen.entity.Chengyu;
 import com.yuwen.MyApplication;
+
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.DBOperate;
 import com.yuwen.tool.PermissionHelper;

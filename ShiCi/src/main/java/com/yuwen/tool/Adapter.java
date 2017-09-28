@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.yuwen.Entity.Article;
-import com.yuwen.Entity.Chengyu;
-import com.yuwen.Entity.CiYu;
+import com.yuwen.entity.Article;
+import com.yuwen.entity.Chengyu;
+import com.yuwen.entity.CiYu;
 import com.yuwen.activity.MainActivity;
 import com.yuwen.myapplication.R;
 

@@ -7,12 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.yuwen.BmobBean.Collect;
-import com.yuwen.Entity.CollectBean;
+import com.yuwen.bmobBean.Collect;
 import com.yuwen.myapplication.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by cxy on 2017/9/3.
