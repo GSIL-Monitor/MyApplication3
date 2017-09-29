@@ -25,7 +25,9 @@ import com.yuwen.myapplication.R;
 import com.yuwen.tool.Adapter;
 import com.yuwen.tool.Util;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -42,9 +44,12 @@ public class ZidianAdapter extends BaseAdapter implements View.OnClickListener{
     TranslateAnimation mShowAction;
     TranslateAnimation mHiddenAction;
     ZidianAdapter.ViewHolder holder=null;
+    private Map<Integer,Boolean> isShowMap;
+
     public ZidianAdapter(Context context, List<Zi> newsItems) {
         this.Items = newsItems;
         this.context=context;
+        isShowMap=new HashMap<Integer,Boolean>();
         mInflater = LayoutInflater.from(context);
 
         mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f,
@@ -57,6 +62,11 @@ public class ZidianAdapter extends BaseAdapter implements View.OnClickListener{
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
                 0.0f);
         mHiddenAction.setDuration(500);
+
+        for (int i=0;i<newsItems.size();i++){
+          isShowMap.put(i,true);
+
+        }
 }
 
     @Override
@@ -75,7 +85,7 @@ public class ZidianAdapter extends BaseAdapter implements View.OnClickListener{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         //判断是否缓存
         if (convertView==null){
@@ -93,8 +103,7 @@ public class ZidianAdapter extends BaseAdapter implements View.OnClickListener{
             holder.xjTextView=(TextView)convertView.findViewById(R.id.xj);
             holder.fab=(FloatingActionButton)convertView.findViewById(R.id.zidianFb);
 
-            holder.xjTextView.setOnClickListener(this);
-            holder.fab.setOnClickListener(this);
+
 
             convertView.setTag(holder);
 
@@ -110,6 +119,22 @@ public class ZidianAdapter extends BaseAdapter implements View.OnClickListener{
         holder.bihua.setText(zi.getBihua());
         holder.jianjie.setText(zi.getJianjie());
         holder.xiangjie.setText(zi.getXiangjie());
+
+        holder.fab.setOnClickListener(this);
+        holder.xjTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               if (isShowMap.get(position)==true){
+                   holder.xiangjie.startAnimation(mHiddenAction);
+                   holder.xiangjie.setVisibility(View.GONE);
+                   isShowMap.put(position,false);
+               }else{
+                   holder.xiangjie.startAnimation(mShowAction);
+                   holder.xiangjie.setVisibility(View.VISIBLE);
+                   isShowMap.put(position,true);
+               }
+            }
+        });
 
 
 
@@ -162,7 +187,7 @@ public class ZidianAdapter extends BaseAdapter implements View.OnClickListener{
             }
         }
 
-       /* if (v.getId()==R.id.xj){
+        /*if (v.getId()==R.id.xj){
             int a=3;
 
 
@@ -175,8 +200,8 @@ public class ZidianAdapter extends BaseAdapter implements View.OnClickListener{
                 holder.xiangjie.startAnimation(mHiddenAction);
                 holder.xiangjie.setVisibility(View.GONE);
             }
-        }*/
-
+        }
+*/
     }
 
     public final class ViewHolder{
