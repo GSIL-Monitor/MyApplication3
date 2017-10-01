@@ -59,5 +59,5 @@ dependencies {
     compile 'cn.bmob.android:http-legacy:1.0'
     testCompile 'org.testng:testng:6.9.6'
     testCompile 'junit:junit:4.12'
-    compile 'com.github.traex.expandablelayout:library:1.2.2'
+
 }
