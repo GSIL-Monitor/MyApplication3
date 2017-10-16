@@ -9,7 +9,7 @@ android {
     lintOptions {
         abortOnError false
     }
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion '25.0.0'
 
     //兼容Android6.0系统所需，如果这句话报错，可在dependencies标签下使用compile 'cn.bmob.android:http-legacy:1.0'**
@@ -37,6 +37,7 @@ android {
             jniLibs.srcDirs = ['libs']//将so文件目录指向libs目录
         }
     }
+
 /*
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -58,4 +59,5 @@ dependencies {
     compile 'cn.bmob.android:http-legacy:1.0'
     testCompile 'org.testng:testng:6.9.6'
     testCompile 'junit:junit:4.12'
+
 }

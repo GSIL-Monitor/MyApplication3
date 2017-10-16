@@ -7,7 +7,9 @@ import com.yuwen.tool.Utils;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.yuwen.tool.OkHttpUtil.get;
@@ -46,5 +48,16 @@ public class ExampleUnitTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void  testList(){
+
+      List list=new ArrayList();
+        for (int i=0;i<5;i++){
+            list.add(i);
+        }
+        list.add(2,"广告");
+       System.out.println(list);
     }
 }

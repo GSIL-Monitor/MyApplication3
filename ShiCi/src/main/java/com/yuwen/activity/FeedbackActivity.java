@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.Email;
+import com.yuwen.tool.Util;
 
 
 public class FeedbackActivity extends AppCompatActivity {
@@ -46,7 +47,7 @@ public class FeedbackActivity extends AppCompatActivity {
                 weChat=editWechat.getText().toString();
                 email=editEmail.getText().toString();
                 if (feedback.length()>0){
-
+                    Util.showProgressDialog(FeedbackActivity.this,null,"正在发送，请稍候");
 
                     Thread thread=new Thread(new Runnable() {
                        @Override
@@ -84,8 +85,10 @@ public class FeedbackActivity extends AppCompatActivity {
     private Handler mUIHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Util.dismissDialog();
             switch (msg.what) {
                 case 1:
+
                     AlertDialog.Builder builder=new AlertDialog.Builder(FeedbackActivity.this);
                     builder.setMessage("反馈成功，感谢你的反馈！");
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {

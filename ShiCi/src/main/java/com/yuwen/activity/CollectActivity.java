@@ -108,11 +108,9 @@ public class CollectActivity extends AppCompatActivity {
         public void onItemClick(int position, Collect bean) {    //点击事件
             Integer type=bean.getType();
             if (type.equals(Collect.ZI)){    //字典
-                    Gson gson=new Gson();
-                    Zi zi=gson.fromJson(bean.getContent(),Zi.class);
 
                     Intent intent=new Intent(CollectActivity.this,ZidianActivity.class);
-                    intent.putExtra("zi",zi);
+                    intent.putExtra("queryText",bean.getName());
                     startActivity(intent);
 
 
