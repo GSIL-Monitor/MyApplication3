@@ -1,8 +1,7 @@
 package com.example.myapplication;
 
 import com.yuwen.tool.Email;
-import com.yuwen.tool.Util;
-import com.yuwen.tool.Utils;
+import com.yuwen.tool.CommonUtil;
 
 import org.junit.Test;
 
@@ -39,7 +38,7 @@ public class ExampleUnitTest {
     @Test
     public void encrypt(){
         //assertEquals(true,Email.postEmail("第一封电子邮件"));
-        Utils.encryptBySHA("123456");
+        CommonUtil.encryptBySHA("123456");
     }
 
     @Test

@@ -69,7 +69,8 @@
         android:background="#D3D3D3"
         android:paddingLeft="15dp"
         android:paddingRight="10dp"
-        android:paddingTop="15dp"/>
+        android:paddingTop="15dp"
+        android:textIsSelectable="true"/>
     <TextView
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
@@ -90,7 +91,8 @@
         android:textSize="18sp"
         android:textColor="#000"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"/>
+        android:paddingRight="10dp"
+        android:textIsSelectable="true"/>
     <!--<TextView
         android:id="@+id/compositionTeacher"
         android:layout_width="wrap_content"

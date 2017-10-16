@@ -1,91 +1,104 @@
 package com.yuwen.activity;
 
-import android.app.AlertDialog;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
+import com.yuwen.MyApplication;
 import com.yuwen.bmobBean.User;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.Util;
-import com.yuwen.tool.Utils;
+import com.yuwen.tool.CommonUtil;
 
 import java.util.List;
 
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 
 public class FindPasswordActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText etName,etPlace,etStar;
+    EditText etPhoneNumber,etPhoneCode;
     Button btnFindPassword;
+    TextView tvSendCode;
+    String  phoneNumber=null,phoneVertifyCode=null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_password);
+        ActionBar bar= getSupportActionBar();
+        bar.setTitle("重置密码");
 
-        etName=(EditText) findViewById(R.id.et_userName);
-        etPlace=(EditText)findViewById(R.id.et_place);
-        etStar=(EditText)findViewById(R.id.et_star);
+        MyApplication.getInstance().addActivity(this);
+
+        etPhoneNumber=(EditText) findViewById(R.id.et_userPhone);
+        etPhoneCode=(EditText)findViewById(R.id.et_vertifyCode);
+        tvSendCode=(TextView)findViewById(R.id.tv_sendCode);
         btnFindPassword=(Button)findViewById(R.id.btn_resetPassword);
+
+        tvSendCode.setOnClickListener(this);
         btnFindPassword.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
+        if (v.getId()==R.id.tv_sendCode){  //发送验证码
+            phoneNumber=etPhoneNumber.getText().toString();
+            if (CommonUtil.isMobile(phoneNumber)){
 
-        if (v.getId()==R.id.btn_resetPassword){
-            String name=etName.getText().toString();
-            String place=etPlace.getText().toString();
-            String star=etStar.getText().toString();
+                BmobSMS.requestSMSCode(phoneNumber,"注册模板", new QueryListener<Integer>() {
 
-            if (Utils.isEmpty(name)||Utils.isEmpty(place)||Utils.isEmpty(star)){
-                Util.showResultDialog(FindPasswordActivity.this,"内容不能为空",null);
-            }else{  //重置密码
-                BmobQuery<User> query = new BmobQuery<User>();
-                query.addWhereEqualTo("username",name);
-                query.addWhereEqualTo("place",place);
-                query.addWhereEqualTo("person",star);
-                query.findObjects(new FindListener<User>() {
                     @Override
-                    public void done(List<User> list, BmobException e) {
-                           if (e==null){
-                               if (list.size()==0){
-                                   Util.showResultDialog(FindPasswordActivity.this,"输入信息有误，请重新输入！",null);
-                               }else if (list.size()==1){ //输入信息正确，更新密码
-                                   User user=new User();
-                                   user.setPassword(Utils.encryptBySHA("123456"));
-                                 //  user.set
-                                   user.update(list.get(0).getObjectId(),new UpdateListener() {
-                                       @Override
-                                       public void done(BmobException e) {
-                                           if (e==null){
-                                                    Util.showResultDialog(FindPasswordActivity.this,"你的密码已被重置为12346！",null);
-                                           }
-                                           else{
-                                               Util.toastMessage(FindPasswordActivity.this,"出错了，请稍候再试"+e.getErrorCode()+":"+e.getMessage());
-                                           }
-                                       }
-                                   });
-                               }
-
-                           }else{
-                               Util.toastMessage(FindPasswordActivity.this,"出错了，请稍候再试"+e.getErrorCode()+":"+e.getMessage());
-                           }
+                    public void done(Integer smsId,BmobException ex) {
+                        if(ex==null){//验证码发送成功
+                            Log.i("smile", "短信id："+smsId);//用于查询本次短信发送详情
+                        }else{
+                            Util.showResultDialog(FindPasswordActivity.this, ex.getErrorCode()+","+ex.getMessage(),"验证码发送失败");
+                        }
                     }
                 });
+            }else{
+                Util.showResultDialog(FindPasswordActivity.this,"请输入有效的手机号！",null);
+            }
+        }
+
+        if (v.getId()==R.id.btn_resetPassword){
+
+            phoneVertifyCode=etPhoneCode.getText().toString();
+             if (!CommonUtil.isEmpty(phoneNumber)){
+
+                  User.resetPasswordBySMSCode(phoneVertifyCode,CommonUtil.encryptBySHA("1234567"), new UpdateListener() {
+
+                     @Override
+                     public void done(BmobException ex) {
+                         if(ex==null){
+                             Log.i("smile", "密码重置成功");
+                             Util.showResultDialog(FindPasswordActivity.this,"密码已被重置为：1234567！请及时修改你的密码",null);
+                         }else{
+                             Util.showResultDialog(FindPasswordActivity.this,"密码重置失败：code ="+ex.getErrorCode()+",msg = "+ex.getLocalizedMessage(),null);
+                             Log.i("smile", "重置失败：code ="+ex.getErrorCode()+",msg = "+ex.getLocalizedMessage());
+                         }
+                     }
+                 });
+
+             }else{
+                 Util.showResultDialog(FindPasswordActivity.this,"请输入有效的验证码！",null);
+             }
 
 
             }
 
         }
-    }
+
 }

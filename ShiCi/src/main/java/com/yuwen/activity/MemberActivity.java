@@ -2,7 +2,6 @@ package com.yuwen.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,7 +36,6 @@ import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.ResponseParam;
 import com.yuwen.tool.Util;
-import com.yuwen.tool.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;

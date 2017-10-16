@@ -20,8 +20,8 @@ android {
         applicationId "com.cxy.yuwen"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 13
-        versionName "2.5.4"
+        versionCode 15
+        versionName "2.5.7"
         /* jackOptions {
             enabled true
         }*/

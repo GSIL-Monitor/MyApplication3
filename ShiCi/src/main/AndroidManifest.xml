@@ -163,7 +163,13 @@
             android:name="com.yuwen.activity.ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.yuwen.activity.FindPasswordActivity"></activity>
+        <activity
+            android:name="com.yuwen.activity.FindPasswordActivity"
+            android:parentActivityName="com.yuwen.activity.LoginActivity" />
+        <activity android:name="com.yuwen.activity.BindPhoneActivity"
+            android:parentActivityName="com.yuwen.activity.SettingInfomationActivity">
+
+        </activity>
     </application>
 
 </manifest>

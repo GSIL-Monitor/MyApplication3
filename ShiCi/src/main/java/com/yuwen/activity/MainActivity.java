@@ -3,13 +3,10 @@ package com.yuwen.activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.BottomNavigationView;
 
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
@@ -18,7 +15,7 @@ import com.yuwen.fragment.CompositionFragment;
 import com.yuwen.fragment.MainFragment;
 import com.yuwen.fragment.MyFragment;
 import com.yuwen.myapplication.R;
-import com.yuwen.tool.Utils;
+import com.yuwen.tool.CommonUtil;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -42,7 +39,7 @@ public class MainActivity extends BasicActivity {
         XiaomiUpdateAgent.update(this);//这种情况下, 若本地版本是debug版本则使用沙盒环境，否则使用线上环境
 
         //初始化Bmob
-        Bmob.initialize(this, Utils.BmobApplicationId,"bmob");
+        Bmob.initialize(this, CommonUtil.BmobApplicationId,"bmob");
 
         /*Intent intent=this.getIntent();
         String param=intent.getStringExtra("param");

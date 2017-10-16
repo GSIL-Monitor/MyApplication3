@@ -19,7 +19,7 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv"
+        android:layout_below="@+id/tv"
         android:paddingTop="10dp"
         android:orientation="horizontal">
 

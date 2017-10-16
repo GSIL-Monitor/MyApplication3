@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:hint="请输入用户名"
+            android:hint="请输入用户名或者手机号"
             android:paddingLeft="20dip"
             android:paddingRight="10dip"
             android:singleLine="true"
@@ -79,8 +79,7 @@
                 android:text="新用户注册"
                 android:textColor="#4285F4"
                 android:layout_below="@+id/btn_login"
-                android:layout_alignRight="@+id/tv_forgetPasword"
-                android:layout_alignEnd="@+id/tv_forgetPasword" />
+                />
         </LinearLayout>
 
 

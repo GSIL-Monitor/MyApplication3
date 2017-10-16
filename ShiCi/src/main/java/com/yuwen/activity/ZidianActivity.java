@@ -285,6 +285,14 @@ public class ZidianActivity extends BasicActivity {
                 }
 
                 if (ziList.get(position) instanceof Zi){
+                    holder.hanzi.setTextIsSelectable(true);
+                    holder.pinyin.setTextIsSelectable(true);
+                    holder.duyin.setTextIsSelectable(true);
+                    holder.bushou.setTextIsSelectable(true);
+                    holder.bihua.setTextIsSelectable(true);
+                    holder.jianjie.setTextIsSelectable(true);
+                    holder.xiangjie.setTextIsSelectable(true);
+
                     Zi zi = (Zi) ziList.get(position);
                     holder.hanzi.setText(zi.getHanzi());
                     holder.pinyin.setText(zi.getPinyin());

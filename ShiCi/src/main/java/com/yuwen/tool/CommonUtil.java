@@ -1,17 +1,16 @@
 package com.yuwen.tool;
 
-import android.app.Activity;
-import android.os.Build;
-import android.util.Log;
+
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.regex.Pattern;
 
 /**
  * Created by cxy on 2017/8/19.
  */
 
-public class Utils {
+public class CommonUtil {
     public  static final String BmobApplicationId="af1195b5462c886be8636a6845ba773a";
     public static String TencentAppId="1106093430";
     public static final String KEY_SHA = "SHA";
@@ -47,6 +46,30 @@ public class Utils {
         return sha.toString(32);
     }
 
+
+    /**
+     * 校验手机号
+     *
+     * @param mobile
+     * @return 校验通过返回true，否则返回false
+     */
+    public static boolean isMobile(String mobile) {
+        String REGEX_MOBILE = "^((17[0-9])|(14[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
+        return Pattern.matches(REGEX_MOBILE, mobile);
+    }
+
+    /**
+     * 验证密码
+     * @param password
+     * @return 校验通过返回true，否则返回false
+     */
+   public static boolean isPassword(String password){
+       //密码正则表达式 6-20 位，字母、数字、字符
+       String regStr = "^[a-zA-Z0-9]{6,20}$";
+       return Pattern.matches(regStr, password);
+
+
+   }
 
 
 }
