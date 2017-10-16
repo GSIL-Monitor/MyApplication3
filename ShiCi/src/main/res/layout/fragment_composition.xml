@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--   <android.support.design.widget.AppBarLayout
+         android:id="@+id/app_bar"
+         android:layout_width="match_parent"
+         android:layout_height="@dimen/app_bar_height"
+         android:fitsSystemWindows="true"
+         android:theme="@style/AppTheme.AppBarOverlay">
+
+       <android.support.design.widget.CollapsingToolbarLayout
+             android:id="@+id/toolbar_layout"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:fitsSystemWindows="true"
+             app:contentScrim="?attr/colorPrimary"
+             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+             <android.support.v7.widget.Toolbar
+                 android:id="@+id/compositiontoolbar"
+                 android:layout_width="match_parent"
+                 android:layout_height="?attr/actionBarSize"
+                 app:layout_collapseMode="pin"
+                 app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+         </android.support.design.widget.CollapsingToolbarLayout>
+     </android.support.design.widget.AppBarLayout>-->
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#f2f2f2"
+            android:paddingLeft="9dp"
+            android:paddingRight="8dp"
+            android:paddingTop="10dp"
+           >
+
+            <Spinner
+                android:id="@+id/grade"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_weight="1"/>
+            <Spinner
+                android:id="@+id/comTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginLeft="6dp"
+                android:layout_weight="1"/>
+            <Spinner
+                android:id="@+id/comLevel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginLeft="6dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#f2f2f2"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="10dp">
+            <Spinner
+                android:id="@+id/fontNum"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/btnConfirm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="确定"
+                android:textSize="18sp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_weight="2"
+                />
+
+        </LinearLayout>
+
+
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/comListview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:scrollbars="vertical"
+      />
+
+
+</LinearLayout>

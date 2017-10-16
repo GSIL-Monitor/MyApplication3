@@ -15,17 +15,18 @@ import android.os.Process;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.eagle.pay66.Pay66;
 import com.xiaomi.ad.AdSdk;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.yuwen.activity.MainActivity;
-import com.yuwen.tool.Utils;
+
 
 import java.util.LinkedList;
 import java.util.List;
 
-import c.b.BP;
+
 
 /**
  * 您可以参考本类中的代码来接入小米游戏广告SDK。在接入过程中，有如下事项需要注意：
@@ -42,6 +43,7 @@ public class MyApplication extends Application {
      */
     private static final String APP_ID = "2882303761517566012";
     private static final String APP_KEY="5431756668012";   //5431756668012
+    private static final String PAY_66_APPLICATION_ID="dbb2622519e940d6900a35baf2dac30a";
 
     public static final String TAG = "com.example.yuwen";
     private static DemoHandler sHandler = null;
@@ -56,7 +58,10 @@ public class MyApplication extends Application {
         AdSdk.setDebugOn();
         // AdSdk.setMockOn();
         AdSdk.initialize(this, APP_ID);   //小米广告
-        BP.init(Utils.BmobApplicationId);   //Bmob支付
+      //  BP.init(Utils.BmobApplicationId);   //Bmob支付
+
+        //66支付
+        Pay66.init(PAY_66_APPLICATION_ID, getApplicationContext());
 
         // 注册push服务，注册成功后会向DemoMessageReceiver发送广播
         // 可以从DemoMessageReceiver的onCommandResult方法中MiPushCommandMessage对象参数中获取注册信息

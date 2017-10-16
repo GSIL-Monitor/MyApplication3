@@ -19,6 +19,7 @@ import com.yuwen.bmobBean.User;
 import com.yuwen.entity.Article;
 import com.yuwen.entity.Chengyu;
 import com.yuwen.entity.CiYu;
+import com.yuwen.entity.Composition;
 import com.yuwen.entity.Zi;
 import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
@@ -26,6 +27,7 @@ import com.yuwen.tool.DBHelper;
 import com.yuwen.tool.DBOperate;
 import com.yuwen.tool.Divider;
 import com.yuwen.tool.RecyclerAdapter;
+import com.yuwen.tool.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,7 @@ public class CollectActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-    private ArrayList<Collect> list=new ArrayList<Collect>();
+    private ArrayList<Collect> list;
     private  DBHelper dbHelper;
     private DBOperate dbOperate;
     @Override
@@ -71,34 +73,43 @@ public class CollectActivity extends AppCompatActivity {
         divider.setHeight(10);
         recyclerView.addItemDecoration(divider);
 
-        //创建适配器，并且设置
-      //  dbHelper=new DBHelper(CollectActivity.this);
-     //   dbOperate=new DBOperate(dbHelper) ;
-        //查询数据
-        User user= BmobUser.getCurrentUser(User.class);
-        BmobQuery<Collect> query = new BmobQuery<Collect>();
+        list=new ArrayList<Collect>();
+        mAdapter = new RecyclerAdapter(CollectActivity.this,list);
 
-        query.addWhereEqualTo("user", user);    // 查询当前用户的所有收藏内容
-        query.order("-createdAt");      //按照创建时间排序
-        //返回50条数据，如果不加上这条语句，默认返回10条数据
-        query.setLimit(50);
+        mAdapter.setOnItemClickListener(itemListener);
+        recyclerView.setAdapter(mAdapter);
 
-        query.findObjects(new FindListener<Collect>() {
-            @Override
-            public void done(List<Collect> queryList, BmobException e) {
-                if(e==null){
-                    Log.i("bmob","查询成功：共"+queryList.size()+"条数据。");
+        queryData();
 
-                      list.addAll(queryList);
-                      mAdapter = new RecyclerAdapter(CollectActivity.this,list);
-                      mAdapter.setOnItemClickListener(itemListener);
-                      recyclerView.setAdapter(mAdapter);
-                }else{
-                    Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
-                }
-            }
-        });
 
+
+   }
+
+   public void queryData(){
+       list.clear();
+       //查询数据
+       User user= BmobUser.getCurrentUser(User.class);
+       BmobQuery<Collect> query = new BmobQuery<Collect>();
+
+       query.addWhereEqualTo("user", user);    // 查询当前用户的所有收藏内容
+       query.order("-createdAt");      //按照创建时间排序
+       //返回50条数据，如果不加上这条语句，默认返回10条数据
+       query.setLimit(50);
+
+       query.findObjects(new FindListener<Collect>() {
+           @Override
+           public void done(List<Collect> queryList, BmobException e) {
+               if(e==null){
+                   Log.i("bmob","查询成功：共"+queryList.size()+"条数据。");
+
+                   list.addAll(queryList);
+                   mAdapter.notifyDataSetChanged();
+
+               }else{
+                   Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+               }
+           }
+       });
    }
 
 
@@ -137,6 +148,14 @@ public class CollectActivity extends AppCompatActivity {
                 intent.putExtra("article",article);
                 startActivity(intent);
             }
+            if (type.equals(Collect.COMPOSITION)){    //作文
+                Gson gson=new Gson();
+                Composition composition=gson.fromJson(bean.getContent(),Composition.class);
+
+                Intent intent=new Intent(CollectActivity.this,CompositionDetailActivity.class);
+                intent.putExtra("composition",composition);
+                startActivity(intent);
+            }
         }
 
         @Override
@@ -153,16 +172,17 @@ public class CollectActivity extends AppCompatActivity {
                         public void done(BmobException e) {
                             if(e==null){
                                 Log.i("bmob","删除成功");
+                                //更新RecycleView
+                                queryData();  //重新查询
                             }else{
                                 Log.i("bmob","删除失败："+e.getMessage()+","+e.getErrorCode());
+                                Util.showResultDialog(CollectActivity.this,"删除失败",e.getMessage());
                             }
                         }
                     });
 
 
-                    //更新RecycleView
-                    list.remove(position);
-                    mAdapter.notifyItemRemoved(position);
+
 
                 }
             }).show();

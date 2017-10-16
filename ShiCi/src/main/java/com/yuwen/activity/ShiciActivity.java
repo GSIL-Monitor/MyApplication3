@@ -65,31 +65,6 @@ public class ShiciActivity extends BasicActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
 
 
-       // 当系统为6.0以上时，需要申请权限
-        checkPermmion(this);
-      /*  mPermissionHelper = new PermissionHelper(this);
-        mPermissionHelper.setOnApplyPermissionListener(new PermissionHelper.OnApplyPermissionListener() {
-            @Override
-            public void onAfterApplyAllPermission() {
-
-            }
-        });
-        if (Build.VERSION.SDK_INT < 23) {
-            // 如果系统版本低于23，直接跑应用的逻辑
-
-        } else {
-            // 如果权限全部申请了，那就直接跑应用逻辑
-            if (mPermissionHelper.isAllRequestedPermissionGranted()) {
-
-            } else {
-                // 如果还有权限为申请，而且系统版本大于23，执行申请权限逻辑
-                Log.i(TAG, "Some of requested permissions hasn't been granted, so apply permissions first.");
-                mPermissionHelper.applyPermissions();
-
-            }
-        }
-*/
-
 
         title=(TextView)findViewById(R.id.title);
         zuozhe=(TextView)findViewById(R.id.zuozhe);

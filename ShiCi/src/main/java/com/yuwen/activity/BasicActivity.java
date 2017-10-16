@@ -13,7 +13,7 @@ import com.yuwen.tool.PermissionHelper;
 public class BasicActivity extends AppCompatActivity {
 
     protected PermissionHelper mPermissionHelper;
-    public static final String TAG = "AD-StandardNewsFeed";
+    public static final String TAG = "com.example.yuwen";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

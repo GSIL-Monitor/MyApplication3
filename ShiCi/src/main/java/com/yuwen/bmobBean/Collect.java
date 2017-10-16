@@ -1,13 +1,14 @@
 package com.yuwen.bmobBean;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BmobDate;
 
 /**
  * Created by cxy on 2017/9/15.
  */
 
 public class Collect extends BmobObject{
-    public static final Integer ZI=1,CIYU=2,CHENGYU=3,SHICI=4;
+    public static final Integer ZI=1,CIYU=2,CHENGYU=3,SHICI=4,COMPOSITION=5;
 
     private Integer type;
     private String name;

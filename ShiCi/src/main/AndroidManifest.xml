@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <!-- 保持CPU 运转，屏幕和键盘灯有可能是关闭的,用于文件上传和下载 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
@@ -32,8 +31,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.yuwen.activity.MainActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,17 +48,6 @@
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity android:name="com.yuwen.activity.CiYuActivity" />
-
-        <!--
-       <activity android:name="com.yuwen.activity.TestActivity">
-           <intent-filter>
-               <action android:name="android.intent.action.MAIN" />
-
-               <category android:name="android.intent.category.LAUNCHER" />
-           </intent-filter>
-
-        </activity>
-        -->
         <activity
             android:name="com.yuwen.activity.FeedbackActivity"
             android:parentActivityName="com.yuwen.activity.MainActivity">
@@ -120,6 +107,16 @@
             </intent-filter>
         </receiver>
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.cxy.yuwen.selfupdate.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name="com.yuwen.activity.PushActivity"
             android:parentActivityName="com.yuwen.activity.MainActivity" />
@@ -156,10 +153,17 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name="com.yuwen.activity.BasicActivity" />
         <activity
-            android:name="com.yuwen.activity.CompositionActivity"
-            android:parentActivityName="com.yuwen.activity.MainActivity"></activity>
-        <activity android:name="com.yuwen.activity.MemberActivity"
-            android:parentActivityName="com.yuwen.activity.MainActivity"></activity>
+            android:name="com.eagle.pay66.PayActivity"
+            android:exported="true" /> <!-- 66支付 -->
+        <activity
+            android:name="com.yuwen.activity.MemberActivity"
+            android:parentActivityName="com.yuwen.activity.MainActivity" />
+        <activity android:name="com.yuwen.activity.CompositionDetailActivity" />
+        <activity
+            android:name="com.yuwen.activity.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.yuwen.activity.FindPasswordActivity"></activity>
     </application>
 
 </manifest>

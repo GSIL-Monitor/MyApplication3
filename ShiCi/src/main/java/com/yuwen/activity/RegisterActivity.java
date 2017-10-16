@@ -78,11 +78,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     public void done(User s, BmobException e) {
                         Util.dismissDialog();
                         if(e==null){
-                            new AlertDialog.Builder(RegisterActivity.this).setMessage("注册成功！").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            new AlertDialog.Builder(RegisterActivity.this).setMessage("注册成功！请返回登录").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent=new Intent(RegisterActivity.this,MainActivity.class);
-                                    startActivity(intent);
+                                   /* Intent intent=new Intent(RegisterActivity.this,MainActivity.class);
+                                    startActivity(intent);*/
+                                   finish();
                                 }
                             }).create().show();
                         }else{

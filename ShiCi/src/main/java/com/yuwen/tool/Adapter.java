@@ -15,6 +15,11 @@ import com.yuwen.myapplication.R;
 
 import java.util.List;
 
+import static com.yuwen.fragment.MainFragment.FLAG_CI;
+import static com.yuwen.fragment.MainFragment.FLAG_IDIOM;
+import static com.yuwen.fragment.MainFragment.FLAG_POEM;
+import static com.yuwen.fragment.MainFragment.mark;
+
 /**
  * Created by cxy on 2016/7/12.
  */
@@ -62,13 +67,13 @@ public class Adapter extends BaseAdapter {
         }
 
         //设置布局控件中控件要显示的布局
-        if (MainActivity.mark==MainActivity.FLAG_POEM) {
+        if (mark==FLAG_POEM) {
             Article item = (Article)Items.get(position);
             holder.articleTitle.setText(item.getTitle());
-        }else if (MainActivity.mark==MainActivity.FLAG_IDIOM){          //成语
+        }else if (mark==FLAG_IDIOM){          //成语
             Chengyu chengyu= (Chengyu)Items.get(position);
             holder.articleTitle.setText(chengyu.getName());
-        }else if (MainActivity.mark==MainActivity.FLAG_CI){
+        }else if (mark==FLAG_CI){
             CiYu ciYu=(CiYu) Items.get(position);
             holder.articleTitle.setText(ciYu.getName());
         }

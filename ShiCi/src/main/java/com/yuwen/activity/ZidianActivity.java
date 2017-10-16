@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.andexert.expandablelayout.library.ExpandableLayoutListView;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
@@ -55,7 +54,7 @@ public class ZidianActivity extends BasicActivity {
     private int[] mAdPositionList = {1, 3, 5};
     private ArrayList<NativeAdInfoIndex> mStuffList;
     private StandardNewsFeedAd mStandardNewsFeedAd;
-
+  //  private Map<Integer,Boolean> pyMap,dyMap,bsMap,bhMap,jjMap,xjMap;
 
     private List<Object> ziList;
 
@@ -65,6 +64,8 @@ public class ZidianActivity extends BasicActivity {
     private ListView listView;
     private ZidianAdapter adapter;
     private static final int MSG_LOAD_SUCCESS=100;
+    private static final int MSG_ERROR=0;
+    private String error="";
 
 
 
@@ -73,8 +74,7 @@ public class ZidianActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.zidian);
         MyApplication.getInstance().addActivity(this);
-        //检查权限
-        checkPermmion(this);
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
@@ -83,67 +83,17 @@ public class ZidianActivity extends BasicActivity {
         mStandardNewsFeedAd = new StandardNewsFeedAd(this);
         listView=(ListView)findViewById(R.id.zidianLv);
 
-
         Intent intent=this.getIntent();
         queryText=intent.getStringExtra("queryText");
         ziList=new ArrayList<Object>();
-        adapter = new ZidianAdapter(this);
-        listView.setAdapter(adapter);
 
-        Util.showProgressDialog(this,"请稍候","正在加载");
+
+        //Util.showProgressDialog(this,"请稍候","正在加载");
         Thread thread=new Thread(zidianRunnable);
         thread.start();
 
 
-        try {
-            mStuffList.clear();
-            mStandardNewsFeedAd.requestAd(APP_POSITION_ID, mAdPositionList.length, new NativeAdListener() {
-                @Override
-                public void onNativeInfoFail(AdError adError) {
-                    Log.e(TAG, "onNativeInfoFail e : " + adError);
-                }
 
-                @Override
-                public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
-                    Log.e(TAG, "onNativeInfoSuccess is " + list);
-                    mStuffList.addAll(list);
-                    int size = (mStuffList.size() <= mAdPositionList.length) ? mStuffList.size() : mAdPositionList.length;
-                    for (int i = 0; i < size; i++) {
-                        final int index = i;
-                        final NativeAdInfoIndex adInfoResponse = mStuffList.get(index);
-                        mStandardNewsFeedAd.buildViewAsync(adInfoResponse, listView.getWidth(), new AdListener() {
-                            @Override
-                            public void onAdError(AdError adError) {
-                                Log.e(TAG, "onAdError : " + adError + " at index : " + index);
-                            }
-
-                            @Override
-                            public void onAdEvent(AdEvent adEvent) {
-                                if (adEvent.mType == AdEvent.TYPE_CLICK) {
-                                    Log.d(TAG, "ad has been clicked at position: " + index);
-                                } else if (adEvent.mType == AdEvent.TYPE_SKIP) {
-//                                            Log.d(TAG, "x button has been clicked at position : " + index);
-                                } else if (adEvent.mType == AdEvent.TYPE_VIEW) {
-                                    Log.d(TAG, "ad has been showed at position: " + index);
-                                }
-                            }
-
-                            @Override
-                            public void onAdLoaded() {
-
-                            }
-
-                            @Override
-                            public void onViewCreated(View view) {
-                                adapter.loadAdView(view, index);
-                            }
-                        });
-                    }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }//
 
 
 
@@ -197,6 +147,10 @@ public class ZidianActivity extends BasicActivity {
                }
 
                mUIHandler.sendEmptyMessage(MSG_LOAD_SUCCESS);
+           }else{
+               error=jsonObject.getInt("error_code")+":"+jsonObject.getString("reason");
+               mUIHandler.sendEmptyMessage(MSG_ERROR);
+
            }
 
        } catch (JSONException e) {
@@ -212,11 +166,15 @@ public class ZidianActivity extends BasicActivity {
                 case MSG_LOAD_SUCCESS:
                    // footer.setVisibility(View.GONE);
 
-                    Util.dismissDialog();
+                   // Util.dismissDialog();
                     //更新ListView显示
-                    adapter.notifyDataSetChanged();
+                    adapter = new ZidianAdapter(ZidianActivity.this);
+                    listView.setAdapter(adapter);
+                    loadAd();
+                    break;
+                case MSG_ERROR:
 
-
+                Util.showResultDialog(ZidianActivity.this,error,"警告");
                     break;
 
 
@@ -254,19 +212,6 @@ public class ZidianActivity extends BasicActivity {
             mInflater = LayoutInflater.from(context);
 
 
-           /* mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f,
-                    Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-                    0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-            mShowAction.setDuration(500);
-
-            mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
-                    0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
-                    Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-                    0.0f);
-            mHiddenAction.setDuration(500);*/
-
-
-
         }
 
 
@@ -297,67 +242,82 @@ public class ZidianActivity extends BasicActivity {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
+
+              Log.i("Listview",position+"---");
             if (isAdPosition(position) && ziList.get(position) instanceof ViewGroup) {
                 return (View) ziList.get(position);
-            } else {
+            }
+            else {
                 ViewHolder holder = null;
+                ConstraintLayout constraintLayout;
                 //判断是否缓存
-                if (convertView == null) {
-                    holder = new ViewHolder();
-                    //通过LayoutInflater实例化布局
-                    convertView = mInflater.inflate(R.layout.zidian_item, null);
-                    holder.hanzi = (TextView) convertView.findViewById(R.id.hanzi);   //下次不用再findViewById()
-                    holder.pinyin = (TextView) convertView.findViewById(R.id.pinyin);
-                    holder.duyin = (TextView) convertView.findViewById(R.id.duyin);
-                    holder.bushou = (TextView) convertView.findViewById(R.id.bushou);
-                    holder.bihua = (TextView) convertView.findViewById(R.id.bihua);
-                    holder.jianjie = (TextView) convertView.findViewById(R.id.jianjie);
-                    holder.xiangjie = (TextView) convertView.findViewById(R.id.xiangjie);
-                    holder.constraintLayout = (ConstraintLayout) convertView.findViewById(R.id.containerLayout);
-                    holder.xjTextView = (TextView) convertView.findViewById(R.id.xj);
-                    holder.jjTextView = (TextView) convertView.findViewById(R.id.jj);
-                    holder.pyTextView = (TextView) convertView.findViewById(R.id.py);
-                    holder.dyTextView = (TextView) convertView.findViewById(R.id.dy);
-                    holder.bsTextView = (TextView) convertView.findViewById(R.id.bs);
-                    holder.bhTextView = (TextView) convertView.findViewById(R.id.bh);
-                    holder.fab = (FloatingActionButton) convertView.findViewById(R.id.zidianFb);
+                if (convertView != null && convertView instanceof ConstraintLayout) {
 
-
-                    convertView.setTag(holder);
-
-                } else {
                     //通过tag找到缓存的布局
                     holder = (ViewHolder) convertView.getTag();
+                    constraintLayout=(ConstraintLayout)convertView;
+
+
+                } else {
+
+                    holder = new ViewHolder();
+                    //通过LayoutInflater实例化布局
+                    constraintLayout = (ConstraintLayout )mInflater.inflate(R.layout.zidian_item, null);
+
+                    holder.hanzi = (TextView) constraintLayout.findViewById(R.id.hanzi);   //下次不用再findViewById()
+                    holder.pinyin = (TextView) constraintLayout.findViewById(R.id.pinyin);
+                    holder.duyin = (TextView) constraintLayout.findViewById(R.id.duyin);
+                    holder.bushou = (TextView) constraintLayout.findViewById(R.id.bushou);
+                    holder.bihua = (TextView) constraintLayout.findViewById(R.id.bihua);
+                    holder.jianjie = (TextView) constraintLayout.findViewById(R.id.jianjie);
+                    holder.xiangjie = (TextView) constraintLayout.findViewById(R.id.xiangjie);
+                    holder.constraintLayout = (ConstraintLayout) constraintLayout.findViewById(R.id.containerLayout);
+                    holder.xjTextView = (TextView) constraintLayout.findViewById(R.id.xj);
+                    holder.jjTextView = (TextView) constraintLayout.findViewById(R.id.jj);
+                    holder.pyTextView = (TextView) constraintLayout.findViewById(R.id.py);
+                    holder.dyTextView = (TextView) constraintLayout.findViewById(R.id.dy);
+                    holder.bsTextView = (TextView) constraintLayout.findViewById(R.id.bs);
+                    holder.bhTextView = (TextView) constraintLayout.findViewById(R.id.bh);
+                    holder.fab = (FloatingActionButton) constraintLayout.findViewById(R.id.zidianFb);
+
+
+                    constraintLayout.setTag(holder);
                 }
 
-                Zi zi = (Zi) ziList.get(position);
-                holder.hanzi.setText(zi.getHanzi());
-                holder.pinyin.setText(zi.getPinyin());
-                holder.duyin.setText(zi.getDuyin());
-                holder.bushou.setText(zi.getBushou());
-                holder.bihua.setText(zi.getBihua());
-                holder.jianjie.setText(zi.getJianjie());
-                holder.xiangjie.setText(zi.getXiangjie());
-                holder.fab.setOnClickListener(new ViewClicklistener(holder.hanzi.getText().toString(), holder.constraintLayout));
-
-
-/*
-                holder.xjTextView.setOnClickListener(new ViewClicklistener(holder.xiangjie));
-                holder.jjTextView.setOnClickListener(new ViewClicklistener(holder.jianjie));
-                holder.pyTextView.setOnClickListener(new ViewClicklistener(holder.pinyin));
-                holder.dyTextView.setOnClickListener(new ViewClicklistener(holder.duyin));
-                holder.bsTextView.setOnClickListener(new ViewClicklistener(holder.bushou));
-                holder.bhTextView.setOnClickListener(new ViewClicklistener(holder.bihua));*/
+                if (ziList.get(position) instanceof Zi){
+                    Zi zi = (Zi) ziList.get(position);
+                    holder.hanzi.setText(zi.getHanzi());
+                    holder.pinyin.setText(zi.getPinyin());
+                    holder.duyin.setText(zi.getDuyin());
+                    holder.bushou.setText(zi.getBushou());
+                    holder.bihua.setText(zi.getBihua());
+                    holder.jianjie.setText(zi.getJianjie());
+                    holder.xiangjie.setText(zi.getXiangjie());
+                    holder.fab.setOnClickListener(new ViewClicklistener(holder.hanzi.getText().toString(), holder.constraintLayout));
 
 
 
-                return convertView;
+
+
+
+                    holder.xjTextView.setOnClickListener(new ViewClicklistener(holder.xiangjie));
+                    holder.jjTextView.setOnClickListener(new ViewClicklistener(holder.jianjie));
+                    holder.pyTextView.setOnClickListener(new ViewClicklistener(holder.pinyin));
+                    holder.dyTextView.setOnClickListener(new ViewClicklistener(holder.duyin));
+                    holder.bsTextView.setOnClickListener(new ViewClicklistener(holder.bushou));
+                    holder.bhTextView.setOnClickListener(new ViewClicklistener(holder.bihua));
+
+                }
+
+
+
+                return constraintLayout;
             }
         }
 
         public synchronized void loadAdView(View view, int index) {
-           // ziList.remove(mAdPositionList[index]);
-            this.notifyDataSetChanged();
+           // ziList.remove(mAdPositionList[index]);   //index
+           // this.notifyDataSetChanged();
             ziList.add(mAdPositionList[index], view);
             this.notifyDataSetChanged();
         }
@@ -374,6 +334,7 @@ public class ZidianActivity extends BasicActivity {
         FloatingActionButton fab;
 
     }
+
     public final class ViewClicklistener implements View.OnClickListener {
         View visableView;
         String hanzi;
@@ -443,6 +404,62 @@ public class ZidianActivity extends BasicActivity {
             }
         }
 
+
+
+
     }//
+
+
+    public void loadAd(){
+        try {
+            mStuffList.clear();
+            mStandardNewsFeedAd.requestAd(APP_POSITION_ID, mAdPositionList.length, new NativeAdListener() {
+                @Override
+                public void onNativeInfoFail(AdError adError) {
+                    Log.e(TAG, "onNativeInfoFail e : " + adError);
+                }
+
+                @Override
+                public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
+                    Log.e(TAG, "onNativeInfoSuccess is " + list);
+                    mStuffList.addAll(list);
+                    int size = (mStuffList.size() <= mAdPositionList.length) ? mStuffList.size() : mAdPositionList.length;
+                    for (int i = 0; i < size; i++) {
+                        final int index = i;
+                        final NativeAdInfoIndex adInfoResponse = mStuffList.get(index);
+                        mStandardNewsFeedAd.buildViewAsync(adInfoResponse, listView.getWidth(), new AdListener() {
+                            @Override
+                            public void onAdError(AdError adError) {
+                                Log.e(TAG, "onAdError : " + adError + " at index : " + index);
+                            }
+
+                            @Override
+                            public void onAdEvent(AdEvent adEvent) {
+                                if (adEvent.mType == AdEvent.TYPE_CLICK) {
+                                    Log.d(TAG, "ad has been clicked at position: " + index);
+                                } else if (adEvent.mType == AdEvent.TYPE_SKIP) {
+//                                            Log.d(TAG, "x button has been clicked at position : " + index);
+                                } else if (adEvent.mType == AdEvent.TYPE_VIEW) {
+                                    Log.d(TAG, "ad has been showed at position: " + index);
+                                }
+                            }
+
+                            @Override
+                            public void onAdLoaded() {
+
+                            }
+
+                            @Override
+                            public void onViewCreated(View view) {
+                                adapter.loadAdView(view, index);
+                            }
+                        });
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }//
+    }
 
 }

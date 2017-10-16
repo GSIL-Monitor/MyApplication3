@@ -29,8 +29,10 @@ public class SettingInfomationActivity extends AppCompatActivity implements View
             case R.id.btn_logout:    //logout
                 BmobUser.logOut();   //清除缓存用户对象
 
-                Intent intent=new Intent(SettingInfomationActivity.this,MainActivity.class);
-                startActivity(intent);
+                /*Intent intent=new Intent(SettingInfomationActivity.this,MainActivity.class);
+                intent.putExtra("param","我的");
+                startActivity(intent);*/
+                finish();
 
                 break;
 

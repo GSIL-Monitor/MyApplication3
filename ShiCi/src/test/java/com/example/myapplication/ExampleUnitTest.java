@@ -7,7 +7,14 @@ import com.yuwen.tool.Utils;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +64,47 @@ public class ExampleUnitTest {
         for (int i=0;i<5;i++){
             list.add(i);
         }
-        list.add(2,"广告");
+        list.add(3,"广告");
        System.out.println(list);
+    }
+
+    @Test
+    public void testDate(){
+        Calendar cal = Calendar.getInstance();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            cal.setTime(sdf.parse("2017-10-05"));
+            System.out.println(cal.getTime().getTime());
+
+            Calendar cal2 = Calendar.getInstance();
+            cal2.setTime(sdf.parse((sdf.format(new Date()))));
+            // cal.set(Calendar.MONTH, cal.get(Calendar.MONTH)+6);
+
+
+
+            System.out.println( cal2.after(cal));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+    }
+    @Test
+    public void testSort() {
+        Integer[] data = {5, 4, 6, 3, 29, 25, 16};
+
+        List<Integer> numList = Arrays.asList(data);
+
+        Collections.sort(numList, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1.compareTo(o2);
+            }
+        });
+        System.out.println(numList);
+
     }
 }

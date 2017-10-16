@@ -37,7 +37,7 @@ import cn.bmob.v3.listener.UpdateListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     EditText etUserName,etPassword;
-    TextView tvRegister,tvQQLogin;
+    TextView tvRegister,tvQQLogin,tvForgetPassword;
     Button btnLogin;
     public static Tencent mTencent;
     private  String token;
@@ -56,7 +56,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin=(Button) findViewById(R.id.btn_login);
         tvRegister=(TextView)findViewById(R.id.tv_register);
         tvQQLogin=(TextView)findViewById(R.id.tv_qq);
+        tvForgetPassword=(TextView)findViewById(R.id.tv_forgetPasword);
+
         tvRegister.setOnClickListener(this);
+        tvForgetPassword.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
         tvQQLogin.setOnClickListener(this);
     }
@@ -82,8 +85,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                  public void done(BmobUser bmobUser, BmobException e) {
                      if(e==null){  //login success
                          Util.dismissDialog();
-                         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                         startActivity(intent);
+                         /*Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                         intent.putExtra("param","我的");
+                         startActivity(intent);*/
+                         finish();
                      }else{
                          Util.dismissDialog();
                          Util.showResultDialog(LoginActivity.this,"用户名或密码错误,请重新输入！",null);
@@ -98,6 +103,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (view.getId()==R.id.tv_qq) { //qq登录
             onClickLogin();
 
+        }
+
+        if (view.getId()==R.id.tv_forgetPasword){
+             Intent intent=new Intent(LoginActivity.this,FindPasswordActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -257,9 +267,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             public void done(BmobException e) {
                                 if(e==null){
                                     Log.i("bmob","更新成功");
-                                    Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                                    /*Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                                    intent.putExtra("param","我的");
                                     startActivity(intent);
-
+                                    */
+                                    finish();
 
                                 }else{
                                     Log.i("bmob","更新失败："+e.getMessage()+","+e.getErrorCode());
