@@ -2,220 +2,310 @@
 <items version="2" >
 
     <item
-        is-multidex="true"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
         optimize="true"
-        revision="25.0.0"
-        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_4fc5a0b9927d67220fddc42240314e3d9fa5a649\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\drawlayoudemo\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="4b21117767efab3921ccff3cb31fbdadc5b45ac8">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\drawlayoudemo\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_aaf08842d5fc0b474f7d238bce4656d49b64f612\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\cxy\.android\build-cache\48bbe1ad8c13c506689c554ce5b3ae4d4288913a\output\jars\libs\rxandroid-1.2.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="84127ad71f76445b8215afceb38e8b05f58eafa6">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\10\rxandroid-1.2.0_c1d842c58991230529c13ad89cd3339a54aa639c\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="5750ed1df0e38524d62d1859fd11711eb77e16b6">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_865605b1875473d749a293cb9802204de9df93f7\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\cxy\.android\build-cache\48bbe1ad8c13c506689c554ce5b3ae4d4288913a\output\jars\libs\okhttp-3.3.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="e009af854d43130a9a13bcba900ddd1124e835d5">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\10\okhttp-3.3.1_81d24066314d666d2fadad0db2e655c074109090\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\cxy\.android\build-cache\48bbe1ad8c13c506689c554ce5b3ae4d4288913a\output\jars\libs\rxjava-1.1.6.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="79f0c1e382e8b62e91064ef6b71130dda83f338e">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\10\rxjava-1.1.6_8e000491044a1cc8828bfcd6fcb9d33062c112c1\classes.dex" />
+        revision="26.0.1"
+        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_8cf4aaf2bb37e6c1a00008c423579413338a82d1.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\libs\json-1.0.jar"
+        jar="E:\Software\AndroidSDK\extras\android\m2repository\com\android\support\support-annotations\24.2.1\support-annotations-24.2.1.jar"
         jumboMode="false"
         optimize="true"
-        revision="25.0.0"
-        sha1="7203ad9ea8892320038358a413ea40468d36ea12">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\pre-dexed\release\json-1.0_c9ba9610f24428d725e59dc562ecf508202d8bf4.jar" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\cxy\.gradle\caches\modules-2\files-2.1\cn.bmob.android\http-legacy\1.0\5320fd78dd7f154e586970d4f02befc9b58432aa\http-legacy-1.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="5320fd78dd7f154e586970d4f02befc9b58432aa">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\10\http-legacy-1.0_e4e9a874412f3ef07d3edeaaa098338a6f8e890d\classes.dex" />
+        revision="26.0.1"
+        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\support-annotations-24.2.1_72336e53dd7cc091edece6e42496cb9712e9bb15.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\libs\additionnal.jar"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.5\jars\classes.jar"
         jumboMode="false"
         optimize="true"
-        revision="25.0.0"
-        sha1="bd9e8dc422bb8c8405359947fe9f4282b49f57f4">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\pre-dexed\release\additionnal_ae4c0c9b543cbec971d036d42af356b11b3574f1.jar" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\libs\additionnal.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="bd9e8dc422bb8c8405359947fe9f4282b49f57f4">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\2\additionnal_ae4c0c9b543cbec971d036d42af356b11b3574f1\classes.dex" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\libs\activation.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d1257cbff6faa44c1f325ae0d9413522d4644383">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\pre-dexed\release\activation_ca5f41696383461bc808b3643093396cbf5cee36.jar" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\libs\activation.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d1257cbff6faa44c1f325ae0d9413522d4644383">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\2\activation_ca5f41696383461bc808b3643093396cbf5cee36\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\cxy\.android\build-cache\48bbe1ad8c13c506689c554ce5b3ae4d4288913a\output\jars\libs\BmobSDK_3.5.5_20170420.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="f67cfc97fcbde8b4764f01135b10afa716ae1a40">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\10\BmobSDK_3.5.5_20170420_dca0ba09fc4a4b0be8a642af8eabf37dc2fee859\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\libs\AdSdk.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="60d8ca879d1467b2efc878bb7de40b334e5c4a63">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\2\AdSdk_e0426bbfa0339067d13d0992a3f5017dd76c80f4\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\libs\MiPush_SDK_Client_3_4_5.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="fe0cb41447a9e14a296e6a9eb05e303f5f021df7">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\2\MiPush_SDK_Client_3_4_5_d839bb7172871adfe2c3c6ecec4b0ff01fb32bc4\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\cxy\.android\build-cache\48bbe1ad8c13c506689c554ce5b3ae4d4288913a\output\jars\libs\gson-2.6.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="cea3a9be08d0dcf89783b2cc87c8787fdb2a0d12">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\10\gson-2.6.2_c2003c3c2d3203fefab4642d90c1850f6e9e5eda\classes.dex" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\libs\AdSdk.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="60d8ca879d1467b2efc878bb7de40b334e5c4a63">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\pre-dexed\release\AdSdk_e0426bbfa0339067d13d0992a3f5017dd76c80f4.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\libs\MiPush_SDK_Client_3_4_5.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="fe0cb41447a9e14a296e6a9eb05e303f5f021df7">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\pre-dexed\release\MiPush_SDK_Client_3_4_5_d839bb7172871adfe2c3c6ecec4b0ff01fb32bc4.jar" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\cxy\.android\build-cache\48bbe1ad8c13c506689c554ce5b3ae4d4288913a\output\jars\libs\okio-1.7.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="f64e0f80ef26fbc722b4bc9f024370d5b1e8f6d6">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\10\okio-1.7.0_90ad1e33b467ada01e1ac3772ec170e2e339d4a4\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\drawlayoudemo\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\drawlayoudemo\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_5cb7f21221e9e6f32aa46cdea9ec243228466d3a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\cxy\.android\build-cache\48bbe1ad8c13c506689c554ce5b3ae4d4288913a\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
+        revision="26.0.1"
         sha1="ac71d1248d0f3577b39093396e6ff35582a5d7a4">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\10\classes_5eecbcabe70ba0c72c40f0204536213a45f8b859\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\libs\json-1.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="7203ad9ea8892320038358a413ea40468d36ea12">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\2\json-1.0_c9ba9610f24428d725e59dc562ecf508202d8bf4\classes.dex" />
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\cn.bmob.android-bmob-sdk-3.5.5_f5b16ca7fc0f1027488f1d4922c265715eb1c750.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\libs\mail(2).jar"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\libs\internal_impl-24.2.1.jar"
         jumboMode="false"
         optimize="true"
-        revision="25.0.0"
-        sha1="428e267abff0d10802ccde86b915da2c20471160">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\pre-dexed\release\mail(2)_bc11059e4722721eec58d85bccce97de2dabb10c.jar" />
+        revision="26.0.1"
+        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_13853a7e287373b8a569c11fb3de5c94b64b7f83.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\libs\mail(2).jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support.constraint\constraint-layout\1.0.2\jars\classes.jar"
+        jumboMode="false"
         optimize="true"
-        revision="25.0.0"
+        revision="26.0.1"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\com.android.support.constraint-constraint-layout-1.0.2_156f8a1808c762d2aee7d47af256e68ca3ebde96.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\libs\activation.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="d1257cbff6faa44c1f325ae0d9413522d4644383">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\activation_a011b7b0af01152df0de438a4d75b1c5fa136241.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\libs\AdSdk.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="60d8ca879d1467b2efc878bb7de40b334e5c4a63">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\AdSdk_4906f1e96c8141eefc6674a15671cb8f595e57bf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-24.2.1_1deee1a77df1c1ebc3eb60906fd01599b43cfd43.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.5\jars\libs\okhttp-3.3.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="e009af854d43130a9a13bcba900ddd1124e835d5">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\okhttp-3.3.1_392c34655163dc7f1f84953f1038c8c99a2e6d27.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-24.2.1_34155b5017ef62148e9c1745bf6353d23dc50836.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="43b2dba6b5a0b14527961b75329d0b90025f15ea">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-24.2.1_f9db4b3c073f23f375ca4df8291e84897cf44b12.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\libs\additionnal.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="bd9e8dc422bb8c8405359947fe9f4282b49f57f4">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\additionnal_22180dc3adea1d55f581c570fe4613cd61532df3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="867dad63c33388ff8c7644b236579355036d075f">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_874a174ccf044595ea87f35d20a55b62fb42f8ed.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\libs\mail(2).jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
         sha1="428e267abff0d10802ccde86b915da2c20471160">
-        <dex dex="E:\AndroidStudio_Workspace\MyApplication3\ShiCi\build\intermediates\transforms\dex\debug\folders\1000\2\mail(2)_bc11059e4722721eec58d85bccce97de2dabb10c\classes.dex" />
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\mail(2)_99ca33183ae8550e33bb58963dc54c08a0e9a696.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_7de8e152cf9c3f1e34e90726940bcf74a4fdda1c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-24.2.1_43ba3c119d0468e477a6cd3b544b950695bd7586.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.5\jars\libs\rxandroid-1.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="84127ad71f76445b8215afceb38e8b05f58eafa6">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\rxandroid-1.2.0_354b85b505144c1dd82f7f9d009e5b8b05cc3132.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\libs\open_sdk_r5793_lite.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="2881756e1678b5f8a866601be4eec5a6956fff5f">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\open_sdk_r5793_lite_c2e0d2125ec51acbd4b90e99623a7f5694da55d5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\libs\BmobPay_v3.2.0_170602.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="1175087fdb7947ec8fa074e1c19d51c3001e70a4">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\BmobPay_v3.2.0_170602_a2fa2401a5807bee953e93fcab0fe666dda729c3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\design\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="e03f47f3d1017a093bb3239d4ec47c3447f40744">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\com.android.support-design-24.2.1_3974409308470d1d80c41e021c9b1a465203cada.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-24.2.1_45b771b08702a94a2892936cf2018cdda017f5b4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.5\jars\libs\gson-2.6.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="cea3a9be08d0dcf89783b2cc87c8787fdb2a0d12">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\gson-2.6.2_3b6c73c350c7091c74e319ce7612c1e501e73452.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.5\jars\libs\rxjava-1.1.6.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="79f0c1e382e8b62e91064ef6b71130dda83f338e">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\rxjava-1.1.6_b8359c0a125e6583842d73e8162d7c4c5747ad39.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\support-v4\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\com.android.support-support-v4-24.2.1_227e1133262192d016b4aac815a296c687dc824f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.5\jars\libs\BmobSDK_3.5.5_20170420.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="f67cfc97fcbde8b4764f01135b10afa716ae1a40">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\BmobSDK_3.5.5_20170420_6a88dbc445a7a9bab051d84b8d50902fdfcfe046.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\cn.bmob.android\bmob-sdk\3.5.5\jars\libs\okio-1.7.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="f64e0f80ef26fbc722b4bc9f024370d5b1e8f6d6">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\okio-1.7.0_1048d83b87aad6f15e29a68275d63ff558b8874f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Software\AndroidSDK\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.2\constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.2_01e9b7efe8794a5bd9d97704059f72f78ca068de.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-24.2.1_fc64f501440e91adefaab109f46d7548ee5b4609.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\cxy\.gradle\caches\modules-2\files-2.1\cn.bmob.android\http-legacy\1.0\5320fd78dd7f154e586970d4f02befc9b58432aa\http-legacy-1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="5320fd78dd7f154e586970d4f02befc9b58432aa">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\http-legacy-1.0_e4e9a874412f3ef07d3edeaaa098338a6f8e890d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\com.android.support-support-compat-24.2.1_a4c39f9df16c8e5cd57dc0085628555ef67864f8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-24.2.1_6e5cbf82cc9016fb45395e2b8dccbd7dbbe0b51a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="fbf8da429efd5ad21e02e3e5ecaa1efc4167878d">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_2b0cabda9171253eeca4cb8ab07e9a69319b6d79.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\libs\MiPush_SDK_Client_3_4_5.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="fe0cb41447a9e14a296e6a9eb05e303f5f021df7">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\MiPush_SDK_Client_3_4_5_6371fa46619566a7fe15e43402d31f5a2f62872d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="7521486d9bfd2cd9e756e0cf75ed7d97f2ce2d3b">
+        <dex dex="E:\Documnet\AndroidWorkspace\MyApplication\MyApplication3\ShiCi\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-24.2.1_4705a7eb1d6106f985006beaab7d50d7b3cfdbab.jar" />
     </item>
 
 </items>

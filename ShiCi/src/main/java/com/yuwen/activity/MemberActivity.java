@@ -89,7 +89,7 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
         threeBtn=(Button)findViewById(R.id.btn3Month);
         sixBtn=(Button)findViewById(R.id.btn6Month);
 
-        contentView = LayoutInflater.from(this).inflate(R.layout.payment, null);
+        contentView = LayoutInflater.from(this).inflate(R.layout.dialog_payment, null);
         bottomDialog = new Dialog(this, R.style.BottomDialog);
         bottomDialog.setContentView(contentView);
 
