@@ -66,3 +66,5 @@ freeline_project_description.json
 /sample/
 /normaldemo/
 /PT/
+/build.gradle
+/gradle/wrapper/gradle-wrapper.properties
