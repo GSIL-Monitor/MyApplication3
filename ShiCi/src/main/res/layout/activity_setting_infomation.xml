@@ -14,10 +14,10 @@
         android:layout_height="wrap_content"
         android:text="修改密码"
         android:background="#FFF"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:layout_marginTop="20dp"
         android:textSize="18sp"
         android:textColor="@color/colorFont"
@@ -29,10 +29,10 @@
     android:orientation="horizontal"
     android:layout_marginTop="2dp"
     android:background="#FFF"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="6dp"
-    android:paddingBottom="6dp">
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="未绑定"
-        android:textSize="16sp"/>
+        android:textSize="18sp"/>
 </LinearLayout>
     <TextView
         android:layout_marginTop="20dp"
@@ -56,9 +56,9 @@
         android:background="#FFF"
         android:textSize="18sp"
         android:textColor="@color/colorFont"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         />
 </LinearLayout>

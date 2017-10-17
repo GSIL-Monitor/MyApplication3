@@ -5,24 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.yuwen.activity.RegisterActivity">
-
-    <EditText
-        android:id="@+id/et_userName"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/pwdLayoutName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:hint="请输入用户名"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="30dp"
-        app:layout_constraintHorizontal_bias="0.0" />
+        android:layout_marginTop="30dp">
 
+        <EditText
+            android:id="@+id/et_userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入用户名"
+            app:layout_constraintHorizontal_bias="0.0" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/pwdLayout"
+        app:passwordToggleEnabled="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/pwdLayoutName"
+        >
     <EditText
         android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入密码"
+        android:inputType="textPassword"
+       />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/pwdLayout2"
+        app:passwordToggleEnabled="true"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -30,79 +56,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/et_userName"
-        android:hint="请输入密码"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:inputType="textPassword"/>
-
+        app:layout_constraintTop_toBottomOf="@+id/pwdLayout"
+        >
     <EditText
         android:id="@+id/et_password2"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/et_password"
         android:hint="请再次输入密码"
         android:inputType="textPassword"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+         />
+    </android.support.design.widget.TextInputLayout>
 
-
-<!--<TextView
-    android:layout_marginTop="15dp"
-    android:id="@+id/tv"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    app:layout_constraintTop_toBottomOf="@id/et_password2"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    android:text="请回答以下两个问题，用以找回密码"
-    android:layout_marginLeft="15dp"
-    android:layout_marginRight="8dp"
-    app:layout_constraintHorizontal_bias="0.0"
-    android:textColor="@color/colorPrimary"/>
-    <EditText
-        android:id="@+id/et_place"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:hint="你最喜欢的地方是？"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="10dp"/>
-    <EditText
-        android:id="@+id/et_person"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/et_place"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:hint="你最喜欢的明星是？"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"/>
-
-
-
-    <Button
-        android:id="@+id/btn_register"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="注册"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/et_person"
-        app:layout_constraintBottom_toBottomOf="parent"
-        style="@style/ButtonStyle"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-      />-->
 
     <LinearLayout
         android:id="@+id/layout"
@@ -115,29 +79,32 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/et_password2"
+        app:layout_constraintTop_toBottomOf="@+id/pwdLayout2"
         android:orientation="horizontal">
-        <EditText
-            android:id="@+id/et_phoneNumber"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="请输入要绑定的手机号码"
-            android:inputType="phone"
-            android:layout_weight="2"
-            />
+            android:layout_weight="1">
+            <EditText
+                android:id="@+id/et_phoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="请输入要绑定的手机号码"
+                android:inputType="phone"/>
+        </android.support.design.widget.TextInputLayout>
+
         <TextView
             android:id="@+id/tv_sendVertifyCode"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="发送验证码"
-            android:layout_weight="1"
+            android:layout_marginTop="20dp"
             android:textColor="@color/colorAccent"
-            android:textSize="16sp"
-           />
+            android:textSize="18sp" />
 
     </LinearLayout>
-    <EditText
-        android:id="@+id/et_verifyCode"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/phoneCode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -145,11 +112,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/layout"
-        android:hint="请输入手机验证码"
-        android:inputType="number"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/layout">
+        <EditText
+            android:id="@+id/et_verifyCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入手机验证码"
+            android:inputType="number" />
+    </android.support.design.widget.TextInputLayout>
+
     <Button
         android:id="@+id/btn_register"
         android:layout_width="0dp"
@@ -158,8 +129,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/layout"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phoneCode"
         style="@style/ButtonStyle"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"

@@ -64,7 +64,7 @@ public class CommonUtil {
      * @return 校验通过返回true，否则返回false
      */
    public static boolean isPassword(String password){
-       //密码正则表达式 6-20 位，字母、数字、字符
+       //密码正则表达式 6-20 位，字母、数字
        String regStr = "^[a-zA-Z0-9]{6,20}$";
        return Pattern.matches(regStr, password);
 

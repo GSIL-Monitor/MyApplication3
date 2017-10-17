@@ -100,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             }else if (!CommonUtil.isPassword(password)){
 
-                Util.showResultDialog(RegisterActivity.this,"密码至少为6位，可以包含数字、字母和字符！","提示");
+                Util.showResultDialog(RegisterActivity.this,"密码至少为6位，可以包含数字和字母！","提示");
 
 
 

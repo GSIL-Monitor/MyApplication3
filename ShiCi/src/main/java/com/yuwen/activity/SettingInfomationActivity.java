@@ -1,6 +1,8 @@
 package com.yuwen.activity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +51,7 @@ public class SettingInfomationActivity extends AppCompatActivity implements View
         btnCancel.setOnClickListener(this);
         btnModify.setOnClickListener(this);
 
-        setInfo();
+      //  setInfo();
 
     }
 
@@ -134,9 +136,8 @@ public class SettingInfomationActivity extends AppCompatActivity implements View
     private void showDialog(){
 
 
-       /* ViewGroup.LayoutParams layoutParams = modifyView.getLayoutParams();
-        layoutParams.width = getResources().getDisplayMetrics().widthPixels;
-        layoutParams.width = 300;
+        /*ViewGroup.LayoutParams layoutParams = modifyView.getLayoutParams();
+        layoutParams.width = getResources().getDisplayMetrics().widthPixels-160;
         modifyView.setLayoutParams(layoutParams);*/
 
         modifyDialog.getWindow().setGravity(Gravity.CENTER);
@@ -147,26 +148,64 @@ public class SettingInfomationActivity extends AppCompatActivity implements View
 
     private void modifyPassword(){
         String oldPassword=etOldpassword.getText().toString();
-        String newPassword=etNewPassword.getText().toString();
+        final String newPassword=etNewPassword.getText().toString();
         String newPassword2=etPassword2.getText().toString();
         if (CommonUtil.isEmpty(oldPassword)||CommonUtil.isEmpty(newPassword)||CommonUtil.isEmpty(newPassword2)){
             Util.toastMessage(SettingInfomationActivity.this,"内容不能为空");
         }else if(!newPassword.equals(newPassword2)){
             Util.toastMessage(SettingInfomationActivity.this,"两次输入的密码必须一致");
-        }else{  //重置密码
-            User.updateCurrentUserPassword("旧密码", "新密码", new UpdateListener() {
-
+        }else if(!CommonUtil.isPassword(newPassword)){
+            Util.toastMessage(SettingInfomationActivity.this,"密码至少为6位，可以包含数字和字母");
+        }
+        else{  //重置密码
+           // user=BmobUser.getCurrentUser(User.class);
+            BmobQuery<User> query = new BmobQuery<User>();
+            query.addWhereEqualTo("username", user.getUsername());
+            query.addWhereEqualTo("password",CommonUtil.encryptBySHA(oldPassword));
+            query.findObjects(new FindListener<User>() {
                 @Override
-                public void done(BmobException e) {
+                public void done(List<User> object,BmobException e) {
                     if(e==null){
-                        modifyDialog.dismiss();
-                        Util.toastMessage(SettingInfomationActivity.this,"密码修改成功，可以用新密码进行登录啦");
+                        if (object.size()==1){
+                           // Util.toastMessage(SettingInfomationActivity.this,"查询用户成功:"+object.size());
+                            User newUsr=new User();
+                            newUsr.setPassword(CommonUtil.encryptBySHA(newPassword));
+                            newUsr.update(user.getObjectId(), new UpdateListener() {
+                                @Override
+                                public void done(BmobException e) {
+                                    if(e==null){
+                                        modifyDialog.dismiss();
+
+                                        AlertDialog dlg = new AlertDialog.Builder(SettingInfomationActivity.this).setMessage("密码修改成功，可以用新密码进行登录啦")
+                                                .setPositiveButton("返回登录", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        BmobUser.logOut();
+                                                        Intent intent=new Intent(SettingInfomationActivity.this,LoginActivity.class);
+                                                        startActivity(intent);
+                                                    }
+                                                })
+                                                .setNegativeButton("取消", null).create();
+                                        dlg.setCanceledOnTouchOutside(false);
+                                        dlg.show();
+
+                                    }else{
+                                        Util.toastMessage(SettingInfomationActivity.this,"密码修改失败:" + e.toString());
+                                    }
+                                }
+                            });
+
+                        }
+                        else{
+                            Util.toastMessage(SettingInfomationActivity.this,"旧密码错误");
+                        }
+
                     }else{
-                        Util.toastMessage(SettingInfomationActivity.this,"密码修改失败:" + e.getMessage());
+                        Util.toastMessage(SettingInfomationActivity.this,"查询用户失败:" + e.getMessage());
                     }
                 }
-
             });
+
 
         }
     }
