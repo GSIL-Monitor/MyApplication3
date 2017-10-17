@@ -254,36 +254,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what==0){
+            if (msg.what == 0) {
                 Util.dismissDialog();
-                JSONObject response = (JSONObject)msg.obj;
+                JSONObject response = (JSONObject) msg.obj;
                 User user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
+                user.setUserType(User.QQ_USER);
 
                 try {
-                    if(response.has("nickname")){
+                    if (response.has("nickname")) {
                         user.setUsername(response.getString("nickname"));
-                        user.update(user.getObjectId(), new UpdateListener() {
-                            @Override
-                            public void done(BmobException e) {
-                                if(e==null){
-                                    Log.i("bmob","更新成功");
-                                    /*Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                                    intent.putExtra("param","我的");
-                                    startActivity(intent);
-                                    */
-                                    finish();
-
-                                }else{
-                                    Log.i("bmob","更新失败："+e.getMessage()+","+e.getErrorCode());
-                                }
-                            }
-                        });
-
                     }
-                    if (response.has("figureurl_qq_2")){  //获取到的用户头像
+                    if (response.has("figureurl_qq_2")) {  //获取到的用户头像
 
                         Bitmap bitmap = Util.getbitmap(response.getString("figureurl_qq_2"));
 
@@ -292,9 +276,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     e.printStackTrace();
                 }
 
+                user.update(user.getObjectId(), new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if (e == null) {
+                            Log.i("bmob", "更新成功");
+                                    /*Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                                    intent.putExtra("param","我的");
+                                    startActivity(intent);
+                                    */
+                            finish();
+
+                        } else {
+                            Log.i("bmob", "更新失败：" + e.getMessage() + "," + e.getErrorCode());
+                        }
+                    }
+                });
+
             }
+
+
         }
     };
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("SDKQQAgentPref", "-->onActivityResult " + requestCode  + " resultCode=" + resultCode);

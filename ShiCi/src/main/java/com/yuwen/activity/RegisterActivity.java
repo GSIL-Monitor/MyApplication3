@@ -111,6 +111,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 user.setUsername(userName);
                 user.setPassword(CommonUtil.encryptBySHA(password));
                 user.setMobilePhoneNumber(phoneNumber);  //手机号
+                user.setUserType(User.REGISTER_USER);
 
                 user.signOrLogin(vertifyCode, new SaveListener<User>() {
                     @Override
