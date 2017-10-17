@@ -20,7 +20,7 @@ import com.yuwen.MyApplication;
 import com.yuwen.activity.MainActivity;
 import com.yuwen.activity.PushActivity;
 import com.yuwen.myapplication.R;
-import com.yuwen.tool.Utils;
+import com.yuwen.tool.CommonUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -102,7 +102,7 @@ public class MessageReceiver extends PushMessageReceiver {
         }
         MyApplication.getHandler().sendMessage(msg);
 
-        if (!Utils.isEmpty(message.getExtra().get("activityUri"))){
+        if (!CommonUtil.isEmpty(message.getExtra().get("activityUri"))){
             Log.v(MyApplication.TAG,message.getExtra().get("activityUri"));
             String uri=message.getExtra().get("activityUri");   //Action
             Intent intent=new Intent(uri);

@@ -60,8 +60,6 @@ public class ChengyuActivity extends BasicActivity {
         MyApplication.getInstance().addActivity(this);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
-        // 当系统为6.0以上时，需要申请权限
-        checkPermmion(this);
 
 
         nametv=(TextView)findViewById(R.id.chengyuTitle);
@@ -234,7 +232,7 @@ public class ChengyuActivity extends BasicActivity {
             }
         });
 
-        final TranslateAnimation mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f,
+      /*  final TranslateAnimation mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
                 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
         mShowAction.setDuration(500);
@@ -243,17 +241,17 @@ public class ChengyuActivity extends BasicActivity {
                 0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
                 0.0f);
-        mHiddenAction.setDuration(500);
+        mHiddenAction.setDuration(500);*/
         yinzhengjs.setOnClickListener(new View.OnClickListener() {
 
 
             @Override
             public void onClick(View view) {
                 if (yinzhengtv.getVisibility()==View.GONE){
-                    yinzhengtv.startAnimation(mShowAction);
+                   //yinzhengtv.startAnimation(mShowAction);
                     yinzhengtv.setVisibility(View.VISIBLE);
                 }else {
-                    yinzhengtv.startAnimation(mHiddenAction);
+                  //  yinzhengtv.startAnimation(mHiddenAction);
                     yinzhengtv.setVisibility(View.GONE);
                 }
 

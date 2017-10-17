@@ -23,7 +23,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <include
-        layout="@layout/activity_content" />
+        layout="@layout/fragment_main" />
 
 
 

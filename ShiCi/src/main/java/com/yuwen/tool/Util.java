@@ -419,9 +419,9 @@ public class Util {
 	public static final void showResultDialog(Context context, String msg,
 			String title) {
 		if(msg == null) return;
-		String rmsg = msg.replace(",", "\n");
-		Log.d("Util", rmsg);
-		new AlertDialog.Builder(context).setTitle(title).setMessage(rmsg)
+		//String rmsg = msg.replace(",", "\n");
+		Log.d("Util", msg);
+		new AlertDialog.Builder(context).setTitle(title).setMessage(msg)
 				.setNegativeButton("知道了", null).create().show();
 	}
 

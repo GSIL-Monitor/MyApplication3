@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,7 +25,7 @@ import com.yuwen.MyApplication;
 import com.yuwen.myapplication.R;
 import com.yuwen.tool.BaseUIListener;
 import com.yuwen.tool.Util;
-import com.yuwen.tool.Utils;
+import com.yuwen.tool.CommonUtil;
 
 import org.json.JSONObject;
 
@@ -37,7 +38,7 @@ import cn.bmob.v3.listener.UpdateListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     EditText etUserName,etPassword;
-    TextView tvRegister,tvQQLogin;
+    TextView tvRegister,tvQQLogin,tvForgetPassword;
     Button btnLogin;
     public static Tencent mTencent;
     private  String token;
@@ -47,8 +48,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         MyApplication.getInstance().addActivity(this);
+        ActionBar bar= getSupportActionBar();
+        bar.setTitle("登录账号");
         if (mTencent == null) {
-            mTencent = Tencent.createInstance(Utils.TencentAppId, this);
+            mTencent = Tencent.createInstance(CommonUtil.TencentAppId, this);
         }
 
         etUserName=(EditText)findViewById(R.id.et_account) ;
@@ -56,7 +59,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin=(Button) findViewById(R.id.btn_login);
         tvRegister=(TextView)findViewById(R.id.tv_register);
         tvQQLogin=(TextView)findViewById(R.id.tv_qq);
+        tvForgetPassword=(TextView)findViewById(R.id.tv_forgetPasword);
+
         tvRegister.setOnClickListener(this);
+        tvForgetPassword.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
         tvQQLogin.setOnClickListener(this);
     }
@@ -74,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
              User user=new User();
              user.setUsername(userName);
-             user.setPassword(Utils.encryptBySHA(password));
+             user.setPassword(CommonUtil.encryptBySHA(password));
 
              user.login(new SaveListener<BmobUser>() {
 
@@ -82,8 +88,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                  public void done(BmobUser bmobUser, BmobException e) {
                      if(e==null){  //login success
                          Util.dismissDialog();
-                         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                         startActivity(intent);
+                         /*Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                         intent.putExtra("param","我的");
+                         startActivity(intent);*/
+                         finish();
                      }else{
                          Util.dismissDialog();
                          Util.showResultDialog(LoginActivity.this,"用户名或密码错误,请重新输入！",null);
@@ -98,6 +106,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (view.getId()==R.id.tv_qq) { //qq登录
             onClickLogin();
 
+        }
+
+        if (view.getId()==R.id.tv_forgetPasword){
+             Intent intent=new Intent(LoginActivity.this,FindPasswordActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -257,9 +270,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             public void done(BmobException e) {
                                 if(e==null){
                                     Log.i("bmob","更新成功");
-                                    Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                                    /*Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                                    intent.putExtra("param","我的");
                                     startActivity(intent);
-
+                                    */
+                                    finish();
 
                                 }else{
                                     Log.i("bmob","更新失败："+e.getMessage()+","+e.getErrorCode());

@@ -12,8 +12,8 @@
 
     <ListView
         android:id="@+id/zidianLv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"

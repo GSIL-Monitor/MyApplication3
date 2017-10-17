@@ -47,8 +47,6 @@ public class CiYuActivity extends BasicActivity {
         MyApplication.getInstance().addActivity(this);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
-        // 当系统为6.0以上时，需要申请权限
-        checkPermmion(this);
 
         tvTitle = (TextView) findViewById(R.id.ci_title);
         tvPinyin = (TextView) findViewById(R.id.ci_pinyin);
@@ -171,17 +169,7 @@ public class CiYuActivity extends BasicActivity {
 
     }
 
-  /*  @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        mPermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        mPermissionHelper.onActivityResult(requestCode, resultCode, data);
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
