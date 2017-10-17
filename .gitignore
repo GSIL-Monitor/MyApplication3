@@ -55,3 +55,14 @@ freeline/
 freeline_project_description.json
 /.idea/
 /AdDemo/
+/.gradle/
+/build/
+/AdDemo2/
+/lib/
+/libraries/
+/gradle/
+/search/
+/projectFilesBackup/
+/sample/
+/normaldemo/
+/PT/
