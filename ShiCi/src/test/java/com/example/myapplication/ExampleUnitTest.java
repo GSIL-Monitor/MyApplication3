@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import com.yuwen.bmobBean.User;
 import com.yuwen.tool.Email;
 import com.yuwen.tool.CommonUtil;
 
@@ -17,6 +18,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 import static com.yuwen.tool.OkHttpUtil.get;
 import static org.junit.Assert.assertTrue;
@@ -105,5 +110,16 @@ public class ExampleUnitTest {
         });
         System.out.println(numList);
 
+    }
+    @Test
+    public void updateData(){
+        BmobQuery<User> query = new BmobQuery<User>();
+        query.addWhereNotEqualTo("person","刘亦菲");
+        query.findObjects(new FindListener<User>() {
+            @Override
+            public void done(List<User> list, BmobException e) {
+              System.out.println(list.size());
+            }
+        });
     }
 }

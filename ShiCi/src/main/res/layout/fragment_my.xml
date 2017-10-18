@@ -27,7 +27,8 @@
             android:layout_marginLeft="10dp"
             android:text="点击登录学习账号"
             android:textSize="18sp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:textColor="@color/colorFont"/>
 
         <!-- <TextView
             android:layout_width="match_parent"

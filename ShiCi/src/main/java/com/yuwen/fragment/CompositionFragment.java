@@ -964,6 +964,8 @@ public void resolveJson(String gradeData,String typeData,String fontData, String
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        error="出现错误，该篇作文暂时无法查看";
+                        handler.sendEmptyMessage(0);
                     }
                 }
             }).start();//

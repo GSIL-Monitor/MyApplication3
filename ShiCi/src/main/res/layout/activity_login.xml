@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
 
 
@@ -14,7 +13,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:orientation="vertical" >
-
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:id="@+id/userNameLayout"
+          >
         <EditText
             android:id="@+id/et_account"
             android:layout_width="match_parent"
@@ -29,13 +33,18 @@
             android:textSize="16sp" >
             <requestFocus />
         </EditText>
-
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/userNameLayout"
+            android:id="@+id/userPasswordLayout"
+            >
         <EditText
             android:id="@+id/et_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/et_account"
-            android:layout_marginTop="10dp"
             android:hint="请输入密码"
             android:inputType="textPassword"
             android:paddingLeft="20dip"
@@ -44,6 +53,7 @@
             android:textColor="#ff444444"
             android:textColorHint="#ffcccccc"
             android:textSize="16sp" />
+        </android.support.design.widget.TextInputLayout>
         <Button
             android:id="@+id/btn_login"
             android:layout_width="fill_parent"
@@ -52,7 +62,7 @@
             android:text="登录"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:layout_below="@id/et_pwd"
+            android:layout_below="@id/userPasswordLayout"
             android:layout_margin="8dp"/>
 
         <LinearLayout
@@ -71,17 +81,16 @@
                 android:layout_height="wrap_content"
                 android:text="忘记密码"
                 android:textColor="#4285F4"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 />
             <TextView
-
                 android:id="@+id/tv_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="新用户注册"
                 android:textColor="#4285F4"
                 android:layout_below="@+id/btn_login"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 />
         </LinearLayout>
 
@@ -92,8 +101,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="60dp"
         android:gravity="center"
         android:orientation="horizontal" >
 
@@ -107,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:text="使用QQ账号登录"
             android:textColor="#4285F4"
             />

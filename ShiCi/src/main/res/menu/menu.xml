@@ -21,7 +21,8 @@
 
     <item android:title="设置">
         <menu>
-            <item android:id="@+id/share" android:icon="@drawable/ic_menu_share"
+            <item android:id="@+id/share"
+                android:icon="@drawable/ic_menu_share"
                 android:title="推荐好友使用" />
 
             <item
