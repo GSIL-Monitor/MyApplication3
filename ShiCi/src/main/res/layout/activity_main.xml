@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.yuwen.activity.MainActivity">
+    tools:context=".activity.MainActivity">
 
     <FrameLayout
         android:id="@+id/content"
@@ -18,7 +18,7 @@
 <TextView
     android:layout_width="match_parent"
     android:layout_height="1dp"
-    android:background="@color/background"/>
+    android:background="@color/layoutBackground"/>
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"

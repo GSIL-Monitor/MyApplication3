@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.yuwen.activity.CompositionDetailActivity"
+    tools:context=".activity.CompositionDetailActivity"
     android:id="@+id/compositionDetailLayout">
     <ScrollView
         android:layout_width="0dp"
@@ -19,7 +19,7 @@
 
 
     <TextView
-        android:paddingTop="10dp"
+        android:paddingTop="15dp"
         android:id="@+id/compositionTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

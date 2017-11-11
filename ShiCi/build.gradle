@@ -9,7 +9,7 @@ android {
     lintOptions {
         abortOnError false
     }
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion '25.0.0'
 
     //兼容Android6.0系统所需，如果这句话报错，可在dependencies标签下使用compile 'cn.bmob.android:http-legacy:1.0'**
@@ -19,9 +19,9 @@ android {
     defaultConfig {
         applicationId "com.cxy.yuwen"
         minSdkVersion 15
-        targetSdkVersion 24
-        versionCode 15
-        versionName "2.5.7"
+        targetSdkVersion 25
+        versionCode 19
+        versionName "2.6.3"
         /* jackOptions {
             enabled true
         }*/
@@ -54,14 +54,14 @@ dependencies {
     /*compile 'com.squareup.okhttp3:okhttp:3.6.0'*/
     compile files('libs/pay66.jar')
 
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support:design:25.0.1'
     compile 'cn.bmob.android:bmob-sdk:3.5.5'
     compile 'mi-appstore:xiaomi-update-sdk:2.8'
     compile 'cn.bmob.android:http-legacy:1.0'
-    compile 'com.android.support:support-vector-drawable:24.2.1'
-    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:support-vector-drawable:25.0.1'
+    compile 'com.android.support:support-v4:25.0.1'
     testCompile 'org.testng:testng:6.9.6'
     testCompile 'junit:junit:4.12'
 }

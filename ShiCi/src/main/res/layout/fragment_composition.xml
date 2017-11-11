@@ -70,7 +70,8 @@
             android:background="#f2f2f2"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:paddingTop="10dp">
+            android:paddingTop="8dp"
+            android:paddingBottom="5dp">
             <Spinner
                 android:id="@+id/fontNum"
                 android:layout_width="0dp"

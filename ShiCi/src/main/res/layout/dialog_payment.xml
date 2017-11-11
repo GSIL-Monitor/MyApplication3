@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="com.yuwen.activity.MemberActivity"
+    tools:context=".activity.MemberActivity"
     android:background="#f5f2f2"
     android:id="@+id/payment_layout">
 
@@ -73,7 +73,7 @@
             android:layout_marginTop="15dp"
             android:text="支付宝支付"
             android:checked="true"/>
-       <!-- <RadioButton
+        <RadioButton
             android:id="@+id/wxPay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="15dp"
             android:text="微信支付"
-            />-->
+            />
 
 
     </RadioGroup>
