@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.cxy.yuwen.fragment.YilinFragment"
+    android:orientation="vertical">
+
+
+   <!-- // 导航栏背景颜色
+    android:background="#ffff00"
+    //指示器颜色
+    app:tabIndicatorColor="#66ff33"
+    //指示器高度
+    app:tabIndicatorHeight="20p"
+    //普通状态下文字的颜色
+    app:tabTextColor="@color/colorPrimary"
+    //选中时文字的颜色
+    app:tabSelectedTextColor="#CC33FF"
+    //是否可滑动：fixed：固定；scrollable：可滑动
+    app:tabMode="fixed"-->
+    <android.support.design.widget.TabLayout
+        android:id="@+id/yilin_tab"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        android:background="@color/colorPrimary"
+        app:tabIndicatorColor="@color/colorAccent"
+        app:tabIndicatorHeight="5dp"
+        app:tabTextColor="#DDDDDD"
+        app:tabSelectedTextColor="#ffffff"
+        app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
+        app:tabMode="scrollable">
+    </android.support.design.widget.TabLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/yilin_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v4.view.ViewPager>
+
+
+</LinearLayout>

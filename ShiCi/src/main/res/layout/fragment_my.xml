@@ -6,7 +6,14 @@
     tools:context=".fragment.MyFragment"
     android:orientation="vertical"
     android:background="@color/layoutBackground">
-
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:title="语文助手"
+        />
     <LinearLayout
         android:id="@+id/clickLayout"
         android:layout_width="match_parent"

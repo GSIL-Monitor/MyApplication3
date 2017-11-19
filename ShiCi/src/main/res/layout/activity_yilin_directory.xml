@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cxy.yuwen.activity.YilinDirectoryActivity"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/directory_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="《意林》2017年第12期目录"
+        android:paddingTop="15dp"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:paddingBottom="10dp"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/directory_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

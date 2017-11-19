@@ -20,7 +20,7 @@
 
     <uses-permission android:name="com.cxy.yuwen.permission.MIPUSH_RECEIVE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="com.xiaomi.market.sdk.UPDATE"/>
+    <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
 
     <application
         android:name=".MyApplication"
@@ -31,7 +31,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -106,6 +107,7 @@
                 <action android:name="com.xiaomi.push.PING_TIMER" />
             </intent-filter>
         </receiver>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.cxy.yuwen.selfupdate.fileprovider"
@@ -116,8 +118,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity
-            android:name=".activity.PushActivity" />
+        <activity android:name=".activity.PushActivity" />
         <activity
             android:name=".activity.CollectActivity"
             android:parentActivityName=".activity.MainActivity" />
@@ -143,7 +144,6 @@
                 <data android:scheme="1106093430" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -164,10 +164,11 @@
         <activity
             android:name=".activity.FindPasswordActivity"
             android:parentActivityName=".activity.LoginActivity" />
-        <activity android:name=".activity.BindPhoneActivity"
-            android:parentActivityName=".activity.SettingInfomationActivity">
-
-        </activity>
+        <activity
+            android:name=".activity.BindPhoneActivity"
+            android:parentActivityName=".activity.SettingInfomationActivity" />
+        <activity android:name=".activity.YilinDirectoryActivity" />
+        <activity android:name=".activity.YilinArticleActivity"></activity>
     </application>
 
 </manifest>

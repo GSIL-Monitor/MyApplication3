@@ -1,6 +1,6 @@
 package com.cxy.yuwen.fragment;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,9 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -245,7 +247,12 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         return layoutView;
     }
 
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+       // ActionBar actionBar=((AppCompatActivity) getActivity()).getSupportActionBar();
+      //  actionBar.show();
+    }
 
     @Override
     public void onClick(View v) {

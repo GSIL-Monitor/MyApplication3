@@ -1,13 +1,15 @@
 package com.cxy.yuwen.fragment;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -97,6 +99,7 @@ public class CompositionFragment extends Fragment
       /*  Toolbar toolbar = (Toolbar)layoutView .findViewById(R.id.compositiontoolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 */
+       // getActivity().getActionBar().hide();
         spinnerGrade=(Spinner)layoutView.findViewById(R.id.grade);
         spinnerType=(Spinner)layoutView.findViewById(R.id.comTheme);
         spinnerFontSum=(Spinner)layoutView.findViewById(R.id.fontNum);
@@ -260,6 +263,13 @@ public class CompositionFragment extends Fragment
 
 
         return layoutView;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+       // ActionBar actionBar=((AppCompatActivity) getActivity()).getSupportActionBar();
+       // actionBar.hide();
     }
 
 

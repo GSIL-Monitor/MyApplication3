@@ -1,11 +1,14 @@
 package com.cxy.yuwen.fragment;
 
-import android.app.Fragment;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -54,7 +57,12 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         return layoutView;
     }
 
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+      //  ActionBar actionBar=((AppCompatActivity) getActivity()).getSupportActionBar();
+      //  actionBar.show();
+    }
 
     @Override
     public void onStart() {

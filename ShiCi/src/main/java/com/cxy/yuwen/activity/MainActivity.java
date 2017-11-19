@@ -1,16 +1,17 @@
 package com.cxy.yuwen.activity;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 
 
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.MenuItem;
 
 import com.cxy.yuwen.R;
+import com.cxy.yuwen.fragment.YilinFragment;
 import com.cxy.yuwen.tool.NetWorkUtils;
 import com.cxy.yuwen.tool.Util;
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
@@ -29,7 +30,7 @@ public class MainActivity extends BasicActivity {
 
     public static List<String> logList = new CopyOnWriteArrayList<String>();
 
-    private String tabs[]={"查询","作文大全","我的"};
+    private String tabs[]={"查询","作文大全","我的","意林"};
 
 
 
@@ -88,6 +89,9 @@ public class MainActivity extends BasicActivity {
                   //  mTextMessage.setText(R.string.title_notifications);
                     switchFragmentSupport(R.id.content,tabs[2]);
                     return true;
+                case R.id.navigation_yilin:
+                    switchFragmentSupport(R.id.content,tabs[3]);
+                    return true;
             }
             return false;
         }
@@ -101,7 +105,7 @@ public class MainActivity extends BasicActivity {
      */
     public void switchFragmentSupport(int containerId,String tag){
         //获取FragmentManager管理器
-        FragmentManager manager=getFragmentManager();
+        FragmentManager manager=getSupportFragmentManager();
         //根据tab标签名查找是否已存在对应的Fragment对象
         Fragment destFragment=manager.findFragmentByTag(tag);
 
@@ -109,7 +113,7 @@ public class MainActivity extends BasicActivity {
             if (tag.equals(tabs[0])) destFragment=new MainFragment();
             if (tag.equals(tabs[1])) destFragment=new CompositionFragment();
             if (tag.equals(tabs[2])) destFragment=new MyFragment();
-           // if (tag.equals(tabs[3])) destFragment=new Fragment4();
+            if (tag.equals(tabs[3])) destFragment=YilinFragment.newInstance();
         }
         FragmentTransaction ft=manager.beginTransaction();
 
