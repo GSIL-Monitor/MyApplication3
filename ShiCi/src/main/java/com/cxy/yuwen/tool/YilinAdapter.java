@@ -1,6 +1,4 @@
 package com.cxy.yuwen.tool;
-
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -11,11 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cxy.yuwen.R;
-import com.cxy.yuwen.activity.MainActivity;
 import com.cxy.yuwen.activity.YilinArticleActivity;
 import com.cxy.yuwen.activity.YilinDirectoryActivity;
-import com.cxy.yuwen.fragment.CompositionFragment;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -34,7 +29,7 @@ public class YilinAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final String TYPE_TIME="2";
     public static final String YILIN_URL="http://www.92yilin.com/";
     public static final String DIRECTORY_FLAG="directory",ARTICLE_FLAG="article";
-    private String activityFalg;
+    private String activityFalg,directoryUrl;
 
     public YilinAdapter(Context context,ArrayList<ParcelableMap> dataList,String activityFalg) {
         this.context=context;
@@ -42,9 +37,16 @@ public class YilinAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.dataList = dataList;
         this.activityFalg=activityFalg;
     }
+    public YilinAdapter(Context context,ArrayList<ParcelableMap> dataList,String activityFalg,String directoryUrl) {
+        this.context=context;
+        this.mInflater=LayoutInflater.from(context);
+        this.dataList = dataList;
+        this.activityFalg=activityFalg;
+        this.directoryUrl=directoryUrl;
+    }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType,int) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
             View view = mInflater.inflate(R.layout.yilin_item_content, parent, false);
             ItemHolder viewHolder = new ItemHolder(view);
@@ -82,7 +84,7 @@ public class YilinAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                       }
                       if (activityFalg.equals(ARTICLE_FLAG)){
                           Intent intent=new Intent(context, YilinArticleActivity.class);
-                          intent.putExtra("url",(String) map.get("href"));
+                          intent.putExtra("url",YILIN_URL+directoryUrl+"/"+(String)map.get("href"));
                           context.startActivity(intent);
                       }
 

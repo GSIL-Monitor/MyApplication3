@@ -73,7 +73,7 @@ public class CompositionFragment extends Fragment
     private static String urlBase="http://zuowen.api.juhe.cn/zuowen/baseList";
     private static String urlContent="http://zuowen.api.juhe.cn/zuowen/content";
     private static final String APPKEY_COMPOSITION ="cf7b0e43bbe17e82cc632163361ccfcf";  //作文key
-    private  final Integer SELECT_TOTAL_COUNT=3;
+    private  final Integer SELECT_TOTAL_COUNT=1;
     private TextView btnConfirm;
     private Integer gradeId,typeId,wordId,level;
     private RecyclerView compositionLv;
@@ -816,7 +816,7 @@ public void resolveJson(String gradeData,String typeData,String fontData, String
                                 if (e == null) {
                                     if (list.size() == 0) {  //
 
-                                        AlertDialog dlg = new AlertDialog.Builder(getActivity()).setTitle("提示").setMessage("你的会员已经过期,现在每天只能免费查看3篇作文")
+                                        AlertDialog dlg = new AlertDialog.Builder(getActivity()).setTitle("提示").setMessage("你的会员已经过期,现在每天只能免费查看1篇作文")
                                                 .setPositiveButton("去充值会员", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {

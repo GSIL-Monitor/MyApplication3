@@ -14,7 +14,8 @@
         android:paddingTop="15dp"
         android:textSize="22sp"
         android:gravity="center"
-        android:paddingBottom="10dp"/>
+        android:paddingBottom="10dp"
+        android:textColor="@color/colorFont"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/directory_rv"
         android:layout_width="match_parent"

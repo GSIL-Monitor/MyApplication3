@@ -13,10 +13,12 @@ import com.cxy.yuwen.tool.PermissionHelper;
 public class BasicActivity extends AppCompatActivity {
 
     protected PermissionHelper mPermissionHelper;
-    public static final String TAG = "com.example.yuwen";
+    protected static final String TAG = "com.example.yuwen";
+    protected static final String YOUMI_AD_TAG="youmi";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkPermmion(this);
        // setContentView(R.layout.activity_basic);
     }
 

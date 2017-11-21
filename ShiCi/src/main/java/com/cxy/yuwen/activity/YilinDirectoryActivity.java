@@ -13,7 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.R;
+import com.cxy.yuwen.tool.ACache;
 import com.cxy.yuwen.tool.Divider;
 import com.cxy.yuwen.tool.ParcelableMap;
 import com.cxy.yuwen.tool.Util;
@@ -30,22 +32,25 @@ import java.util.HashMap;
 
 import cn.bmob.v3.http.bean.Init;
 
-public class YilinDirectoryActivity extends AppCompatActivity {
+public class YilinDirectoryActivity extends BasicActivity {
     private static final String YILIN_URL="http://www.92yilin.com/";
-    private String url="";
+    private String url="",directoryUrl="";
     private ArrayList list=new ArrayList<ParcelableMap>();
     private TextView tvTitle;
     private RecyclerView recyclerView;
     private YilinAdapter yilinAdapter;
     private static  final int LOAD_FINISHED=100;
     private String title="";
+    private ACache mCache;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yilin_directory);
+        MyApplication.getInstance().addActivity(this);
+        mCache = ACache.get(this);
         Intent intent=getIntent();
-        url=YILIN_URL+intent.getStringExtra("url");  //爬虫完全地址
-
+        url=YILIN_URL+intent.getStringExtra("url");  //爬虫目录完全地址
+        directoryUrl=intent.getStringExtra("url").split("/")[0];      //2017_05_zw 用作缓存的key
         initView();
         Thread pachong=new Thread(runnable);
         pachong.start();
@@ -71,9 +76,9 @@ public class YilinDirectoryActivity extends AppCompatActivity {
        Divider divider = new Divider(new ColorDrawable(0xffcccccc), OrientationHelper.VERTICAL);
        //单位:px
        divider.setMargin(8, 8, 8, 0);
-       divider.setHeight(5);
+       divider.setHeight(2);
        recyclerView.addItemDecoration(divider);
-       yilinAdapter=new YilinAdapter(this,list,YilinAdapter.ARTICLE_FLAG);
+       yilinAdapter=new YilinAdapter(this,list,YilinAdapter.ARTICLE_FLAG,directoryUrl);
        recyclerView.setAdapter(yilinAdapter);
 
 
@@ -84,13 +89,19 @@ public class YilinDirectoryActivity extends AppCompatActivity {
         public void run() {
             try {
 
-                Document doc = Jsoup.connect(url).get();
+                String html=mCache.getAsString(directoryUrl);
+                if (html==null){
+                    Document docHtml = Jsoup.connect(url).get();
+                    mCache.put(directoryUrl,docHtml.toString(),20* ACache.TIME_DAY);
+                    html=docHtml.toString();
+                }
+                Document doc = Jsoup.parse(html);
                 //获取标题
                 title= doc.getElementsByTag("h1").get(0).text();
                 Elements spans=doc.getElementsByTag("span");  //获取所有<span>元素
                 for (int i=0;i<spans.size();i++){
 
-                    Elements contents=spans.get(i).getElementsByClass("maglisttitle");
+                    Elements contents=spans.get(i).getElementsByTag("a");
                     if (contents.size()>0){  //详细目录
                         HashMap<String,String> smallMap=new HashMap<String,String>();//boldMap
                         smallMap.put("type","2");   //详细目录

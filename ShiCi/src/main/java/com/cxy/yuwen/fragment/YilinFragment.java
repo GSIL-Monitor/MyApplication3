@@ -110,9 +110,9 @@ public class YilinFragment extends Fragment {
             try {
                 String html=mCache.getAsString("Indexhtml");
                  if (html==null){
-                     Document doc = Jsoup.connect("http://www.92yilin.com/").get();
-                     mCache.put("Indexhtml",doc.toString());
-                     html=doc.toString();
+                     Document docHtml = Jsoup.connect("http://www.92yilin.com/").get();
+                     mCache.put("Indexhtml",docHtml.toString(),20* ACache.TIME_DAY);
+                     html=docHtml.toString();
                    }
 
                 Document doc = Jsoup.parse(html);

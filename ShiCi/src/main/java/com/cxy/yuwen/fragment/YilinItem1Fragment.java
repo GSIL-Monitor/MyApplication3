@@ -73,7 +73,7 @@ public class YilinItem1Fragment extends Fragment {
         Divider divider = new Divider(new ColorDrawable(0xffcccccc), OrientationHelper.VERTICAL);
         //单位:px
         divider.setMargin(8, 8, 8, 0);
-        divider.setHeight(5);
+        divider.setHeight(3);
         recyclerView.addItemDecoration(divider);
         YilinAdapter adapter=new YilinAdapter(getContext(),dataList,YilinAdapter.DIRECTORY_FLAG);
         recyclerView.setAdapter(adapter);

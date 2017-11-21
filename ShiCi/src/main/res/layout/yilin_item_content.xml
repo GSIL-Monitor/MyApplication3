@@ -10,7 +10,9 @@
         android:layout_margin="8dp"
         android:paddingLeft="12dp"
         android:textSize="18sp"
-        android:textColor="#555"
-        android:text="2017年第11期"/>
+        android:textColor="#37a"
+        android:text="2017年第11期"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"/>
 
 </LinearLayout>

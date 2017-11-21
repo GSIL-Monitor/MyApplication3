@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -38,9 +39,12 @@ import java.util.List;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
+import ddd.eee.fff.nm.cm.ErrorCode;
+import ddd.eee.fff.nm.sp.SpotListener;
+import ddd.eee.fff.nm.sp.SpotManager;
 
 public class ChengyuActivity extends BasicActivity {
-    public static final String TAG = "AD-StandardNewsFeed";
+   // public static final String TAG = "AD-StandardNewsFeed";
     public static final String TAG2 = "AD-StandardFeed";
     //for app
     private final static String APP_POSITION_ID = "babc24ad9259219380f42c1d625a49d5";
@@ -48,7 +52,7 @@ public class ChengyuActivity extends BasicActivity {
     TextView nametv,pinyintv,jiehsitv,fromtv,exampletv,yufatv,yinzhengtv,tongyitv,fanyitv,yinzhengjs;
     ScrollView scrollView;
     private InterstitialAd mInterstitialAd;
-    boolean adFlag,isFirst=true;;
+    boolean adFlag=true,isFirst=true;;
     private PermissionHelper mPermissionHelper;
     private FloatingActionButton fb;
     @Override
@@ -87,6 +91,7 @@ public class ChengyuActivity extends BasicActivity {
         yinzhengtv.setText(chengyu.getYinzheng());
         tongyitv.setText(chengyu.getTongyi());
         fanyitv.setText(chengyu.getFanyi());
+        setupSpotAd();  //设置有米插屏广告
         final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
         container.post(new Runnable() {
             @Override
@@ -140,8 +145,8 @@ public class ChengyuActivity extends BasicActivity {
             }
         });
 
-        //初始化插屏广告
-        initAd();
+        /*//初始化插屏广告
+       initAd();
         scrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -177,7 +182,7 @@ public class ChengyuActivity extends BasicActivity {
 
                 return false;
             }
-        });
+        });*/
 
         fb.setOnClickListener(new View.OnClickListener() {
             DBOperate dBOperate=null;
@@ -258,6 +263,98 @@ public class ChengyuActivity extends BasicActivity {
 
     }
 
+    /**
+     * 设置插屏广告
+     */
+    private void setupSpotAd() {
+        // 设置插屏图片类型，默认竖图
+        //	// 横图
+        //		SpotManager.getInstance(mContext).setImageType(SpotManager
+        // .IMAGE_TYPE_HORIZONTAL);
+        // 竖图
+        SpotManager.getInstance(this).setImageType(SpotManager.IMAGE_TYPE_VERTICAL);
+
+        // 设置动画类型，默认高级动画
+        //		// 无动画
+        //		SpotManager.getInstance(mContext).setAnimationType(SpotManager
+        // .ANIMATION_TYPE_NONE);
+        //		// 简单动画
+        //		SpotManager.getInstance(mContext).setAnimationType(SpotManager
+        // .ANIMATION_TYPE_SIMPLE);
+        // 高级动画
+        SpotManager.getInstance(this)
+                .setAnimationType(SpotManager.ANIMATION_TYPE_ADVANCED);
+
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // 判断 scrollView 当前滚动位置在顶部
+                if(scrollView.getScrollY() <= 0&&adFlag){
+                    Log.i(TAG, "滑到了顶部!");
+                    adFlag=false;
+
+                    // 展示插屏广告
+                    SpotManager.getInstance(ChengyuActivity.this).showSpot(ChengyuActivity.this, new SpotListener() {
+
+                        @Override
+                        public void onShowSuccess() {
+                            Log.i(YOUMI_AD_TAG,"插屏展示成功");
+                        }
+
+                        @Override
+                        public void onShowFailed(int errorCode) {
+                            Log.e(YOUMI_AD_TAG,"插屏展示失败");
+                            switch (errorCode) {
+                                case ErrorCode.NON_NETWORK:
+                                    Log.e(YOUMI_AD_TAG,"网络异常");
+                                    break;
+                                case ErrorCode.NON_AD:
+                                    Log.e(YOUMI_AD_TAG,"暂无插屏广告");
+                                    break;
+                                case ErrorCode.RESOURCE_NOT_READY:
+                                    Log.e(YOUMI_AD_TAG,"插屏资源还没准备好");
+                                    break;
+                                case ErrorCode.SHOW_INTERVAL_LIMITED:
+                                    Log.e(YOUMI_AD_TAG,"请勿频繁展示");
+                                    break;
+                                case ErrorCode.WIDGET_NOT_IN_VISIBILITY_STATE:
+                                    Log.e(YOUMI_AD_TAG,"请设置插屏为可见状态");
+                                    break;
+                                default:
+                                    Log.e(YOUMI_AD_TAG,"请稍后再试");
+                                    break;
+                            }
+                        }
+
+                        @Override
+                        public void onSpotClosed() {
+                            Log.e(YOUMI_AD_TAG,"插屏被关闭");
+                        }
+
+                        @Override
+                        public void onSpotClicked(boolean isWebPage) {
+                            Log.e(YOUMI_AD_TAG,"插屏被点击");
+                            Log.e(YOUMI_AD_TAG,isWebPage? "是" : "不是"+"网页广告");
+                        }
+                    });  //
+
+                }
+                // 判断scrollview 滑动到底部
+                // scrollY 的值和子view的高度一样，滑动到了底部
+                if (scrollView.getChildAt(0).getHeight() - scrollView.getHeight()== scrollView.getScrollY()){
+
+                    Log.i(TAG, "滑到了底部!");
+                    adFlag=true;
+
+                }
+
+                return false;
+            }
+        });
+
+
+    }
+
 
     public void initAd(){
         try {
@@ -327,4 +424,36 @@ public class ChengyuActivity extends BasicActivity {
 
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+        // 点击后退关闭插屏广告
+        if (SpotManager.getInstance(ChengyuActivity.this).isSpotShowing()) {
+            SpotManager.getInstance(ChengyuActivity.this).hideSpot();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 插屏广告
+        SpotManager.getInstance(ChengyuActivity.this).onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // 插屏广告
+        SpotManager.getInstance(ChengyuActivity.this).onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 插屏广告
+        SpotManager.getInstance(ChengyuActivity.this).onDestroy();
+    }
+
 }

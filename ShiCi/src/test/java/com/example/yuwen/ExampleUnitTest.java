@@ -122,4 +122,18 @@ public class ExampleUnitTest {
             }
         });
     }
+    @Test
+    public void getUrl(){
+        String url="http://www.92yilin.com/sn_2017_04/ylsn20170401.html";
+        String[] array=url.split("/");
+        System.out.println(array.length);
+        for (int i=0;i<array.length;i++) {
+            System.out.println(array[i]);
+        }
+        System.out.println(array[array.length-1]);  //ylsn20170401.html
+        String s=array[array.length-1];
+
+        System.out.println(("ylsn20170401.html".trim()).split(".").length);
+
+    }
 }
