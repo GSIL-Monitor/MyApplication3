@@ -48,11 +48,11 @@ public class ChengyuActivity extends BasicActivity {
     public static final String TAG2 = "AD-StandardFeed";
     //for app
     private final static String APP_POSITION_ID = "babc24ad9259219380f42c1d625a49d5";
-    private static final String CHAPING_ID = "75e8e9b5dfc5d08c07c3b3ef0aaa2a9f";   //插屏广告id
+    private static final String CHAPING_ID = "4a69307fd900443f8352830d2e22d962";   //小米插屏广告id
     TextView nametv,pinyintv,jiehsitv,fromtv,exampletv,yufatv,yinzhengtv,tongyitv,fanyitv,yinzhengjs;
     ScrollView scrollView;
     private InterstitialAd mInterstitialAd;
-    boolean adFlag=true,isFirst=true;;
+    boolean adFlag=false,isFirst=true;
     private PermissionHelper mPermissionHelper;
     private FloatingActionButton fb;
     @Override

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,6 +18,12 @@ import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.ACache;
 import com.cxy.yuwen.tool.Util;
 import com.cxy.yuwen.tool.YilinAdapter;
+import com.xiaomi.ad.AdListener;
+import com.xiaomi.ad.NativeAdInfoIndex;
+import com.xiaomi.ad.NativeAdListener;
+import com.xiaomi.ad.adView.StandardNewsFeedAd;
+import com.xiaomi.ad.common.pojo.AdError;
+import com.xiaomi.ad.common.pojo.AdEvent;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,6 +31,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.List;
 
 import ddd.eee.fff.nm.bn.BannerManager;
 import ddd.eee.fff.nm.bn.BannerViewListener;
@@ -35,6 +43,7 @@ public class YilinArticleActivity extends BasicActivity {
     private static final int LOAD_FINISHED=100;
     private ACache mCache;
     private static final String AD_TAG="youmi";
+    private final static String APP_POSITION_ID ="b210a2197a21fc8ca36235cfebd403f9";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,38 +70,68 @@ public class YilinArticleActivity extends BasicActivity {
         mCache=ACache.get(this);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
-        setAd();
+       // setAd();
+        setXiaomiAd();
     }
 
-    /**
-     * 设置广告条
-     */
-    public void setAd(){
-        // 获取广告条
-        View bannerView = BannerManager.getInstance(this).getBannerView(this, new BannerViewListener() {
+    public void setXiaomiAd(){
+        final ViewGroup adContainer = (ViewGroup) findViewById(R.id.adContainer);
+        final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
+        adContainer.post(new Runnable() {
             @Override
-            public void onRequestSuccess() {
-                Log.i(AD_TAG,"请求广告条成功");
-            }
+            public void run() {
+                try {
+                    standardNewsFeedAd.requestAd(APP_POSITION_ID, 1, new NativeAdListener() {
+                        @Override
+                        public void onNativeInfoFail(AdError adError) {
+                            Log.e(TAG, "onNativeInfoFail e : " + adError);
+                        }
 
-            @Override
-            public void onSwitchBanner() {
-                Log.i(AD_TAG,"广告条切换");
-            }
+                        @Override
+                        public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
+                            NativeAdInfoIndex response = list.get(0);
+                            standardNewsFeedAd.buildViewAsync(response, adContainer.getWidth(), new AdListener() {
+                                @Override
+                                public void onAdError(AdError adError) {
+                                    Log.e(TAG, "error : remove all views");
+                                    adContainer.removeAllViews();
+                                }
 
-            @Override
-            public void onRequestFailed() {
-                Log.e(AD_TAG,"请求广告条失败");
-            }
+                                @Override
+                                public void onAdEvent(AdEvent adEvent) {
+                                    //目前考虑了３种情况，用户点击信息流广告，用户点击x按钮，以及信息流展示的３种回调，范例如下
+                                    if (adEvent.mType == AdEvent.TYPE_CLICK) {
+                                        Log.d(TAG, "ad has been clicked!");
+                                    } else if (adEvent.mType == AdEvent.TYPE_SKIP) {
+                                        Log.d(TAG, "x button has been clicked!");
+                                    } else if (adEvent.mType == AdEvent.TYPE_VIEW) {
+                                        Log.d(TAG, "ad has been showed!");
+                                    }
+                                }
 
+                                @Override
+                                public void onAdLoaded() {
+
+                                }
+
+                                @Override
+                                public void onViewCreated(View view) {
+                                    Log.e(TAG, "onViewCreated");
+                                    adContainer.removeAllViews();
+                                    adContainer.addView(view);
+                                }
+                            });
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         });
-
-         // 获取要嵌入广告条的布局
-        LinearLayout bannerLayout = (LinearLayout) findViewById(R.id.ll_banner);
-
-        // 将广告条加入到布局中
-        bannerLayout.addView(bannerView);
+        
+        
     }
+
 
     @Override
     protected void onDestroy() {

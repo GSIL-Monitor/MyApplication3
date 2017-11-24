@@ -184,7 +184,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/fontBackground"
-        android:text="详解"
+        android:text="详解（点我呀）"
         android:textSize="15sp"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
@@ -210,7 +210,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         tools:textIsSelectable="true"
         android:textColor="#000"
-        android:lineSpacingExtra="10dp"/>
+        android:lineSpacingExtra="10dp"
+        android:visibility="gone"/>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/zidianFb"
         android:layout_width="wrap_content"

@@ -9,27 +9,17 @@
     tools:context=".activity.CiYuActivity"
     android:id="@+id/ciYuConstraintLayout">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/ciYuFb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/btn_star_big_on"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="276dp"
-        android:layout_marginRight="3dp"
-        app:layout_constraintRight_toRightOf="parent"
-        />
-
+<ScrollView
+    android:id="@+id/sc"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent">
     <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
 
         <TextView
             android:id="@+id/ci_title"
@@ -41,7 +31,8 @@
             android:paddingTop="20dp"
             android:textColor="#000"
             android:textIsSelectable="true"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:text="词语"/>
 
         <TextView
             android:id="@+id/ci_pinyin"
@@ -71,7 +62,22 @@
             android:id="@+id/containerCi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
+            android:layout_below="@id/ci_jieshi"
+            android:layout_marginTop="200dp"
+            android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
+</ScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/ciYuFb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/btn_star_big_on"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="276dp"
+        android:layout_marginRight="3dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="3dp" />
 </android.support.constraint.ConstraintLayout>
