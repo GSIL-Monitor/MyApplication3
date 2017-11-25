@@ -22,11 +22,13 @@ import com.cxy.yuwen.activity.FeedbackActivity;
 import com.cxy.yuwen.activity.LoginActivity;
 import com.cxy.yuwen.activity.MemberActivity;
 import com.cxy.yuwen.activity.SettingInfomationActivity;
+import com.cxy.yuwen.activity.SplashActivity;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.Util;
 
 import cn.bmob.v3.BmobUser;
+import ddd.eee.fff.nm.sp.SpotManager;
 
 
 public class MyFragment extends Fragment implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener {
@@ -136,6 +138,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         }
 
         if (id==R.id.exit){   //退出
+            SpotManager.getInstance( MyApplication.getInstance()).onAppExit();
             MyApplication.getInstance().exit();
         }
 

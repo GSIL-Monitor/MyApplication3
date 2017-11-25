@@ -37,10 +37,13 @@ import java.util.List;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
+import ddd.eee.fff.nm.cm.ErrorCode;
+import ddd.eee.fff.nm.sp.SpotListener;
+import ddd.eee.fff.nm.sp.SpotManager;
 
 public class ShiciActivity extends BasicActivity {
-    public static final String TAG = "AD-StandardNewsFeed";
-    public static final String TAG2 = "AD-StandardFeed";
+  /*  public static final String TAG = "AD-StandardNewsFeed";
+    public static final String TAG2 = "AD-StandardFeed";*/
 
     //for app
     private final static String APP_POSITION_ID = "0bf60bb0922f49d649dbfcb0200ecfff";
@@ -52,7 +55,7 @@ public class ShiciActivity extends BasicActivity {
     TextView title,zuozhe,content,zhushi;
     ScrollView scrollView;
     private PermissionHelper mPermissionHelper;
-    boolean adFlag,isFirst=true;
+    boolean adFlag=false;
     FloatingActionButton fb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +81,7 @@ public class ShiciActivity extends BasicActivity {
         Intent intent = this.getIntent();
         article= (Article) intent.getSerializableExtra("article");
 
-       // Typeface typeFace = Typeface.createFromAsset(getAssets(),"fonts/kaiti.ttf");
+       // Typeface typeFace = Typeface.createFromAsset(getAssets(),"fonts/kaiti.ttf");  //设置字体
        // content.setTypeface(typeFace);
 
         String contentStr=article.getContent().replace("\\r\\n","\r\n");
@@ -147,45 +150,9 @@ public class ShiciActivity extends BasicActivity {
             }
         });
 
-        //初始化插屏广告
-        initAd();
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                  // 判断 scrollView 当前滚动位置在顶部
-                if(scrollView.getScrollY() <= 0&&!isFirst){
-                    Log.e(TAG2, "滑到了顶部!");
-                    if (adFlag){
-                        try {
-                            if (!mInterstitialAd.isReady()) {
-                                adFlag=false;
-                                Log.e(TAG, "ad is not ready!");
-                            } else {
-                                mInterstitialAd.show();
-                            }
-                        } catch (Exception e) {
-                        } finally {
-                            //单次预缓存的广告无论结果只显示一次,请求新的广告需要再次调用预缓存接口
-                            adFlag=false;
-                        }
-                    }
-
-
-                }
-                  // 判断scrollview 滑动到底部
-                  // scrollY 的值和子view的高度一样，滑动到了底部
-                if (scrollView.getChildAt(0).getHeight() - scrollView.getHeight()== scrollView.getScrollY()){
-
-                    Log.e(TAG2, "滑到了底部!");
-                    isFirst=false;
-                    initAd();
-                    adFlag=true;
-                }
-
-                return false;
-            }
-        });
-
+        //设置插屏广告
+        setChapingAd();
+        //收藏
         fb.setOnClickListener(new View.OnClickListener() {
             DBOperate dBOperate=null;
 
@@ -241,28 +208,110 @@ public class ShiciActivity extends BasicActivity {
     }
 
 
-   /* @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        mPermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
+public void setChapingAd(){
+    //初始化小米插屏广告
+  //  initAd();
+    //设置有米广告
+    // 竖图
+    SpotManager.getInstance(this).setImageType(SpotManager.IMAGE_TYPE_VERTICAL);
+    // 高级动画
+    SpotManager.getInstance(this).setAnimationType(SpotManager.ANIMATION_TYPE_ADVANCED);
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        mPermissionHelper.onActivityResult(requestCode, resultCode, data);
-    }*/
+    scrollView.setOnTouchListener(new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            // 判断 scrollView 当前滚动位置在顶部
+            if(scrollView.getScrollY() <= 0&&adFlag){
+                Log.i(TAG, "滑到了顶部!");
+                adFlag=false;
+              /*  try {
+                    if (!mInterstitialAd.isReady()) {
+                        adFlag=false;
+                        Log.e(TAG, "ad is not ready!");
+                    } else {
+                        mInterstitialAd.show();
+                    }
+                } catch (Exception e) {
+                } finally {
+                    //单次预缓存的广告无论结果只显示一次,请求新的广告需要再次调用预缓存接口
+                    adFlag=false;
+                }*/
+            }
+
+
+
+            // 判断scrollview 滑动到底部
+            // scrollY 的值和子view的高度一样，滑动到了底部
+            if (scrollView.getChildAt(0).getHeight() - scrollView.getHeight()== scrollView.getScrollY()){
+                if (!adFlag){
+                    Log.i(TAG, "滑到了底部!");
+                    initAd();
+                    adFlag=true;
+                    // 展示插屏广告
+                    SpotManager.getInstance(ShiciActivity.this).showSpot(ShiciActivity.this, new SpotListener() {
+
+                        @Override
+                        public void onShowSuccess() {
+                            Log.i(YOUMI_AD_TAG,"插屏展示成功");
+                        }
+
+                        @Override
+                        public void onShowFailed(int errorCode) {
+                            Log.e(YOUMI_AD_TAG,"插屏展示失败");
+                            switch (errorCode) {
+                                case ErrorCode.NON_NETWORK:
+                                    Log.e(YOUMI_AD_TAG,"网络异常");
+                                    break;
+                                case ErrorCode.NON_AD:
+                                    Log.e(YOUMI_AD_TAG,"暂无插屏广告");
+                                    break;
+                                case ErrorCode.RESOURCE_NOT_READY:
+                                    Log.e(YOUMI_AD_TAG,"插屏资源还没准备好");
+                                    break;
+                                case ErrorCode.SHOW_INTERVAL_LIMITED:
+                                    Log.e(YOUMI_AD_TAG,"请勿频繁展示");
+                                    break;
+                                case ErrorCode.WIDGET_NOT_IN_VISIBILITY_STATE:
+                                    Log.e(YOUMI_AD_TAG,"请设置插屏为可见状态");
+                                    break;
+                                default:
+                                    Log.e(YOUMI_AD_TAG,"请稍后再试");
+                                    break;
+                            }
+                        }
+
+                        @Override
+                        public void onSpotClosed() {
+                            Log.e(YOUMI_AD_TAG,"插屏被关闭");
+                        }
+
+                        @Override
+                        public void onSpotClicked(boolean isWebPage) {
+                            Log.e(YOUMI_AD_TAG,"插屏被点击");
+                            Log.e(YOUMI_AD_TAG,isWebPage? "是" : "不是"+"网页广告");
+                        }
+                    });  //
+                }
+
+            }
+
+            return false;
+        }
+    });
+
+
+}
 
 
    public void initAd(){
        try {
            if (mInterstitialAd.isReady()) {
-               Log.e(TAG2, "ad has been cached");
+               Log.e(TAG, "ad has been cached");
            } else {
                mInterstitialAd.requestAd(CHAPING_ID, new AdListener() {
                    @Override
                    public void onAdError(AdError adError) {
-                       Log.e(TAG2, "onAdError : " + adError.toString());
+                       Log.e(TAG, "onAdError : " + adError.toString());
                        adFlag=false;
                    }
 
@@ -272,11 +321,11 @@ public class ShiciActivity extends BasicActivity {
                            switch (adEvent.mType) {
                                case AdEvent.TYPE_SKIP:
                                    //用户关闭了广告
-                                   Log.e(TAG2, "ad skip!");
+                                   Log.e(TAG, "ad skip!");
                                    break;
                                case AdEvent.TYPE_CLICK:
                                    //用户点击了广告
-                                   Log.e(TAG2, "ad click!");
+                                   Log.e(TAG, "ad click!");
                                    break;
                            }
                        } catch (Exception e) {
@@ -286,7 +335,7 @@ public class ShiciActivity extends BasicActivity {
 
                    @Override
                    public void onAdLoaded() {
-                       Log.e(TAG2, "ad is ready : " + mInterstitialAd.isReady());
+                       Log.e(TAG, "ad is ready : " + mInterstitialAd.isReady());
                        adFlag=true;
                    }
 
@@ -311,6 +360,36 @@ public class ShiciActivity extends BasicActivity {
         }
 
         return true;
+    }
+    @Override
+    public void onBackPressed() {
+        // 点击后退关闭插屏广告
+        if (SpotManager.getInstance(ShiciActivity.this).isSpotShowing()) {
+            SpotManager.getInstance(ShiciActivity.this).hideSpot();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 插屏广告
+        SpotManager.getInstance(ShiciActivity.this).onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // 插屏广告
+        SpotManager.getInstance(ShiciActivity.this).onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 插屏广告
+        SpotManager.getInstance(ShiciActivity.this).onDestroy();
     }
 
 }

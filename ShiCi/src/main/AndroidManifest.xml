@@ -33,11 +33,11 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".activity.ShiciActivity" />
         <activity android:name=".activity.ZidianActivity" />
@@ -168,7 +168,16 @@
             android:name=".activity.BindPhoneActivity"
             android:parentActivityName=".activity.SettingInfomationActivity" />
         <activity android:name=".activity.YilinDirectoryActivity" />
-        <activity android:name=".activity.YilinArticleActivity"></activity>
+        <activity android:name=".activity.YilinArticleActivity" />
+        <activity android:name=".activity.SplashActivity"
+                   android:screenOrientation="portrait"
+                   android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

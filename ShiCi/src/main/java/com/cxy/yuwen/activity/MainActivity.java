@@ -30,8 +30,7 @@ public class MainActivity extends BasicActivity {
 
     public static List<String> logList = new CopyOnWriteArrayList<String>();
     private String tabs[]={"查询","作文大全","我的","意林"};
-    private static final String YOUMI_APPID="a8a6ea3c54813bc2";
-    private static final String YOUMI_APPSECRET="a94b2fa629d71895";
+
 
 
     @Override
@@ -49,8 +48,7 @@ public class MainActivity extends BasicActivity {
         //初始化Bmob
         Bmob.initialize(this, CommonUtil.BmobApplicationId,"bmob");
 
-        //初始化有米广告sdk
-        AdManager.getInstance(this).init(YOUMI_APPID, YOUMI_APPSECRET, true);
+
         /*Intent intent=this.getIntent();
         String param=intent.getStringExtra("param");
         if (!Utils.isEmpty(param)){

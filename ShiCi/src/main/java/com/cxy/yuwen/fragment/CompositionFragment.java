@@ -889,7 +889,7 @@ public void resolveJson(String gradeData,String typeData,String fontData, String
                         if (e == null) {
                             if (list.size() == 0) {  //正常查询，向selectCount表插入一条数据
 
-                                AlertDialog dlg = new AlertDialog.Builder(getActivity()).setTitle("提示").setMessage("你当前是免费用户，每天只能免费查看3篇作文")
+                                AlertDialog dlg = new AlertDialog.Builder(getActivity()).setTitle("提示").setMessage("你当前是免费用户，每天只能免费查看1篇作文")
                                         .setNegativeButton("继续查看", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
