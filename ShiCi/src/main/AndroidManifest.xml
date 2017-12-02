@@ -171,6 +171,7 @@
         <activity android:name=".activity.YilinArticleActivity" />
         <activity android:name=".activity.SplashActivity"
                    android:screenOrientation="portrait"
+                   android:theme="@style/AppTheme.NoActionBar"
                    android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -18,9 +18,11 @@ import ddd.eee.fff.nm.sp.SpotListener;
 import ddd.eee.fff.nm.sp.SpotManager;
 
 
-public class SplashActivity extends BasicActivity {
+public class SplashActivity extends AppCompatActivity {
     private static final String YOUMI_APPID="a8a6ea3c54813bc2";
     private static final String YOUMI_APPSECRET="a94b2fa629d71895";
+    private static final String TAG = "com.example.yuwen";
+    private static final String YOUMI_AD_TAG="youmi";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
