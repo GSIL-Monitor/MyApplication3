@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:textSize="18sp"
-            android:text="使用QQ账号登录"
+            android:text="使用QQ账号登录(推荐)"
             android:textColor="#4285F4"
             />
 
