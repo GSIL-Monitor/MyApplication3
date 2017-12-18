@@ -91,7 +91,7 @@ public class ChengyuActivity extends BasicActivity {
         yinzhengtv.setText(chengyu.getYinzheng());
         tongyitv.setText(chengyu.getTongyi());
         fanyitv.setText(chengyu.getFanyi());
-        setupSpotAd();  //设置有米插屏广告
+      //  setupSpotAd();  //设置有米插屏广告
         final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
         container.post(new Runnable() {
             @Override

@@ -151,7 +151,7 @@ public class ShiciActivity extends BasicActivity {
         });
 
         //设置插屏广告
-        setChapingAd();
+      //  setChapingAd();
         //收藏
         fb.setOnClickListener(new View.OnClickListener() {
             DBOperate dBOperate=null;
