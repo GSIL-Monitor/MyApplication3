@@ -39,7 +39,7 @@ public class CiYuActivity extends BasicActivity {
     TextView tvTitle,tvPinyin,tvJieshi;
     private PermissionHelper mPermissionHelper;
     public static final String TAG = "AD-StandardNewsFeed";
-    private final static String APP_POSITION_ID ="29bb635c614bdd0b8056a00cf74743d2";
+    private final static String APP_POSITION_ID ="8d0d22595b6cf5057d6bd467eb09c3d8";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

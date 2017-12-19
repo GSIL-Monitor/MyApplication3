@@ -46,7 +46,7 @@ public class ShiciActivity extends BasicActivity {
     public static final String TAG2 = "AD-StandardFeed";*/
 
     //for app
-    private final static String APP_POSITION_ID = "0bf60bb0922f49d649dbfcb0200ecfff";
+    private final static String APP_POSITION_ID = "2b596f580d784874f792413c6780e4fa";
    // TextView nametv,pinyintv,jiehsitv,fromtv,exampletv,yufatv,yinzhengtv,tongyitv,fanyitv;
    //以下的POSITION_ID 需要使用您申请的值替换下面内容
      private static final String CHAPING_ID = "75e8e9b5dfc5d08c07c3b3ef0aaa2a9f";   //插屏广告id
@@ -361,35 +361,6 @@ public void setChapingAd(){
 
         return true;
     }
-    @Override
-    public void onBackPressed() {
-        // 点击后退关闭插屏广告
-        if (SpotManager.getInstance(ShiciActivity.this).isSpotShowing()) {
-            SpotManager.getInstance(ShiciActivity.this).hideSpot();
-        } else {
-            super.onBackPressed();
-        }
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // 插屏广告
-        SpotManager.getInstance(ShiciActivity.this).onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // 插屏广告
-        SpotManager.getInstance(ShiciActivity.this).onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // 插屏广告
-        SpotManager.getInstance(ShiciActivity.this).onDestroy();
-    }
 
 }
