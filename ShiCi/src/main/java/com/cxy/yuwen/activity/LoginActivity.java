@@ -88,9 +88,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                  public void done(BmobUser bmobUser, BmobException e) {
                      if(e==null){  //login success
                          Util.dismissDialog();
-                         /*Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                         intent.putExtra("param","我的");
-                         startActivity(intent);*/
+
                          finish();
                      }else{
                          Util.dismissDialog();
@@ -113,22 +111,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
         }
     }
-
-    /*class NewClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Context context = v.getContext();
-
-            switch (v.getId()) {
-                case R.id.tv_qq:
-                    onClickLogin();
-
-                    return;
-
-            }
-
-        }
-    }*/
 
     private void onClickLogin() {
 
@@ -267,9 +249,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (response.has("nickname")) {
                         user.setUsername(response.getString("nickname"));
                     }
-                    if (response.has("figureurl_qq_2")) {  //获取到的用户头像
-
-                        Bitmap bitmap = Util.getbitmap(response.getString("figureurl_qq_2"));
+                    if (response.has("figureurl_qq_2")) {  //获取用户头像
+                        String userImageUrl=response.getString("figureurl_qq_2");
+                        user.setHeadImageUrl(userImageUrl);
+                       // Bitmap bitmap = Util.getbitmap(response.getString("figureurl_qq_2"));
 
                     }
                 } catch (Exception e) {

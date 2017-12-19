@@ -10,6 +10,7 @@ public class User extends BmobUser {
     private String place;
     private String person;
     private Integer userType;
+    private String headImageUrl;
     public static final Integer REGISTER_USER=1,QQ_USER=2;
 
     public String getPlace() {
@@ -34,5 +35,13 @@ public class User extends BmobUser {
 
     public void setUserType(Integer userType) {
         this.userType = userType;
+    }
+
+    public String getHeadImageUrl() {
+        return headImageUrl;
+    }
+
+    public void setHeadImageUrl(String headImageUrl) {
+        this.headImageUrl = headImageUrl;
     }
 }

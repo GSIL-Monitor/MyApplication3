@@ -1,5 +1,8 @@
 package com.cxy.yuwen.fragment;
 
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
@@ -7,13 +10,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cxy.yuwen.MyApplication;
@@ -22,9 +24,9 @@ import com.cxy.yuwen.activity.FeedbackActivity;
 import com.cxy.yuwen.activity.LoginActivity;
 import com.cxy.yuwen.activity.MemberActivity;
 import com.cxy.yuwen.activity.SettingInfomationActivity;
-import com.cxy.yuwen.activity.SplashActivity;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.R;
+import com.cxy.yuwen.tool.CommonUtil;
 import com.cxy.yuwen.tool.Util;
 
 import cn.bmob.v3.BmobUser;
@@ -37,6 +39,9 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
     private NavigationView navigationView;
     private TextView tvLogin;
     private View layoutView;
+    private ImageView headImageView;
+    private Bitmap headImage;
+    private static  final int IMAGE_LOAD_FINISHED=100;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,14 +49,11 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
 
         layoutView = inflater.inflate(R.layout.fragment_my, container, false);
         tvLogin = (TextView) layoutView.findViewById(R.id.tv_login);
+        headImageView=(ImageView)layoutView.findViewById(R.id.userImage);
         navigationView = (NavigationView) layoutView.findViewById(R.id.nav_view);
 
-        user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
-        if (user!=null){
-            tvLogin.setText(user.getUsername());
-        }else{
-            tvLogin.setText("点击登录学习账号");
-        }
+
+       // setUserInfo();
         tvLogin.setOnClickListener(this);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -78,13 +80,53 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         super.onResume();
         Log.i("fragment","----------onResume()");
 
+        setUserInfo();
+    }
+
+    public void setUserInfo(){
         user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
         if (user!=null){
             tvLogin.setText(user.getUsername());
+
+            //获取用户头像
+            if (!CommonUtil.isEmpty(user.getHeadImageUrl())){
+                thread.start();
+
+            }
+
         }else{
-            tvLogin.setText("点击登录学习账号");
+             tvLogin.setText("点击登录学习账号");
         }
+
     }
+
+
+    private Thread thread=new Thread(new Runnable() {
+        @Override
+        public void run() {
+
+            headImage = Util.getbitmap(user.getHeadImageUrl());
+            handler.sendEmptyMessage(IMAGE_LOAD_FINISHED);
+        }
+    });
+
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+
+
+            switch (msg.what) {
+                case IMAGE_LOAD_FINISHED:
+                    headImageView.setImageBitmap(headImage);
+                    break;
+            }
+
+        }
+
+    };
+
+
 
     @Override
     public void onClick(View v) {
