@@ -7,9 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,10 +24,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cxy.yuwen.bmobBean.MemberPrice;
+import com.cxy.yuwen.tool.CommonUtil;
 import com.eagle.pay66.Pay66;
 import com.eagle.pay66.listener.CommonListener;
 import com.eagle.pay66.vo.OrderPreMessage;
@@ -48,6 +55,8 @@ import java.util.Date;
 import java.util.List;
 
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -56,10 +65,16 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 
-public class MemberActivity extends AppCompatActivity implements View.OnClickListener{
+public class MemberActivity extends BasicActivity implements View.OnClickListener{
     TextView memberName,memberInfo,payMoney;
     Button oneBtn,threeBtn,sixBtn,payBtn;
     User user;
+    @BindView(R.id.tv_1month_original) TextView tv1Original;
+    @BindView(R.id.tv_1month_current) TextView tv1Current;
+    @BindView(R.id.tv_3month_original) TextView tv3Original;
+    @BindView(R.id.tv_3month_current) TextView tv3current;
+    @BindView(R.id.tv_6month_original) TextView tv6Original;
+    @BindView(R.id.tv_6month_current) TextView tv6Current;
 
     View contentView;
     RadioButton alipayBtn,wxpayBtn;
@@ -67,10 +82,14 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
     double money;
     private static final String TAG_CREATE_ORDER = "createOrder";
     private static final String TAG_PAY_ORDER = "payOrder";
-    private static final double MONEY_ONE_MONTH=8,MONEY_THREE_MONTH=22,MONEY_SIX_MONTH=42;
+    private  double originalOne,originalThree,originalSix;   //原来的价格
+    private  double currentOne,currentThree,currentSix;   //现在的价格
     int count=0;
     private static final String alipayPackageName = "com.eg.android.AlipayGphone";
     private static final String wxpayPackageName = "com.tencent.mm";
+    private static  final int IMAGE_LOAD_FINISHED=100;
+    private ImageView imageView;
+    private Bitmap headImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +97,7 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_member);
         MyApplication.getInstance().addActivity(this);
         initView();
+
 
     }
 
@@ -87,6 +107,9 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
 
         memberName=(TextView)findViewById(R.id.tvMemberName);
         memberInfo=(TextView)findViewById(R.id.tvMemberInfo);
+        imageView=(ImageView)findViewById(R.id.imageHead);
+        ButterKnife.bind(this);
+
 
         oneBtn=(Button)findViewById(R.id.btn1Month);
         threeBtn=(Button)findViewById(R.id.btn3Month);
@@ -114,16 +137,76 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    public void setPrice(){
+        BmobQuery<MemberPrice> query=new BmobQuery<MemberPrice>();
+        query.findObjects(new FindListener<MemberPrice>() {
+            @Override
+            public void done(List<MemberPrice> list, BmobException e) {
+                if (e==null){
+                    for(MemberPrice memberPrice : list){
+                        Integer monthSum=memberPrice.getMonthSum();
+                        Double originalPrice=memberPrice.getOriginalPrice();  //原价
+                        Double currentPrice=memberPrice.getCurrentPrice();   //现价
+                        String remark=memberPrice.getRemark();               //备注
+                        switch (monthSum){
+                            case 1:
+
+                                tv1Current.setText("¥"+currentPrice.toString());
+                                if (originalPrice>0){    //判断是否有原价
+                                    tv1Original.setText("¥"+originalPrice.toString());
+                                    tv1Original.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG ); //中间横线
+                                }
+
+
+                                currentOne=currentPrice;
+                                break;
+                            case 3:
+
+                                tv3current.setText("¥"+currentPrice.toString());
+                                if (originalPrice>0){
+                                    tv3Original.setText("¥"+originalPrice.toString());
+                                    tv3Original.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG ); //中间横线
+                                }
+
+
+                                currentThree=currentPrice;
+                                break;
+                            case 6:
+
+                                tv6Current.setText("¥"+currentPrice.toString());
+
+                                if (originalPrice>0){
+                                    tv6Original.setText("¥"+originalPrice.toString());
+                                    tv6Original.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG ); //中间横线
+                                }
+
+
+                                currentSix=currentPrice;
+                                break;
+
+                        }
+                    }
+                }
+                else{
+                    Log.i("bmob","查询失败："+e.getMessage()+","+e.getErrorCode());
+                }
+
+            }
+        });
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        checkMemberState();
+        checkMemberState();   //设置用户信息
+        setPrice();  //  设置会员月份价格
     }
 
     public void checkMemberState(){
         user= BmobUser.getCurrentUser(User.class);
         if (user != null) {
             memberName.setText(user.getUsername());
+            setUserImage();
 
             BmobQuery<Member> memberQuery = new BmobQuery<Member>();
             memberQuery.addWhereEqualTo("user", user);
@@ -173,6 +256,48 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    public void setUserImage(){
+        String userImageUrl=user.getHeadImageUrl();
+        if (!CommonUtil.isEmpty(userImageUrl)){
+               headImage=mCache.getAsBitmap("headImageBitmap");
+               if (headImage!=null){
+                   imageView.setImageBitmap(headImage);
+               }else{
+                   Thread thread=new GetImageThread();
+                   thread.start();
+               }
+        }
+    }
+
+    class GetImageThread extends  Thread{
+        @Override
+        public void run() {
+
+            headImage = Util.getbitmap(user.getHeadImageUrl());
+            handler.sendEmptyMessage(IMAGE_LOAD_FINISHED);
+        }
+    }
+
+
+
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+
+
+            switch (msg.what) {
+                case IMAGE_LOAD_FINISHED:
+                    imageView.setImageBitmap(headImage);
+                    mCache.put("headImageBitmap",headImage);
+                    break;
+            }
+
+        }
+
+    };
+
+
     @Override
     public void onClick(View view) {
         if (user==null){   //未登录
@@ -191,18 +316,18 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
 
         }
         else if (view.getId()==R.id.btn1Month){
-            payMoney.setText("￥"+MONEY_ONE_MONTH);
-            money=MONEY_ONE_MONTH;
+            payMoney.setText("¥"+currentOne);
+            money=currentOne;
             showDialog();
         }
         else if (view.getId()==R.id.btn3Month){
-            payMoney.setText("￥"+MONEY_THREE_MONTH);
-            money=MONEY_THREE_MONTH;
+            payMoney.setText("¥"+currentThree);
+            money=currentThree;
             showDialog();
         }
         else if (view.getId()==R.id.btn6Month){
-            payMoney.setText("￥"+MONEY_SIX_MONTH);
-            money=MONEY_SIX_MONTH;
+            payMoney.setText("¥"+currentSix);
+            money=currentSix;
             showDialog();
         }
         else if (view.getId()==R.id.btnPay){
@@ -218,11 +343,11 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
         count=0;
         String message="";
 
-       if (money==MONEY_ONE_MONTH){
+       if (money==currentOne){
            message="语文助手1个月会员支付";
-       }else if (money==MONEY_THREE_MONTH){
+       }else if (money==currentThree){
            message="语文助手3个月会员支付";
-       }else  if (money==MONEY_SIX_MONTH){
+       }else  if (money==currentSix){
            message="语文助手6个月会员支付";
        }else{
            message="语文助手会员支付";
@@ -482,14 +607,14 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
             public void done(List<Member> list, BmobException e) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 int addMonth=0;
-                if (money==MONEY_ONE_MONTH){
+                if (money==currentOne){
                     addMonth=1;
 
 
-                }else if (money==MONEY_THREE_MONTH){
+                }else if (money==currentThree){
                     addMonth=3;
 
-                }else if(money==MONEY_SIX_MONTH){
+                }else if(money==currentSix){
                     addMonth=6;
 
                 }

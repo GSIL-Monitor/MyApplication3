@@ -33,15 +33,13 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.List;
 
-import ddd.eee.fff.nm.bn.BannerManager;
-import ddd.eee.fff.nm.bn.BannerViewListener;
 
 public class YilinArticleActivity extends BasicActivity {
 
     private TextView articleTitle,articleContent,articleWriter,aritcleSource;
     private String url="",title="",content="",writer="",source="",cacheKey="";
     private static final int LOAD_FINISHED=100;
-    private ACache mCache;
+    //private ACache mCache;
     private static final String AD_TAG="youmi";
     private final static String APP_POSITION_ID ="b210a2197a21fc8ca36235cfebd403f9";
 
@@ -67,7 +65,7 @@ public class YilinArticleActivity extends BasicActivity {
         articleWriter=(TextView)findViewById(R.id.articleWriter);
         aritcleSource=(TextView)findViewById(R.id.articleSource);
 
-        mCache=ACache.get(this);
+      //  mCache=ACache.get(this);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
        // setAd();
@@ -133,13 +131,7 @@ public class YilinArticleActivity extends BasicActivity {
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
 
-        // 展示广告条窗口的 onDestroy() 回调方法中调用
-        BannerManager.getInstance(this).onDestroy();
-    }
 
     Runnable runnable=new Runnable() {
         @Override

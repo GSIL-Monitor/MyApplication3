@@ -41,13 +41,10 @@ public class YilinDirectoryActivity extends BasicActivity {
     private YilinAdapter yilinAdapter;
     private static  final int LOAD_FINISHED=100;
     private String title="";
-    private ACache mCache;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yilin_directory);
-        MyApplication.getInstance().addActivity(this);
-        mCache = ACache.get(this);
         Intent intent=getIntent();
         url=YILIN_URL+intent.getStringExtra("url");  //爬虫目录完全地址
         directoryUrl=intent.getStringExtra("url").split("/")[0];      //2017_05_zw 用作缓存的key

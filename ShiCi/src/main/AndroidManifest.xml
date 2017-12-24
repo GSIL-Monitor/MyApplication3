@@ -158,10 +158,6 @@
             android:parentActivityName=".activity.MainActivity" />
         <activity android:name=".activity.CompositionDetailActivity" />
         <activity
-            android:name=".activity.ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".activity.FindPasswordActivity"
             android:parentActivityName=".activity.LoginActivity" />
         <activity

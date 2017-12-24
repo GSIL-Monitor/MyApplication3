@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 
+import com.cxy.yuwen.tool.ACache;
 import com.cxy.yuwen.tool.PermissionHelper;
 
 public class BasicActivity extends AppCompatActivity {
@@ -15,9 +16,11 @@ public class BasicActivity extends AppCompatActivity {
     protected PermissionHelper mPermissionHelper;
     protected static final String TAG = "com.example.yuwen";
     protected static final String YOUMI_AD_TAG="youmi";
+    protected ACache mCache;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCache=ACache.get(this);
         checkPermmion(this);
        // setContentView(R.layout.activity_basic);
     }

@@ -23,7 +23,6 @@ import com.cxy.yuwen.tool.CommonUtil;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import ddd.eee.fff.AdManager;
 import cn.bmob.v3.Bmob;
 
 public class MainActivity extends BasicActivity {

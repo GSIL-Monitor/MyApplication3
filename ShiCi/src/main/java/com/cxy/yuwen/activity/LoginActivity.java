@@ -120,6 +120,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Log.d("SDKQQAgentPref", "FirstLaunch_SDK:" + SystemClock.elapsedRealtime());
 
     }
+
     IUiListener loginListener = new BaseUiListener() {
         @Override
         protected void doComplete(JSONObject jsonObject) {
@@ -133,7 +134,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public   void initOpenidAndToken(JSONObject jsonObject) {
         try {
-             token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
+            token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
             String expires = jsonObject.getString(Constants.PARAM_EXPIRES_IN);
             String openId = jsonObject.getString(Constants.PARAM_OPEN_ID);
             if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires)
@@ -168,6 +169,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
           //  Util.showResultDialog(LoginActivity.this, response.toString(), "登录成功");
             Log.d("SDKQQAgentPref", "登录成功" );
+
             // 有奖分享处理
            // handlePrizeShare();
             doComplete((JSONObject)response);
@@ -218,7 +220,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         BaseUIListener listener = new BaseUIListener(LoginActivity.this,"get_simple_userinfo") {
                 @Override
                 public void onComplete(Object response) {
-
+                    Util.dismissDialog();
                     Message msg = mHandler.obtainMessage();
                     msg.what = 0;
                     msg.obj = response;
@@ -240,7 +242,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
-                Util.dismissDialog();
+               // Util.dismissDialog();
                 JSONObject response = (JSONObject) msg.obj;
                 User user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
                 user.setUserType(User.QQ_USER);

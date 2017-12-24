@@ -37,9 +37,6 @@ import java.util.List;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
-import ddd.eee.fff.nm.cm.ErrorCode;
-import ddd.eee.fff.nm.sp.SpotListener;
-import ddd.eee.fff.nm.sp.SpotManager;
 
 public class ShiciActivity extends BasicActivity {
   /*  public static final String TAG = "AD-StandardNewsFeed";
@@ -208,148 +205,12 @@ public class ShiciActivity extends BasicActivity {
     }
 
 
-public void setChapingAd(){
-    //初始化小米插屏广告
-  //  initAd();
-    //设置有米广告
-    // 竖图
-    SpotManager.getInstance(this).setImageType(SpotManager.IMAGE_TYPE_VERTICAL);
-    // 高级动画
-    SpotManager.getInstance(this).setAnimationType(SpotManager.ANIMATION_TYPE_ADVANCED);
-
-    scrollView.setOnTouchListener(new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            // 判断 scrollView 当前滚动位置在顶部
-            if(scrollView.getScrollY() <= 0&&adFlag){
-                Log.i(TAG, "滑到了顶部!");
-                adFlag=false;
-              /*  try {
-                    if (!mInterstitialAd.isReady()) {
-                        adFlag=false;
-                        Log.e(TAG, "ad is not ready!");
-                    } else {
-                        mInterstitialAd.show();
-                    }
-                } catch (Exception e) {
-                } finally {
-                    //单次预缓存的广告无论结果只显示一次,请求新的广告需要再次调用预缓存接口
-                    adFlag=false;
-                }*/
-            }
 
 
 
-            // 判断scrollview 滑动到底部
-            // scrollY 的值和子view的高度一样，滑动到了底部
-            if (scrollView.getChildAt(0).getHeight() - scrollView.getHeight()== scrollView.getScrollY()){
-                if (!adFlag){
-                    Log.i(TAG, "滑到了底部!");
-                    initAd();
-                    adFlag=true;
-                    // 展示插屏广告
-                    SpotManager.getInstance(ShiciActivity.this).showSpot(ShiciActivity.this, new SpotListener() {
-
-                        @Override
-                        public void onShowSuccess() {
-                            Log.i(YOUMI_AD_TAG,"插屏展示成功");
-                        }
-
-                        @Override
-                        public void onShowFailed(int errorCode) {
-                            Log.e(YOUMI_AD_TAG,"插屏展示失败");
-                            switch (errorCode) {
-                                case ErrorCode.NON_NETWORK:
-                                    Log.e(YOUMI_AD_TAG,"网络异常");
-                                    break;
-                                case ErrorCode.NON_AD:
-                                    Log.e(YOUMI_AD_TAG,"暂无插屏广告");
-                                    break;
-                                case ErrorCode.RESOURCE_NOT_READY:
-                                    Log.e(YOUMI_AD_TAG,"插屏资源还没准备好");
-                                    break;
-                                case ErrorCode.SHOW_INTERVAL_LIMITED:
-                                    Log.e(YOUMI_AD_TAG,"请勿频繁展示");
-                                    break;
-                                case ErrorCode.WIDGET_NOT_IN_VISIBILITY_STATE:
-                                    Log.e(YOUMI_AD_TAG,"请设置插屏为可见状态");
-                                    break;
-                                default:
-                                    Log.e(YOUMI_AD_TAG,"请稍后再试");
-                                    break;
-                            }
-                        }
-
-                        @Override
-                        public void onSpotClosed() {
-                            Log.e(YOUMI_AD_TAG,"插屏被关闭");
-                        }
-
-                        @Override
-                        public void onSpotClicked(boolean isWebPage) {
-                            Log.e(YOUMI_AD_TAG,"插屏被点击");
-                            Log.e(YOUMI_AD_TAG,isWebPage? "是" : "不是"+"网页广告");
-                        }
-                    });  //
-                }
-
-            }
-
-            return false;
-        }
-    });
 
 
-}
 
-
-   public void initAd(){
-       try {
-           if (mInterstitialAd.isReady()) {
-               Log.e(TAG, "ad has been cached");
-           } else {
-               mInterstitialAd.requestAd(CHAPING_ID, new AdListener() {
-                   @Override
-                   public void onAdError(AdError adError) {
-                       Log.e(TAG, "onAdError : " + adError.toString());
-                       adFlag=false;
-                   }
-
-                   @Override
-                   public void onAdEvent(AdEvent adEvent) {
-                       try {
-                           switch (adEvent.mType) {
-                               case AdEvent.TYPE_SKIP:
-                                   //用户关闭了广告
-                                   Log.e(TAG, "ad skip!");
-                                   break;
-                               case AdEvent.TYPE_CLICK:
-                                   //用户点击了广告
-                                   Log.e(TAG, "ad click!");
-                                   break;
-                           }
-                       } catch (Exception e) {
-                           e.printStackTrace();
-                       }
-                   }
-
-                   @Override
-                   public void onAdLoaded() {
-                       Log.e(TAG, "ad is ready : " + mInterstitialAd.isReady());
-                       adFlag=true;
-                   }
-
-                   @Override
-                   public void onViewCreated(View view) {
-                       //won't be invoked
-                   }
-               });
-              // Toast.makeText(getApplicationContext(), "加载中...", Toast.LENGTH_LONG).show();
-           }
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
-   }//
 
 
     @Override

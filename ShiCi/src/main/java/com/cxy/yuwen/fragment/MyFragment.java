@@ -1,6 +1,8 @@
 package com.cxy.yuwen.fragment;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -26,11 +28,12 @@ import com.cxy.yuwen.activity.MemberActivity;
 import com.cxy.yuwen.activity.SettingInfomationActivity;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.R;
+import com.cxy.yuwen.tool.ACache;
 import com.cxy.yuwen.tool.CommonUtil;
 import com.cxy.yuwen.tool.Util;
 
 import cn.bmob.v3.BmobUser;
-import ddd.eee.fff.nm.sp.SpotManager;
+
 
 
 public class MyFragment extends Fragment implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener {
@@ -41,7 +44,9 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
     private View layoutView;
     private ImageView headImageView;
     private Bitmap headImage;
+    private Drawable defaultHeadImage;
     private static  final int IMAGE_LOAD_FINISHED=100;
+    private ACache aCache;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +56,12 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         tvLogin = (TextView) layoutView.findViewById(R.id.tv_login);
         headImageView=(ImageView)layoutView.findViewById(R.id.userImage);
         navigationView = (NavigationView) layoutView.findViewById(R.id.nav_view);
+
+        aCache=ACache.get(this.getContext());
+
+        //获取默认用户头像
+        Resources resources = this.getResources();
+        defaultHeadImage = resources.getDrawable(R.drawable.people);
 
 
        // setUserInfo();
@@ -66,11 +77,13 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         super.onCreate(savedInstanceState);
       //  ActionBar actionBar=((AppCompatActivity) getActivity()).getSupportActionBar();
       //  actionBar.show();
+        Log.i("fragment","----------onCreate()");
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        setUserInfo();
         Log.i("fragment","----------onStart()");
 
     }
@@ -80,7 +93,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         super.onResume();
         Log.i("fragment","----------onResume()");
 
-        setUserInfo();
+
     }
 
     public void setUserInfo(){
@@ -90,25 +103,34 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
 
             //获取用户头像
             if (!CommonUtil.isEmpty(user.getHeadImageUrl())){
-                thread.start();
+                headImage=aCache.getAsBitmap("headImageBitmap");  //从缓存中获取用户头像
+                if (headImage!=null){
+                    headImageView.setImageBitmap(headImage);
+                }else{
+                    Thread thread=new GetImageThread();
+                    thread.start();
+                }
+
 
             }
 
         }else{
              tvLogin.setText("点击登录学习账号");
+             headImageView.setImageDrawable(defaultHeadImage);
         }
 
     }
 
-
-    private Thread thread=new Thread(new Runnable() {
+    class GetImageThread extends  Thread{
         @Override
         public void run() {
 
             headImage = Util.getbitmap(user.getHeadImageUrl());
             handler.sendEmptyMessage(IMAGE_LOAD_FINISHED);
         }
-    });
+    }
+
+
 
 
     private Handler handler=new Handler(){
@@ -119,6 +141,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
             switch (msg.what) {
                 case IMAGE_LOAD_FINISHED:
                     headImageView.setImageBitmap(headImage);
+                    aCache.put("headImageBitmap",headImage);
                     break;
             }
 
@@ -180,7 +203,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         }
 
         if (id==R.id.exit){   //退出
-            SpotManager.getInstance( MyApplication.getInstance()).onAppExit();
+          //  SpotManager.getInstance( MyApplication.getInstance()).onAppExit();
             MyApplication.getInstance().exit();
         }
 
