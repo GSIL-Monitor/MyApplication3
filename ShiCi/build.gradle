@@ -69,10 +69,8 @@ dependencies {
 //    compile name: 'YoumiSdk_v7.5.0_2017-06-02', ext: 'aar'
 
     compile 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
     compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.0'
     compile 'cn.bmob.android:bmob-sdk:3.5.5'
     compile 'mi-appstore:xiaomi-update-sdk:2.8'
@@ -82,4 +80,5 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.2'
     testCompile 'org.testng:testng:6.9.6'
     testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

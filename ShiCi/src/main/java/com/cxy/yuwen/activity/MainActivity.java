@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.cxy.yuwen.R;
+import com.cxy.yuwen.fragment.MagazineFragment;
 import com.cxy.yuwen.fragment.YilinFragment;
 import com.cxy.yuwen.tool.NetWorkUtils;
 import com.cxy.yuwen.tool.Util;
@@ -28,7 +29,7 @@ import cn.bmob.v3.Bmob;
 public class MainActivity extends BasicActivity {
 
     public static List<String> logList = new CopyOnWriteArrayList<String>();
-    private String tabs[]={"查询","作文大全","我的","意林"};
+    private String tabs[]={"查询","作文大全","我的","意林","杂志"};
 
 
 
@@ -47,19 +48,6 @@ public class MainActivity extends BasicActivity {
         //初始化Bmob
         Bmob.initialize(this, CommonUtil.BmobApplicationId,"bmob");
 
-
-        /*Intent intent=this.getIntent();
-        String param=intent.getStringExtra("param");
-        if (!Utils.isEmpty(param)){
-            if (param.equals(tabs[0])){
-                switchFragmentSupport(R.id.content,tabs[0]);
-            }else if (param.equals(tabs[1])){
-                switchFragmentSupport(R.id.content,tabs[1]);
-            }else if (param.equals(tabs[2])){
-                switchFragmentSupport(R.id.content,tabs[2]);
-            }
-
-        }*/
         switchFragmentSupport(R.id.content,tabs[0]);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -76,20 +64,23 @@ public class MainActivity extends BasicActivity {
         @Override
         public boolean onNavigationItemSelected( MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_search:
                    // mTextMessage.setText(R.string.title_home);
                     switchFragmentSupport(R.id.content,tabs[0]);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_composition:
                   //  mTextMessage.setText(R.string.title_dashboard);
                     switchFragmentSupport(R.id.content,tabs[1]);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_mine:
                   //  mTextMessage.setText(R.string.title_notifications);
                     switchFragmentSupport(R.id.content,tabs[2]);
                     return true;
                 case R.id.navigation_yilin:
                     switchFragmentSupport(R.id.content,tabs[3]);
+                    return true;
+                case R.id.navigation_magazine:
+                    switchFragmentSupport(R.id.content,tabs[4]);
                     return true;
             }
             return false;
@@ -113,6 +104,7 @@ public class MainActivity extends BasicActivity {
             if (tag.equals(tabs[1])) destFragment=new CompositionFragment();
             if (tag.equals(tabs[2])) destFragment=new MyFragment();
             if (tag.equals(tabs[3])) destFragment=YilinFragment.newInstance();
+            if (tag.equals(tabs[4])) destFragment=new MagazineFragment();
         }
         FragmentTransaction ft=manager.beginTransaction();
 

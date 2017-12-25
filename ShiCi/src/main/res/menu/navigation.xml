@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_search"
         android:icon="@drawable/search"
         android:checked="true"
         android:title="查询" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_composition"
         android:icon="@drawable/write"
         android:title="作文大全" />
 
@@ -17,7 +17,11 @@
         android:icon="@drawable/navigation_book"
         android:title="意林" />
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_magazine"
+        android:icon="@drawable/navigation_book"
+        android:title="杂志" />
+    <item
+        android:id="@+id/navigation_mine"
         android:icon="@drawable/people_menu"
         android:title="我" />
 
