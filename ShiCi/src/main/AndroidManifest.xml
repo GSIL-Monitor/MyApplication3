@@ -165,7 +165,8 @@
             android:parentActivityName=".activity.SettingInfomationActivity" />
         <activity android:name=".activity.YilinDirectoryActivity" />
         <activity android:name=".activity.YilinArticleActivity" />
-       <!-- <activity android:name=".activity.SplashActivity"
+        <!--
+        <activity android:name=".activity.SplashActivity"
                    android:screenOrientation="portrait"
                    android:theme="@style/AppTheme.NoActionBar"
                    android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout">
@@ -174,7 +175,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>&ndash;&gt;
-        </activity>-->
+        </activity>
+        -->
+        <activity android:name=".activity.MagazineActivity"></activity>
     </application>
 
 </manifest>

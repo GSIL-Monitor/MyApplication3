@@ -95,7 +95,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member);
-        MyApplication.getInstance().addActivity(this);
+      //  MyApplication.getInstance().addActivity(this);
         initView();
 
 

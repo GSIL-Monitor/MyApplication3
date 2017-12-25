@@ -1,6 +1,7 @@
 package com.cxy.yuwen.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cxy.yuwen.R;
+import com.cxy.yuwen.activity.MagazineActivity;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -38,6 +40,7 @@ public class MagazineFragment extends Fragment {
     private List<HashMap> magazineList;
     private static final int LOAD_FINISHED=100;
     private MagazineAdapter adapter;
+
 
     @BindView(R.id.magazineRv) RecyclerView  magazineRv;
 
@@ -126,8 +129,18 @@ public class MagazineFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-               HashMap dataMap=magazineList.get(position);
+               final  HashMap dataMap=magazineList.get(position);
                holder.tvClassName.setText(dataMap.get("text").toString());
+
+              //设置点击事件
+               holder.tvClassName.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       Intent intent=new Intent(getContext(), MagazineActivity.class);
+                       intent.putExtra("url",MAGAZIENE_URL+dataMap.get("href").toString());
+                       startActivity(intent);
+                   }
+               });
         }
 
         @Override

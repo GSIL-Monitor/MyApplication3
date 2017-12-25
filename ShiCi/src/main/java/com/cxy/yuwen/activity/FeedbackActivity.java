@@ -20,7 +20,7 @@ import com.cxy.yuwen.tool.Email;
 import com.cxy.yuwen.tool.Util;
 
 
-public class FeedbackActivity extends AppCompatActivity {
+public class FeedbackActivity extends BasicActivity {
     EditText editFeedback,editQQ,editWechat,editEmail;
     Button buttonCommit;
     public static final String tag="INFO";
@@ -28,7 +28,7 @@ public class FeedbackActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
-        MyApplication.getInstance().addActivity(this);
+    //    MyApplication.getInstance().addActivity(this);
         ActionBar bar= getSupportActionBar();
         bar.setTitle("用户反馈");
 

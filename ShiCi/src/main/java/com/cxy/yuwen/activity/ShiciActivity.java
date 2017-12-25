@@ -59,7 +59,7 @@ public class ShiciActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_shici);
-        MyApplication.getInstance().addActivity(this);
+     //   MyApplication.getInstance().addActivity(this);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true

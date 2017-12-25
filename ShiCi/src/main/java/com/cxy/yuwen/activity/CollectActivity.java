@@ -38,7 +38,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 
-public class CollectActivity extends AppCompatActivity {
+public class CollectActivity extends BasicActivity {
     private RecyclerView recyclerView;
     private RecyclerAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -49,7 +49,7 @@ public class CollectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collect);
-        MyApplication.getInstance().addActivity(this);
+      //  MyApplication.getInstance().addActivity(this);
         ActionBar bar= getSupportActionBar();
         bar.setTitle("我的收藏");
 

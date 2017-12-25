@@ -22,7 +22,7 @@ import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 
-public class FindPasswordActivity extends AppCompatActivity implements View.OnClickListener{
+public class FindPasswordActivity extends BasicActivity implements View.OnClickListener{
 
     EditText etPhoneNumber,etPhoneCode;
     Button btnFindPassword;
@@ -36,7 +36,7 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
         ActionBar bar= getSupportActionBar();
         bar.setTitle("重置密码");
 
-        MyApplication.getInstance().addActivity(this);
+      //  MyApplication.getInstance().addActivity(this);
 
         etPhoneNumber=(EditText) findViewById(R.id.et_userPhone);
         etPhoneCode=(EditText)findViewById(R.id.et_vertifyCode);

@@ -73,7 +73,7 @@ public class ZidianActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.zidian);
-        MyApplication.getInstance().addActivity(this);
+     //   MyApplication.getInstance().addActivity(this);
 
 
         ActionBar actionBar = getSupportActionBar();

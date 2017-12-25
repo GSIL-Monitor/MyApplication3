@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 
+import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.tool.ACache;
 import com.cxy.yuwen.tool.PermissionHelper;
 
@@ -20,6 +21,7 @@ public class BasicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyApplication.getInstance().addActivity(this);
         mCache=ACache.get(this);
         checkPermmion(this);
        // setContentView(R.layout.activity_basic);

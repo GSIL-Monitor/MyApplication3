@@ -24,7 +24,7 @@ import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 
-public class BindPhoneActivity extends AppCompatActivity implements View.OnClickListener{
+public class BindPhoneActivity extends BasicActivity implements View.OnClickListener{
 
     private EditText etPhone,etVertifyCode;
     private TextView tvSendCode;
@@ -39,7 +39,7 @@ public class BindPhoneActivity extends AppCompatActivity implements View.OnClick
         ActionBar bar= getSupportActionBar();
         bar.setTitle("修改手机号码");
 
-        MyApplication.getInstance().addActivity(this);
+    //    MyApplication.getInstance().addActivity(this);
 
 
         etPhone=(EditText)findViewById(R.id.et_bindPhone);

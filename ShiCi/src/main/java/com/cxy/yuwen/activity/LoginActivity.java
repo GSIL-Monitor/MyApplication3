@@ -36,7 +36,7 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends BasicActivity implements View.OnClickListener{
     EditText etUserName,etPassword;
     TextView tvRegister,tvQQLogin,tvForgetPassword;
     Button btnLogin;
@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        MyApplication.getInstance().addActivity(this);
+       // MyApplication.getInstance().addActivity(this);
         ActionBar bar= getSupportActionBar();
         bar.setTitle("登录账号");
         if (mTencent == null) {

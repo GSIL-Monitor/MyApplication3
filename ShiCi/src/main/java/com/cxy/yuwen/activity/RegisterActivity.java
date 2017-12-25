@@ -23,7 +23,7 @@ import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterActivity extends BasicActivity implements View.OnClickListener{
 
     private EditText etName,etPassword,etPassword2,etPhoneNumber,etVertifyCode,etPlace,etPerson;
     private Button register;
@@ -33,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        MyApplication.getInstance().addActivity(this);
+     //   MyApplication.getInstance().addActivity(this);
 
         ActionBar bar= getSupportActionBar();
         bar.setTitle("注册账号");

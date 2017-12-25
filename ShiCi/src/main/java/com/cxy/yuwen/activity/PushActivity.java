@@ -11,7 +11,7 @@ import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.R;
 
 
-public class PushActivity extends AppCompatActivity {
+public class PushActivity extends BasicActivity {
 
     private TextView tvTitle,tvContent;
 
@@ -20,7 +20,7 @@ public class PushActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push);
-        MyApplication.getInstance().addActivity(this);
+       // MyApplication.getInstance().addActivity(this);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true

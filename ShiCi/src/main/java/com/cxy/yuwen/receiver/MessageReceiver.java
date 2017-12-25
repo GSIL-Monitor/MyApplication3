@@ -108,7 +108,7 @@ public class MessageReceiver extends PushMessageReceiver {
             Intent intent=new Intent(uri);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
-        }else{    //跳转到接受推送消息的Activity
+        }else{    //跳转到专门显示推送消息的Activity
         /*    Intent intent=new Intent(context,MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);*/

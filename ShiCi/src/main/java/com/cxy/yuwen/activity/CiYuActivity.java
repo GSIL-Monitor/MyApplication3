@@ -44,7 +44,7 @@ public class CiYuActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ciyu);
-        MyApplication.getInstance().addActivity(this);
+     //   MyApplication.getInstance().addActivity(this);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
 

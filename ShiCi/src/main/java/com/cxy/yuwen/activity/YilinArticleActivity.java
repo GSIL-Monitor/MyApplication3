@@ -48,7 +48,7 @@ public class YilinArticleActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yilin_article);
         initView();
-        MyApplication.getInstance().addActivity(this);
+      //  MyApplication.getInstance().addActivity(this);
         Intent intent=getIntent();
         url= intent.getStringExtra("url");
 

@@ -28,7 +28,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 
-public class SettingInfomationActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingInfomationActivity extends BasicActivity implements View.OnClickListener {
     private TextView btnLogout,tvBindPhone,tvModifyPsssword;
     private User user=null;
     private View modifyView;
@@ -40,7 +40,7 @@ public class SettingInfomationActivity extends AppCompatActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_infomation);
-        MyApplication.getInstance().addActivity(this);
+     //   MyApplication.getInstance().addActivity(this);
 
         initView();
         btnLogout.setOnClickListener(this);

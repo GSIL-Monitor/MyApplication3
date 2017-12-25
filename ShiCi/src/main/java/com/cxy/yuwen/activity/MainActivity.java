@@ -38,7 +38,7 @@ public class MainActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
        // checkPermmion(this);
-        MyApplication.getInstance().addActivity(this);
+       // MyApplication.getInstance().addActivity(this);
      //   Log.i("packageName",this.getPackageName());
 
         CommonUtil.checkNetworkState(this);

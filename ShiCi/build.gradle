@@ -70,7 +70,7 @@ dependencies {
 
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.android.support:appcompat-v7:25.3.0'
-    compile'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.0'
     compile 'cn.bmob.android:bmob-sdk:3.5.5'
     compile 'mi-appstore:xiaomi-update-sdk:2.8'
