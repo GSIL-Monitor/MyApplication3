@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     tools:context="com.cxy.yuwen.activity.MagazineActivity">
 
-    <android.support.v7.widget.RecyclerView
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/allList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
-        android:scrollbars="none">
-    </android.support.v7.widget.RecyclerView>
+        android:scrollbars="none"/>
+
 
 </LinearLayout>

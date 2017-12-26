@@ -41,7 +41,7 @@ public class MainActivity extends BasicActivity {
        // MyApplication.getInstance().addActivity(this);
      //   Log.i("packageName",this.getPackageName());
 
-        CommonUtil.checkNetworkState(this);
+
 
         XiaomiUpdateAgent.update(this);//这种情况下, 若本地版本是debug版本则使用沙盒环境，否则使用线上环境
 

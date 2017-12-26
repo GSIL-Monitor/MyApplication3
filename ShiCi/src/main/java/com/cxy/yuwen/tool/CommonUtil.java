@@ -73,11 +73,13 @@ public class CommonUtil {
 
 
    }
-    public static void checkNetworkState(Activity activity){
+    public static boolean checkNetworkState(Activity activity){
         boolean networkSate=NetWorkUtils.isNetworkConnected(activity);
         if (!networkSate){
             Util.toastMessage(activity,"网络连接不可用，请检查网络状态");
         }
+
+        return networkSate;
     }
 
 

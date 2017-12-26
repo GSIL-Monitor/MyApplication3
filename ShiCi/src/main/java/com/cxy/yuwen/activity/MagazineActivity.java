@@ -2,9 +2,10 @@ package com.cxy.yuwen.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,8 +16,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cxy.yuwen.R;
-import com.cxy.yuwen.fragment.MagazineFragment;
+import com.cxy.yuwen.tool.CommonUtil;
 import com.cxy.yuwen.tool.Util;
+import com.github.jdsjlzx.ItemDecoration.GridItemDecoration;
+import com.github.jdsjlzx.ItemDecoration.SpacesItemDecoration;
+import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
+import com.github.jdsjlzx.recyclerview.LRecyclerView;
+import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,6 +32,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,11 +42,26 @@ import butterknife.ButterKnife;
 
 public class MagazineActivity extends BasicActivity {
 
-    @BindView(R.id.allList) RecyclerView dataRecycleView;
-    private String htmlUrl="";
-    private List<HashMap> dataList;
-    private RecycleViewAdapter recycleViewAdapter;
+    /**服务器端一共多少条数据*/
+    private static  int TOTAL_COUNTER = 0;
 
+    /**每一页展示多少条数据*/
+    private static final int REQUEST_COUNT = 8;
+
+    /**已经获取到多少条数据了*/
+    private static int mCurrentCounter = 0;
+
+    private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
+
+
+    @BindView(R.id.allList)  LRecyclerView mRecyclerView;
+
+    private String htmlUrl="";
+    private List<HashMap> dataList;   //服务器端总数据
+    private List<HashMap> dataDisplayList;  //显示在界面上的数据
+    private PreviewHandler mHandler = new PreviewHandler(this);
+    private RecycleViewAdapter recycleViewAdapter=null;
+    private Bitmap  defaultImage=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +71,83 @@ public class MagazineActivity extends BasicActivity {
 
         Intent intent=this.getIntent();
         htmlUrl=intent.getStringExtra("url");
-        dataList=new ArrayList<HashMap>();
 
-        //设置RecycleView
-        //设置RecycleView布局为网格布局 3列
-        dataRecycleView.setLayoutManager(new GridLayoutManager(this,2));
-        recycleViewAdapter=new RecycleViewAdapter();
-        dataRecycleView.setAdapter(recycleViewAdapter);
+        defaultImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.default_book);
+
+
+        setRecyclerView();
 
         Thread thread=new getHtml();
         thread.start();
 
+    }
+
+    private  void setRecyclerView(){
+        dataList=new ArrayList<HashMap>();
+        dataDisplayList=new ArrayList<HashMap>();
+        //设置RecycleView
+        //设置RecycleView布局为网格布局 2列
+        GridLayoutManager manager=new GridLayoutManager(this,2);
+        mRecyclerView.setLayoutManager(manager);
+        recycleViewAdapter=new RecycleViewAdapter();
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(recycleViewAdapter);
+
+        mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+        //设置头部加载颜色
+        mRecyclerView.setHeaderViewColor(R.color.colorAccent, android.R.color.darker_gray,android.R.color.white);
+        //设置底部加载颜色
+        mRecyclerView.setFooterViewColor(R.color.colorAccent, android.R.color.darker_gray ,android.R.color.white);
+        //设置底部加载文字提示
+        mRecyclerView.setFooterViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
+        int spacing = getResources().getDimensionPixelSize(R.dimen.dp_10);
+        mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(),android.R.color.white));
+
+        //根据需要选择使用GridItemDecoration还是SpacesItemDecoration
+        GridItemDecoration divider = new GridItemDecoration.Builder(this)
+                .setHorizontal(R.dimen.activity_horizontal_margin)
+                .setVertical(R.dimen.activity_vertical_margin)
+                .setColorResource(R.color.fontBackground)
+                .build();
+        //mRecyclerView.addItemDecoration(divider);
+
+        mRecyclerView.setHasFixedSize(true);
+
+        //    mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
+        mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mCurrentCounter = 0;
+                // recycleViewAdapter.clear();
+                dataList.clear();
+                dataDisplayList.clear();
+                requestData();
+            }
+        });
+
+        mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (mCurrentCounter < TOTAL_COUNTER) {
+                    // loading more
+                    requestData();
+                } else {
+                    //the end
+                    mRecyclerView.setNoMore(true);
+                }
+            }
+        });
+
+        mRecyclerView.refresh();
+
+    }
+
+    private void notifyDataSetChanged() {
+        mLRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    private void addItems(ArrayList<HashMap> list) {
+        dataDisplayList.addAll(list);
+        mCurrentCounter += list.size();
     }
 
 
@@ -86,12 +176,119 @@ public class MagazineActivity extends BasicActivity {
                     }
                 }
 
-                handler.sendEmptyMessage(100);
+                TOTAL_COUNTER=dataList.size();
+
+                mHandler.sendEmptyMessage(-1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
+
+
+    private class PreviewHandler extends Handler {
+
+        private WeakReference<MagazineActivity> ref;
+
+        PreviewHandler(MagazineActivity activity) {
+            ref = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            final MagazineActivity activity = ref.get();
+            if (activity == null || activity.isFinishing()) {
+                return;
+            }
+
+            switch (msg.what) {
+                case -1:
+
+                    int currentSize = dataDisplayList.size();
+
+                    //模拟组装8个数据
+                    ArrayList<HashMap> newList = new ArrayList<HashMap>();
+                    for (int i = currentSize; i < currentSize+REQUEST_COUNT; i++) {
+                        if (newList.size() + currentSize >= TOTAL_COUNTER) {
+                            break;
+                        }
+
+
+                        newList.add(dataList.get(i));
+                    }
+
+
+                    activity.addItems(newList);
+
+                    activity.mRecyclerView.refreshComplete(REQUEST_COUNT);
+
+                    break;
+                case -2:
+                    activity.notifyDataSetChanged();
+                    break;
+                case -3:
+                    activity.mRecyclerView.refreshComplete(REQUEST_COUNT);
+                    activity.notifyDataSetChanged();
+                    activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                        @Override
+                        public void reload() {
+                            requestData();
+                        }
+                    });
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 模拟请求网络
+     */
+    private void requestData() {
+
+        new Thread() {
+
+            @Override
+            public void run() {
+                super.run();
+
+                try {
+                    Document docHtml = Jsoup.connect(htmlUrl).get();
+                    Elements uls=docHtml.getElementsByClass("rowWrap mb20");
+                    for (Element ul : uls){
+                        Elements lis=ul.getElementsByTag("li");
+                        for (Element li : lis){
+                            HashMap map=new HashMap<String,String>();
+                            Element a=li.select("p.pel_m_pic").get(0).getElementsByTag("a").get(0);
+                            map.put("href",a.attr("href"));
+                            map.put("imageSrc",a.getElementsByTag("img").get(0).attr("src"));
+
+                            Element p2=li.select("p.pel_name").get(0);
+                            map.put("name",p2.text());
+
+                            Element p3=li.select("p.pel_time").get(0);
+                            map.put("time",p3.text());
+
+                            dataList.add(map);
+
+                        }
+                    }
+
+                  //  handler.sendEmptyMessage(-1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                //模拟一下网络请求失败的情况
+                if(CommonUtil.checkNetworkState(MagazineActivity.this)) {    //网络可用
+                    mHandler.sendEmptyMessage(-1);
+                } else {                                 //网络不可用
+                    mHandler.sendEmptyMessage(-3);
+                }
+            }
+        }.start();
+    }
+
 
     Handler handler=new Handler(){
 
@@ -99,7 +296,9 @@ public class MagazineActivity extends BasicActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 100:
-                    recycleViewAdapter.notifyDataSetChanged();
+                    //recycleViewAdapter.notifyDataSetChanged();
+
+                    mHandler.sendEmptyMessage(-1);
                     break;
             }
 
@@ -109,7 +308,7 @@ public class MagazineActivity extends BasicActivity {
 
     class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>{
         Bitmap bitmap=null;
-        Handler adapterHandler=null;
+     //   Handler adapterHandler=null;
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             MyViewHolder holder = new MyViewHolder(LayoutInflater.from(MagazineActivity.this).inflate(R.layout.magazine_cover_item, parent, false));
@@ -118,27 +317,27 @@ public class MagazineActivity extends BasicActivity {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
-            final HashMap hashMap=dataList.get(position);
+            final HashMap hashMap=dataDisplayList.get(position);
+            final String imageSrc=hashMap.get("imageSrc").toString();
+
             holder.tvCoverName.setText(hashMap.get("name").toString());
             holder.tvCoverOrder.setText(hashMap.get("time").toString());
+            holder.imCover.setImageBitmap(defaultImage);
+            holder.imCover.setTag(imageSrc);
+            holder.imTag=imageSrc;
 
-            adapterHandler=new Handler(){
-                @Override
-                public void handleMessage(Message msg) {
-                    switch (msg.what) {
-                        case 101:
-                            holder.imCover.setImageBitmap(bitmap);
-                            break;
-                    }
 
-                }
-            };
-            //根据url获取图片
+            //新的线程中根据url获取图片
             new Thread(){
                 @Override
                 public void run() {
-                  bitmap=Util.getbitmap(hashMap.get("imageSrc").toString());
-                    adapterHandler.sendEmptyMessage(101);
+                    bitmap=Util.getbitmap(hashMap.get("imageSrc").toString());
+                    holder.bitmap=bitmap;
+                    Message message=new Message();
+                    message.what=101;
+                    message.obj=holder;
+                    uiHandler.sendMessage(message);
+
                 }
             }.start();
 
@@ -149,14 +348,29 @@ public class MagazineActivity extends BasicActivity {
 
         @Override
         public int getItemCount() {
-            return dataList.size();
+            return dataDisplayList.size();
         }
+
+        Handler uiHandler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                MyViewHolder holder=(MyViewHolder) msg.obj;
+                if (msg.what==101){
+                    if (holder.imTag.equals(holder.imCover.getTag())){
+                        holder.imCover.setImageBitmap(holder.bitmap);
+                    }
+                }
+            }
+        };
 
         class MyViewHolder extends RecyclerView.ViewHolder
         {
             @BindView(R.id.coverName)  TextView tvCoverName;
             @BindView(R.id.coverOrder) TextView tvCoverOrder;
             @BindView(R.id.coverImage) ImageView imCover;
+            Bitmap bitmap=defaultImage;
+            String imTag="";
 
 
 
@@ -167,5 +381,7 @@ public class MagazineActivity extends BasicActivity {
 
             }
         }
+
+
     }
 }

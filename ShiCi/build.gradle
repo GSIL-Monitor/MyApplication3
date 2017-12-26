@@ -67,7 +67,7 @@ dependencies {
     compile files('libs/pay66.jar')
 
 //    compile name: 'YoumiSdk_v7.5.0_2017-06-02', ext: 'aar'
-
+    compile 'com.github.jdsjlzx:LRecyclerView:1.4.3'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
