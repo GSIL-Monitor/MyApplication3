@@ -138,6 +138,7 @@ public class MagazineFragment extends Fragment {
                    public void onClick(View v) {
                        Intent intent=new Intent(getContext(), MagazineActivity.class);
                        intent.putExtra("url",MAGAZIENE_URL+dataMap.get("href").toString());
+                       intent.putExtra("title",dataMap.get("text").toString());
                        startActivity(intent);
                    }
                });

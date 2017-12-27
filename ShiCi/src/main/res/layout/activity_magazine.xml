@@ -4,14 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cxy.yuwen.activity.MagazineActivity">
+    tools:context="com.cxy.yuwen.activity.MagazineActivity"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:title="">
 
-    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="杂志分类"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:textColor="#fff"/>
+    </android.support.v7.widget.Toolbar>
+
+    <!--<com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/allList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:scrollbars="none"/>
+        android:layout_marginTop="0dp"
+        android:scrollbars="vertical"/>-->
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
 </LinearLayout>
