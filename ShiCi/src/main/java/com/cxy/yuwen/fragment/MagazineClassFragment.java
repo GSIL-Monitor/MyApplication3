@@ -1,6 +1,7 @@
 package com.cxy.yuwen.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cxy.yuwen.R;
+import com.cxy.yuwen.activity.MagazineDirectoryActivity;
 import com.cxy.yuwen.tool.CommonUtil;
 import com.cxy.yuwen.tool.Util;
 import com.github.jdsjlzx.ItemDecoration.GridItemDecoration;
@@ -45,6 +47,7 @@ public class MagazineClassFragment extends Fragment {
 
     private static final String HTTP_URL = "param1";
     private String htmlUrl;
+    private static final String MAGAZIENE_URL="http://www.fx361.com";
 
     /**服务器端一共多少条数据*/
     private static  int TOTAL_COUNTER = 0;
@@ -64,8 +67,7 @@ public class MagazineClassFragment extends Fragment {
 
     private Context context;
 
-    @BindView(R.id.allList)
-    LRecyclerView mRecyclerView;
+    @BindView(R.id.allList)  LRecyclerView mRecyclerView;
 
 
     public MagazineClassFragment() {
@@ -119,16 +121,16 @@ public class MagazineClassFragment extends Fragment {
         mRecyclerView.setFooterViewColor(R.color.colorAccent, android.R.color.darker_gray ,android.R.color.white);
         //设置底部加载文字提示
         mRecyclerView.setFooterViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
-        int spacing = getResources().getDimensionPixelSize(R.dimen.dp_18);
+      /*  int spacing = getResources().getDimensionPixelSize(R.dimen.dp_18);
         mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(),android.R.color.white));
-
+      */
         //根据需要选择使用GridItemDecoration还是SpacesItemDecoration
-        GridItemDecoration divider = new GridItemDecoration.Builder(this.getContext())
+       /* GridItemDecoration divider = new GridItemDecoration.Builder(this.getContext())
                 .setHorizontal(R.dimen.activity_horizontal_margin)
                 .setVertical(R.dimen.activity_vertical_margin)
-                .setColorResource(R.color.fontBackground)
+                .setColorResource(android.R.color.white)
                 .build();
-        //mRecyclerView.addItemDecoration(divider);
+        mRecyclerView.addItemDecoration(divider);*/
 
         mRecyclerView.setHasFixedSize(true);
 
@@ -164,6 +166,11 @@ public class MagazineClassFragment extends Fragment {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                Intent intent=new Intent(getActivity(), MagazineDirectoryActivity.class);
+                HashMap hashMap=dataDisplayList.get(position);
+                String href=hashMap.get("href").toString();
+                intent.putExtra("href",href);
+                startActivity(intent);
 
             }
         });
@@ -259,7 +266,7 @@ public class MagazineClassFragment extends Fragment {
                         for (Element li : lis){
                             HashMap map=new HashMap<String,String>();
                             Element a=li.select("p.pel_m_pic").get(0).getElementsByTag("a").get(0);
-                            map.put("href",a.attr("href"));
+                            map.put("href",MAGAZIENE_URL+a.attr("href"));
                             map.put("imageSrc",a.getElementsByTag("img").get(0).attr("src"));
 
                             Element p2=li.select("p.pel_name").get(0);
