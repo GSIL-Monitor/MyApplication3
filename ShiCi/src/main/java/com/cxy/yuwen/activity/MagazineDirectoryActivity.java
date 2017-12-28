@@ -6,12 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.cxy.yuwen.Adapter.DataAdapter;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.RecyclerAdapter;
+import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.github.jdsjlzx.view.CommonFooter;
+import com.github.jdsjlzx.view.CommonHeader;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,6 +33,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.a.a.This;
 
 public class MagazineDirectoryActivity extends AppCompatActivity {
     private String httpUrl="";
@@ -33,7 +41,12 @@ public class MagazineDirectoryActivity extends AppCompatActivity {
     private List<HashMap> dataList;
     private DataAdapter dataAdapter=null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
-    @BindView(R.id.rv_directory)  LRecyclerView mRecyclerView;
+    private  View header=null;
+    @BindView(R.id.rv_directory)   LRecyclerView mRecyclerView;
+    @BindView(R.id.magazine_title) TextView tv_title;
+    @BindView(R.id.tv_order) TextView tv_order;
+    @BindView(R.id.tv_history) TextView tv_history;
+    @BindView(R.id.tv_introduce) TextView tv_introduce;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,19 +60,42 @@ public class MagazineDirectoryActivity extends AppCompatActivity {
     }
 
     public void setRecycleView(){
-        //创建线性布局
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        //垂直方向
-        layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        //给RecyclerView设置布局管理器
-        mRecyclerView.setLayoutManager(layoutManager);
-        //如果确定每个item的高度是固定的，设置这个选项可以提高性能
+
+
         dataAdapter=new DataAdapter(dataList,this);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(dataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+        /*//创建线性布局
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        //垂直方向
+        layoutManager.setOrientation(OrientationHelper.VERTICAL);*/
+        //给RecyclerView设置布局管理器
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //设置间隔线
+        DividerDecoration divider = new DividerDecoration.Builder(this)
+                .setHeight(R.dimen.default_divider_height)
+                .setPadding(R.dimen.default_divider_padding)
+                .setColorResource(R.color.layoutBackground)
+                .build();
+        //如果确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLoadMoreEnabled(false);
+        mRecyclerView.addItemDecoration(divider);
+        //add a HeaderView
+        View headerView = new CommonHeader(this, R.layout.header_magazine_recycleview);
+        @BindView(this,headerView);
+        mLRecyclerViewAdapter.addHeaderView(headerView);
+
+        //禁用下拉刷新功能
         mRecyclerView.setPullRefreshEnabled(false);
+        //禁用自动加载更多功能
+        mRecyclerView.setLoadMoreEnabled(false);
+        //add a FooterView
+        CommonFooter footerView=new CommonFooter(this,R.layout.layout_empty);
+        mLRecyclerViewAdapter.addFooterView(footerView);
+
+
+
 
     }
 

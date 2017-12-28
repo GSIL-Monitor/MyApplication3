@@ -8,5 +8,7 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="default_divider_height">1dp</dimen>
+    <dimen name="default_divider_padding">5dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
 </resources>

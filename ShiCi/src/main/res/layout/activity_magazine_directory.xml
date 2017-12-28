@@ -11,27 +11,20 @@
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.v7.widget.Toolbar
+       <!-- <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="enterAlways|scroll"
 
-          />
-        <LinearLayout
+          />-->
+        <TextView
+            android:id="@+id/magazine_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_scrollFlags="enterAlways|scroll"
-            android:background="#fff">
-            <TextView android:id="@+id/tv_introduce"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="期刊介绍"
-                tools:ignore="HardcodedText"
-                android:textColor="@color/colorFont"/>
-        </LinearLayout>
+            android:layout_height="?android:actionBarSize"
+            android:textColor="#fff"
+            android:text="杂志名称"
+            android:gravity="center"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -42,5 +35,6 @@
         android:layout_marginTop="0dp"
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
 
 </android.support.design.widget.CoordinatorLayout>

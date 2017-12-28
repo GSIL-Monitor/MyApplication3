@@ -12,5 +12,5 @@
         android:textSize="20sp"
         android:textColor="#000"
         android:text="2017年"
-        android:paddingLeft="20dp" />
+        android:paddingLeft="10dp" />
 </LinearLayout>

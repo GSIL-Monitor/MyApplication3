@@ -2,16 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
     <TextView
-        android:id="@+id/yilin_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:textSize="16sp"
-        android:textColor="#37a"
-        android:text="2017年第11期"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
+        android:gravity="center"
+        android:text="没有更多数据了"
+        android:textColor="#ff898989"
+        android:textSize="18sp"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_18"
+        />
 
 </LinearLayout>
