@@ -2,11 +2,15 @@ package com.cxy.yuwen.activity;
 
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,6 +18,7 @@ import android.widget.TextView;
 import com.cxy.yuwen.Adapter.DataAdapter;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.RecyclerAdapter;
+import com.cxy.yuwen.tool.Util;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -35,7 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.bmob.v3.a.a.This;
 
-public class MagazineDirectoryActivity extends AppCompatActivity {
+public class MagazineDirectoryActivity extends BasicActivity {
     private String httpUrl="";
     private String magazineTitle="",magazineIntro="",magazineTime="",magazineHistoryHref="";
     private List<HashMap> dataList;
@@ -44,14 +49,21 @@ public class MagazineDirectoryActivity extends AppCompatActivity {
     private  View header=null;
     @BindView(R.id.rv_directory)   LRecyclerView mRecyclerView;
     @BindView(R.id.magazine_title) TextView tv_title;
-    @BindView(R.id.tv_order) TextView tv_order;
-    @BindView(R.id.tv_history) TextView tv_history;
-    @BindView(R.id.tv_introduce) TextView tv_introduce;
+    @BindView(R.id.toolbar)   Toolbar toolbar;
+
+    private TextView tv_time;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_magazine_directory);
         ButterKnife.bind(this);
+        //设置Toolbar
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         httpUrl=getIntent().getStringExtra("href");
         dataList=new ArrayList<HashMap>();
         setRecycleView();
@@ -83,7 +95,8 @@ public class MagazineDirectoryActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(divider);
         //add a HeaderView
         View headerView = new CommonHeader(this, R.layout.header_magazine_recycleview);
-        @BindView(this,headerView);
+        tv_time=(TextView)headerView.findViewById(R.id.tv_time);
+       // ButterKnife.bind(this,headerView);
         mLRecyclerViewAdapter.addHeaderView(headerView);
 
         //禁用下拉刷新功能
@@ -142,15 +155,41 @@ public class MagazineDirectoryActivity extends AppCompatActivity {
         }
     }
 
-Handler handler=new Handler(){
-    @Override
-    public void handleMessage(Message msg) {
-        super.handleMessage(msg);
-        if (msg.what==100){
-            mLRecyclerViewAdapter.notifyDataSetChanged();
+     Handler handler=new Handler(){
+         @Override
+         public void handleMessage(Message msg) {
+              super.handleMessage(msg);
+              if (msg.what==100){
+                  tv_title.setText(magazineTitle);
+                  tv_time.setText(magazineTime+"目录");
+                  mLRecyclerViewAdapter.notifyDataSetChanged();
+            }
         }
-    }
 };
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // 为toolbar创建Menu
+        getMenuInflater().inflate(R.menu.menu_magazine, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        if (item.getItemId()==R.id.addShelf){
+            Util.toastMessage(MagazineDirectoryActivity.this,"加入书架");
+        }
+        if (item.getItemId()==R.id.scanHistory){
+            Util.toastMessage(MagazineDirectoryActivity.this,"浏览往期");
+        }
+        if (item.getItemId()==R.id.scanIntro){
+            Util.toastMessage(MagazineDirectoryActivity.this,"期刊介绍");
+        }
+        return true;
+    }
 
 }

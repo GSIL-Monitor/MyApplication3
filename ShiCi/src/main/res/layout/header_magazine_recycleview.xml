@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="8dp">
-    <RelativeLayout
+    android:orientation="vertical">
+   <!-- <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -13,7 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="刊物介绍"
-            android:textColor="@color/colorFont"
+            android:textColor="@color/colorFontTitle"
             android:textSize="18sp"
             android:layout_centerInParent="true"
             />
@@ -29,6 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="订阅"
+                android:textSize="15sp"
                 />
             <TextView
                 android:id="@+id/tv_history"
@@ -36,15 +36,26 @@
                 android:layout_height="wrap_content"
                 android:text="浏览往期"
                 android:layout_marginLeft="8dp"
-                />
+                android:textSize="15sp"/>
         </LinearLayout>
 
     </RelativeLayout>
+-->
+ <TextView
+     android:id="@+id/tv_time"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:text="第十二期目录"
+     android:textSize="20sp"
+     android:padding="10dp"
+     android:paddingTop="15dp"
+     android:paddingBottom="15dp"
+     android:textColor="@color/fontItem"
+     android:gravity="center"/>
 
-<TextView
-    android:id="@+id/tv_introduce"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="这是杂志说明"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/layoutBackground"/>
 
 </LinearLayout>

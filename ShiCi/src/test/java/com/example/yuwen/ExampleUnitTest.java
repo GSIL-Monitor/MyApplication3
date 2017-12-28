@@ -4,6 +4,9 @@ import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.tool.Email;
 import com.cxy.yuwen.tool.CommonUtil;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -134,6 +137,33 @@ public class ExampleUnitTest {
         String s=array[array.length-1];
 
         System.out.println(("ylsn20170401.html".trim()).split(".").length);
+
+    }
+    @Test
+    public void testJsoup(){
+        System.out.print(123);
+        new Thread(){
+
+            @Override
+            public void run() {
+                try {
+                    System.out.print(123);
+                    Document docHtml = Jsoup.connect("http://www.fx361.com/bk/sjqc/index.html").get();
+                    Element introDiv=docHtml.getElementsByClass("magBox1").first();
+                    String magazineTime=introDiv.getElementsByTag("p").first().text();
+                    String magazineIntro=introDiv.getElementsByTag("p").get(1).text();
+
+                    Element direDiv=docHtml.getElementsByClass("dirWrap").first();
+                    String magazineTitle=direDiv.getElementsByTag("h3").first().text();
+
+                    System.out.print(magazineTime);
+                    System.out.print(magazineIntro);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
 
     }
 }

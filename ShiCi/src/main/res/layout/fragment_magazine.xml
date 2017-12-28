@@ -16,7 +16,7 @@
            android:layout_height="wrap_content"
            android:text="杂志天下"
            android:layout_gravity="center"
-           android:textSize="20sp"
+           android:textSize="@dimen/toolBarText"
            android:textColor="#fff"/>
     </android.support.v7.widget.Toolbar>
 

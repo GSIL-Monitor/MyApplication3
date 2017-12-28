@@ -8,10 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textColor="#37a"
         android:text="2017年第11期"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"/>
 
 </LinearLayout>

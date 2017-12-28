@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+   >
+    <item
+        android:id="@+id/addShelf"
+        android:orderInCategory="100"
+        android:title="加入书架"
+        android:icon="@drawable/add_shelf"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/scanHistory"
+        android:orderInCategory="101"
+        android:title="浏览往期"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/scanIntro"
+        android:orderInCategory="102"
+        android:title="刊物介绍"
+        app:showAsAction="never" />
+</menu>

@@ -7,4 +7,6 @@
     <color name="colorFont">#373737</color>
     <color name="colorFontTitle">#000</color>
     <color name="fontBackground">#D3D3D3</color>
+    <color name="fontItem">#37a</color>
+
 </resources>
