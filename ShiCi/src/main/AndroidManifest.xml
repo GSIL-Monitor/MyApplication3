@@ -181,10 +181,11 @@
         -->
         <activity
             android:name=".activity.MagazineActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.MagazineDirectoryActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.MagazineContentActivity"></activity>
     </application>
 
 </manifest>

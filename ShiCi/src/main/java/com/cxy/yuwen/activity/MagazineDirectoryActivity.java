@@ -1,5 +1,6 @@
 package com.cxy.yuwen.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
@@ -20,6 +21,7 @@ import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.RecyclerAdapter;
 import com.cxy.yuwen.tool.Util;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.view.CommonFooter;
@@ -41,6 +43,7 @@ import butterknife.ButterKnife;
 import cn.bmob.v3.a.a.This;
 
 public class MagazineDirectoryActivity extends BasicActivity {
+    private static final String MAGAZINE_URL="http://m.fx361.com";
     private String httpUrl="";
     private String magazineTitle="",magazineIntro="",magazineTime="",magazineHistoryHref="";
     private List<HashMap> dataList;
@@ -107,7 +110,16 @@ public class MagazineDirectoryActivity extends BasicActivity {
         CommonFooter footerView=new CommonFooter(this,R.layout.layout_empty);
         mLRecyclerViewAdapter.addFooterView(footerView);
 
-
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String url=dataList.get(position).get("href").toString();
+                //跳转至内容显示Activity
+                Intent intent=new Intent(MagazineDirectoryActivity.this,MagazineContentActivity.class);
+                intent.putExtra("url",MAGAZINE_URL+url);
+                startActivity(intent);
+            }
+        });
 
 
     }
