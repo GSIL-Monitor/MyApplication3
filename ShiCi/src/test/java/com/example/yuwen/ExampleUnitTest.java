@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
@@ -165,5 +166,15 @@ public class ExampleUnitTest {
             }
         }.start();
 
+    }
+
+    @Test
+    public void zhengZe(){
+        String content = "4556";
+
+        String pattern = ".*意林.*";
+
+        boolean isMatch = Pattern.matches(pattern, content);
+        System.out.println("字符串中是否包含了 '意林' 子字符串? " + isMatch);
     }
 }

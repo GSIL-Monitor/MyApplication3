@@ -5,19 +5,32 @@
     tools:context="com.cxy.yuwen.fragment.MagazineFragment"
     android:orientation="vertical">
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+            android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="杂志天下"
-           android:layout_gravity="center"
-           android:textSize="@dimen/toolBarText"
-           android:textColor="#fff"/>
+       <!-- <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            android:queryHint="请输入杂志名称"
+            android:textColor="#fff"/>-->
+        <TextView
+            android:id="@+id/tv_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="请输入杂志名称"
+            android:drawableLeft="@drawable/ic_search"
+            android:background="#fff"
+            android:textColor="@color/fontBackground"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:textSize="15sp"
+            android:gravity="center_vertical" >
+        </TextView>
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView

@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.activity.MagazineActivity;
+import com.cxy.yuwen.activity.MainActivity;
+import com.cxy.yuwen.tool.Util;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,19 +32,23 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MagazineFragment extends Fragment {
 
-    private static final String MAGAZIENE_URL="http://www.fx361.com/";
+    public static final String MAGAZIENE_URL="http://www.fx361.com";
     private List<HashMap> magazineList;
     private static final int LOAD_FINISHED=100;
     private MagazineAdapter adapter;
 
 
     @BindView(R.id.magazineRv) RecyclerView  magazineRv;
+    private Unbinder unbinder;
+
 
 
     public MagazineFragment() {
@@ -54,13 +60,15 @@ public class MagazineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_magazine, container, false);
-        ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this, view);
 
         //设置RecycleView布局为网格布局 3列
         magazineRv.setLayoutManager(new GridLayoutManager(getContext(),3));
         magazineList =new ArrayList<HashMap>();
         adapter=new MagazineAdapter();
         magazineRv.setAdapter(adapter);
+        Thread thread=new getHtml();
+        thread.start();
         return view;
     }
 
@@ -68,8 +76,20 @@ public class MagazineFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Thread thread=new getHtml();
-        thread.start();
+
+
+
+    }
+
+    @OnClick(R.id.tv_search)
+    public void searchClick(){
+         //  Util.toastMessage(getActivity(),"searchView");
+        //跳转Fragment
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content, SearchFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
 
 
     }
@@ -98,6 +118,7 @@ public class MagazineFragment extends Fragment {
 
             } catch (IOException e) {
                 e.printStackTrace();
+                Util.toastMessage(getActivity(),e.toString());
             }
 
         }
@@ -116,7 +137,11 @@ public class MagazineFragment extends Fragment {
        }
    };
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 
     //adapter
     class MagazineAdapter extends RecyclerView.Adapter<MagazineAdapter.MyViewHolder>{
@@ -137,7 +162,7 @@ public class MagazineFragment extends Fragment {
                    @Override
                    public void onClick(View v) {
                        Intent intent=new Intent(getContext(), MagazineActivity.class);
-                       intent.putExtra("url",MAGAZIENE_URL+dataMap.get("href").toString());
+                       intent.putExtra("url",MAGAZIENE_URL+"/"+dataMap.get("href").toString());
                        intent.putExtra("title",dataMap.get("text").toString());
                        startActivity(intent);
                    }

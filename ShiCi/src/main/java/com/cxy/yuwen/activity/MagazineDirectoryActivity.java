@@ -3,8 +3,6 @@ package com.cxy.yuwen.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -196,7 +194,11 @@ public class MagazineDirectoryActivity extends BasicActivity {
             Util.toastMessage(MagazineDirectoryActivity.this,"加入书架");
         }
         if (item.getItemId()==R.id.scanHistory){
-            Util.toastMessage(MagazineDirectoryActivity.this,"浏览往期");
+           // Util.toastMessage(MagazineDirectoryActivity.this,"浏览往期");
+            Intent intent=new Intent(this,MagazineHistoryActivity.class);
+            intent.putExtra("historyUrl",magazineHistoryHref);
+            intent.putExtra("title",magazineTitle);
+            startActivity(intent);
         }
         if (item.getItemId()==R.id.scanIntro){
             Util.toastMessage(MagazineDirectoryActivity.this,"期刊介绍");

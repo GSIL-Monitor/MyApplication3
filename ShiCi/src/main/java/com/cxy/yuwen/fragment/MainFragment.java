@@ -90,11 +90,6 @@ public class MainFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         layoutView = inflater.inflate(R.layout.fragment_main, null);
 
-       /* title=(String) getTitle();
-        Toolbar toolbar = (Toolbar)layoutView .findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
-
-
 
         textView = (TextView)layoutView.findViewById(R.id.tv);
         listView = (ListView)layoutView.findViewById(R.id.lv);

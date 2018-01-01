@@ -40,14 +40,14 @@ public class MagazineContentActivity extends BasicActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         httpUrl=getIntent().getStringExtra("url").replace("page","news").replace("shtml","html");
         setWebView();
-        Thread thread=new GetHtml();
-        thread.start();
+      /*  Thread thread=new GetHtml();
+        thread.start();*/
 
     }
 
     public void setWebView(){
         mWebSettings = mWebview.getSettings();
-        mWebSettings.setDefaultFontSize(20);
+        mWebSettings.setDefaultFontSize(22);
         //支持缩放，默认为true。
        // mWebSettings .setSupportZoom(false);
         //设置自适应屏幕，两者合用
@@ -62,7 +62,7 @@ public class MagazineContentActivity extends BasicActivity {
         mWebSettings .setDefaultTextEncodingName("utf-8");
         //设置自动加载图片
         mWebSettings .setLoadsImagesAutomatically(true);
-      //  mWebview.loadUrl(httpUrl);
+        mWebview.loadUrl(httpUrl);
 
 
         mWebview.setWebViewClient(new WebViewClient() {
@@ -88,7 +88,7 @@ public class MagazineContentActivity extends BasicActivity {
                 Element mainDiv=docHtml.getElementsByClass("main").first();
                 Elements images=mainDiv.getElementsByTag("img");
                 for (Element image : images) {
-                    image.attr("width","100%").attr("height","auto");
+                    image.attr("width","90%").attr("height","auto");
                 }
                 htmlData=mainDiv.toString();
                 uiHandler.sendEmptyMessage(100);

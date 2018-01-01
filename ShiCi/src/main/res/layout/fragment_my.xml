@@ -13,7 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:title="语文助手"
+        app:title="我的"
         />
     <LinearLayout
         android:id="@+id/clickLayout"

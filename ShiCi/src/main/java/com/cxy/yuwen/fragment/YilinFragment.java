@@ -78,9 +78,7 @@ public class YilinFragment extends Fragment {
 
 
         viewPager=(ViewPager)layoutView.findViewById(R.id.yilin_viewpager);
-      //  viewPager.setAdapter(new ViewpagerAdapter(getChildFragmentManager(),mTitles));
-        //绑定
-     //   tabLayout.setupWithViewPager(viewPager);
+
 
     }
 
