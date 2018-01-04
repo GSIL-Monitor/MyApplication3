@@ -1,9 +1,12 @@
 package com.cxy.yuwen.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +19,9 @@ import android.widget.TextView;
 
 import com.cxy.yuwen.Adapter.DataAdapter;
 import com.cxy.yuwen.R;
+import com.cxy.yuwen.bmobBean.Bookshelf;
+import com.cxy.yuwen.bmobBean.User;
+import com.cxy.yuwen.fragment.MyFragment;
 import com.cxy.yuwen.tool.RecyclerAdapter;
 import com.cxy.yuwen.tool.Util;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
@@ -38,12 +44,15 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.a.a.This;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 public class MagazineDirectoryActivity extends BasicActivity {
     private static final String MAGAZINE_URL="http://m.fx361.com";
     private String httpUrl="";
-    private String magazineTitle="",magazineIntro="",magazineTime="",magazineHistoryHref="";
+    private String magazineTitle="",magazineIntro="",magazineTime="",magazineHistoryHref="",coverImageUrl="";
     private List<HashMap> dataList;
     private DataAdapter dataAdapter=null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
@@ -129,6 +138,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
                 Document docHtml = Jsoup.connect(httpUrl).get();
                 Element introDiv=docHtml.getElementsByClass("magBox1").first();
                 magazineTime=introDiv.getElementsByTag("p").first().text();
+                coverImageUrl=introDiv.getElementsByTag("a").first().attr("href");
                 magazineIntro=introDiv.getElementsByClass("rec").first().getElementsByTag("p").first().text();
                 magazineTitle=docHtml.getElementsByTag("h3").first().text();
                 magazineHistoryHref=docHtml.getElementsByClass("btn_history act_history").first().attr("href");   //没有前缀
@@ -159,6 +169,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
             } catch (IOException e) {
                 e.printStackTrace();
+                Util.toastMessage(MagazineDirectoryActivity.this,e.getMessage());
             }
 
 
@@ -191,7 +202,49 @@ public class MagazineDirectoryActivity extends BasicActivity {
             finish();
         }
         if (item.getItemId()==R.id.addShelf){
-            Util.toastMessage(MagazineDirectoryActivity.this,"加入书架");
+           // Util.toastMessage(MagazineDirectoryActivity.this,"加入书架");
+
+            User user= BmobUser.getCurrentUser(User.class);
+            if (user == null) {   //未登录
+                Util.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent1 = new Intent(MagazineDirectoryActivity.this, LoginActivity.class);
+                        startActivity(intent1);
+                    }
+                });
+            } else {
+                //加入书架
+                Bookshelf bookshelf=new Bookshelf();
+                bookshelf.setUser(user);
+                bookshelf.setBookName(magazineTitle);
+                bookshelf.setPulishTime(magazineTime);
+                bookshelf.setCoverUrl(coverImageUrl);
+                bookshelf.setDirectoryUrl(httpUrl);
+
+
+                bookshelf.save(new SaveListener<String>() {
+                    @Override
+                    public void done(String s, BmobException e) {
+
+                            if (e==null){
+
+                                Snackbar.make(tv_title, "已将该杂志加入书架", Snackbar.LENGTH_LONG).setAction("查看我的书架", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent=new Intent(MagazineDirectoryActivity.this,MainActivity.class);
+                                        intent.putExtra("tag","书架");
+                                        startActivity(intent);
+                                    }
+                                }).show();
+                            }else {
+                                Util.toastMessage(MagazineDirectoryActivity.this,e.getMessage());
+                            }
+                    }
+                });
+            }
+
+
         }
         if (item.getItemId()==R.id.scanHistory){
            // Util.toastMessage(MagazineDirectoryActivity.this,"浏览往期");

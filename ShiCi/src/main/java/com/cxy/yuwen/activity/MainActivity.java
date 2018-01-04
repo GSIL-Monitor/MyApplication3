@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.fragment.MagazineFragment;
+import com.cxy.yuwen.fragment.ShelfFragment;
 import com.cxy.yuwen.fragment.YilinFragment;
 import com.cxy.yuwen.tool.NetWorkUtils;
 import com.cxy.yuwen.tool.Util;
@@ -29,7 +31,7 @@ import cn.bmob.v3.Bmob;
 public class MainActivity extends BasicActivity {
 
     public static List<String> logList = new CopyOnWriteArrayList<String>();
-    private String tabs[]={"查询","作文大全","我的","意林","杂志"};
+    private String tabs[]={"查询","作文大全","杂志","书架","我的",};
 
 
 
@@ -37,9 +39,6 @@ public class MainActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // checkPermmion(this);
-       // MyApplication.getInstance().addActivity(this);
-     //   Log.i("packageName",this.getPackageName());
 
 
 
@@ -53,10 +52,18 @@ public class MainActivity extends BasicActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
-        //navigation.setse
+
     }
 
+    @Override
+    protected void onResume() {
+        String tag=getIntent().getStringExtra("tag");
+        if (!TextUtils.isEmpty(tag)){
+            switchFragmentSupport(R.id.content,tag);
+        }
 
+        super.onResume();
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -65,23 +72,25 @@ public class MainActivity extends BasicActivity {
         public boolean onNavigationItemSelected( MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_search:
-                   // mTextMessage.setText(R.string.title_home);
                     switchFragmentSupport(R.id.content,tabs[0]);
                     return true;
                 case R.id.navigation_composition:
-                  //  mTextMessage.setText(R.string.title_dashboard);
                     switchFragmentSupport(R.id.content,tabs[1]);
                     return true;
-                case R.id.navigation_mine:
-                  //  mTextMessage.setText(R.string.title_notifications);
+
+               /* case R.id.navigation_yilin:
+                    switchFragmentSupport(R.id.content,tabs[3]);
+                    return true;*/
+                case R.id.navigation_magazine:
                     switchFragmentSupport(R.id.content,tabs[2]);
                     return true;
-                case R.id.navigation_yilin:
-                    switchFragmentSupport(R.id.content,tabs[3]);
-                    return true;
-                case R.id.navigation_magazine:
+                case R.id.navigation_shelf:
+                     switchFragmentSupport(R.id.content,tabs[3]);
+                     return true;
+                case R.id.navigation_mine:
                     switchFragmentSupport(R.id.content,tabs[4]);
                     return true;
+
             }
             return false;
         }
@@ -102,9 +111,9 @@ public class MainActivity extends BasicActivity {
         if (destFragment==null){
             if (tag.equals(tabs[0])) destFragment=new MainFragment();
             if (tag.equals(tabs[1])) destFragment=new CompositionFragment();
-            if (tag.equals(tabs[2])) destFragment=new MyFragment();
-            if (tag.equals(tabs[3])) destFragment=YilinFragment.newInstance();
-            if (tag.equals(tabs[4])) destFragment=new MagazineFragment();
+            if (tag.equals(tabs[2])) destFragment=new MagazineFragment();
+            if (tag.equals(tabs[3])) destFragment=new ShelfFragment();
+            if (tag.equals(tabs[4])) destFragment=new MyFragment();
         }
         FragmentTransaction ft=manager.beginTransaction();
 
