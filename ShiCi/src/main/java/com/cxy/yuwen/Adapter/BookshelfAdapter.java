@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,12 +31,13 @@ import butterknife.ButterKnife;
 public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyViewHolder>{
     private Context context;
     private List<Bookshelf> dataDisplayList;
-
     private Bitmap defaultImage;
+    private GridLayoutManager gridLayoutManager;
 
-    public BookshelfAdapter(Context context, List<Bookshelf> dataDisplayList) {
+    public BookshelfAdapter(Context context, List<Bookshelf> dataDisplayList, GridLayoutManager gridLayoutManager) {
         this.context = context;
         this.dataDisplayList = dataDisplayList;
+        this.gridLayoutManager=gridLayoutManager;
         defaultImage = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.default_book);
     }
 
@@ -55,6 +57,17 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
         holder.imCover.setImageBitmap(defaultImage);
         holder.imCover.setTag(imageSrc);
         holder.imTag=imageSrc;
+
+        int width=(gridLayoutManager.getWidth()-100)/2;
+        int height=width+width/3;
+        ViewGroup.LayoutParams lp = holder.imCover.getLayoutParams();
+        lp.width = width;
+        lp.height = height;
+        holder.imCover.setLayoutParams(lp);
+
+        holder.imCover.setMaxWidth(width);
+        holder.imCover.setMaxHeight(height);
+
 
 
         //新的线程中根据url获取图片

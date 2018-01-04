@@ -19,6 +19,7 @@ import com.cxy.yuwen.bmobBean.Bookshelf;
 import com.cxy.yuwen.bmobBean.Collect;
 import com.cxy.yuwen.bmobBean.User;
 import com.github.jdsjlzx.ItemDecoration.GridItemDecoration;
+import com.github.jdsjlzx.ItemDecoration.SpacesItemDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -102,15 +103,11 @@ public class ShelfFragment extends Fragment {
         GridLayoutManager manager=new GridLayoutManager(this.getContext(),2);
         mRecyclerView.setLayoutManager(manager);
 
-        recycleViewAdapter=new BookshelfAdapter(getContext(),bookList);
+        recycleViewAdapter=new BookshelfAdapter(getContext(),bookList,manager);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(recycleViewAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
-        GridItemDecoration divider = new GridItemDecoration.Builder(this.getContext())
-                .setHorizontal(R.dimen.activity_horizontal_margin)
-                .setVertical(R.dimen.activity_vertical_margin)
-                .setColorResource(android.R.color.white)
-                .build();
-        mRecyclerView.addItemDecoration(divider);
+       // int spacing = getResources().getDimensionPixelSize(R.dimen.dp_18);
+      //  mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(),android.R.color.white));
         //禁用下拉刷新功能
         mRecyclerView.setPullRefreshEnabled(false);
         //禁用自动加载更多功能
