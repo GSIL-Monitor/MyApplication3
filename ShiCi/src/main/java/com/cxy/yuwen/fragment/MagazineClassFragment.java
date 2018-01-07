@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.cxy.yuwen.Adapter.ImageTextAdapter;
 import com.cxy.yuwen.R;
+import com.cxy.yuwen.activity.MagazineDetailActivity;
 import com.cxy.yuwen.activity.MagazineDirectoryActivity;
 import com.cxy.yuwen.tool.CommonUtil;
 import com.cxy.yuwen.tool.Util;
@@ -169,7 +170,7 @@ public class MagazineClassFragment extends Fragment {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent=new Intent(getActivity(), MagazineDirectoryActivity.class);
+                Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
                 HashMap hashMap=dataDisplayList.get(position);
                 String href=hashMap.get("href").toString();
                 intent.putExtra("href",href);

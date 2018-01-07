@@ -57,11 +57,11 @@ public class MainActivity extends BasicActivity {
 
     @Override
     protected void onResume() {
-        String tag=getIntent().getStringExtra("tag");
+        /*String tag=getIntent().getStringExtra("tag");
         if (!TextUtils.isEmpty(tag)){
             switchFragmentSupport(R.id.content,tag);
         }
-
+*/
         super.onResume();
     }
 

@@ -57,6 +57,11 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof ItemHolder){
              ItemHolder itemHolder=(ItemHolder)holder;
              itemHolder.itemTv.setText(text);
+             if (position>10){
+                 itemHolder.itemTv.setTextColor(context.getResources().getColor(R.color.colorFontDisable));
+             }else{
+                 itemHolder.itemTv.setTextColor(context.getResources().getColor(R.color.colorFontAvailable));
+             }
         }
     }
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="20dp"
+    android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
@@ -17,6 +17,7 @@
         android:layout_gravity="center_horizontal"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
+        android:background="@color/layoutBackground"
         />
     <TextView
         android:id="@+id/coverName"

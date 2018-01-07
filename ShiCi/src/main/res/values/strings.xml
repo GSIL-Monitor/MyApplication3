@@ -24,6 +24,7 @@
 
       会员用户每天可以无限次查询作文，更多会员权益敬请期待！
     </string>
+    <string name="magazine_member">普通用户可免费阅读部分章节内容，会员用户可畅享所有杂志，后面我们将会推出单独购买功能，敬请期待！</string>
     <string name="ok">确认</string>
     <string name="cancel">取消</string>
     <string name="set_alias">设置别名</string>
@@ -138,4 +139,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_magazine_detail">MagazineDetailActivity</string>
+
 </resources>

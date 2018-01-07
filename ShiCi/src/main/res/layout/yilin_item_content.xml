@@ -9,9 +9,10 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:textSize="18sp"
-        android:textColor="#37a"
         android:text="2017年第11期"
         android:paddingTop="15dp"
-        android:paddingBottom="15dp"/>
+        android:paddingBottom="15dp"
+        android:textColor="@color/colorFontAvailable"/>
+    <!--   android:textColor="#37a"-->
 
 </LinearLayout>

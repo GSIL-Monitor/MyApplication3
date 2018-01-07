@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.cxy.yuwen.Adapter.DataAdapter;
 import com.cxy.yuwen.R;
+import com.cxy.yuwen.activity.MagazineDetailActivity;
 import com.cxy.yuwen.activity.MagazineDirectoryActivity;
 import com.cxy.yuwen.tool.CommonUtil;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
@@ -106,7 +107,7 @@ public class SearchFragment extends Fragment {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent=new Intent(getActivity(), MagazineDirectoryActivity.class);
+                Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
                 HashMap hashMap=dataShowList.get(position);
                 String href=hashMap.get("href").toString();
                 intent.putExtra("href",YILIN_URL+href);

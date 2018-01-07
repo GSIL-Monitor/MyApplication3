@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.activity.MagazineActivity;
 import com.cxy.yuwen.activity.MainActivity;
+import com.cxy.yuwen.tool.ACache;
+import com.cxy.yuwen.tool.CommonUtil;
 import com.cxy.yuwen.tool.Util;
 
 import org.jsoup.Jsoup;
@@ -44,6 +46,7 @@ public class MagazineFragment extends Fragment {
     private List<HashMap> magazineList;
     private static final int LOAD_FINISHED=100;
     private MagazineAdapter adapter;
+    private ACache mAcache;
 
 
     @BindView(R.id.magazineRv) RecyclerView  magazineRv;
@@ -65,6 +68,7 @@ public class MagazineFragment extends Fragment {
         //设置RecycleView布局为网格布局 3列
         magazineRv.setLayoutManager(new GridLayoutManager(getContext(),3));
         magazineList =new ArrayList<HashMap>();
+        mAcache=ACache.get(getContext());
         adapter=new MagazineAdapter();
         magazineRv.setAdapter(adapter);
         Thread thread=new getHtml();
@@ -99,7 +103,15 @@ public class MagazineFragment extends Fragment {
         @Override
         public void run() {
             try {
-                Document docHtml = Jsoup.connect(MAGAZIENE_URL).get();
+                Document docHtml=null;
+                String magazineClass=mAcache.getAsString("magazineClass");
+                if (!CommonUtil.isEmpty(magazineClass)){
+                    docHtml=Jsoup.parse(magazineClass);
+                }else{
+                    docHtml = Jsoup.connect(MAGAZIENE_URL).get();
+                    mAcache.put("magazineClass",docHtml.toString(),30* ACache.TIME_DAY);
+                }
+
                 Elements kinds=docHtml.getElementsByClass("navBox");
                 for (Element kind : kinds){
 

@@ -8,7 +8,7 @@
         android:title="加入书架"
         android:icon="@drawable/add_shelf"
         app:showAsAction="always" />
-    <item
+    <!--<item
         android:id="@+id/scanHistory"
         android:orderInCategory="101"
         android:title="浏览往期"
@@ -17,5 +17,5 @@
         android:id="@+id/scanIntro"
         android:orderInCategory="102"
         android:title="刊物介绍"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
 </menu>

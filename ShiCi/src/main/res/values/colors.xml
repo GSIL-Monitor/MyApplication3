@@ -9,5 +9,6 @@
     <color name="fontBackground">#D3D3D3</color>
     <color name="fontItem">#37a</color>
     <color name="iconBackground">#707070</color>
-
+    <color name="colorFontDisable">#a6a5a5</color>
+    <color name="colorFontAvailable">#585858</color>
 </resources>

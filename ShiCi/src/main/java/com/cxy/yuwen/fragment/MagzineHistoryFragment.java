@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.cxy.yuwen.Adapter.ImageTextAdapter;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.activity.MagazineDirectoryActivity;
+import com.cxy.yuwen.tool.Util;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -123,6 +124,7 @@ public class MagzineHistoryFragment extends Fragment {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                Util.toastMessage(getActivity(),"出错了："+e.getMessage());
             }
 
         }

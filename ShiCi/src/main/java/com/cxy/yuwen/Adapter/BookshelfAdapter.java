@@ -58,7 +58,7 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
         holder.imCover.setTag(imageSrc);
         holder.imTag=imageSrc;
 
-        int width=(gridLayoutManager.getWidth()-100)/2;
+        int width=(gridLayoutManager.getWidth()-120)/2;
         int height=width+width/3;
         ViewGroup.LayoutParams lp = holder.imCover.getLayoutParams();
         lp.width = width;

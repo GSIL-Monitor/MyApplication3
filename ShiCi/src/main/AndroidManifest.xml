@@ -186,9 +186,13 @@
             android:name=".activity.MagazineDirectoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.MagazineContentActivity" />
-        <activity android:name=".activity.MagazineHistoryActivity"
-                   android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+        <activity
+            android:name=".activity.MagazineHistoryActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activity.MagazineDetailActivity"
+            android:label="@string/title_activity_magazine_detail"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -120,11 +120,15 @@ public class MagazineDirectoryActivity extends BasicActivity {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                String url=dataList.get(position).get("href").toString();
-                //跳转至内容显示Activity
-                Intent intent=new Intent(MagazineDirectoryActivity.this,MagazineContentActivity.class);
-                intent.putExtra("url",MAGAZINE_URL+url);
-                startActivity(intent);
+                String type=dataList.get(position).get("type").toString();
+                if ("item".equals(type)){
+                    String url=dataList.get(position).get("href").toString();
+                    //跳转至内容显示Activity
+                    Intent intent=new Intent(MagazineDirectoryActivity.this,MagazineContentActivity.class);
+                    intent.putExtra("url",MAGAZINE_URL+url);
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -229,14 +233,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
                             if (e==null){
 
-                                Snackbar.make(tv_title, "已将该杂志加入书架", Snackbar.LENGTH_LONG).setAction("查看我的书架", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intent=new Intent(MagazineDirectoryActivity.this,MainActivity.class);
-                                        intent.putExtra("tag","书架");
-                                        startActivity(intent);
-                                    }
-                                }).show();
+                                Snackbar.make(tv_title, "已将该杂志加入书架", Snackbar.LENGTH_LONG).setAction("", null).show();
                             }else {
                                 Util.toastMessage(MagazineDirectoryActivity.this,e.getMessage());
                             }
@@ -246,7 +243,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
 
         }
-        if (item.getItemId()==R.id.scanHistory){
+       /* if (item.getItemId()==R.id.scanHistory){
            // Util.toastMessage(MagazineDirectoryActivity.this,"浏览往期");
             Intent intent=new Intent(this,MagazineHistoryActivity.class);
             intent.putExtra("historyUrl",magazineHistoryHref);
@@ -255,7 +252,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
         }
         if (item.getItemId()==R.id.scanIntro){
             Util.toastMessage(MagazineDirectoryActivity.this,"期刊介绍");
-        }
+        }*/
         return true;
     }
 
