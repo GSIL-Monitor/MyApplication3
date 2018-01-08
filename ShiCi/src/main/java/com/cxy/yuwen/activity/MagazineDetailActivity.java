@@ -167,7 +167,7 @@ public class MagazineDetailActivity extends AppCompatActivity {
                 handler.sendEmptyMessage(100);
             } catch (Exception e) {
                 e.printStackTrace();
-                Util.toastMessage(MagazineDetailActivity.this,"亲，出错了，请稍候重试");
+                handler.sendEmptyMessage(101);
             }
         }
 
@@ -182,6 +182,8 @@ public class MagazineDetailActivity extends AppCompatActivity {
                 tv_time.setText(magazineTime);
                 im_cover.setImageBitmap(bookCover);
                 tv_intro.setText(magazineIntro);
+            }else if (msg.what==101){
+                Util.toastMessage(MagazineDetailActivity.this,"亲，出错了，该杂志内容暂时无法阅读，换一本吧！");
             }
         }
     };

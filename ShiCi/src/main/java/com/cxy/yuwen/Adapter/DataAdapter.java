@@ -64,6 +64,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             // itemHolder.itemTv.setText(text);
              if (position==10){
                  itemHolder.itemTv.setText(text+"(以下内容为会员专项)");
+                 itemHolder.itemTv.setTextColor(context.getResources().getColor(R.color.colorAccent));
              }else{
                  itemHolder.itemTv.setText(text);
              }

@@ -5,7 +5,7 @@
 
     <TextView android:id="@+id/class_title"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:textSize="20sp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"

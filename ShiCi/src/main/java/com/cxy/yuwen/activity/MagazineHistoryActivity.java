@@ -89,7 +89,8 @@ public class MagazineHistoryActivity extends BasicActivity {
                 uiHandler.sendEmptyMessage(100);
             } catch (IOException e) {
                 e.printStackTrace();
-                Util.toastMessage(MagazineHistoryActivity.this,"出错了");
+                uiHandler.sendEmptyMessage(101);
+
             }
         }
     }
@@ -107,6 +108,8 @@ public class MagazineHistoryActivity extends BasicActivity {
                 viewPager.setAdapter(new ViewpagerAdapter(getSupportFragmentManager(),dataList));
                 //绑定
                 tabLayout.setupWithViewPager(viewPager);
+            }else if(msg.what==101){
+                Util.toastMessage(MagazineHistoryActivity.this,"出错了,该杂志内容暂无法查看，换本杂志看看吧！");
             }
         }
     };

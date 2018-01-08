@@ -155,6 +155,7 @@ public class ShelfFragment extends Fragment {
                 String href=bookList.get(position).getDirectoryUrl();
                 Intent intent=new Intent(getActivity(), MagazineDirectoryActivity.class);
                 intent.putExtra("href",href);
+                intent.putExtra("type","href");
                 startActivity(intent);
             }
         });

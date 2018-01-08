@@ -5,14 +5,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.DocumentsContract;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
 import com.cxy.yuwen.R;
+import com.xiaomi.ad.AdListener;
+import com.xiaomi.ad.NativeAdInfoIndex;
+import com.xiaomi.ad.NativeAdListener;
+import com.xiaomi.ad.adView.StandardNewsFeedAd;
+import com.xiaomi.ad.common.pojo.AdError;
+import com.xiaomi.ad.common.pojo.AdEvent;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,6 +29,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +39,9 @@ public class MagazineContentActivity extends BasicActivity {
     private String httpUrl="";
     private WebSettings mWebSettings;
     private String  htmlData="";
+    private static final String AD_ID = "73de7ce1acfd8777553c367d5a4aab06";   //广告id
     @BindView(R.id.wv_content)  WebView mWebview;
+    ViewGroup adContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +52,66 @@ public class MagazineContentActivity extends BasicActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         httpUrl=getIntent().getStringExtra("url").replace("page","news").replace("shtml","html");
         setWebView();
-      /*  Thread thread=new GetHtml();
-        thread.start();*/
+        adContainer=(ViewGroup) findViewById(R.id.containerAd);
+        //设置广告
+        setAd();
 
+
+    }
+
+    public void setAd(){
+        final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
+        adContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    standardNewsFeedAd.requestAd(AD_ID, 1, new NativeAdListener() {
+                        @Override
+                        public void onNativeInfoFail(AdError adError) {
+                            Log.e(TAG, "onNativeInfoFail e : " + adError);
+                        }
+
+                        @Override
+                        public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
+                            NativeAdInfoIndex response = list.get(0);
+                            standardNewsFeedAd.buildViewAsync(response, adContainer.getWidth(), new AdListener() {
+                                @Override
+                                public void onAdError(AdError adError) {
+                                    Log.e(TAG, "error : remove all views");
+                                    adContainer.removeAllViews();
+                                }
+
+                                @Override
+                                public void onAdEvent(AdEvent adEvent) {
+                                    //目前考虑了３种情况，用户点击信息流广告，用户点击x按钮，以及信息流展示的３种回调，范例如下
+                                    if (adEvent.mType == AdEvent.TYPE_CLICK) {
+                                        Log.d(TAG, "ad has been clicked!");
+                                    } else if (adEvent.mType == AdEvent.TYPE_SKIP) {
+                                        Log.d(TAG, "x button has been clicked!");
+                                    } else if (adEvent.mType == AdEvent.TYPE_VIEW) {
+                                        Log.d(TAG, "ad has been showed!");
+                                    }
+                                }
+
+                                @Override
+                                public void onAdLoaded() {
+
+                                }
+
+                                @Override
+                                public void onViewCreated(View view) {
+                                    Log.e(TAG, "onViewCreated");
+                                    adContainer.removeAllViews();
+                                    adContainer.addView(view);
+                                }
+                            });
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void setWebView(){

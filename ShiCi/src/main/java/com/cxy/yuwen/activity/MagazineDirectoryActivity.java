@@ -267,7 +267,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                Util.toastMessage(MagazineDirectoryActivity.this,e.getMessage());
+                handler.sendEmptyMessage(101);
             }
 
 
@@ -283,13 +283,19 @@ public class MagazineDirectoryActivity extends BasicActivity {
                   tv_time.setText(magazineTime+"目录");
                   mLRecyclerViewAdapter.notifyDataSetChanged();
             }
+            else if(msg.what==101){
+                  Util.toastMessage(MagazineDirectoryActivity.this,"出错了,该杂志内容暂无法查看，换本杂志看看吧！");
+              }
         }
 };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // 为toolbar创建Menu
-        getMenuInflater().inflate(R.menu.menu_magazine, menu);
+        String type=getIntent().getStringExtra("type");
+        if (type==null) {   //"shelf"
+            getMenuInflater().inflate(R.menu.menu_magazine, menu);
+        }
         return true;
     }
 

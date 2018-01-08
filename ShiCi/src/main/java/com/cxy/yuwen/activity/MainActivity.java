@@ -74,9 +74,9 @@ public class MainActivity extends BasicActivity {
                 case R.id.navigation_search:
                     switchFragmentSupport(R.id.content,tabs[0]);
                     return true;
-                case R.id.navigation_composition:
+               /* case R.id.navigation_composition:
                     switchFragmentSupport(R.id.content,tabs[1]);
-                    return true;
+                    return true;*/
 
                /* case R.id.navigation_yilin:
                     switchFragmentSupport(R.id.content,tabs[3]);

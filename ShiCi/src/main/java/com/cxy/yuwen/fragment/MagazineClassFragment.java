@@ -289,7 +289,7 @@ public class MagazineClassFragment extends Fragment {
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Util.toastMessage(getActivity(),e.toString());
+
                 }
 
                 //模拟一下网络请求失败的情况
