@@ -13,6 +13,7 @@ import android.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 
 import com.cxy.yuwen.Adapter.DataAdapter;
+import com.cxy.yuwen.Adapter.SearchAdapter;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.activity.MagazineDetailActivity;
 import com.cxy.yuwen.activity.MagazineDirectoryActivity;
@@ -48,7 +49,7 @@ public class SearchFragment extends Fragment {
     private Unbinder unbinder;
     @BindView(R.id.search_view) SearchView searchView;
     @BindView(R.id.rv_allData)   LRecyclerView mRecyclerView;
-    private DataAdapter dataAdapter=null;
+    private SearchAdapter dataAdapter=null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
     private static final String  DATA_URL="http://www.fx361.com/common/all.html";
     private static final String YILIN_URL="http://www.fx361.com";
@@ -87,7 +88,7 @@ public class SearchFragment extends Fragment {
     }
 
     public void setRecyclerView(){
-        dataAdapter=new DataAdapter(dataShowList,getContext());
+        dataAdapter=new SearchAdapter(dataShowList,getContext());
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(dataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.cxy.yuwen.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
  * Created by cxy on 2017/12/27.
  */
 
-public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<HashMap> dataList;
     private static final int TYPE_TITLE = 0;//两种状态 标题 2017年
@@ -25,7 +24,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private LayoutInflater mInflater;
     private Context context;
 
-    public DataAdapter(List<HashMap> dataList,Context context) {
+    public SearchAdapter(List<HashMap> dataList, Context context) {
         this.dataList = dataList;
         this.context=context;
         this.mInflater=LayoutInflater.from(context);
@@ -52,21 +51,13 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         String text=map.get("text").toString();
         if (holder instanceof TitleHolder){
             TitleHolder titleHolder=(TitleHolder)holder;
-           // titleHolder.titleTv.setText(text);
-            if (position==10){
-                titleHolder.titleTv.setText(text+"(以下内容为会员专项)");
-            }else{
-                titleHolder.titleTv.setText(text);
-            }
+            titleHolder.titleTv.setText(text);
+
         }
         if (holder instanceof ItemHolder){
              ItemHolder itemHolder=(ItemHolder)holder;
-            // itemHolder.itemTv.setText(text);
-             if (position==10){
-                 itemHolder.itemTv.setText(text+"(以下内容为会员专项)");
-             }else{
-                 itemHolder.itemTv.setText(text);
-             }
+             itemHolder.itemTv.setText(text);
+
         }
     }
 

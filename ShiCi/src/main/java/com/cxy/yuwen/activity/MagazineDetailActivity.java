@@ -167,7 +167,7 @@ public class MagazineDetailActivity extends AppCompatActivity {
                 handler.sendEmptyMessage(100);
             } catch (Exception e) {
                 e.printStackTrace();
-                Util.toastMessage(MagazineDetailActivity.this,e.getMessage());
+                Util.toastMessage(MagazineDetailActivity.this,"亲，出错了，请稍候重试");
             }
         }
 

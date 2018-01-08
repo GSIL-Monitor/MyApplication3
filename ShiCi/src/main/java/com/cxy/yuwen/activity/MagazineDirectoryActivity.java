@@ -1,5 +1,6 @@
 package com.cxy.yuwen.activity;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.cxy.yuwen.Adapter.DataAdapter;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.bmobBean.Bookshelf;
+import com.cxy.yuwen.bmobBean.Member;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.fragment.MyFragment;
 import com.cxy.yuwen.tool.RecyclerAdapter;
@@ -37,16 +39,22 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.a.a.This;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
 public class MagazineDirectoryActivity extends BasicActivity {
@@ -81,10 +89,10 @@ public class MagazineDirectoryActivity extends BasicActivity {
         thread.start();
     }
 
-    public void setRecycleView(){
+    public void setRecycleView() {
 
 
-        dataAdapter=new DataAdapter(dataList,this);
+        dataAdapter = new DataAdapter(dataList, this);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(dataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         /*//创建线性布局
@@ -105,8 +113,8 @@ public class MagazineDirectoryActivity extends BasicActivity {
         mRecyclerView.addItemDecoration(divider);
         //add a HeaderView
         View headerView = new CommonHeader(this, R.layout.header_magazine_recycleview);
-        tv_time=(TextView)headerView.findViewById(R.id.tv_time);
-       // ButterKnife.bind(this,headerView);
+        tv_time = (TextView) headerView.findViewById(R.id.tv_time);
+        // ButterKnife.bind(this,headerView);
         mLRecyclerViewAdapter.addHeaderView(headerView);
 
         //禁用下拉刷新功能
@@ -114,26 +122,112 @@ public class MagazineDirectoryActivity extends BasicActivity {
         //禁用自动加载更多功能
         mRecyclerView.setLoadMoreEnabled(false);
         //add a FooterView
-        CommonFooter footerView=new CommonFooter(this,R.layout.layout_empty);
+        CommonFooter footerView = new CommonFooter(this, R.layout.layout_empty);
         mLRecyclerViewAdapter.addFooterView(footerView);
 
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                String type=dataList.get(position).get("type").toString();
-                if ("item".equals(type)){
-                    String url=dataList.get(position).get("href").toString();
-                    //跳转至内容显示Activity
-                    Intent intent=new Intent(MagazineDirectoryActivity.this,MagazineContentActivity.class);
-                    intent.putExtra("url",MAGAZINE_URL+url);
-                    startActivity(intent);
+            public void onItemClick(View view, final int position) {
+                User user = BmobUser.getCurrentUser(User.class);
+                if (user == null) {
+                    Util.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "亲，登录后才可查看内容哦", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent1 = new Intent(MagazineDirectoryActivity.this, LoginActivity.class);
+                            startActivity(intent1);
+                        }
+                    });
+                } else {
+
+                    if (position > 10) {
+
+
+                        //判断用户的会员状态
+                        BmobQuery<Member> query = new BmobQuery<Member>();
+                        query.addWhereEqualTo("user", user);
+                        query.findObjects(new FindListener<Member>() {
+                            @Override
+                            public void done(List<Member> list, BmobException e) {
+                                if (e == null) {
+                                    if (list.size() <= 0) {   //不是会员，提示购买会员
+                                        AlertDialog dlg = new AlertDialog.Builder(MagazineDirectoryActivity.this).setTitle("提示").setMessage("亲，该部分内容会员才可观看")
+                                                .setPositiveButton("去充值会员", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        Intent intent = new Intent(MagazineDirectoryActivity.this, MemberActivity.class);
+                                                        startActivity(intent);
+                                                    }
+                                                })
+                                                .setNegativeButton("取消", null).create();
+                                        dlg.setCanceledOnTouchOutside(false);
+                                        dlg.show();
+                                    } else {   //分两种情况：1、是会员且会员没有过期 2、是会员，已过期
+                                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                        Member queryMember = list.get(0);
+                                        String finishTime = queryMember.getFinishTime();  //数据库里存储的会员到期时间
+                                        Calendar nowCal = Calendar.getInstance();  //当前日期
+                                        Calendar finishCal = Calendar.getInstance();   //会员到期日期
+                                        try {
+
+                                            nowCal.setTime(sdf.parse((sdf.format(new Date()))));
+                                            finishCal.setTime(sdf.parse(finishTime));
+                                            int value = finishCal.compareTo(nowCal);
+                                            if (value == -1) {   //会员已经过期
+                                                AlertDialog dlg = new AlertDialog.Builder(MagazineDirectoryActivity.this).setTitle("提示").setMessage("亲，该部分内容为会员专项，你的会员已过期！")
+                                                        .setPositiveButton("去充值会员", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                Intent intent = new Intent(MagazineDirectoryActivity.this, MemberActivity.class);
+                                                                startActivity(intent);
+                                                            }
+                                                        })
+                                                        .setNegativeButton("取消", null).create();
+                                                dlg.setCanceledOnTouchOutside(false);
+                                                dlg.show();
+
+                                            } else {  //没有过期，正常查看
+                                                String type = dataList.get(position).get("type").toString();
+                                                if ("item".equals(type)) {
+                                                    String url = dataList.get(position).get("href").toString();
+                                                    //跳转至内容显示Activity
+                                                    Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
+                                                    intent.putExtra("url", MAGAZINE_URL + url);
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        } catch (ParseException e1) {
+                                            e1.printStackTrace();
+                                        }
+
+                                    }
+                                } else {
+                                    Util.toastMessage(MagazineDirectoryActivity.this, "查询会员状态出错：" + e.getMessage());
+                                }
+                            }
+                        });
+
+
+                    }else{   //前10条随意查看
+                        String type = dataList.get(position).get("type").toString();
+                        if ("item".equals(type)) {
+                            String url = dataList.get(position).get("href").toString();
+                            //跳转至内容显示Activity
+                            Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
+                            intent.putExtra("url", MAGAZINE_URL + url);
+                            startActivity(intent);
+                        }
+
+                    }
+
                 }
 
             }
         });
 
-
     }
+
+
+
 
     class GetData extends Thread {
         @Override
