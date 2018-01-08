@@ -247,6 +247,9 @@ public class MagazineClassFragment extends Fragment {
                         }
                     });
                     break;
+                case 101:
+                    Util.toastMessage(getActivity(),"亲，出错了，请稍后重试！");
+
             }
         }
     }
@@ -289,7 +292,7 @@ public class MagazineClassFragment extends Fragment {
 
                 } catch (IOException e) {
                     e.printStackTrace();
-
+                    mHandler.sendEmptyMessage(101);
                 }
 
                 //模拟一下网络请求失败的情况
