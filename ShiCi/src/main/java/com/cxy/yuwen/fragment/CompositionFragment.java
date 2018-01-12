@@ -983,44 +983,6 @@ public void resolveJson(String gradeData,String typeData,String fontData, String
 
             intent.putExtra("selectComposition", composition);
             startActivity(intent);
-
-            /*final Map paramMap=new HashMap();
-            paramMap.put("key",APPKEY_COMPOSITION);
-            paramMap.put("id",composition.getId());*/
-
-            /*new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        String compositionDetail= OkHttpUtil.get(urlContent,paramMap);
-                        JSONObject compositionJson=new JSONObject(compositionDetail);
-                        if (compositionJson.getInt("error_code")==0) {   //请求成功
-                            JSONObject resultObject=compositionJson.getJSONObject("result");
-                            String contentStr=resultObject.getString("content");
-                            String content=contentStr.replace("<p>","").replace("</p>","\n\n");
-                            composition.setContent(content);
-                            composition.setComment(resultObject.getString("comment"));
-                            composition.setSchool(resultObject.getString("school"));
-                            composition.setTeacher(resultObject.getString("teacher"));
-                            //跳转Activity
-                            Intent intent=new Intent(getActivity(),CompositionDetailActivity.class);
-                            intent.putExtra("composition", composition);
-                            startActivity(intent);
-
-
-                        }
-                        else{
-                            //  Log.i(TAG,compositionJson.get("error_code")+":"+compositionJson.get("reason"));
-                            error=compositionJson.get("error_code")+":"+compositionJson.get("reason");
-                            handler.sendEmptyMessage(0);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        error="出现错误，该篇作文暂时无法查看";
-                        handler.sendEmptyMessage(0);
-                    }
-                }
-            }).start();//*/
         }
 
         public void refresh(int state){

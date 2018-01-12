@@ -55,8 +55,10 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
            // titleHolder.titleTv.setText(text);
             if (position==10){
                 titleHolder.titleTv.setText(text+"(以下内容为会员专项)");
+                titleHolder.titleTv.setTextColor(context.getResources().getColor(R.color.colorAccent));
             }else{
                 titleHolder.titleTv.setText(text);
+                titleHolder.titleTv.setTextColor(context.getResources().getColor(R.color.colorFontAvailable));
             }
         }
         if (holder instanceof ItemHolder){
@@ -67,6 +69,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                  itemHolder.itemTv.setTextColor(context.getResources().getColor(R.color.colorAccent));
              }else{
                  itemHolder.itemTv.setText(text);
+                 itemHolder.itemTv.setTextColor(context.getResources().getColor(R.color.colorFontAvailable));
              }
         }
     }
