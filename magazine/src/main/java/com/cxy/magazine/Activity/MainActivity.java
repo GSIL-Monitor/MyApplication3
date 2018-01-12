@@ -1,13 +1,14 @@
-package com.cxy.magazine;
+package com.cxy.magazine.Activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.cxy.magazine.R;
+
+public class MainActivity extends BasicActivity {
 
     private TextView mTextMessage;
 
