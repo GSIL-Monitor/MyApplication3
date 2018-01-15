@@ -15,8 +15,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cxy.magazine.R;
+import com.cxy.magazine.activity.ClassDetailActivity;
 import com.cxy.magazine.util.ACache;
 import com.cxy.magazine.util.Util;
+import com.github.jdsjlzx.ItemDecoration.GridItemDecoration;
+import com.github.jdsjlzx.ItemDecoration.SpacesItemDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
@@ -73,6 +76,16 @@ public class ClassFragment extends Fragment {
     public void setLRecyclerview(){
         GridLayoutManager manager=new GridLayoutManager(this.getContext(),3);
         mLRecyclerview.setLayoutManager(manager);
+       /* GridItemDecoration divider = new GridItemDecoration.Builder(this.getContext())
+                .setHorizontal(R.dimen.activity_horizontal_margin)
+                .setVertical(R.dimen.activity_vertical_margin)
+                .setColorResource(android.R.color.white)
+                .build();
+           mLRecyclerview.addItemDecoration(divider);*/
+        int spacing = getResources().getDimensionPixelSize(R.dimen.dp_14);
+        mLRecyclerview.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(),android.R.color.white));
+
+        mLRecyclerview.setHasFixedSize(true);
         adapter=new MagazineAdapter();
         mLRecyclerViewAdapter=new LRecyclerViewAdapter(adapter);
         mLRecyclerview.setAdapter(mLRecyclerViewAdapter);
@@ -83,11 +96,11 @@ public class ClassFragment extends Fragment {
     public void searchClick(){
         //  Util.toastMessage(getActivity(),"searchView");
         //跳转Fragment
-      /*  getActivity().getSupportFragmentManager()
+       getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content, SearchFragment.newInstance())
                 .addToBackStack(null)
-                .commit();*/
+                .commit();
 
 
     }
@@ -168,10 +181,10 @@ public class ClassFragment extends Fragment {
             holder.tvClassName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    /*Intent intent=new Intent(getContext(), MagazineActivity.class);
+                    Intent intent=new Intent(getContext(), ClassDetailActivity.class);
                     intent.putExtra("url",MAGAZIENE_URL+"/"+dataMap.get("href").toString());
                     intent.putExtra("title",dataMap.get("text").toString());
-                    startActivity(intent);*/
+                    startActivity(intent);
                 }
             });
         }

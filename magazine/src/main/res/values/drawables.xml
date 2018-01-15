@@ -1,0 +1,10 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="ic_menu_close" type="drawable">@android:drawable/ic_menu_close_clear_cancel</item>
+    <item name="ic_menu_composition" type="drawable">@android:drawable/ic_menu_edit</item>
+    <item name="ic_menu_collect" type="drawable">@android:drawable/star_off</item>
+    <item name="ic_menu_manage" type="drawable">@android:drawable/ic_menu_manage</item>
+    <item name="ic_menu_share" type="drawable">@android:drawable/ic_menu_share</item>
+    <item name="ic_menu_send" type="drawable">@android:drawable/ic_menu_send</item>
+    <item name="ic_menu_mine" type="drawable">@android:drawable/ic_menu_preferences</item>
+
+</resources>

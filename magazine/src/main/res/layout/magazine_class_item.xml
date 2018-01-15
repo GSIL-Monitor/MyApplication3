@@ -5,11 +5,8 @@
 
     <TextView android:id="@+id/class_title"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:textSize="20sp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:background="@color/colorAccent"
         android:text="科技"
         android:textColor="#fff"

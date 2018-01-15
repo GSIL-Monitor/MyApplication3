@@ -2,13 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.cxy.magazine.fragment.ClassFragment"
     android:orientation="vertical">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+       >
 
         <TextView
             android:id="@+id/tv_search"
@@ -28,7 +31,8 @@
     <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/magazineRv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="@dimen/dp_10">
 
     </com.github.jdsjlzx.recyclerview.LRecyclerView>
 

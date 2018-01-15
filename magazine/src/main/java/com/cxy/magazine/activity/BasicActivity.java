@@ -1,9 +1,7 @@
-package com.cxy.magazine.Activity;
+package com.cxy.magazine.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import com.cxy.magazine.R;
 
 
 public class BasicActivity extends AppCompatActivity {

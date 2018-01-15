@@ -24,18 +24,25 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:support-vector-drawable:25.3.1'
-    compile 'com.github.jdsjlzx:LRecyclerView:1.4.3'
-    compile 'com.jakewharton:butterknife:8.8.1'
-    compile 'org.jsoup:jsoup:1.10.2'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+    //butterknife
+    compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //bmob数据库
+    compile 'cn.bmob.android:bmob-sdk:3.5.5'
+    compile 'cn.bmob.android:http-legacy:1.0'
+    //LRecyclerView
+    compile 'com.github.jdsjlzx:LRecyclerView:1.4.3'
+    //jsoup 爬虫
+    compile 'org.jsoup:jsoup:1.10.2'
+    //QQ登陆
+    compile files('libs/open_sdk_r5793_lite.jar')
 }

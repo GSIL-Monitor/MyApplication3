@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+   >
+
+    <ImageView
+        android:id="@+id/coverImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:background="@color/layoutBackground"
+        />
+    <TextView
+        android:id="@+id/coverName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="杂志名称"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorFontText"/>
+    <TextView
+        android:id="@+id/coverOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2017年第24期"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorFontText"
+        android:layout_marginBottom="10dp"/>
+
+
+</LinearLayout>
