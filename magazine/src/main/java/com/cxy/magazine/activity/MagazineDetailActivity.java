@@ -125,18 +125,18 @@ public class MagazineDetailActivity extends AppCompatActivity {
     //开始阅读
     @OnClick(R.id.start_read)
     public void  startRead(){
-       /* Intent intent=new Intent(MagazineDetailActivity.this,MagazineDirectoryActivity.class);
+        Intent intent=new Intent(MagazineDetailActivity.this,MagazineDirectoryActivity.class);
         intent.putExtra("href",httpUrl);
-        startActivity(intent);*/
+        startActivity(intent);
     }
     //浏览往期
     @OnClick(R.id.watch_history)
    public void watchHistory(){
-        // Util.toastMessage(MagazineDirectoryActivity.this,"浏览往期");
-      /*  Intent intent=new Intent(this,MagazineHistoryActivity.class);
+        //Util.toastMessage(MagazineDirectoryActivity.this,"浏览往期");
+        Intent intent=new Intent(this,MagazineHistoryActivity.class);
         intent.putExtra("historyUrl",magazineHistoryHref);
         intent.putExtra("title",magazineTitle);
-        startActivity(intent);*/
+        startActivity(intent);
 
     }
     @Override

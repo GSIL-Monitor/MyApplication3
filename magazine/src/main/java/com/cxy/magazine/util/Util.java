@@ -30,6 +30,8 @@ public class Util {
 
     public static  final  String SERVER_URL="http://192.168.1.116:8081/questionnaire/"; //http://192.168.1.116:8081/questionnaire/queryQuestionnaire //http://192.168.1.159:8080/QuestionSurvey/test
     private static final String TAG = "SDK_Sample.Util";
+    public static String TencentAppId="1106093430";    //QQ登录AppId
+    public static final String KEY_SHA = "SHA";
     private static Dialog mProgressDialog;
     private static Toast mToast;
 
@@ -173,8 +175,7 @@ public class Util {
         return fixLenthString.substring(1, strLength + 1);
     }
 
-    public static String TencentAppId="1106093430";
-    public static final String KEY_SHA = "SHA";
+
 
 
 
