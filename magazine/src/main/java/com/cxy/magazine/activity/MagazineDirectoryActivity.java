@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.cxy.magazine.BmobBean.Bookshelf;
 import com.cxy.magazine.BmobBean.Member;
 import com.cxy.magazine.BmobBean.User;
 import com.cxy.magazine.R;
@@ -42,7 +44,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
-import com.cxy.magazine.util.Util;
+import com.cxy.magazine.util.Utils;
 
 
 public class MagazineDirectoryActivity extends BasicActivity {
@@ -118,7 +120,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
             public void onItemClick(View view, final int position) {
                 User user = BmobUser.getCurrentUser(User.class);
                 if (user == null) {
-                    Util.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "亲，登录后才可查看内容哦", new DialogInterface.OnClickListener() {
+                    Utils.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "亲，登录后才可查看内容哦", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Intent intent1 = new Intent(MagazineDirectoryActivity.this, LoginActivity.class);
@@ -189,7 +191,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
                                     }
                                 } else {
-                                    Util.toastMessage(MagazineDirectoryActivity.this, "查询会员状态出错：" + e.getMessage());
+                                    Utils.toastMessage(MagazineDirectoryActivity.this, "查询会员状态出错：" + e.getMessage());
                                 }
                             }
                         });
@@ -272,7 +274,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
                   mLRecyclerViewAdapter.notifyDataSetChanged();
             }
             else if(msg.what==101){
-                  Util.toastMessage(MagazineDirectoryActivity.this,"出错了,该杂志内容暂无法查看，换本杂志看看吧！");
+                  Utils.toastMessage(MagazineDirectoryActivity.this,"出错了,该杂志内容暂无法查看，换本杂志看看吧！");
               }
         }
 };
@@ -282,7 +284,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
         // 为toolbar创建Menu
         String type=getIntent().getStringExtra("type");
         if (type==null) {   //"shelf"
-            getMenuInflater().inflate(R.menu.menu_magazine, menu);
+            getMenuInflater().inflate(R.menu.menu_magazine_directory, menu);
         }
         return true;
     }
@@ -298,7 +300,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
             User user= BmobUser.getCurrentUser(User.class);
             if (user == null) {   //未登录
-                Util.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+                Utils.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent1 = new Intent(MagazineDirectoryActivity.this, LoginActivity.class);
@@ -323,7 +325,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
                                 Snackbar.make(tv_title, "已将该杂志加入书架", Snackbar.LENGTH_LONG).setAction("", null).show();
                             }else {
-                                Util.toastMessage(MagazineDirectoryActivity.this,e.getMessage());
+                                Utils.toastMessage(MagazineDirectoryActivity.this,e.getMessage());
                             }
                     }
                 });

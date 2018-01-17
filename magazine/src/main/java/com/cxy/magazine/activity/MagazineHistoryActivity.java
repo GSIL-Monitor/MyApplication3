@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.cxy.magazine.fragment.MagzineHistoryFragment;
+import com.cxy.magazine.util.Utils;
 
 import com.cxy.magazine.R;
 
@@ -105,7 +107,7 @@ public class MagazineHistoryActivity extends BasicActivity {
                 //绑定
                 tabLayout.setupWithViewPager(viewPager);
             }else if(msg.what==101){
-                Util.toastMessage(MagazineHistoryActivity.this,"出错了,该杂志内容暂无法查看，换本杂志看看吧！");
+                Utils.toastMessage(MagazineHistoryActivity.this,"出错了,该杂志内容暂无法查看，换本杂志看看吧！");
             }
         }
     };

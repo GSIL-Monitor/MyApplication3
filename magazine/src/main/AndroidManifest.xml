@@ -4,6 +4,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
 
     <application
         android:allowBackup="true"
@@ -39,6 +42,12 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- 66支付 -->
+        <activity
+            android:name="com.eagle.pay66.PayActivity"
+            android:exported="true" />
+
         <activity android:name=".activity.BasicActivity"></activity>
         <activity android:name=".activity.ClassDetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -57,6 +66,23 @@
         <activity
             android:name=".activity.BindPhoneActivity"
             android:parentActivityName=".activity.SettingInfomationActivity" />
+        <activity
+            android:name=".activity.FindPasswordActivity"
+            android:parentActivityName=".activity.LoginActivity" />
+        <activity
+            android:name=".activity.MemberActivity"
+            android:parentActivityName=".activity.MainActivity" />
+
+        <activity
+            android:name=".activity.MagazineDirectoryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.MagazineHistoryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".activity.MagazineContentActivity" />
+
+
     </application>
 
 </manifest>

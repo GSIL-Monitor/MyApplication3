@@ -23,3 +23,20 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepattributes Signature
+-dontwarn android.support.**
+-dontwarn com.squareup.**
+-dontwarn okio.**
+#这里com.xiaomi.mipushdemo.DemoMessageRreceiver改成app中定义的完整类名
+#-keep class com.yuwen.receiver.MessageReceiver {*;}
+#Bmob支付
+-libraryjars libs/BmobPay_v3.x.x_xxxxxx.jar
+-keepclasseswithmembers class c.b.** { *; }
+-keep interface c.b.PListener{ *; }
+-keep interface c.b.QListener{ *; }
+#66支付
+-keep class com.ut.*
+-keep class com.alipay.** { *; }
+-keep class com.eagle.pay66.** {*;}
+-dontwarn com.alipay.**
+-dontwarn com.eagle.pay66.**

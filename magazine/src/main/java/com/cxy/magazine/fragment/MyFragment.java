@@ -23,11 +23,13 @@ import android.widget.TextView;
 
 
 import com.cxy.magazine.BmobBean.User;
+import com.cxy.magazine.MyApplication;
 import com.cxy.magazine.R;
 import com.cxy.magazine.activity.LoginActivity;
+import com.cxy.magazine.activity.MemberActivity;
 import com.cxy.magazine.activity.SettingInfomationActivity;
 import com.cxy.magazine.util.ACache;
-import com.cxy.magazine.util.Util;
+import com.cxy.magazine.util.Utils;
 
 import cn.bmob.v3.BmobUser;
 
@@ -60,7 +62,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         defaultHeadImage = resources.getDrawable(R.drawable.people);
 
 
-       // setUserInfo();
+        // setUserInfo();
         tvLogin.setOnClickListener(this);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -71,8 +73,8 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  ActionBar actionBar=((AppCompatActivity) getActivity()).getSupportActionBar();
-      //  actionBar.show();
+        //  ActionBar actionBar=((AppCompatActivity) getActivity()).getSupportActionBar();
+        //  actionBar.show();
         Log.i("fragment","----------onCreate()");
     }
 
@@ -98,7 +100,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
             tvLogin.setText(user.getUsername());
 
             //获取用户头像
-            if (!TextUtils.isEmpty(user.getHeadImageUrl())){
+            if (!Utils.isEmpty(user.getHeadImageUrl())){
                 headImage=aCache.getAsBitmap("headImageBitmap");  //从缓存中获取用户头像
                 if (headImage!=null){
                     headImageView.setImageBitmap(headImage);
@@ -111,8 +113,8 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
             }
 
         }else{
-             tvLogin.setText("点击登录学习账号");
-             headImageView.setImageDrawable(defaultHeadImage);
+            tvLogin.setText("点击登录学习账号");
+            headImageView.setImageDrawable(defaultHeadImage);
         }
 
     }
@@ -121,7 +123,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         @Override
         public void run() {
 
-            headImage = Util.getbitmap(user.getHeadImageUrl());
+            headImage = Utils.getbitmap(user.getHeadImageUrl());
             handler.sendEmptyMessage(IMAGE_LOAD_FINISHED);
         }
     }
@@ -168,10 +170,10 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         int id = item.getItemId();
         if (id == R.id.collect) {
             if (user!=null){
-               /* Intent intent=new Intent(getActivity(),CollectActivity.class);
-                startActivity(intent);*/
+               // Intent intent=new Intent(getActivity(),CollectActivity.class);
+               // startActivity(intent);
             }else{
-                Util.showConfirmCancelDialog(getActivity(), "提示", "请先登录！", new DialogInterface.OnClickListener() {
+                Utils.showConfirmCancelDialog(getActivity(), "提示", "请先登录！", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent1 = new Intent(getActivity(), LoginActivity.class);
@@ -184,10 +186,8 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         }
         if (id == R.id.feedback) {
             // Toast.makeText(MainActivity.this, "你点击了反馈", Toast.LENGTH_SHORT).show();
-/*
-            Intent intent=new Intent(getActivity(),FeedbackActivity.class);
-            startActivity(intent);
-*/
+           /* Intent intent=new Intent(getActivity(),FeedbackActivity.class);
+            startActivity(intent);*/
 
         }
 
@@ -201,13 +201,13 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         }
 
         if (id==R.id.exit){   //退出
-          //  SpotManager.getInstance( MyApplication.getInstance()).onAppExit();
-          //  MyApplication.getInstance().exit();
+
+            MyApplication.getInstance().exit();
         }
 
         if (id==R.id.member_recharge){  //会员充值
-         /*   Intent intent=new Intent(getActivity(),MemberActivity.class);
-            startActivity(intent);*/
+            Intent intent=new Intent(getActivity(),MemberActivity.class);
+            startActivity(intent);
         }
 
 

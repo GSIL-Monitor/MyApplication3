@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.cxy.magazine.BmobBean.User;
 import com.cxy.magazine.R;
-import com.cxy.magazine.util.Util;
+import com.cxy.magazine.util.Utils;
 
 import java.util.List;
 
@@ -108,7 +108,7 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
                       showDialog();
                 }else {
 
-                    Util.showResultDialog(SettingInfomationActivity.this,"你是用第三方账号进行登录，无需修改密码",null);
+                    Utils.showResultDialog(SettingInfomationActivity.this,"你是用第三方账号进行登录，无需修改密码",null);
                 }
 
 
@@ -146,18 +146,18 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
         String oldPassword=etOldpassword.getText().toString();
         final String newPassword=etNewPassword.getText().toString();
         String newPassword2=etPassword2.getText().toString();
-        if (Util.isEmpty(oldPassword)||Util.isEmpty(newPassword)||Util.isEmpty(newPassword2)){
-            Util.toastMessage(SettingInfomationActivity.this,"内容不能为空");
+        if (Utils.isEmpty(oldPassword)|| Utils.isEmpty(newPassword)|| Utils.isEmpty(newPassword2)){
+            Utils.toastMessage(SettingInfomationActivity.this,"内容不能为空");
         }else if(!newPassword.equals(newPassword2)){
-            Util.toastMessage(SettingInfomationActivity.this,"两次输入的密码必须一致");
-        }else if(!Util.isPassword(newPassword)){
-            Util.toastMessage(SettingInfomationActivity.this,"密码至少为6位，可以包含数字和字母");
+            Utils.toastMessage(SettingInfomationActivity.this,"两次输入的密码必须一致");
+        }else if(!Utils.isPassword(newPassword)){
+            Utils.toastMessage(SettingInfomationActivity.this,"密码至少为6位，可以包含数字和字母");
         }
         else{  //重置密码
            // user=BmobUser.getCurrentUser(User.class);
             BmobQuery<User> query = new BmobQuery<User>();
             query.addWhereEqualTo("username", user.getUsername());
-            query.addWhereEqualTo("password",Util.encryptBySHA(oldPassword));
+            query.addWhereEqualTo("password", Utils.encryptBySHA(oldPassword));
             query.findObjects(new FindListener<User>() {
                 @Override
                 public void done(List<User> object,BmobException e) {
@@ -165,7 +165,7 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
                         if (object.size()==1){
                            // Util.toastMessage(SettingInfomationActivity.this,"查询用户成功:"+object.size());
                             User newUsr=new User();
-                            newUsr.setPassword(Util.encryptBySHA(newPassword));
+                            newUsr.setPassword(Utils.encryptBySHA(newPassword));
                             newUsr.update(user.getObjectId(), new UpdateListener() {
                                 @Override
                                 public void done(BmobException e) {
@@ -186,18 +186,18 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
                                         dlg.show();
 
                                     }else{
-                                        Util.toastMessage(SettingInfomationActivity.this,"密码修改失败:" + e.toString());
+                                        Utils.toastMessage(SettingInfomationActivity.this,"密码修改失败:" + e.toString());
                                     }
                                 }
                             });
 
                         }
                         else{
-                            Util.toastMessage(SettingInfomationActivity.this,"旧密码错误");
+                            Utils.toastMessage(SettingInfomationActivity.this,"旧密码错误");
                         }
 
                     }else{
-                        Util.toastMessage(SettingInfomationActivity.this,"查询用户失败:" + e.getMessage());
+                        Utils.toastMessage(SettingInfomationActivity.this,"查询用户失败:" + e.getMessage());
                     }
                 }
             });

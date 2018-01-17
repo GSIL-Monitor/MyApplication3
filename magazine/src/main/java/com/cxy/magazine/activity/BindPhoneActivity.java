@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.cxy.magazine.BmobBean.User;
 import com.cxy.magazine.R;
-import com.cxy.magazine.util.Util;
+import com.cxy.magazine.util.Utils;
 
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.BmobUser;
@@ -54,28 +54,28 @@ public class BindPhoneActivity extends BasicActivity implements View.OnClickList
         switch (v.getId()){
             case R.id.tv_sendCode:
                 phoneNumber=etPhone.getText().toString();
-                if (Util.isMobile(phoneNumber)){
+                if (Utils.isMobile(phoneNumber)){
                     BmobSMS.requestSMSCode(phoneNumber, "注册模板",new QueryListener<Integer>() {
 
                         @Override
                         public void done(Integer smsId,BmobException ex) {
                             if(ex==null){//验证码发送成功
                                 Log.i("smile", "短信id："+smsId);//用于查询本次短信发送详情
-                                Util.toastMessage(BindPhoneActivity.this,"验证码发送成功");
+                                Utils.toastMessage(BindPhoneActivity.this,"验证码发送成功");
                             }
                             else{
-                                Util.showResultDialog(BindPhoneActivity.this,ex.toString(),"验证码发送失败");
+                                Utils.showResultDialog(BindPhoneActivity.this,ex.toString(),"验证码发送失败");
                             }
                         }
                     });
                 }else {
-                    Util.showResultDialog(BindPhoneActivity.this,"请输入有效的手机号码",null);
+                    Utils.showResultDialog(BindPhoneActivity.this,"请输入有效的手机号码",null);
                 }
 
                 break;
             case R.id.btn_bindPhone:
                 phoneVertifyCode=etVertifyCode.getText().toString();
-                if (!Util.isEmpty(phoneVertifyCode)){
+                if (!Utils.isEmpty(phoneVertifyCode)){
                     BmobSMS.verifySmsCode(phoneNumber, phoneVertifyCode, new UpdateListener() {
 
                         @Override
@@ -102,7 +102,7 @@ public class BindPhoneActivity extends BasicActivity implements View.OnClickList
                                             dlg.setCanceledOnTouchOutside(false);
                                             dlg.show();
                                         }else{
-                                            Util.showResultDialog(BindPhoneActivity.this,e.toString(),"绑定失败");
+                                            Utils.showResultDialog(BindPhoneActivity.this,e.toString(),"绑定失败");
                                         }
                                     }
                                 });
@@ -113,7 +113,7 @@ public class BindPhoneActivity extends BasicActivity implements View.OnClickList
                     });
 
                 }else{
-                    Util.showResultDialog(BindPhoneActivity.this,"请输入验证码",null);
+                    Utils.showResultDialog(BindPhoneActivity.this,"请输入验证码",null);
                 }
 
                 break;

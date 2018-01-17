@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.cxy.magazine.R;
 import com.cxy.magazine.activity.MagazineDetailActivity;
 import com.cxy.magazine.adapter.ImageTextAdapter;
-import com.cxy.magazine.util.Util;
+import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
@@ -236,7 +236,7 @@ public class MagazineListFragment extends Fragment {
                     });
                     break;
                 case 101:
-                    Util.toastMessage(getActivity(),"亲，出错了，请稍后重试！");
+                    Utils.toastMessage(getActivity(),"亲，出错了，请稍后重试！");
 
             }
         }
@@ -284,7 +284,7 @@ public class MagazineListFragment extends Fragment {
                 }
 
                 //模拟一下网络请求失败的情况
-                if(Util.checkNetworkState(getActivity())) {    //网络可用
+                if(Utils.checkNetworkState(getActivity())) {    //网络可用
                     mHandler.sendEmptyMessage(-1);
                 } else {                                 //网络不可用
                     mHandler.sendEmptyMessage(-3);

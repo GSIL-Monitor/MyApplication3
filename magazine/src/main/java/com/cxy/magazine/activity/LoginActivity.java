@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.cxy.magazine.BmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.BaseUIListener;
-import com.cxy.magazine.util.Util;
+import com.cxy.magazine.util.Utils;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
@@ -43,11 +43,11 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-       // MyApplication.getInstance().addActivity(this);
+        // MyApplication.getInstance().addActivity(this);
         ActionBar bar= getSupportActionBar();
         bar.setTitle("登录账号");
         if (mTencent == null) {
-            mTencent = Tencent.createInstance(Util.TencentAppId, this);
+            mTencent = Tencent.createInstance(Utils.TencentAppId, this);
         }
 
         etUserName=(EditText)findViewById(R.id.et_account) ;
@@ -69,51 +69,51 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
             Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
             startActivity(intent);
         }
-         if (view.getId()==R.id.btn_login){  //登录
-             Util.showProgressDialog(LoginActivity.this,null,"登录中，请稍候！");
-             String userName=etUserName.getText().toString();
-             String password=etPassword.getText().toString();
+        if (view.getId()==R.id.btn_login){  //登录
+            Utils.showProgressDialog(LoginActivity.this,null,"登录中，请稍候！");
+            String userName=etUserName.getText().toString();
+            String password=etPassword.getText().toString();
 
-             User user=new User();
-             user.setUsername(userName);
-             user.setPassword(Util.encryptBySHA(password));
+            User user=new User();
+            user.setUsername(userName);
+            user.setPassword(Utils.encryptBySHA(password));
 
-             user.login(new SaveListener<BmobUser>() {
+            user.login(new SaveListener<BmobUser>() {
 
-                 @Override
-                 public void done(BmobUser bmobUser, BmobException e) {
-                     if(e==null){  //login success
-                         Util.dismissDialog();
+                @Override
+                public void done(BmobUser bmobUser, BmobException e) {
+                    if(e==null){  //login success
+                        Utils.dismissDialog();
 
-                         finish();
-                     }else{
-                         Util.dismissDialog();
-                         Util.showResultDialog(LoginActivity.this,"用户名或密码错误,请重新输入！",null);
-                       //  Log.i(MyApplication.TAG,e.toString());
-                     }
-                 }
-             });
+                        finish();
+                    }else{
+                        Utils.dismissDialog();
+                        Utils.showResultDialog(LoginActivity.this,"用户名或密码错误,请重新输入！",null);
+                        Log.i(LOG_TAG,e.toString());
+                    }
+                }
+            });
 
 
 
-         }
+        }
         if (view.getId()==R.id.tv_qq) { //qq登录
             onClickLogin();
 
         }
 
         if (view.getId()==R.id.tv_forgetPasword){
-             Intent intent=new Intent(LoginActivity.this,FindPasswordActivity.class);
+            Intent intent=new Intent(LoginActivity.this,FindPasswordActivity.class);
             startActivity(intent);
         }
     }
 
     private void onClickLogin() {
 
-            mTencent.login(this, "all", loginListener);
-            Util.showProgressDialog(LoginActivity.this, null, "请稍后");
+        mTencent.login(this, "all", loginListener);
+        Utils.showProgressDialog(LoginActivity.this, null, "请稍后");
 
-            Log.d("SDKQQAgentPref", "FirstLaunch_SDK:" + SystemClock.elapsedRealtime());
+        Log.d("SDKQQAgentPref", "FirstLaunch_SDK:" + SystemClock.elapsedRealtime());
 
     }
 
@@ -122,8 +122,8 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         protected void doComplete(JSONObject jsonObject) {
             Log.d("SDKQQAgentPref", "AuthorSwitch_SDK:" + SystemClock.elapsedRealtime());
             initOpenidAndToken(jsonObject);
-          //  updateUserInfo();
-          //  updateLoginButton();
+            //  updateUserInfo();
+            //  updateLoginButton();
         }
     };
 
@@ -155,19 +155,19 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         @Override
         public void onComplete(Object response) {
             if (null == response) {
-                Util.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
+                Utils.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
                 return;
             }
             JSONObject jsonResponse = (JSONObject) response;
             if (null != jsonResponse && jsonResponse.length() == 0) {
-                Util.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
+                Utils.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
                 return;
             }
-          //  Util.showResultDialog(LoginActivity.this, response.toString(), "登录成功");
+            //  Util.showResultDialog(LoginActivity.this, response.toString(), "登录成功");
             Log.d("SDKQQAgentPref", "登录成功" );
 
             // 有奖分享处理
-           // handlePrizeShare();
+            // handlePrizeShare();
             doComplete((JSONObject)response);
         }
 
@@ -177,14 +177,14 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
 
         @Override
         public void onError(UiError e) {
-            Util.toastMessage(LoginActivity.this, "onError: " + e.errorDetail);
-            Util.dismissDialog();
+            Utils.toastMessage(LoginActivity.this, "onError: " + e.errorDetail);
+            Utils.dismissDialog();
         }
 
         @Override
         public void onCancel() {
-            Util.toastMessage(LoginActivity.this, "onCancel: ");
-            Util.dismissDialog();
+            Utils.toastMessage(LoginActivity.this, "onCancel: ");
+            Utils.dismissDialog();
 
         }
     }
@@ -214,20 +214,20 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     {
 
         BaseUIListener listener = new BaseUIListener(LoginActivity.this,"get_simple_userinfo") {
-                @Override
-                public void onComplete(Object response) {
-                    Util.dismissDialog();
-                    Message msg = mHandler.obtainMessage();
-                    msg.what = 0;
-                    msg.obj = response;
-                    mHandler.sendMessage(msg);
-                }
+            @Override
+            public void onComplete(Object response) {
+                Utils.dismissDialog();
+                Message msg = mHandler.obtainMessage();
+                msg.what = 0;
+                msg.obj = response;
+                mHandler.sendMessage(msg);
+            }
 
 
-            };
+        };
 
-            UserInfo info = new UserInfo(this, mTencent.getQQToken());
-            info.getUserInfo(listener);
+        UserInfo info = new UserInfo(this, mTencent.getQQToken());
+        info.getUserInfo(listener);
 
 
 
@@ -238,7 +238,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
-               // Util.dismissDialog();
+                // Util.dismissDialog();
                 JSONObject response = (JSONObject) msg.obj;
                 User user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
                 user.setUserType(User.QQ_USER);
@@ -250,7 +250,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                     if (response.has("figureurl_qq_2")) {  //获取用户头像
                         String userImageUrl=response.getString("figureurl_qq_2");
                         user.setHeadImageUrl(userImageUrl);
-                       // Bitmap bitmap = Util.getbitmap(response.getString("figureurl_qq_2"));
+                        // Bitmap bitmap = Util.getbitmap(response.getString("figureurl_qq_2"));
 
                     }
                 } catch (Exception e) {

@@ -9,7 +9,7 @@ import cn.bmob.v3.BmobObject;
 public class Bookshelf extends BmobObject {
     private User user;
     private String bookName;
-    private String pulishTime;
+    private String publishTime;
     private String coverUrl;
     private String directoryUrl;
 
@@ -30,11 +30,11 @@ public class Bookshelf extends BmobObject {
     }
 
     public String getPulishTime() {
-        return pulishTime;
+        return publishTime;
     }
 
     public void setPulishTime(String pulishTime) {
-        this.pulishTime = pulishTime;
+        this.publishTime = pulishTime;
     }
 
     public String getCoverUrl() {
