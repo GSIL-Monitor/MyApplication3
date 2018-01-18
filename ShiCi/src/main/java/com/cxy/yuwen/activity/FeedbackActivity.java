@@ -13,11 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.cxy.yuwen.tool.EmailUtil;
 import com.google.gson.JsonObject;
 import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.Email;
 import com.cxy.yuwen.tool.Util;
+
+import java.security.GeneralSecurityException;
 
 
 public class FeedbackActivity extends BasicActivity {
@@ -58,14 +61,12 @@ public class FeedbackActivity extends BasicActivity {
                            jsonObject.addProperty("微信",weChat);
                            jsonObject.addProperty("邮箱",email);
                            Log.i(tag,jsonObject.toString());
-                           boolean isSuccessed= Email.postEmail(jsonObject.toString());
-                           if (isSuccessed){
-                               mUIHandler.sendEmptyMessage(1);
-
-                           }else{
-                               mUIHandler.sendEmptyMessage(0);
-
-                           }
+                           boolean flag= EmailUtil.send(jsonObject.toString());
+                           if (flag){
+                              mUIHandler.sendEmptyMessage(1);
+                          }else{
+                              mUIHandler.sendEmptyMessage(0);
+                          }
                        }
                    }) ;
 

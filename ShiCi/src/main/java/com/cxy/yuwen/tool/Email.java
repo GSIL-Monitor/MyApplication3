@@ -1,5 +1,6 @@
 package com.cxy.yuwen.tool;
 
+import java.security.GeneralSecurityException;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -11,24 +12,26 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+
+
 /**
  * Created by cxy on 2017/8/5.
  */
 
 public class Email {
 
-    public  static boolean postEmail(String message){
-        System.out.println(message);
+    public  static boolean postEmail(String text) throws GeneralSecurityException {
+      ///  System.out.println(message);
        boolean isSuccess=false;
 
-        // 收件人电子邮箱   QQ邮箱
-        String to = "caoxingyu2016@qq.com";
+        // 收件人电子邮箱
+        String to = "17621503621@1.com";
 
-        // 发件人电子邮箱   139邮箱
-        String from = "caoxingyu2016@139.com";
+        // 发件人电子邮箱
+        String from = "1746569077@qq.com";
 
         // 指定发送邮件的主机为 smtp.qq.com
-        String host = "smtp.139.com";  //139 邮件服务器
+        String host = "smtp.qq.com";  //QQ 邮件服务器
 
         // 获取系统属性
         Properties properties = System.getProperties();
@@ -37,46 +40,51 @@ public class Email {
         properties.setProperty("mail.smtp.host", host);
 
         properties.put("mail.smtp.auth", "true");
+
+        // 关于QQ邮箱，还要设置SSL加密，加上以下代码即可
+      //  MailSSLSocketFactory sf = new MailSSLSocketFactory();
+     //   sf.setTrustAllHosts(true);
+    //    properties.put("mail.smtp.ssl.enable", "true");
+      //  properties.put("mail.smtp.ssl.socketFactory", sf);
         // 获取默认session对象
-       Session session = Session.getDefaultInstance(properties,new Authenticator(){
+        Session session = Session.getDefaultInstance(properties,new Authenticator(){
             public PasswordAuthentication getPasswordAuthentication()
             {
-                return new PasswordAuthentication("caoxingyu2016@139.com", "941125cxy"); //发件人邮件用户名、密码
+                return new PasswordAuthentication("1746569077@qq.com", "kvauiljlgzbxbfif"); //发件人邮件用户名、授权码
             }
         });
 
         try{
             // 创建默认的 MimeMessage 对象
-            MimeMessage messages = new MimeMessage(session);
+            MimeMessage message = new MimeMessage(session);
 
             // Set From: 头部头字段
-            messages.setFrom(new InternetAddress(from));
+            message.setFrom(new InternetAddress(from));
 
             // Set To: 头部头字段
-            messages.addRecipient(Message.RecipientType.TO,
-                    new InternetAddress(to));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
             // Set Subject: 头部头字段
-            messages.setSubject("语文助手用户反馈!");
+            message.setSubject("This is the Subject Line!");
 
             // 设置消息体
-            messages.setText(message);
+            message.setText(text);
 
             // 发送消息
-            Transport.send(messages);
-            System.out.println("Sent message successfully....from 139邮箱");
+            Transport.send(message);
+            System.out.println("Sent message successfully....from runoob.com");
             isSuccess=true;
         }catch (MessagingException mex) {
             mex.printStackTrace();
         }
-
-        return isSuccess;
+          return  isSuccess;
     }
 
     public  static void main(String [] args){
-      boolean flag=postEmail("139发往QQ邮箱");
-        if (flag){
-            System.out.println("发送成功");
+        try {
+            Email.postEmail("第一封电子邮件");
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
         }
     }
 }
