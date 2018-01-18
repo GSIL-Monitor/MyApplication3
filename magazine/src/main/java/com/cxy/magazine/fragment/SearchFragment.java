@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import com.cxy.magazine.R;
+import com.cxy.magazine.activity.MagazineDetailActivity;
 import com.cxy.magazine.adapter.SearchAdapter;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
@@ -102,11 +103,11 @@ public class SearchFragment extends Fragment {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-              /*  Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
+                Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
                 HashMap hashMap=dataShowList.get(position);
                 String href=hashMap.get("href").toString();
                 intent.putExtra("href",YILIN_URL+href);
-                startActivity(intent);*/
+                startActivity(intent);
             }
         });
 

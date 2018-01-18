@@ -1,13 +1,11 @@
 package com.cxy.magazine.activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -19,7 +17,7 @@ import android.widget.TextView;
 
 
 import com.cxy.magazine.R;
-import com.cxy.magazine.util.Util;
+import com.cxy.magazine.util.Utils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -125,18 +123,18 @@ public class MagazineDetailActivity extends AppCompatActivity {
     //开始阅读
     @OnClick(R.id.start_read)
     public void  startRead(){
-       /* Intent intent=new Intent(MagazineDetailActivity.this,MagazineDirectoryActivity.class);
+        Intent intent=new Intent(MagazineDetailActivity.this,MagazineDirectoryActivity.class);
         intent.putExtra("href",httpUrl);
-        startActivity(intent);*/
+        startActivity(intent);
     }
     //浏览往期
     @OnClick(R.id.watch_history)
    public void watchHistory(){
-        // Util.toastMessage(MagazineDirectoryActivity.this,"浏览往期");
-      /*  Intent intent=new Intent(this,MagazineHistoryActivity.class);
+        //Util.toastMessage(MagazineDirectoryActivity.this,"浏览往期");
+        Intent intent=new Intent(this,MagazineHistoryActivity.class);
         intent.putExtra("historyUrl",magazineHistoryHref);
         intent.putExtra("title",magazineTitle);
-        startActivity(intent);*/
+        startActivity(intent);
 
     }
     @Override
@@ -158,7 +156,7 @@ public class MagazineDetailActivity extends AppCompatActivity {
                 magazineIntro = introDiv.getElementsByClass("rec").first().getElementsByTag("p").first().text();
                 magazineTitle = docHtml.getElementsByTag("h3").first().text();
                 magazineHistoryHref = docHtml.getElementsByClass("btn_history act_history").first().attr("href");   //没有前缀
-                bookCover= Util.getbitmap(coverImageUrl);
+                bookCover= Utils.getbitmap(coverImageUrl);
                 handler.sendEmptyMessage(100);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -178,7 +176,7 @@ public class MagazineDetailActivity extends AppCompatActivity {
                 im_cover.setImageBitmap(bookCover);
                 tv_intro.setText(magazineIntro);
             }else if (msg.what==101){
-                Util.toastMessage(MagazineDetailActivity.this,"亲，出错了，该杂志内容暂时无法阅读，换一本吧！");
+                Utils.toastMessage(MagazineDetailActivity.this,"亲，出错了，该杂志内容暂时无法阅读，换一本吧！");
             }
         }
     };

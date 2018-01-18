@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cxy.magazine.R;
-import com.cxy.magazine.util.Util;
+import com.cxy.magazine.util.Utils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +60,7 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
         new Thread(){
             @Override
             public void run() {
-                Bitmap bitmap= Util.getbitmap(hashMap.get("imageSrc").toString());
+                Bitmap bitmap= Utils.getbitmap(hashMap.get("imageSrc").toString());
                 holder.bitmap=bitmap;
                 Message message=new Message();
                 message.what=101;

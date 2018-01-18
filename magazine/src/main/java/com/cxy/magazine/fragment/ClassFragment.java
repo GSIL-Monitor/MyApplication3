@@ -17,8 +17,7 @@ import android.widget.TextView;
 import com.cxy.magazine.R;
 import com.cxy.magazine.activity.ClassDetailActivity;
 import com.cxy.magazine.util.ACache;
-import com.cxy.magazine.util.Util;
-import com.github.jdsjlzx.ItemDecoration.GridItemDecoration;
+import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.ItemDecoration.SpacesItemDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -137,7 +136,7 @@ public class ClassFragment extends Fragment {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                Util.toastMessage(getActivity(),e.toString());
+                Utils.toastMessage(getActivity(),e.toString());
             }
 
         }
