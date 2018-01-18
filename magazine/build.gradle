@@ -73,4 +73,5 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.2'
     //小米更新sdk
     compile 'mi-appstore:xiaomi-update-sdk:2.8'
+
 }

@@ -73,7 +73,7 @@
                 android:id="@+id/tv_memberInto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_marginTop="20dp"
                 android:padding="8dp"
                 android:lineSpacingExtra="@dimen/dp_10"
                 android:text="@string/magazine_member"

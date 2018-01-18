@@ -15,10 +15,38 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <!--<WebView
+                android:id="@+id/wv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </WebView>-->
+            <!--<TextView android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorFontTitle"
+                android:textSize="22sp"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorFontDisable"
+                android:textSize="16sp"
+                android:padding="8dp"/>-->
+            <!--<TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorFontText"
+                android:textSize="18sp"
+                android:lineSpacingExtra="10dp"
+                android:padding="8dp"/>-->
             <WebView
                 android:id="@+id/wv_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></WebView>
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp">
+            </WebView>
 
             <FrameLayout
                 android:id="@+id/containerAd"

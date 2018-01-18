@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.cxy.magazine.R;
 import com.cxy.magazine.fragment.ClassFragment;
 import com.cxy.magazine.fragment.MyFragment;
+import com.cxy.magazine.fragment.ShelfFragment;
 import com.cxy.magazine.util.PermissionHelper;
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
@@ -36,7 +37,7 @@ public class MainActivity extends BasicActivity {
                     switchFragmentSupport(R.id.content,tabs[0]);
                     return true;
                 case R.id.navigation_shelf:
-
+                    switchFragmentSupport(R.id.content,tabs[1]);
                     return true;
                 case R.id.navigation_mine:
                     switchFragmentSupport(R.id.content,tabs[2]);
@@ -118,6 +119,7 @@ public class MainActivity extends BasicActivity {
 
         if (destFragment==null){
             if (tag.equals(tabs[0])) destFragment= new ClassFragment();
+            if (tag.equals(tabs[1])) destFragment= new ShelfFragment();
             if (tag.equals(tabs[2])) destFragment=new MyFragment();
 
         }

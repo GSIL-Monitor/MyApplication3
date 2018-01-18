@@ -5,6 +5,7 @@ import android.app.Application;
 
 import com.cxy.magazine.activity.MainActivity;
 import com.eagle.pay66.Pay66;
+import com.xiaomi.ad.AdSdk;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class MyApplication extends Application {
     private static final String PAY_66_APPLICATION_ID="42cb2259320944d9a297ce09bf23e8eb";
+    private static final String XIAOMI_APP_ID="2882303761517702196";
     private static MainActivity sMainActivity = null;
 
     private List<Activity> activitys = null;
@@ -25,6 +27,8 @@ public class MyApplication extends Application {
         super.onCreate();
         //初始化66支付
         Pay66.init(PAY_66_APPLICATION_ID, getApplicationContext());
+        //初始化小米广告
+        AdSdk.initialize(this, XIAOMI_APP_ID);   //小米广告
     }
 
     public MyApplication() {

@@ -92,7 +92,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member);
-      //  MyApplication.getInstance().addActivity(this);
+        //  MyApplication.getInstance().addActivity(this);
         initView();
 
 
@@ -256,13 +256,13 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
     public void setUserImage(){
         String userImageUrl=user.getHeadImageUrl();
         if (!Utils.isEmpty(userImageUrl)){
-               headImage=mCache.getAsBitmap("headImageBitmap");
-               if (headImage!=null){
-                   imageView.setImageBitmap(headImage);
-               }else{
-                   Thread thread=new GetImageThread();
-                   thread.start();
-               }
+            headImage=mCache.getAsBitmap("headImageBitmap");
+            if (headImage!=null){
+                imageView.setImageBitmap(headImage);
+            }else{
+                Thread thread=new GetImageThread();
+                thread.start();
+            }
         }
     }
 
@@ -328,9 +328,9 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             showDialog();
         }
         else if (view.getId()==R.id.btnPay){
-           // Util.toastMessage(MemberActivity.this,"支付宝支付");
+            // Utils.toastMessage(MemberActivity.this,"支付宝支付");
             bottomDialog.dismiss();
-           // pay();  //Bmob支付
+            // pay();  //Bmob支付
             createOrder();
         }
     }
@@ -340,19 +340,19 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
         count=0;
         String message="";
 
-       if (money==currentOne){
-           message="语文助手1个月会员支付";
-       }else if (money==currentThree){
-           message="语文助手3个月会员支付";
-       }else  if (money==currentSix){
-           message="语文助手6个月会员支付";
-       }else{
-           message="语文助手会员支付";
-       }
+        if (money==currentOne){
+            message="杂志天下1个月会员支付";
+        }else if (money==currentThree){
+            message="杂志天下3个月会员支付";
+        }else  if (money==currentSix){
+            message="杂志天下6个月会员支付";
+        }else{
+            message="杂志天下会员支付";
+        }
 
 
 
-          //(int)(money*100)
+        //(int)(money*100)
         Pay66.createOrder((int)(money*100), message, message, new CommonListener() {   //单位：分
             @Override
             public void onStart() {
@@ -378,7 +378,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                     //防止重复提交订单
                     if (count<1){
                         pay_66(responseParam.getData().getOrderId(), responseParam.getData().getConsume()); //进行支付
-                       // count++;
+                        // count++;
                     }
 
 
@@ -429,8 +429,8 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             @Override
             public void onError(int code, String reason) {
                 Log.d(TAG_PAY_ORDER, "onError---code="+code + ",reason="+reason);
-              //  createOrderTv.setText(reason);
-              //  Util.showResultDialog(MemberActivity.this,reason,"出错了");
+                //  createOrderTv.setText(reason);
+                //  Utils.showResultDialog(MemberActivity.this,reason,"出错了");
                 Log.i(TAG_CREATE_ORDER,reason);
                 if ( code == 4){ //内嵌APP不存在
                     Utils.showConfirmCancelDialog(MemberActivity.this, "提示", "使用微信支付，必须先安装我们的安全插件", new DialogInterface.OnClickListener() {
@@ -446,7 +446,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             @Override
             public void onSuccess(String response) {
                 Log.d(TAG_PAY_ORDER, "onSuccess---response="+response);
-              //  createOrderTv.setText(response);
+                //  createOrderTv.setText(response);
                 if (count<1){
                     //加入数据库
                     saveOrUpdate(orderNumber);
@@ -559,7 +559,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
 
 
     private void showDialog() {
-       // bottomDialog.dismiss();
+        // bottomDialog.dismiss();
 
 
         ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
@@ -615,87 +615,87 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                     addMonth=6;
 
                 }
-               if (e==null){
-                   if (list.size()<=0){ //插入操作
-                       Member member=new Member();
-                       member.setUser(user);
-                       member.setMemberMoney(money);
+                if (e==null){
+                    if (list.size()<=0){ //插入操作
+                        Member member=new Member();
+                        member.setUser(user);
+                        member.setMemberMoney(money);
 
-                       //会员开始时间
-                       Calendar cal = Calendar.getInstance();
+                        //会员开始时间
+                        Calendar cal = Calendar.getInstance();
 
-                       // System.out.println(sdf.format(cal.getTime()));
-                       member.setStartTime(sdf.format(cal.getTime()));
+                        // System.out.println(sdf.format(cal.getTime()));
+                        member.setStartTime(sdf.format(cal.getTime()));
 
-                       cal.set(Calendar.MONTH, cal.get(Calendar.MONTH)+addMonth);
-                       member.setFinishTime(sdf.format(cal.getTime()));
+                        cal.set(Calendar.MONTH, cal.get(Calendar.MONTH)+addMonth);
+                        member.setFinishTime(sdf.format(cal.getTime()));
 
-                       member.save(new SaveListener<String>() {  //添加数据
-                           @Override
-                           public void done(String objectId, BmobException e) {
-                               if(e==null){
-                                   Log.i("bmob","创建数据成功：" + objectId);
-                                   checkMemberState();
+                        member.save(new SaveListener<String>() {  //添加数据
+                            @Override
+                            public void done(String objectId, BmobException e) {
+                                if(e==null){
+                                    Log.i("bmob","创建数据成功：" + objectId);
+                                    checkMemberState();
 
-                               }else{
-                                   Utils.toastMessage(MemberActivity.this,"添加数据失败："+e.getMessage()+","+e.getErrorCode());
-                                   Log.i("bmob","添加数据失败："+e.getMessage()+","+e.getErrorCode());
-                               }
-                           }
-                       });
-
-
-                   }
-                   else if(list.size()==1){  //执行更新操作
-                       Member queryMember=list.get(0);
-                       String finishTime=queryMember.getFinishTime();  //会员到期时间
-                       Calendar nowCal = Calendar.getInstance();  //当前时间
-                       Calendar finishCal = Calendar.getInstance();   //结束时间
-
-                       queryMember.setMemberMoney(queryMember.getMemberMoney()+money);
-                       try {
-                           nowCal.setTime(sdf.parse((sdf.format(new Date()))));
-                           finishCal.setTime(sdf.parse(finishTime));
-                           int value=finishCal.compareTo(nowCal);
-                           if (value==-1){   //已经过期，重新设置开始和结束时间
-
-                               queryMember.setStartTime(sdf.format(nowCal.getTime()));
-                               nowCal.set(Calendar.MONTH, nowCal.get(Calendar.MONTH)+addMonth);
-                               queryMember.setFinishTime(sdf.format(nowCal.getTime()));   //结束时间等于开始时间（现在的时间）加上月份
-
-                           }else{  //还没过期，重新设置结束日期
-                               finishCal.set(Calendar.MONTH, finishCal.get(Calendar.MONTH)+addMonth);
-                               queryMember.setFinishTime(sdf.format(finishCal.getTime()));   //结束时间等于原来的结束时间加上月份
+                                }else{
+                                    Utils.toastMessage(MemberActivity.this,"添加数据失败："+e.getMessage()+","+e.getErrorCode());
+                                    Log.i("bmob","添加数据失败："+e.getMessage()+","+e.getErrorCode());
+                                }
+                            }
+                        });
 
 
-                           }
+                    }
+                    else if(list.size()==1){  //执行更新操作
+                        Member queryMember=list.get(0);
+                        String finishTime=queryMember.getFinishTime();  //会员到期时间
+                        Calendar nowCal = Calendar.getInstance();  //当前时间
+                        Calendar finishCal = Calendar.getInstance();   //结束时间
 
-                           queryMember.update(queryMember.getObjectId(), new UpdateListener() {
-                               @Override
-                               public void done(BmobException e) {
-                                   if(e==null){
-                                       Log.i("bmob","更新成功");
-                                       checkMemberState();
-                                   }else{
-                                       Log.i("bmob","更新数据更新失败："+e.getMessage()+","+e.getErrorCode());
-                                       Utils.toastMessage(MemberActivity.this,"更新失败："+e.getMessage()+","+e.getErrorCode());
-                                   }
-                               }
-                           });
+                        queryMember.setMemberMoney(queryMember.getMemberMoney()+money);
+                        try {
+                            nowCal.setTime(sdf.parse((sdf.format(new Date()))));
+                            finishCal.setTime(sdf.parse(finishTime));
+                            int value=finishCal.compareTo(nowCal);
+                            if (value==-1){   //已经过期，重新设置开始和结束时间
+
+                                queryMember.setStartTime(sdf.format(nowCal.getTime()));
+                                nowCal.set(Calendar.MONTH, nowCal.get(Calendar.MONTH)+addMonth);
+                                queryMember.setFinishTime(sdf.format(nowCal.getTime()));   //结束时间等于开始时间（现在的时间）加上月份
+
+                            }else{  //还没过期，重新设置结束日期
+                                finishCal.set(Calendar.MONTH, finishCal.get(Calendar.MONTH)+addMonth);
+                                queryMember.setFinishTime(sdf.format(finishCal.getTime()));   //结束时间等于原来的结束时间加上月份
 
 
-                       } catch (ParseException e1) {
-                           e1.printStackTrace();
-                       }
+                            }
 
-                   }else{
-                       Utils.showResultDialog(MemberActivity.this,"出错了","提示");
-                   }
+                            queryMember.update(queryMember.getObjectId(), new UpdateListener() {
+                                @Override
+                                public void done(BmobException e) {
+                                    if(e==null){
+                                        Log.i("bmob","更新成功");
+                                        checkMemberState();
+                                    }else{
+                                        Log.i("bmob","更新数据更新失败："+e.getMessage()+","+e.getErrorCode());
+                                        Utils.toastMessage(MemberActivity.this,"更新失败："+e.getMessage()+","+e.getErrorCode());
+                                    }
+                                }
+                            });
 
-               }else{
-                   Utils.toastMessage(MemberActivity.this,"查询失败："+e.getMessage()+","+e.getErrorCode());
-                   Log.i("bmob","查询失败："+e.getMessage()+","+e.getErrorCode());
-               }
+
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+
+                    }else{
+                        Utils.showResultDialog(MemberActivity.this,"出错了","提示");
+                    }
+
+                }else{
+                    Utils.toastMessage(MemberActivity.this,"查询失败："+e.getMessage()+","+e.getErrorCode());
+                    Log.i("bmob","查询失败："+e.getMessage()+","+e.getErrorCode());
+                }
             }
         });
 

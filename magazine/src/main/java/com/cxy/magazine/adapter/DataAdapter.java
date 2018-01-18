@@ -58,7 +58,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 titleHolder.titleTv.setTextColor(context.getResources().getColor(R.color.colorAccent));
             }else{
                 titleHolder.titleTv.setText(text);
-                titleHolder.titleTv.setTextColor(context.getResources().getColor(R.color.colorFontAvailable));
+                titleHolder.titleTv.setTextColor(context.getResources().getColor(R.color.colorFontText));
             }
         }
         if (holder instanceof ItemHolder){
@@ -69,7 +69,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                  itemHolder.itemTv.setTextColor(context.getResources().getColor(R.color.colorAccent));
              }else{
                  itemHolder.itemTv.setText(text);
-                 itemHolder.itemTv.setTextColor(context.getResources().getColor(R.color.colorFontAvailable));
+                 itemHolder.itemTv.setTextColor(context.getResources().getColor(R.color.colorFontDisable));
              }
         }
     }
