@@ -1,11 +1,13 @@
 package com.cxy.magazine.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -16,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.cxy.magazine.bmobBean.Bookshelf;
+import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.Utils;
 
@@ -26,6 +30,9 @@ import org.jsoup.nodes.Element;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 /*import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
@@ -82,13 +89,13 @@ public class MagazineDetailActivity extends AppCompatActivity {
 
 
     }
-    /*//加入书架
+    //加入书架
     @OnClick(R.id.add_shelf)
     public void addShelf()
     {
         User user= BmobUser.getCurrentUser(User.class);
         if (user == null) {   //未登录
-            Util.showConfirmCancelDialog(MagazineDetailActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+            Utils.showConfirmCancelDialog(MagazineDetailActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Intent intent1 = new Intent(MagazineDetailActivity.this, LoginActivity.class);
@@ -113,13 +120,13 @@ public class MagazineDetailActivity extends AppCompatActivity {
 
                         Snackbar.make(tv_title, "已将该杂志加入书架", Snackbar.LENGTH_LONG).setAction("", null).show();
                     }else {
-                        Util.toastMessage(MagazineDetailActivity.this,e.getMessage());
+                        Utils.toastMessage(MagazineDetailActivity.this,e.getMessage());
                     }
                 }
             });
         }
 
-    }*/
+    }
     //开始阅读
     @OnClick(R.id.start_read)
     public void  startRead(){

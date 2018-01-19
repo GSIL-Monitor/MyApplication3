@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.cxy.magazine.BmobBean.Bookshelf;
-import com.cxy.magazine.BmobBean.User;
+import com.cxy.magazine.bmobBean.Bookshelf;
+import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.activity.LoginActivity;
 import com.cxy.magazine.activity.MagazineDirectoryActivity;

@@ -28,10 +28,10 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cxy.magazine.BmobBean.Member;
-import com.cxy.magazine.BmobBean.MemberPrice;
-import com.cxy.magazine.BmobBean.MemberRecharge;
-import com.cxy.magazine.BmobBean.User;
+import com.cxy.magazine.bmobBean.Member;
+import com.cxy.magazine.bmobBean.MemberPrice;
+import com.cxy.magazine.bmobBean.MemberRecharge;
+import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.ResponseParam;
 import com.cxy.magazine.util.Utils;
@@ -92,7 +92,6 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member);
-        //  MyApplication.getInstance().addActivity(this);
         initView();
 
 
@@ -385,11 +384,11 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                 }else {
                     // 不包含订单信息时，处理后台返回异常信息
                     Log.d(TAG_CREATE_ORDER,response);
-                }
+        }
 
-            }
+    }
 
-            @Override
+    @Override
             public void onCompleted() {
                 Log.d(TAG_CREATE_ORDER, "---onCompleted");
             }

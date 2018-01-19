@@ -14,9 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.cxy.magazine.BmobBean.Bookshelf;
-import com.cxy.magazine.BmobBean.Member;
-import com.cxy.magazine.BmobBean.User;
+import com.cxy.magazine.bmobBean.Bookshelf;
+import com.cxy.magazine.bmobBean.Member;
+import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.adapter.DataAdapter;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
@@ -181,7 +181,8 @@ public class MagazineDirectoryActivity extends BasicActivity {
                                                     String url = dataList.get(position).get("href").toString();
                                                     //跳转至内容显示Activity
                                                     Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
-                                                    intent.putExtra("url", MAGAZINE_URL + url);
+                                                    String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+                                                    intent.putExtra("url",mobileUrl);
                                                     startActivity(intent);
                                                 }
                                             }
@@ -203,7 +204,8 @@ public class MagazineDirectoryActivity extends BasicActivity {
                             String url = dataList.get(position).get("href").toString();
                             //跳转至内容显示Activity
                             Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
-                            intent.putExtra("url", MAGAZINE_URL + url);
+                            String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+                            intent.putExtra("url",mobileUrl);
                             startActivity(intent);
                         }
 

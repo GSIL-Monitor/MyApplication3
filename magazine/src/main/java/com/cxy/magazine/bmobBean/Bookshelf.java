@@ -1,4 +1,4 @@
-package com.cxy.magazine.BmobBean;
+package com.cxy.magazine.bmobBean;
 
 import cn.bmob.v3.BmobObject;
 

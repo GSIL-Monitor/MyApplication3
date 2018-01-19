@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-import com.cxy.magazine.BmobBean.User;
+import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.Utils;
 

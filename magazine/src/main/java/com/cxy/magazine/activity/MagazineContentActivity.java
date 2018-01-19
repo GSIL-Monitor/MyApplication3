@@ -5,17 +5,26 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
+import android.util.AndroidException;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cxy.magazine.R;
+import com.cxy.magazine.bmobBean.CollectBean;
+import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.util.Utils;
 import com.xiaomi.ad.AdListener;
 import com.xiaomi.ad.NativeAdInfoIndex;
@@ -34,20 +43,23 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 public class MagazineContentActivity extends BasicActivity {
 
     private String httpUrl="";
     private WebSettings mWebSettings;
-    private String  htmlData="";
     private static final String AD_ID = "338443b6af5f0f43a7f7e998f80289ed";   //广告id
     @BindView(R.id.wv_content)  WebView mWebview;
-     //  @BindView(R.id.tv_title)  TextView tvTitle;
-    //  @BindView(R.id.tv_time) TextView tvTime;
-    // @BindView(R.id.tv_content) TextView tvContent;
+    @BindView(R.id.toolbar)  Toolbar toolbar;
+    @BindView(R.id.rb_collect)  CheckBox rbCollect;
     @BindView(R.id.containerAd) ViewGroup adContainer;
+    private User user;
+
     private static ProgressDialog mProgressDialog;
-    private String title="",time="";
+    private String title="",articleId="";
     private StringBuilder content=null;
     private String testImage="<img alt=\"\" src=\"http://cimg.fx361.com/images/2018/01/17/tzzb201803tzzb20180314-1-l.jpg\" style=\"\"/>";
     private String htmlStr="<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
@@ -59,9 +71,11 @@ public class MagazineContentActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_magazine_content);
         ButterKnife.bind(this);
-        getSupportActionBar().setTitle("");
+       // getSupportActionBar().setTitle("");
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        httpUrl=getIntent().getStringExtra("url").replace("page","news").replace("shtml","html");
+        httpUrl=getIntent().getStringExtra("url");
+        articleId=httpUrl.split("/")[4].split(".")[0];
       //  setWebView();
         content=new StringBuilder(htmlStr);
         mProgressDialog=ProgressDialog.show(this, null, null);
@@ -70,6 +84,35 @@ public class MagazineContentActivity extends BasicActivity {
 
         //设置广告
         setAd();
+        user= BmobUser.getCurrentUser(User.class);
+        //rbCollect.setChecked(true);
+
+        rbCollect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked){
+                    //Utils.toastMessage(MagazineContentActivity.this,"选中");
+                    //收藏
+                    CollectBean collectBean=new CollectBean();
+                    collectBean.setUser(user);
+                    collectBean.setArticleUrl(httpUrl);
+                    collectBean.setArticleTitle(title);
+                    collectBean.setArtivleId(articleId);
+                    collectBean.save(new SaveListener<String>() {
+                        @Override
+                        public void done(String s, BmobException e) {
+                             if (e==null){
+                                 Utils.toastMessage(MagazineContentActivity.this,"收藏文章成功");
+                             }else{
+                                 Utils.toastMessage(MagazineContentActivity.this,"收藏文章失败:"+e.getMessage());
+                             }
+                        }
+                    });
+                }else{
+                    Utils.toastMessage(MagazineContentActivity.this,"取消");
+                }
+            }
+        });
 
 
     }
@@ -177,12 +220,12 @@ public class MagazineContentActivity extends BasicActivity {
             try {
                 Document docHtml = Jsoup.connect(httpUrl).get();
                 Element mainDiv=docHtml.getElementsByClass("main").first();
-               // title=mainDiv.getElementsByClass("bt").first().html();  //文章标题   h3
+                title=mainDiv.getElementsByClass("bt").first().text();  //文章标题   h3
               //  time=mainDiv.getElementsByClass("sj").first().html();   //发布时间   p
               //  String contentStr=mainDiv.getElementsByClass("wz").html();
                 mainDiv.getElementsByTag("h3").get(1).remove();
                 mainDiv.getElementsByTag("ul").first().remove();
-                content.append(title).append(time).append(mainDiv.html());
+                content.append(mainDiv.html());
                 content.append("</body></html>");
 
 
@@ -209,6 +252,15 @@ public class MagazineContentActivity extends BasicActivity {
             }
         }
     };
+
+    /*@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+
+        getMenuInflater().inflate(R.menu.menu_magazine_content, menu);
+
+        return true;
+    }*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -217,6 +269,7 @@ public class MagazineContentActivity extends BasicActivity {
 
 
         }
+
         return true;
     }
 

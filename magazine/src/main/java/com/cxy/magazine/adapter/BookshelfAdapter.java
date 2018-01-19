@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.cxy.magazine.BmobBean.Bookshelf;
+import com.cxy.magazine.bmobBean.Bookshelf;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.Utils;
 

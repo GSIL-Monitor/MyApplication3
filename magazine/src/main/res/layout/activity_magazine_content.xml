@@ -4,7 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MagazineContentActivity">
+    tools:context=".activity.MagazineContentActivity"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:title=""
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        <CheckBox
+            android:id="@+id/rb_collect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/dp_10"
+            android:drawableLeft="@drawable/rb_collectd"
+            android:button="@null" />
+
+    </android.support.v7.widget.Toolbar>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,33 +34,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <!--<WebView
-                android:id="@+id/wv_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </WebView>-->
-            <!--<TextView android:id="@+id/tv_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorFontTitle"
-                android:textSize="22sp"
-                android:padding="8dp"/>
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorFontDisable"
-                android:textSize="16sp"
-                android:padding="8dp"/>-->
-            <!--<TextView
-                android:id="@+id/tv_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorFontText"
-                android:textSize="18sp"
-                android:lineSpacingExtra="10dp"
-                android:padding="8dp"/>-->
             <WebView
                 android:id="@+id/wv_content"
                 android:layout_width="match_parent"
