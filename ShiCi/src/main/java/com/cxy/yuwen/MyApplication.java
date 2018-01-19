@@ -58,7 +58,6 @@ public class MyApplication extends Application {
         AdSdk.setDebugOn();
         // AdSdk.setMockOn();
         AdSdk.initialize(this, APP_ID);   //小米广告
-      //  BP.init(Utils.BmobApplicationId);   //Bmob支付
 
         //66支付
         Pay66.init(PAY_66_APPLICATION_ID, getApplicationContext());
