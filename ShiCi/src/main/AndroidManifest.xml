@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!-- 保持CPU 运转，屏幕和键盘灯有可能是关闭的,用于文件上传和下载 -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+   <!-- <uses-permission android:name="android.permission.WAKE_LOCK" />-->
 
     <!-- the following 2 com.xiaomi.mipushdemo should be changed to your package name -->
     <permission
