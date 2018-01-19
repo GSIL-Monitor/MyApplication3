@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.questionsurvey.SyncActivity"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_10">
+    <TextView
+        android:id="@+id/tv_sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="同步问卷"
+        tools:ignore="HardcodedText"
+        style="@style/ButtonStyle"/>
+    <TextView
+        android:id="@+id/tv_syncData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="暂无同步数据"
+        android:layout_marginTop="10dp"
+        style="@style/TextviewStyle"/>
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/rv_questions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:scrollbars="vertical" />
+
+</LinearLayout>
