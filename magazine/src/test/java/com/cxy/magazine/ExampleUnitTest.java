@@ -14,4 +14,13 @@ public class ExampleUnitTest {
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
     }
+    @Test
+    public void subStr(){
+        String str="2699312.html";
+        String[] array=str.split(".html");
+        for (String a : array){
+            System.out.println(a);
+        }
+
+    }
 }

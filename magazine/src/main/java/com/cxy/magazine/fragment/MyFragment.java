@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.cxy.magazine.activity.CollectActivity;
 import com.cxy.magazine.activity.FeedbackActivity;
 import com.cxy.magazine.activity.MainActivity;
 import com.cxy.magazine.bmobBean.User;
@@ -172,8 +173,8 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         int id = item.getItemId();
         if (id == R.id.collect) {
             if (user!=null){
-               // Intent intent=new Intent(getActivity(),CollectActivity.class);
-               // startActivity(intent);
+                Intent intent=new Intent(getActivity(),CollectActivity.class);
+                startActivity(intent);
             }else{
                 Utils.showConfirmCancelDialog(getActivity(), "提示", "请先登录！", new DialogInterface.OnClickListener() {
                     @Override
@@ -193,14 +194,14 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
 
         }
 
-        if(id==R.id.share){
+       /* if(id==R.id.share){
 
             Intent sendIntent=new Intent(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, "语文助手这个App真不错，快来下载\n"+appUrl);
             sendIntent.setType("text/plain");
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent,"share"));
-        }
+        }*/
 
         if (id==R.id.exit){   //退出
 

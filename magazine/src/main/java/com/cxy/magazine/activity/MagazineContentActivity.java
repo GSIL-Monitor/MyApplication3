@@ -43,9 +43,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class MagazineContentActivity extends BasicActivity {
 
@@ -57,14 +60,18 @@ public class MagazineContentActivity extends BasicActivity {
     @BindView(R.id.rb_collect)  CheckBox rbCollect;
     @BindView(R.id.containerAd) ViewGroup adContainer;
     private User user;
+    private String articleObjectId=null;
 
     private static ProgressDialog mProgressDialog;
     private String title="",articleId="";
     private StringBuilder content=null;
-    private String testImage="<img alt=\"\" src=\"http://cimg.fx361.com/images/2018/01/17/tzzb201803tzzb20180314-1-l.jpg\" style=\"\"/>";
+    private static final String MAGAZINE_URL="http://m.fx361.com";
+   // private String testImage="<img alt=\"\" src=\"http://cimg.fx361.com/images/2018/01/17/tzzb201803tzzb20180314-1-l.jpg\" style=\"\"/>";
     private String htmlStr="<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
-            + "h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:130%;margin:9px;text-indent:2em} img{width:100%;}  .sj{font-size:16px;color:#a6a5a5;}"
+            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:180%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
             + "</style></head><body>";
+    private boolean isFirst=false;
+    private String intentUrl="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +80,11 @@ public class MagazineContentActivity extends BasicActivity {
         ButterKnife.bind(this);
        // getSupportActionBar().setTitle("");
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        httpUrl=getIntent().getStringExtra("url");
-        articleId=httpUrl.split("/")[4].split(".")[0];
+        intentUrl=getIntent().getStringExtra("url");
+        httpUrl=(MAGAZINE_URL + intentUrl).replace("page","news").replace("shtml","html");    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+        articleId=intentUrl.split("/")[4].split(".shtml")[0];
       //  setWebView();
         content=new StringBuilder(htmlStr);
         mProgressDialog=ProgressDialog.show(this, null, null);
@@ -86,39 +95,79 @@ public class MagazineContentActivity extends BasicActivity {
         setAd();
         user= BmobUser.getCurrentUser(User.class);
         //rbCollect.setChecked(true);
+        setCollect();
+        selectCollect();
 
-        rbCollect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked){
-                    //Utils.toastMessage(MagazineContentActivity.this,"选中");
-                    //收藏
-                    CollectBean collectBean=new CollectBean();
-                    collectBean.setUser(user);
-                    collectBean.setArticleUrl(httpUrl);
-                    collectBean.setArticleTitle(title);
-                    collectBean.setArtivleId(articleId);
-                    collectBean.save(new SaveListener<String>() {
-                        @Override
-                        public void done(String s, BmobException e) {
-                             if (e==null){
-                                 Utils.toastMessage(MagazineContentActivity.this,"收藏文章成功");
-                             }else{
-                                 Utils.toastMessage(MagazineContentActivity.this,"收藏文章失败:"+e.getMessage());
-                             }
-                        }
-                    });
-                }else{
-                    Utils.toastMessage(MagazineContentActivity.this,"取消");
-                }
-            }
-        });
+
 
 
     }
 
+public void selectCollect(){
+    BmobQuery<CollectBean> collctQuery=new BmobQuery<CollectBean>();
+    collctQuery.addWhereEqualTo("user",user);
+    collctQuery.addWhereEqualTo("articleId",articleId);
+    collctQuery.findObjects(new FindListener<CollectBean>() {
+        @Override
+        public void done(List<CollectBean> list, BmobException e) {
+            if (e==null){
+                isFirst=true;
+                if (list.size()==1){
+                    rbCollect.setChecked(true);
+                    articleObjectId=list.get(0).getObjectId();
+                }else{
+                    rbCollect.setChecked(false);
+                }
+                isFirst=false;
+            }else{
+                Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+            }
+        }
+    });
+}
+public void setCollect(){
+    rbCollect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            if (isChecked&&!isFirst){
+                //Utils.toastMessage(MagazineContentActivity.this,"选中");
+                //收藏
+                CollectBean collectBean=new CollectBean();
+                collectBean.setUser(user);
+                collectBean.setArticleUrl(intentUrl);
+                collectBean.setArticleTitle(title);
+                collectBean.setArticleId(articleId);
+                collectBean.save(new SaveListener<String>() {
+                    @Override
+                    public void done(String objectId, BmobException e) {
+                        if (e==null){
+                            Utils.toastMessage(MagazineContentActivity.this,"收藏文章成功");
+                            articleObjectId=objectId;
+                        }else{
+                            Utils.toastMessage(MagazineContentActivity.this,"收藏文章失败:"+e.getMessage());
+                        }
+                    }
+                });
+            }else if (!isFirst){
+           //     Utils.toastMessage(MagazineContentActivity.this,"取消");
+                //删除收藏
+                CollectBean collectBean=new CollectBean();
+                collectBean.setObjectId(articleObjectId);
+                collectBean.delete(new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if (e==null){
+                            Utils.toastMessage(MagazineContentActivity.this,"取消收藏成功");
+                        }else{
+                            Utils.toastMessage(MagazineContentActivity.this,"取消收藏失败:"+e.getMessage());
+                        }
+                    }
+                });
 
-
+            }
+        }
+    });
+}
 
 
     public void setAd(){
@@ -196,8 +245,6 @@ public class MagazineContentActivity extends BasicActivity {
         mWebSettings .setLoadsImagesAutomatically(true);
         mWebview.loadUrl(httpUrl);
 
-/*
-
         mWebview.setWebViewClient(new WebViewClient() {
 
             //设置不用系统浏览器打开,直接显示在当前Webview
@@ -209,7 +256,7 @@ public class MagazineContentActivity extends BasicActivity {
 
 
         });
-*/
+
 
 
     }

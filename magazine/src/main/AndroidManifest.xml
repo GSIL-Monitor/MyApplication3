@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cxy.magazine">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -22,10 +23,11 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--QQ登录-->
+        <!-- QQ登录 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -49,20 +51,20 @@
         <activity
             android:name="com.eagle.pay66.PayActivity"
             android:exported="true" />
-        <!--小米广告-->
+        <!-- 小米广告 -->
         <activity
             android:name="com.xiaomi.ad.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
-
-        <activity android:name=".activity.BasicActivity"></activity>
-        <activity android:name=".activity.ClassDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".activity.MagazineDetailActivity"
+        <activity android:name=".activity.BasicActivity" />
+        <activity
+            android:name=".activity.ClassDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activity.MagazineDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.LoginActivity"
             android:parentActivityName=".activity.MainActivity" />
@@ -81,17 +83,15 @@
         <activity
             android:name=".activity.MemberActivity"
             android:parentActivityName=".activity.MainActivity" />
-
         <activity
             android:name=".activity.MagazineDirectoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.MagazineHistoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.MagazineContentActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.FeedbackActivity"
             android:parentActivityName=".activity.MainActivity">
@@ -101,8 +101,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.CollectActivity">
 
-
+        </activity>
     </application>
 
 </manifest>

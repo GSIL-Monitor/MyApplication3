@@ -10,7 +10,7 @@ public class CollectBean extends BmobObject {
     private User user;
     private String articleUrl;
     private String articleTitle;
-    private String artivleId;
+    private String articleId;
 
     public User getUser() {
         return user;
@@ -36,11 +36,11 @@ public class CollectBean extends BmobObject {
         this.articleTitle = articleTitle;
     }
 
-    public String getArtivleId() {
-        return artivleId;
+    public String getArticleId() {
+        return articleId;
     }
 
-    public void setArtivleId(String artivleId) {
-        this.artivleId = artivleId;
+    public void setArticleId(String articleId) {
+        this.articleId = articleId;
     }
 }

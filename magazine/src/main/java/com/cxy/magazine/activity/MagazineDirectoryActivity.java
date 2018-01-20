@@ -113,6 +113,8 @@ public class MagazineDirectoryActivity extends BasicActivity {
         mRecyclerView.setLoadMoreEnabled(false);
         //add a FooterView
         CommonFooter footerView = new CommonFooter(this, R.layout.layout_empty);
+        TextView tvFoot=(TextView)footerView.findViewById(R.id.tv_foot);
+        tvFoot.setText("没有更多数据了");
         mLRecyclerViewAdapter.addFooterView(footerView);
 
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -181,8 +183,8 @@ public class MagazineDirectoryActivity extends BasicActivity {
                                                     String url = dataList.get(position).get("href").toString();
                                                     //跳转至内容显示Activity
                                                     Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
-                                                    String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
-                                                    intent.putExtra("url",mobileUrl);
+                                             //       String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+                                                    intent.putExtra("url",url);
                                                     startActivity(intent);
                                                 }
                                             }
@@ -204,8 +206,8 @@ public class MagazineDirectoryActivity extends BasicActivity {
                             String url = dataList.get(position).get("href").toString();
                             //跳转至内容显示Activity
                             Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
-                            String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
-                            intent.putExtra("url",mobileUrl);
+                          //  String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+                            intent.putExtra("url",url);
                             startActivity(intent);
                         }
 
