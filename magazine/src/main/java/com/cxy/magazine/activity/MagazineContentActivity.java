@@ -63,7 +63,7 @@ public class MagazineContentActivity extends BasicActivity {
     private StringBuilder content=null;
     private String testImage="<img alt=\"\" src=\"http://cimg.fx361.com/images/2018/01/17/tzzb201803tzzb20180314-1-l.jpg\" style=\"\"/>";
     private String htmlStr="<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
-            + "h3{font-size:22px;} p{font-size:18px;color:#373737;} img{width:100%;}  .sj{font-size:16px;color:#a6a5a5;}"
+            + "h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:130%;margin:9px;text-indent:2em} img{width:100%;}  .sj{font-size:16px;color:#a6a5a5;}"
             + "</style></head><body>";
 
     @Override
