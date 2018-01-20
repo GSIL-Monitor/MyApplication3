@@ -81,8 +81,7 @@
             android:name=".activity.FindPasswordActivity"
             android:parentActivityName=".activity.LoginActivity" />
         <activity
-            android:name=".activity.MemberActivity"
-            android:parentActivityName=".activity.MainActivity" />
+            android:name=".activity.MemberActivity" />
         <activity
             android:name=".activity.MagazineDirectoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />

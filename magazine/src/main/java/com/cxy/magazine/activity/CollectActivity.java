@@ -16,6 +16,7 @@ import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.view.CommonFooter;
@@ -55,8 +56,7 @@ public class CollectActivity extends AppCompatActivity {
         mLRecycleView.setAdapter(mLRecyclerAdapter);
 
         mLRecycleView.setLayoutManager(new LinearLayoutManager(this));
-        //禁用下拉刷新功能
-        mLRecycleView.setPullRefreshEnabled(false);
+      //  mLRecycleView.setPullRefreshEnabled(true);
         //禁用自动加载更多功能
         mLRecycleView.setLoadMoreEnabled(false);
         //设置间隔线
@@ -73,6 +73,13 @@ public class CollectActivity extends AppCompatActivity {
         tvFoot=(TextView)footerView.findViewById(R.id.tv_foot);
 
         mLRecyclerAdapter.addFooterView(footerView);
+        //下拉刷新
+        mLRecycleView.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+            }
+        });
 
         mLRecyclerAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -91,17 +98,20 @@ public class CollectActivity extends AppCompatActivity {
             @Override
             public void done(List<CollectBean> list, BmobException e) {
                 if (e==null){
+                    collectBeanList.clear();
                     if (list.size()>0){
                         collectBeanList.addAll(list);
-                        mLRecyclerAdapter.notifyDataSetChanged();
                     }else{
                         tvFoot.setText("你还没有收藏文章，赶快去收藏吧！");
                     }
+                    mLRecycleView.refreshComplete(1000);  //刷新完成
+                    mLRecyclerAdapter.notifyDataSetChanged();
 
 
                 }else{
                     Utils.toastMessage(CollectActivity.this,"查询数据失败:"+e.getMessage());
                 }
+
             }
         });
     }

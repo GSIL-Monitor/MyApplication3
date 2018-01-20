@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -100,6 +101,8 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
     private void initView(){
         ActionBar bar= getSupportActionBar();
         bar.setTitle("会员中心");
+        bar.setDisplayHomeAsUpEnabled(true);
+
 
         memberName=(TextView)findViewById(R.id.tvMemberName);
         memberInfo=(TextView)findViewById(R.id.tvMemberInfo);
@@ -701,5 +704,11 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
 
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return true;
+    }
 }
