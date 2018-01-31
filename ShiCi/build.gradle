@@ -20,8 +20,8 @@ android {
         applicationId "com.cxy.yuwen"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 24
-        versionName "2.7.2"
+        versionCode 25
+        versionName "2.7.3"
         // 指定支持的so架构
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
@@ -62,7 +62,7 @@ repositories {
 dependencies {
     /*导入本地jar包*/
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    /* compile 'com.google.code.gson:gson:2.3.1'*/
+    compile 'com.google.code.gson:gson:2.3.1'
     /*compile 'com.squareup.okhttp3:okhttp:3.6.0'*/
     compile files('libs/pay66.jar')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

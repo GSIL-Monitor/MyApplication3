@@ -1,6 +1,7 @@
 package com.cxy.yuwen.activity;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -38,8 +39,13 @@ public class MagazineContentActivity extends BasicActivity {
 
     private String httpUrl="";
     private WebSettings mWebSettings;
-    private String  htmlData="";
+    private String title="";
     private static final String AD_ID = "73de7ce1acfd8777553c367d5a4aab06";   //广告id
+    private String htmlStr="<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
+            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:180%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
+            + "</style></head><body>";
+    private StringBuilder content=null;
+    private static ProgressDialog mProgressDialog;
     @BindView(R.id.wv_content)  WebView mWebview;
     ViewGroup adContainer;
 
@@ -51,7 +57,10 @@ public class MagazineContentActivity extends BasicActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         httpUrl=getIntent().getStringExtra("url").replace("page","news").replace("shtml","html");
-        setWebView();
+        content=new StringBuilder(htmlStr);
+        mProgressDialog=ProgressDialog.show(this, null, null);
+        Thread getHtml=new GetHtml();
+        getHtml.start();
         adContainer=(ViewGroup) findViewById(R.id.containerAd);
         //设置广告
         setAd();
@@ -155,11 +164,15 @@ public class MagazineContentActivity extends BasicActivity {
             try {
                 Document docHtml = Jsoup.connect(httpUrl).get();
                 Element mainDiv=docHtml.getElementsByClass("main").first();
-                Elements images=mainDiv.getElementsByTag("img");
-                for (Element image : images) {
-                    image.attr("width","90%").attr("height","auto");
-                }
-                htmlData=mainDiv.toString();
+                title=mainDiv.getElementsByClass("bt").first().text();  //文章标题   h3
+                mainDiv.getElementsByTag("h3").get(1).remove();
+                mainDiv.getElementsByTag("ul").first().remove();
+                content.append(mainDiv.html());
+                content.append("</body></html>");
+
+
+
+
                 uiHandler.sendEmptyMessage(100);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -172,7 +185,8 @@ public class MagazineContentActivity extends BasicActivity {
         public void handleMessage(Message msg) {
 
             if (msg.what==100){
-               mWebview.loadDataWithBaseURL(null,htmlData,"text/html","utf-8",null);
+                mProgressDialog.dismiss();
+                mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
             }
         }
     };
@@ -192,25 +206,25 @@ public class MagazineContentActivity extends BasicActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && mWebview.canGoBack()) {
+       /* if (keyCode == KeyEvent.KEYCODE_BACK && mWebview.canGoBack()) {
             mWebview.goBack();
             return true;
         }
-
+*/
         return super.onKeyDown(keyCode, event);
     }
 
     //销毁Webview
     @Override
     protected void onDestroy() {
-        if (mWebview != null) {
+        /*if (mWebview != null) {
             mWebview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
             mWebview.clearHistory();
 
             ((ViewGroup) mWebview.getParent()).removeView(mWebview);
             mWebview.destroy();
             mWebview = null;
-        }
+        }*/
         super.onDestroy();
     }
 

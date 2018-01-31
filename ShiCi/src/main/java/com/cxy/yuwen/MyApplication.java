@@ -55,7 +55,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        AdSdk.setDebugOn();
+       // AdSdk.setDebugOn();
         // AdSdk.setMockOn();
         AdSdk.initialize(this, APP_ID);   //小米广告
 
