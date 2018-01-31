@@ -127,7 +127,10 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         public void run() {
 
             headImage = Utils.getbitmap(user.getHeadImageUrl());
-            handler.sendEmptyMessage(IMAGE_LOAD_FINISHED);
+            if (headImage!=null){
+                handler.sendEmptyMessage(IMAGE_LOAD_FINISHED);
+            }
+
         }
     }
 

@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS"/>
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 
     <application
         android:name=".MyApplication"
@@ -53,11 +56,21 @@
             android:exported="true" />
         <!-- 小米广告 -->
         <activity
-            android:name="com.xiaomi.ad.AdActivity"
+            android:name="com.miui.zeus.mimo.sdk.activityProxy.ProxyActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+        </activity>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">;
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
         <activity android:name=".activity.BasicActivity" />
         <activity
             android:name=".activity.ClassDetailActivity"
@@ -92,8 +105,7 @@
             android:name=".activity.MagazineContentActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.FeedbackActivity"
-            android:parentActivityName=".activity.MainActivity">
+            android:name=".activity.FeedbackActivity">
             <intent-filter>
                 <action android:name="tongzhi.feedbackActivity" />
 

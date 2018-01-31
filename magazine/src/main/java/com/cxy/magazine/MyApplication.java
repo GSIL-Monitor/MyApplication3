@@ -5,7 +5,8 @@ import android.app.Application;
 
 import com.cxy.magazine.activity.MainActivity;
 import com.eagle.pay66.Pay66;
-import com.xiaomi.ad.AdSdk;
+import com.miui.zeus.mimo.sdk.MimoSdk;
+//import com.xiaomi.ad.AdSdk;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +29,9 @@ public class MyApplication extends Application {
         //初始化66支付
         Pay66.init(PAY_66_APPLICATION_ID, getApplicationContext());
         //初始化小米广告
-        AdSdk.initialize(this, XIAOMI_APP_ID);   //小米广告
+        MimoSdk.init(this, XIAOMI_APP_ID, "fake_app_key", "fake_app_token");
+      //  AdSdk.initialize(this, XIAOMI_APP_ID);   //小米广告
+       // AdSdk.setDebugOn(); // 打开调试，输出调试信息
     }
 
     public MyApplication() {

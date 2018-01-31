@@ -43,10 +43,11 @@ public class CollectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collect);
         ButterKnife.bind(this);
+        getSupportActionBar().setTitle("我的收藏");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         collectBeanList=new ArrayList<CollectBean>();
         setmLRecycleView();
-        getData();
+      //  getData();
     }
 
     public void setmLRecycleView(){
@@ -80,7 +81,7 @@ public class CollectActivity extends AppCompatActivity {
                 getData();
             }
         });
-
+        mLRecycleView.refresh();
         mLRecyclerAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +30,7 @@ public class FeedbackActivity extends BasicActivity {
     //    MyApplication.getInstance().addActivity(this);
         ActionBar bar= getSupportActionBar();
         bar.setTitle("用户反馈");
+        bar.setDisplayHomeAsUpEnabled(true);
 
         editFeedback=(EditText) findViewById(R.id.edit_feedback);
         editQQ=(EditText)findViewById(R.id.edit_qq);
@@ -106,6 +108,11 @@ public class FeedbackActivity extends BasicActivity {
         }
     };
 
-
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return true;
+    }
 }

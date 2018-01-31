@@ -43,7 +43,7 @@ import butterknife.Unbinder;
 public class ClassFragment extends Fragment {
     public static final String MAGAZIENE_URL="http://www.fx361.com";
     private List<HashMap> magazineList;
-    private static final int LOAD_FINISHED=100;
+    private static final int LOAD_FINISHED=100,LOAD_ERROR=101;
     private MagazineAdapter adapter=null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
     private ACache mAcache;
@@ -75,6 +75,7 @@ public class ClassFragment extends Fragment {
     public void setLRecyclerview(){
         GridLayoutManager manager=new GridLayoutManager(this.getContext(),3);
         mLRecyclerview.setLayoutManager(manager);
+        mLRecyclerview.setPullRefreshEnabled(false);
        /* GridItemDecoration divider = new GridItemDecoration.Builder(this.getContext())
                 .setHorizontal(R.dimen.activity_horizontal_margin)
                 .setVertical(R.dimen.activity_vertical_margin)
@@ -136,7 +137,8 @@ public class ClassFragment extends Fragment {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                Utils.toastMessage(getActivity(),e.toString());
+              //  Utils.toastMessage(getActivity(),e.toString());
+                handler.sendEmptyMessage(LOAD_ERROR);
             }
 
         }
@@ -148,8 +150,10 @@ public class ClassFragment extends Fragment {
             switch(msg.what){
                 case LOAD_FINISHED:
                     adapter.notifyDataSetChanged();
-
                     break;
+                case LOAD_ERROR:
+                   Utils.toastMessage(getActivity(),"出错了，请稍后再试！");
+                   break;
 
             }
         }

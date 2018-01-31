@@ -26,12 +26,18 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.bmobBean.CollectBean;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.util.Utils;
+import com.miui.zeus.mimo.sdk.ad.AdWorkerFactory;
+import com.miui.zeus.mimo.sdk.ad.IAdWorker;
+import com.miui.zeus.mimo.sdk.listener.MimoAdListener;
+import com.xiaomi.ad.common.pojo.AdType;
+/*
 import com.xiaomi.ad.AdListener;
 import com.xiaomi.ad.NativeAdInfoIndex;
 import com.xiaomi.ad.NativeAdListener;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
+*/
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -55,6 +61,7 @@ public class MagazineContentActivity extends BasicActivity {
     private String httpUrl="";
     private WebSettings mWebSettings;
     private static final String AD_ID = "338443b6af5f0f43a7f7e998f80289ed";   //广告id
+    private IAdWorker mAdWorker;
     @BindView(R.id.wv_content)  WebView mWebview;
     @BindView(R.id.toolbar)  Toolbar toolbar;
     @BindView(R.id.rb_collect)  CheckBox rbCollect;
@@ -170,7 +177,7 @@ public void setCollect(){
 }
 
 
-    public void setAd(){
+   /* public void setAd(){
         final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
         adContainer.post(new Runnable() {
             @Override
@@ -224,7 +231,40 @@ public void setCollect(){
                 }
             }
         });
-    }
+    }*/
+
+   public void setAd() {
+       try {
+           mAdWorker = AdWorkerFactory.getAdWorker(this, adContainer, new MimoAdListener() {
+               @Override
+               public void onAdPresent() {
+                   Log.e(LOG_TAG, "onAdPresent");
+               }
+
+               @Override
+               public void onAdClick() {
+                   Log.e(LOG_TAG, "onAdClick");
+               }
+
+               @Override
+               public void onAdDismissed() {
+                   Log.e(LOG_TAG, "onAdDismissed");
+               }
+
+               @Override
+               public void onAdFailed(String s) {
+                   Log.e(LOG_TAG, "onAdFailed");
+               }
+
+               @Override
+               public void onAdLoaded() {
+               }
+           }, AdType.AD_STANDARD_NEWSFEED);
+           mAdWorker.loadAndShow(AD_ID);
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+   }
 
     public void setWebView(){
         mWebSettings = mWebview.getSettings();
@@ -268,8 +308,6 @@ public void setCollect(){
                 Document docHtml = Jsoup.connect(httpUrl).get();
                 Element mainDiv=docHtml.getElementsByClass("main").first();
                 title=mainDiv.getElementsByClass("bt").first().text();  //文章标题   h3
-              //  time=mainDiv.getElementsByClass("sj").first().html();   //发布时间   p
-              //  String contentStr=mainDiv.getElementsByClass("wz").html();
                 mainDiv.getElementsByTag("h3").get(1).remove();
                 mainDiv.getElementsByTag("ul").first().remove();
                 content.append(mainDiv.html());
@@ -277,10 +315,10 @@ public void setCollect(){
 
 
 
-
                 uiHandler.sendEmptyMessage(100);
             } catch (IOException e) {
                 e.printStackTrace();
+                uiHandler.sendEmptyMessage(101);
             }
         }
     }
@@ -295,6 +333,10 @@ public void setCollect(){
                 // tvTime.setText(time);
                 // tvContent.setText(content);
                 mProgressDialog.dismiss();
+                mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
+            }
+            if (msg.what==101){
+                String error="<h3>抱歉，该篇文章暂时无法阅读！<h3>";
                 mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
             }
         }

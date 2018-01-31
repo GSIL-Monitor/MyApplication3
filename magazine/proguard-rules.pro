@@ -36,3 +36,7 @@
 -keep class com.eagle.pay66.** {*;}
 -dontwarn com.alipay.**
 -dontwarn com.eagle.pay66.**
+
+#小米广告
+-keep class com.xiaomi.ad.**{*;}
+-keep class com.miui.zeus.**{*;}

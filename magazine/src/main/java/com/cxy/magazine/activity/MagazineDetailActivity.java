@@ -183,7 +183,11 @@ public class MagazineDetailActivity extends AppCompatActivity {
                 im_cover.setImageBitmap(bookCover);
                 tv_intro.setText(magazineIntro);
             }else if (msg.what==101){
-                Utils.toastMessage(MagazineDetailActivity.this,"亲，出错了，该杂志内容暂时无法阅读，换一本吧！");
+                tv_addShelf.setEnabled(false);
+                tv_startRead.setEnabled(false);
+                tv_watchHistory.setEnabled(false);
+             //   Utils.toastMessage(MagazineDetailActivity.this,"亲，出错了，该杂志内容暂时无法阅读，换一本吧！");
+                tv_intro.setText("亲，出错了，该杂志内容暂时无法阅读，换一本吧！");
             }
         }
     };

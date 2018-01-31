@@ -3,6 +3,8 @@ package com.cxy.magazine.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.SearchView;
 import com.cxy.magazine.R;
 import com.cxy.magazine.activity.MagazineDetailActivity;
 import com.cxy.magazine.adapter.SearchAdapter;
+import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -75,7 +78,7 @@ public class SearchFragment extends Fragment {
         datalist=new ArrayList<HashMap>();
         dataShowList=new ArrayList<HashMap>();
         setRecyclerView();
-        setSearchView();
+       // setSearchView();
 
         Thread thread=new GetAllData();
         thread.start();
@@ -179,11 +182,26 @@ public class SearchFragment extends Fragment {
                     map.put("type","item");
                     datalist.add(map);
                 }
+                handler.sendEmptyMessage(100);
             } catch (IOException e) {
                 e.printStackTrace();
+                handler.sendEmptyMessage(101);
             }
         }
     }
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what==100){
+                setSearchView();
+            }
+            if (msg.what==101){
+                Utils.toastMessage(getActivity(),"出错了，请稍后重试！");
+            }
+        }
+    };
 
 
 
