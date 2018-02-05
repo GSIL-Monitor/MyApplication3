@@ -94,7 +94,7 @@ public class MagazineContentActivity extends BasicActivity {
         articleId=intentUrl.split("/")[4].split(".shtml")[0];
       //  setWebView();
         content=new StringBuilder(htmlStr);
-        mProgressDialog=ProgressDialog.show(this, null, null);
+        mProgressDialog=ProgressDialog.show(this, null, "请稍后");
         Thread getHtml=new GetHtml();
         getHtml.start();
 
@@ -177,61 +177,6 @@ public void setCollect(){
 }
 
 
-   /* public void setAd(){
-        final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
-        adContainer.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    standardNewsFeedAd.requestAd(AD_ID, 1, new NativeAdListener() {
-                        @Override
-                        public void onNativeInfoFail(AdError adError) {
-                            Log.e(LOG_TAG, "onNativeInfoFail e : " + adError);
-                        }
-
-                        @Override
-                        public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
-                            NativeAdInfoIndex response = list.get(0);
-
-                            standardNewsFeedAd.buildViewAsync(response, adContainer.getWidth(), new AdListener() {
-                                @Override
-                                public void onAdError(AdError adError) {
-                                    Log.e(LOG_TAG, "error : remove all views");
-                                    adContainer.removeAllViews();
-                                }
-
-                                @Override
-                                public void onAdEvent(AdEvent adEvent) {
-                                    //目前考虑了３种情况，用户点击信息流广告，用户点击x按钮，以及信息流展示的３种回调，范例如下
-                                    if (adEvent.mType == AdEvent.TYPE_CLICK) {
-                                        Log.d(LOG_TAG, "ad has been clicked!");
-                                    } else if (adEvent.mType == AdEvent.TYPE_SKIP) {
-                                        Log.d(LOG_TAG, "x button has been clicked!");
-                                    } else if (adEvent.mType == AdEvent.TYPE_VIEW) {
-                                        Log.d(LOG_TAG, "ad has been showed!");
-                                    }
-                                }
-
-                                @Override
-                                public void onAdLoaded() {
-
-                                }
-
-                                @Override
-                                public void onViewCreated(View view) {
-                                    Log.e(LOG_TAG, "onViewCreated");
-                                    adContainer.removeAllViews();
-                                    adContainer.addView(view);
-                                }
-                            });
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }*/
 
    public void setAd() {
        try {

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.cxy.magazine.activity.CollectActivity;
 import com.cxy.magazine.activity.FeedbackActivity;
+import com.cxy.magazine.activity.InviteActivity;
 import com.cxy.magazine.activity.MainActivity;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.MyApplication;
@@ -197,14 +198,22 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
 
         }
 
-       /* if(id==R.id.share){
+        if(id==R.id.invite){
 
-            Intent sendIntent=new Intent(Intent.ACTION_SEND);
+           /* Intent sendIntent=new Intent(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, "语文助手这个App真不错，快来下载\n"+appUrl);
             sendIntent.setType("text/plain");
             sendIntent.setType("text/plain");
-            startActivity(Intent.createChooser(sendIntent,"share"));
-        }*/
+            startActivity(Intent.createChooser(sendIntent,"share"));*/
+           if (user!=null){
+               Intent intent=new Intent(getActivity(), InviteActivity.class);
+               startActivity(intent);
+           }else{   //跳转到登陆页
+               Intent intent1 = new Intent(getActivity(), LoginActivity.class);
+               startActivity(intent1);
+           }
+
+        }
 
         if (id==R.id.exit){   //退出
 

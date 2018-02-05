@@ -33,6 +33,10 @@
                 android:id="@+id/exit"
                 android:icon="@drawable/ic_menu_close"
                 android:title="退出" />
+            <item
+                android:id="@+id/invite"
+                android:icon="@drawable/ic_menu_share"
+                android:title="邀请好友(邀请好友，各得3天会员)"/>
         </menu>
     </item>
 

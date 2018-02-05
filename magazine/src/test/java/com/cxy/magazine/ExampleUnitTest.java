@@ -1,5 +1,7 @@
 package com.cxy.magazine;
 
+import com.cxy.magazine.util.Utils;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -22,5 +24,10 @@ public class ExampleUnitTest {
             System.out.println(a);
         }
 
+    }
+    @Test
+    public void creatRandomStr(){
+        String str=Utils.createRandomCharData(5);
+        System.out.println(str);
     }
 }

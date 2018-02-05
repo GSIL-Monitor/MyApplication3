@@ -42,6 +42,7 @@ public class MainActivity extends BasicActivity {
                 case R.id.navigation_mine:
                     switchFragmentSupport(R.id.content,tabs[2]);
                     return true;
+
             }
             return false;
         }

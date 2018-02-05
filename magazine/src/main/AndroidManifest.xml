@@ -9,8 +9,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 
     <application
@@ -60,21 +60,23 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"></activity>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">;
+            android:grantUriPermissions="true">
+            ;
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <activity android:name=".activity.BasicActivity" />
         <activity
             android:name=".activity.ClassDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.MagazineDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -93,8 +95,7 @@
         <activity
             android:name=".activity.FindPasswordActivity"
             android:parentActivityName=".activity.LoginActivity" />
-        <activity
-            android:name=".activity.MemberActivity" />
+        <activity android:name=".activity.MemberActivity" />
         <activity
             android:name=".activity.MagazineDirectoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -104,17 +105,15 @@
         <activity
             android:name=".activity.MagazineContentActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.FeedbackActivity">
+        <activity android:name=".activity.FeedbackActivity">
             <intent-filter>
                 <action android:name="tongzhi.feedbackActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.CollectActivity">
-
-        </activity>
+        <activity android:name=".activity.CollectActivity"></activity>
+        <activity android:name=".activity.InviteActivity"></activity>
     </application>
 
 </manifest>
