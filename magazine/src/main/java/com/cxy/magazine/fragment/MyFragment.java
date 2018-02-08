@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,10 +15,12 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +29,8 @@ import com.cxy.magazine.activity.CollectActivity;
 import com.cxy.magazine.activity.FeedbackActivity;
 import com.cxy.magazine.activity.InviteActivity;
 import com.cxy.magazine.activity.MainActivity;
+import com.cxy.magazine.activity.MessageActivity;
+import com.cxy.magazine.bmobBean.MsgNotification;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.MyApplication;
 import com.cxy.magazine.R;
@@ -35,7 +40,12 @@ import com.cxy.magazine.activity.SettingInfomationActivity;
 import com.cxy.magazine.util.ACache;
 import com.cxy.magazine.util.Utils;
 
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 
 public class MyFragment extends Fragment implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener {
@@ -59,6 +69,8 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         headImageView=(ImageView)layoutView.findViewById(R.id.userImage);
         navigationView = (NavigationView) layoutView.findViewById(R.id.nav_view);
 
+
+
         aCache=ACache.get(this.getContext());
 
         //获取默认用户头像
@@ -69,6 +81,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         // setUserInfo();
         tvLogin.setOnClickListener(this);
         navigationView.setNavigationItemSelectedListener(this);
+
 
         Log.i("fragment","----------onCreateView()");
         return layoutView;
@@ -86,7 +99,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
     public void onStart() {
         super.onStart();
         setUserInfo();
-        Log.i("fragment","----------onStart()");
+        setMessgae();
 
     }
 
@@ -224,8 +237,55 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
             Intent intent=new Intent(getActivity(),MemberActivity.class);
             startActivity(intent);
         }
+        if (id==R.id.messageNotification){
+            if (user!=null){
+
+                Intent intent=new Intent(getActivity(), MessageActivity.class);
+                startActivity(intent);
+            }else{   //跳转到登陆页
+                Intent intent1 = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent1);
+            }
+        }
 
 
         return true;
+    }
+    public void setMessgae() {
+        final LinearLayout msgLayout = (LinearLayout) navigationView.getMenu().findItem(R.id.messageNotification).getActionView();
+      //  final TextView msg = (TextView) msgLayout.findViewById(R.id.msg);
+        final  ImageView msgImg=(ImageView)msgLayout.findViewById(R.id.msg_notify_img);
+
+        if (user != null) {
+            BmobQuery<MsgNotification> msgQuery = new BmobQuery<>();
+            msgQuery.addWhereEqualTo("user", user);
+            msgQuery.findObjects(new FindListener<MsgNotification>() {
+                @Override
+                public void done(List<MsgNotification> list, BmobException e) {
+                    if (e==null) {
+                        boolean hasNotRead=false;
+                        if (list.size() > 0) {
+                            for (MsgNotification msg : list) {
+                                if (!msg.getRead()) {
+                                   hasNotRead=true;
+                                   break;
+                                }
+                            }
+
+                        }
+                        if (hasNotRead){
+                            msgImg.setVisibility(View.VISIBLE);
+                        }else{
+                            msgImg.setVisibility(View.GONE);
+                        }
+                    }else{
+                        Utils.toastMessage(getActivity(),e.getMessage());
+                        Log.i("bmob",e.toString());
+                    }
+                }
+            });
+        }else{   //没有登陆
+            msgImg.setVisibility(View.GONE);
+        }
     }
 }

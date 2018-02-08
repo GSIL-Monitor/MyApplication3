@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
         <!--<item android:id="@+id/composition"
@@ -14,7 +15,9 @@
             android:title="会员中心" />
         <item android:id="@+id/messageNotification"
             android:icon="@drawable/ic_notifications_black_24dp"
-            android:title="消息通知"/>
+            android:title="消息通知"
+            app:actionLayout="@layout/badge"
+            />
 
        <!-- <item android:id="@+id/setting" android:icon="@drawable/ic_settings"
              android:title="设置" />
@@ -32,14 +35,16 @@
                 android:id="@+id/feedback"
                 android:icon="@drawable/ic_menu_send"
                 android:title="反馈" />
-            <item
-                android:id="@+id/exit"
-                android:icon="@drawable/ic_menu_close"
-                android:title="退出" />
+
             <item
                 android:id="@+id/invite"
                 android:icon="@drawable/ic_menu_share"
                 android:title="邀请好友(邀请好友，各得3天会员)"/>
+
+            <item
+                android:id="@+id/exit"
+                android:icon="@drawable/ic_menu_close"
+                android:title="退出" />
         </menu>
     </item>
 

@@ -123,7 +123,7 @@ public class InviteActivity extends AppCompatActivity {
 
                                            //当前用户和发送邀请码的用户各获得3天会员
                                            inviteResult=updateMemeber(user,memberMsg);   //当前用户 会员更新
-                                            String message="你的好友"+user.getUsername()+"使用了你的专属邀请码，奖励你的3天会员已到账，敬请查收，你还可以分享你的邀请码给更多人哦！";
+                                            String message="你的好友"+user.getUsername()+"使用了你的专属邀请码，奖励你的3天会员已到账，敬请查收，你还可以分享你的邀请码给更多人！分享多多，奖励多多！";
                                            //发送邀请码的用户更新
                                            for (InviteCode inviteCode:list ){
                                                inviteResult=updateMemeber(inviteCode.getUser(),message);

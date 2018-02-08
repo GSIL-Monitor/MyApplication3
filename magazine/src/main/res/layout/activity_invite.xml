@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cxy.magazine.activity.InviteActivity"
+    android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/layoutBackground">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:orientation="horizontal"
+                android:paddingBottom="18dp">
+
+                <EditText
+                    android:id="@+id/ed_invite_code"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_bg"
+                    android:hint=" 请输入邀请码"
+                    android:textSize="18sp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginLeft="15dp"
+                    android:padding="12dp"/>
+
+                <Button
+                    android:id="@+id/btn_activate"
+                    style="@style/ButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="33dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="15dp"
+                    android:text="  激 活  " />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="#fff">
+                <TextView
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="—— 我要分享邀请码给好友 ——"
+                    android:gravity="center"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/tv_share_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="15sp"
+                    android:text="分享我的邀请码"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_marginBottom="20dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="活动规则"
+                    android:gravity="center"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/inviteIntro"
+                    android:textSize="16sp"
+                    android:padding="@dimen/dp_10"
+                    android:lineSpacingExtra="10dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
