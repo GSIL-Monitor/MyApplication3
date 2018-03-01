@@ -248,7 +248,7 @@ public class MagazineClassFragment extends Fragment {
                     });
                     break;
                 case 101:
-                    Util.toastMessage(getActivity(),"亲，出错了，请稍后重试！");
+                    Util.toastMessage(fragment.getActivity(),"亲，出错了，请稍后重试！");
 
             }
         }

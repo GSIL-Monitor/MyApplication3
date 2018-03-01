@@ -18,12 +18,18 @@
             <WebView
                 android:id="@+id/wv_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></WebView>
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:paddingBottom="20dp">
+            </WebView>
 
             <FrameLayout
                 android:id="@+id/containerAd"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

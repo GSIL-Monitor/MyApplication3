@@ -44,7 +44,7 @@ public class MagazineFragment extends Fragment {
 
     public static final String MAGAZIENE_URL="http://www.fx361.com";
     private List<HashMap> magazineList;
-    private static final int LOAD_FINISHED=100;
+    private static final int LOAD_FINISHED=100,LOAD_ERROR=101;
     private MagazineAdapter adapter;
     private ACache mAcache;
 
@@ -130,7 +130,8 @@ public class MagazineFragment extends Fragment {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                Util.toastMessage(getActivity(),e.toString());
+              //  Util.toastMessage(getActivity(),e.toString());
+                handler.sendEmptyMessage(LOAD_ERROR);
             }
 
         }
@@ -144,8 +145,12 @@ public class MagazineFragment extends Fragment {
                    adapter.notifyDataSetChanged();
 
                    break;
+               case LOAD_ERROR:
+                   Util.toastMessage(getActivity(),"出错了，请稍后再试！");
+                   break;
 
            }
+
        }
    };
 

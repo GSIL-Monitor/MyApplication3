@@ -18,22 +18,30 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.activity.CollectActivity;
 import com.cxy.yuwen.activity.FeedbackActivity;
+import com.cxy.yuwen.activity.InviteActivity;
 import com.cxy.yuwen.activity.LoginActivity;
 import com.cxy.yuwen.activity.MemberActivity;
+import com.cxy.yuwen.activity.MessageActivity;
 import com.cxy.yuwen.activity.SettingInfomationActivity;
+import com.cxy.yuwen.bmobBean.MsgNotification;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.ACache;
 import com.cxy.yuwen.tool.CommonUtil;
 import com.cxy.yuwen.tool.Util;
 
-import cn.bmob.v3.BmobUser;
+import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 
 public class MyFragment extends Fragment implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener {
@@ -84,14 +92,14 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
     public void onStart() {
         super.onStart();
         setUserInfo();
-        Log.i("fragment","----------onStart()");
+        setMessgae();
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("fragment","----------onResume()");
+
 
 
     }
@@ -126,7 +134,9 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         public void run() {
 
             headImage = Util.getbitmap(user.getHeadImageUrl());
-            handler.sendEmptyMessage(IMAGE_LOAD_FINISHED);
+            if (headImage!=null){
+                handler.sendEmptyMessage(IMAGE_LOAD_FINISHED);
+            }
         }
     }
 
@@ -193,14 +203,14 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
 
         }
 
-        if(id==R.id.share){
+       /* if(id==R.id.share){
 
             Intent sendIntent=new Intent(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, "语文助手这个App真不错，快来下载\n"+appUrl);
             sendIntent.setType("text/plain");
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent,"share"));
-        }
+        }*/
 
         if (id==R.id.exit){   //退出
           //  SpotManager.getInstance( MyApplication.getInstance()).onAppExit();
@@ -211,8 +221,74 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
             Intent intent=new Intent(getActivity(),MemberActivity.class);
             startActivity(intent);
         }
+        if(id==R.id.invite){
+
+           /* Intent sendIntent=new Intent(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "语文助手这个App真不错，快来下载\n"+appUrl);
+            sendIntent.setType("text/plain");
+            sendIntent.setType("text/plain");
+            startActivity(Intent.createChooser(sendIntent,"share"));*/
+            if (user!=null){
+                Intent intent=new Intent(getActivity(), InviteActivity.class);
+                startActivity(intent);
+            }else{   //跳转到登陆页
+                Intent intent1 = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent1);
+            }
+
+        }
+
+        if (id==R.id.messageNotification){
+            if (user!=null){
+
+                Intent intent=new Intent(getActivity(), MessageActivity.class);
+                startActivity(intent);
+            }else{   //跳转到登陆页
+                Intent intent1 = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent1);
+            }
+        }
+
 
 
         return true;
+    }
+
+    public void setMessgae() {
+        final LinearLayout msgLayout = (LinearLayout) navigationView.getMenu().findItem(R.id.messageNotification).getActionView();
+        //  final TextView msg = (TextView) msgLayout.findViewById(R.id.msg);
+        final  ImageView msgImg=(ImageView)msgLayout.findViewById(R.id.msg_notify_img);
+
+        if (user != null) {
+            BmobQuery<MsgNotification> msgQuery = new BmobQuery<>();
+            msgQuery.addWhereEqualTo("user", user);
+            msgQuery.findObjects(new FindListener<MsgNotification>() {
+                @Override
+                public void done(List<MsgNotification> list, BmobException e) {
+                    if (e==null) {
+                        boolean hasNotRead=false;
+                        if (list.size() > 0) {
+                            for (MsgNotification msg : list) {
+                                if (!msg.getRead()) {
+                                    hasNotRead=true;
+                                    break;
+                                }
+                            }
+
+                        }
+                        if (hasNotRead){
+                            msgImg.setVisibility(View.VISIBLE);
+                        }else{
+                            msgImg.setVisibility(View.GONE);
+                        }
+                    }else{
+                        Util.toastMessage(getActivity(),e.getMessage());
+                        Log.i("bmob",e.toString());
+                    }
+                }
+            });
+        }else{   //没有登陆
+            msgImg.setVisibility(View.GONE);
+        }
     }
 }
