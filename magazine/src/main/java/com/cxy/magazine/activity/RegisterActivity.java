@@ -60,7 +60,7 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
             if (!Utils.isMobile(phoneNumber)){
                 Utils.showResultDialog(RegisterActivity.this,"请输入有效的手机号码!",null);
             }else{
-                BmobSMS.requestSMSCode(phoneNumber,"注册模板", new QueryListener<Integer>() {
+                BmobSMS.requestSMSCode(phoneNumber,"杂志天下", new QueryListener<Integer>() {
 
                     @Override
                     public void done(Integer smsId,BmobException ex) {

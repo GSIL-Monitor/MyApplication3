@@ -39,7 +39,7 @@ import cn.bmob.v3.listener.SaveListener;
 
 import static com.xiaomi.ad.common.SdkConfig.getContext;*/
 
-public class MagazineDetailActivity extends AppCompatActivity {
+public class MagazineDetailActivity extends BasicActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

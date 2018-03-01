@@ -33,7 +33,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
-public class MessageActivity extends AppCompatActivity {
+public class MessageActivity extends BasicActivity {
 
     @BindView(R.id.mRecycleView)
     LRecyclerView mLRecycleView;

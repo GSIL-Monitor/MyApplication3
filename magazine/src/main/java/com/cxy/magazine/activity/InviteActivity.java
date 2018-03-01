@@ -34,7 +34,7 @@ import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-public class InviteActivity extends AppCompatActivity {
+public class InviteActivity extends BasicActivity {
 
     @BindView(R.id.ed_invite_code)
     EditText editCode;
@@ -46,7 +46,7 @@ public class InviteActivity extends AppCompatActivity {
     private String inviteCode;
     private final String APP_URL="http://app.xiaomi.com/detail/563172";
     private String objectId="";
-    private final String memberMsg="你使用了好友的邀请码，奖励你的3天会员服务已到账，敬请查收，你还可以分享你的专属邀请码给好友，分享多多，奖励多多";
+    private final String memberMsg="你使用了好友的邀请码，奖励你的3天会员服务已到账，敬请查收，你还可以分享你的专属邀请码给好友，分享多多，奖励多多。";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

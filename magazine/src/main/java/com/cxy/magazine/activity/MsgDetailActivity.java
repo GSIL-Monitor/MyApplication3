@@ -1,6 +1,5 @@
 package com.cxy.magazine.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,7 +15,7 @@ import butterknife.OnClick;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 
-public class MsgDetailActivity extends AppCompatActivity {
+public class MsgDetailActivity extends BasicActivity {
 
     @BindView(R.id.tv_msg_detail)
     TextView textViewMsg;

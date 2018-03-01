@@ -98,8 +98,7 @@ public class MagazineContentActivity extends BasicActivity {
         Thread getHtml=new GetHtml();
         getHtml.start();
 
-        //设置广告
-        setAd();
+
         user= BmobUser.getCurrentUser(User.class);
         //rbCollect.setChecked(true);
         setCollect();
@@ -261,7 +260,7 @@ public void setCollect(){
 
 
                 uiHandler.sendEmptyMessage(100);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 uiHandler.sendEmptyMessage(101);
             }
@@ -279,10 +278,15 @@ public void setCollect(){
                 // tvContent.setText(content);
                 mProgressDialog.dismiss();
                 mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
+                //设置广告
+                setAd();
             }
             if (msg.what==101){
+                mProgressDialog.dismiss();
                 String error="<h3>抱歉，该篇文章暂时无法阅读！<h3>";
-                mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
+                mWebview.loadData(error, "text/html; charset=UTF-8", null);
+                //设置广告
+                setAd();
             }
         }
     };
