@@ -34,6 +34,7 @@ public class Utils {
     public static final String KEY_SHA = "SHA";
     private static Dialog mProgressDialog;
     private static Toast mToast;
+    public static Integer CURREN_VERSION_CODE=0;
 
 
     public static final void showResultDialog(Context context, String msg, String title) {

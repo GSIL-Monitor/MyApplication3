@@ -39,7 +39,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class MagazineListFragment extends Fragment {
+public class MagazineListFragment extends BaseFragment {
 
     private static final String HTTP_URL = "param1";
     private String htmlUrl;

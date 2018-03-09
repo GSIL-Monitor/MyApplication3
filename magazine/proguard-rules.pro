@@ -37,6 +37,10 @@
 -dontwarn com.alipay.**
 -dontwarn com.eagle.pay66.**
 
-#小米广告
--keep class com.xiaomi.ad.**{*;}
--keep class com.miui.zeus.**{*;}
+
+
+#AndFix
+-keep class * extends java.lang.annotation.Annotation
+-keepclasseswithmembernames class * {
+    native <methods>;
+}

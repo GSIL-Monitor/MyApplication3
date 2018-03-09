@@ -4,6 +4,7 @@ package com.cxy.magazine.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,6 +20,7 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.activity.LoginActivity;
 import com.cxy.magazine.activity.MagazineDirectoryActivity;
 import com.cxy.magazine.adapter.BookshelfAdapter;
+import com.cxy.magazine.util.NetWorkUtils;
 import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
@@ -38,7 +40,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 
-public class ShelfFragment extends Fragment {
+public class ShelfFragment extends BaseFragment {
 
     @BindView(R.id.recyclerView_shelf)
     LRecyclerView mRecyclerView;
@@ -54,10 +56,15 @@ public class ShelfFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         Log.i("shelf","onCreateView");
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_shelf, container, false);
@@ -87,28 +94,32 @@ public class ShelfFragment extends Fragment {
                 }
             });
         }else{
-            BmobQuery<Bookshelf> query = new BmobQuery<Bookshelf>();
+            if (NetWorkUtils.isNetworkConnected(context)) {
+                BmobQuery<Bookshelf> query = new BmobQuery<Bookshelf>();
 
-            query.addWhereEqualTo("user", user);    // 查询当前用户的所有收藏内容
-            query.order("-updatedAt");      //按照创建时间排序
-            //返回50条数据，如果不加上这条语句，默认返回10条数据
-            query.setLimit(50);
+                query.addWhereEqualTo("user", user);    // 查询当前用户的所有收藏内容
+                query.order("-updatedAt");      //按照创建时间排序
+                //返回50条数据，如果不加上这条语句，默认返回10条数据
+                query.setLimit(50);
 
-            query.findObjects(new FindListener<Bookshelf>() {
-                @Override
-                public void done(List<Bookshelf> queryList, BmobException e) {
-                    if(e==null){
-                        Log.i("bmob","查询成功：共"+queryList.size()+"条数据。");
+                query.findObjects(new FindListener<Bookshelf>() {
+                    @Override
+                    public void done(List<Bookshelf> queryList, BmobException e) {
+                        if (e == null) {
+                            Log.i("bmob", "查询成功：共" + queryList.size() + "条数据。");
 
-                        bookList.addAll(queryList);
-                        mLRecyclerViewAdapter.notifyDataSetChanged();
+                            bookList.addAll(queryList);
+                            mLRecyclerViewAdapter.notifyDataSetChanged();
 
-                    }else{
-                        Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
-                        Toast.makeText(getContext(), "出错了，请稍候再试！", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
+                            Toast.makeText(getContext(), "出错了，请稍候再试！", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-            });
+                });
+            }else{
+                Utils.toastMessage(activity,"网络已断开，请检查网络连接");
+            }
         }
 
 

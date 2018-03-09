@@ -37,7 +37,6 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.activity.LoginActivity;
 import com.cxy.magazine.activity.MemberActivity;
 import com.cxy.magazine.activity.SettingInfomationActivity;
-import com.cxy.magazine.util.ACache;
 import com.cxy.magazine.util.Utils;
 
 import java.util.List;
@@ -48,7 +47,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
 
-public class MyFragment extends Fragment implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener {
+public class MyFragment extends BaseFragment implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener {
     public  static final String appUrl="http://a.app.qq.com/o/simple.jsp?pkgname=com.cxy.yuwen";
     User user;
     private NavigationView navigationView;
@@ -58,8 +57,13 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
     private Bitmap headImage;
     private Drawable defaultHeadImage;
     private static  final int IMAGE_LOAD_FINISHED=100;
-    private ACache aCache;
+  //  private mAcache mAcache;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,7 +75,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
 
 
 
-        aCache=ACache.get(this.getContext());
+     //   mAcache=mAcache.get(this.getContext());
 
         //获取默认用户头像
         Resources resources = this.getResources();
@@ -87,13 +91,6 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         return layoutView;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //  ActionBar actionBar=((AppCompatActivity) getActivity()).getSupportActionBar();
-        //  actionBar.show();
-        Log.i("fragment","----------onCreate()");
-    }
 
     @Override
     public void onStart() {
@@ -118,7 +115,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
 
             //获取用户头像
             if (!Utils.isEmpty(user.getHeadImageUrl())){
-                headImage=aCache.getAsBitmap("headImageBitmap");  //从缓存中获取用户头像
+                headImage=mAcache.getAsBitmap("headImageBitmap");  //从缓存中获取用户头像
                 if (headImage!=null){
                     headImageView.setImageBitmap(headImage);
                 }else{
@@ -159,7 +156,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
             switch (msg.what) {
                 case IMAGE_LOAD_FINISHED:
                     headImageView.setImageBitmap(headImage);
-                    aCache.put("headImageBitmap",headImage);
+                    mAcache.put("headImageBitmap",headImage);
                     break;
             }
 

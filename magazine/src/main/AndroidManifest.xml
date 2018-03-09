@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".MyApplication"
@@ -81,8 +82,7 @@
             android:name=".activity.MagazineDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.LoginActivity"
-            android:parentActivityName=".activity.MainActivity" />
+            android:name=".activity.LoginActivity" />
         <activity
             android:name=".activity.RegisterActivity"
             android:parentActivityName=".activity.LoginActivity" />
@@ -115,7 +115,11 @@
         <activity android:name=".activity.CollectActivity" />
         <activity android:name=".activity.InviteActivity" />
         <activity android:name=".activity.MessageActivity" />
-        <activity android:name=".activity.MsgDetailActivity"></activity>
+        <activity android:name=".activity.MsgDetailActivity" />
+
+        <service
+            android:name=".Service.DownloadService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class MagzineHistoryFragment extends Fragment {
+public class MagzineHistoryFragment extends BaseFragment {
 
     private static final String ARG_PARAM1 = "param1";
     private List<HashMap> dataDisplayList;

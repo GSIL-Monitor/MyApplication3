@@ -34,7 +34,7 @@
             <item
                 android:id="@+id/feedback"
                 android:icon="@drawable/ic_menu_send"
-                android:title="反馈" />
+                android:title="反馈(反馈有礼)" />
 
             <item
                 android:id="@+id/invite"

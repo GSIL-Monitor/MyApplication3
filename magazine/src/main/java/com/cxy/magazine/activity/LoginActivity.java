@@ -8,6 +8,7 @@ import android.os.SystemClock;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,6 +47,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         // MyApplication.getInstance().addActivity(this);
         ActionBar bar= getSupportActionBar();
         bar.setTitle("登录账号");
+        bar.setDisplayHomeAsUpEnabled(true);
         if (mTencent == null) {
             mTencent = Tencent.createInstance(Utils.TencentAppId, this);
         }
@@ -289,6 +291,14 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return true;
     }
 
 

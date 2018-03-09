@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +16,18 @@ import android.widget.SearchView;
 
 import com.cxy.magazine.R;
 import com.cxy.magazine.activity.MagazineDetailActivity;
+import com.cxy.magazine.activity.MainActivity;
 import com.cxy.magazine.adapter.SearchAdapter;
+import com.cxy.magazine.util.ACache;
 import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -42,7 +49,7 @@ import butterknife.Unbinder;
  * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends BaseFragment {
 
     private Unbinder unbinder;
     @BindView(R.id.search_view) SearchView searchView;
@@ -51,8 +58,11 @@ public class SearchFragment extends Fragment {
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
     private static final String  DATA_URL="http://www.fx361.com/common/all.html";
     private static final String YILIN_URL="http://www.fx361.com";
-    private List<HashMap> datalist=null;
-    private List<HashMap> dataShowList=null;
+    //private List<HashMap> datalist=null;
+    private List<JSONObject> dataShowList=null;
+    private JSONArray dataArray=null;
+  //  private ACache mCache;
+
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -69,19 +79,26 @@ public class SearchFragment extends Fragment {
 
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_search, container, false);
         unbinder = ButterKnife.bind(this, view);
-        datalist=new ArrayList<HashMap>();
-        dataShowList=new ArrayList<HashMap>();
-        setRecyclerView();
-       // setSearchView();
-
+      //  datalist=new ArrayList<HashMap>();
+        dataShowList=new ArrayList<JSONObject>();
+        dataArray=new JSONArray();
+      //  mCache=ACache.get(this.getActivity());
         Thread thread=new GetAllData();
         thread.start();
+
+        setRecyclerView();
+      //  setSearchView();
+
+
         return  view;
     }
 
@@ -106,11 +123,15 @@ public class SearchFragment extends Fragment {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
-                HashMap hashMap=dataShowList.get(position);
-                String href=hashMap.get("href").toString();
-                intent.putExtra("href",YILIN_URL+href);
-                startActivity(intent);
+                try {
+                    Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
+                    JSONObject jsonObject=dataShowList.get(position);
+                    String href=jsonObject.getString("href");
+                    intent.putExtra("href",YILIN_URL+href);
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -149,15 +170,20 @@ public class SearchFragment extends Fragment {
             }
         });
     }
-
+   //
     public void setDataShowList(String input){
         dataShowList.clear();
         String pattern = ".*"+input+".*";     // ".*abc.*"
         //正则匹配
-       for (int i=0;i<datalist.size();i++){
-           String content=datalist.get(i).get("text").toString();
-           if (Pattern.matches(pattern,content)){
-               dataShowList.add(datalist.get(i));
+       for (int i=0;i<dataArray.length();i++){
+          // String content=datalist.get(i).get("text").toString();
+           try {
+               String content=dataArray.getJSONObject(i).getString("text");
+               if (Pattern.matches(pattern,content)){
+                   dataShowList.add(dataArray.getJSONObject(i));
+               }
+           } catch (JSONException e) {
+               e.printStackTrace();
            }
        }
 
@@ -173,17 +199,27 @@ public class SearchFragment extends Fragment {
         @Override
         public void run() {
             try {
-                Document docHtml = Jsoup.connect(DATA_URL).get();
-                Elements aList=docHtml.getElementsByTag("a");
-                for (Element a : aList){
-                    HashMap<String,String> map=new HashMap<String,String>();
-                    map.put("text",a.text());
-                    map.put("href",a.attr("href"));
-                    map.put("type","item");
-                    datalist.add(map);
+                JSONArray dataCacheArray=mAcache.getAsJSONArray("searchArray");
+                if (dataCacheArray==null){
+                    Log.i("com.cxy.magzine","缓存为空");
+                    Document docHtml = Jsoup.connect(DATA_URL).get();
+                   // mCache.put("searchList",docHtml.toString());
+                    Elements aList=docHtml.getElementsByTag("a");
+                    for (Element a : aList){
+                        JSONObject jsonObject=new JSONObject();
+                        jsonObject.put("text",a.text());
+                        jsonObject.put("href",a.attr("href"));
+                        jsonObject.put("type","item");
+                        dataArray.put(jsonObject);
+                    }
+                    mAcache.put("searchArray",dataArray);        //缓存数据
+                }else{
+                    Log.i("com.cxy.magzine","缓存不为空");
+                   // docHtml=Jsoup.parse(seachListCache);
+                    dataArray=dataCacheArray;
                 }
                 handler.sendEmptyMessage(100);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 handler.sendEmptyMessage(101);
             }
