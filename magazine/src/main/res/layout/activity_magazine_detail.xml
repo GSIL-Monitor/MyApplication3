@@ -60,6 +60,16 @@
                 android:gravity="center"
                 />
             <TextView
+                android:textSize="18sp"
+                android:layout_marginTop="15dp"
+                android:id="@+id/tv_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2.00元"
+                android:gravity="center"
+                android:textColor="@color/colorAccent"
+                />
+            <TextView
                 android:id="@+id/tv_intro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,12 +106,20 @@
             android:orientation="horizontal"
             >
 
-            <TextView
+          <!--  <TextView
                 android:id="@+id/add_shelf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="+书架"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"/>-->
+            <TextView
+                android:id="@+id/buy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="  购  买"
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp"/>
 

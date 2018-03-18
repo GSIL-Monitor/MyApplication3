@@ -110,7 +110,7 @@ public class MainActivity extends BasicActivity {
         query.findObjects(new FindListener<PatchBean>() {
             @Override
             public void done(List<PatchBean> list, BmobException e) {
-                  if (list.size()==1){   //服务器有有当前补丁的版本，判断是否需要下载补丁
+                  if (list!=null&&list.size()==1){   //服务器有有当前补丁的版本，判断是否需要下载补丁
                       PatchBean patchBean=list.get(0);
                       //获取手机本地的补丁信息
                       //1、本地无补丁版本信息，下载

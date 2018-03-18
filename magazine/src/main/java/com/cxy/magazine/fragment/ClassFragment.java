@@ -171,7 +171,7 @@ public class ClassFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             switch(msg.what){
                 case LOAD_FINISHED:
-                    adapter.notifyDataSetChanged();
+                    mLRecyclerViewAdapter.notifyDataSetChanged();
                     break;
                 case LOAD_ERROR:
                    Utils.toastMessage(getActivity(),errorMessage);

@@ -24,6 +24,7 @@ import com.cxy.magazine.util.NetWorkUtils;
 import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
@@ -82,18 +83,7 @@ public class ShelfFragment extends BaseFragment {
     }
 
     public void getAllBook(){
-
-        //查询数据
-       user= BmobUser.getCurrentUser(User.class);
-        if (user==null){
-            Utils.showConfirmCancelDialog(getActivity(), "提示", "请先登录,以同步书架！", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent1 = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(intent1);
-                }
-            });
-        }else{
+        bookList.clear();
             if (NetWorkUtils.isNetworkConnected(context)) {
                 BmobQuery<Bookshelf> query = new BmobQuery<Bookshelf>();
 
@@ -105,10 +95,11 @@ public class ShelfFragment extends BaseFragment {
                 query.findObjects(new FindListener<Bookshelf>() {
                     @Override
                     public void done(List<Bookshelf> queryList, BmobException e) {
-                        if (e == null) {
+                        if (e == null && queryList!=null) {
                             Log.i("bmob", "查询成功：共" + queryList.size() + "条数据。");
 
                             bookList.addAll(queryList);
+                            mRecyclerView.refreshComplete(1000);
                             mLRecyclerViewAdapter.notifyDataSetChanged();
 
                         } else {
@@ -120,18 +111,34 @@ public class ShelfFragment extends BaseFragment {
             }else{
                 Utils.toastMessage(activity,"网络已断开，请检查网络连接");
             }
-        }
+
 
 
     }
 
     @Override
-    public void onResume() {
-     //   Log.i("shelf","onResume");
-        super.onResume();
-        if (bookList.size()<=0){
-            getAllBook();
+    public void onStart() {
+        super.onStart();
+        //查询数据
+        user= BmobUser.getCurrentUser(User.class);
+        if (user==null){
+            Utils.showConfirmCancelDialog(getActivity(), "提示", "请先登录,以同步书架！", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent1 = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent1);
+                }
+            });
+        }else{
+            mRecyclerView.refresh();
         }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
 
     }
 
@@ -151,16 +158,25 @@ public class ShelfFragment extends BaseFragment {
        // int spacing = getResources().getDimensionPixelSize(R.dimen.dp_18);
       //  mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(),android.R.color.white));
         //禁用下拉刷新功能
-        mRecyclerView.setPullRefreshEnabled(false);
+      //  mRecyclerView.setPullRefreshEnabled(false);
+
+        //设置下拉刷新
+        mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getAllBook();
+            }
+        });
         //禁用自动加载更多功能
         mRecyclerView.setLoadMoreEnabled(false);
+
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 String href=bookList.get(position).getDirectoryUrl();
                 Intent intent=new Intent(getActivity(), MagazineDirectoryActivity.class);
                 intent.putExtra("href",href);
-                intent.putExtra("type","href");
+                intent.putExtra("type","shelf");
                 startActivity(intent);
             }
         });

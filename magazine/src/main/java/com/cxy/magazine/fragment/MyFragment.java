@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.cxy.magazine.activity.CollectActivity;
 import com.cxy.magazine.activity.FeedbackActivity;
+import com.cxy.magazine.activity.HaveBuyActivity;
 import com.cxy.magazine.activity.InviteActivity;
 import com.cxy.magazine.activity.MainActivity;
 import com.cxy.magazine.activity.MessageActivity;
@@ -47,8 +48,8 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
 
-public class MyFragment extends BaseFragment implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener {
-    public  static final String appUrl="http://a.app.qq.com/o/simple.jsp?pkgname=com.cxy.yuwen";
+public class MyFragment extends BaseFragment implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+    public static final String appUrl = "http://a.app.qq.com/o/simple.jsp?pkgname=com.cxy.yuwen";
     User user;
     private NavigationView navigationView;
     private TextView tvLogin;
@@ -56,26 +57,26 @@ public class MyFragment extends BaseFragment implements View.OnClickListener , N
     private ImageView headImageView;
     private Bitmap headImage;
     private Drawable defaultHeadImage;
-    private static  final int IMAGE_LOAD_FINISHED=100;
-  //  private mAcache mAcache;
+    private static final int IMAGE_LOAD_FINISHED = 100;
+    //  private mAcache mAcache;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         layoutView = inflater.inflate(R.layout.fragment_my, container, false);
         tvLogin = (TextView) layoutView.findViewById(R.id.tv_login);
-        headImageView=(ImageView)layoutView.findViewById(R.id.userImage);
+        headImageView = (ImageView) layoutView.findViewById(R.id.userImage);
         navigationView = (NavigationView) layoutView.findViewById(R.id.nav_view);
 
 
-
-     //   mAcache=mAcache.get(this.getContext());
+        //   mAcache=mAcache.get(this.getContext());
 
         //获取默认用户头像
         Resources resources = this.getResources();
@@ -87,7 +88,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener , N
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        Log.i("fragment","----------onCreateView()");
+        Log.i("fragment", "----------onCreateView()");
         return layoutView;
     }
 
@@ -103,42 +104,42 @@ public class MyFragment extends BaseFragment implements View.OnClickListener , N
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("fragment","----------onResume()");
+        Log.i("fragment", "----------onResume()");
 
 
     }
 
-    public void setUserInfo(){
+    public void setUserInfo() {
         user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
-        if (user!=null){
+        if (user != null) {
             tvLogin.setText(user.getUsername());
 
             //获取用户头像
-            if (!Utils.isEmpty(user.getHeadImageUrl())){
-                headImage=mAcache.getAsBitmap("headImageBitmap");  //从缓存中获取用户头像
-                if (headImage!=null){
+            if (!Utils.isEmpty(user.getHeadImageUrl())) {
+                headImage = mAcache.getAsBitmap("headImageBitmap");  //从缓存中获取用户头像
+                if (headImage != null) {
                     headImageView.setImageBitmap(headImage);
-                }else{
-                    Thread thread=new GetImageThread();
+                } else {
+                    Thread thread = new GetImageThread();
                     thread.start();
                 }
 
 
             }
 
-        }else{
+        } else {
             tvLogin.setText("点击登录学习账号");
             headImageView.setImageDrawable(defaultHeadImage);
         }
 
     }
 
-    class GetImageThread extends  Thread{
+    class GetImageThread extends Thread {
         @Override
         public void run() {
 
             headImage = Utils.getbitmap(user.getHeadImageUrl());
-            if (headImage!=null){
+            if (headImage != null) {
                 handler.sendEmptyMessage(IMAGE_LOAD_FINISHED);
             }
 
@@ -146,9 +147,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener , N
     }
 
 
-
-
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
 
@@ -156,14 +155,13 @@ public class MyFragment extends BaseFragment implements View.OnClickListener , N
             switch (msg.what) {
                 case IMAGE_LOAD_FINISHED:
                     headImageView.setImageBitmap(headImage);
-                    mAcache.put("headImageBitmap",headImage);
+                    mAcache.put("headImageBitmap", headImage);
                     break;
             }
 
         }
 
     };
-
 
 
     @Override
@@ -182,14 +180,17 @@ public class MyFragment extends BaseFragment implements View.OnClickListener , N
 
     }
 
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+
+        //收藏
         if (id == R.id.collect) {
-            if (user!=null){
-                Intent intent=new Intent(getActivity(),CollectActivity.class);
+            if (user != null) {
+                Intent intent = new Intent(getActivity(), CollectActivity.class);
                 startActivity(intent);
-            }else{
+            } else {
                 Utils.showConfirmCancelDialog(getActivity(), "提示", "请先登录！", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -201,45 +202,56 @@ public class MyFragment extends BaseFragment implements View.OnClickListener , N
 
 
         }
+        //已购
+        if (id == R.id.haveBuy) {
+            if (user != null) {
+                Intent intent = new Intent(getActivity(), HaveBuyActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent1 = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent1);
+            }
+
+        }
         if (id == R.id.feedback) {
             //  Toast.makeText(getActivity(), "你点击了反馈", Toast.LENGTH_SHORT).show();
-            Intent intent=new Intent(getActivity(),FeedbackActivity.class);
+            Intent intent = new Intent(getActivity(), FeedbackActivity.class);
             startActivity(intent);
 
         }
 
-        if(id==R.id.invite){
+        if (id == R.id.invite) {
 
            /* Intent sendIntent=new Intent(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, "语文助手这个App真不错，快来下载\n"+appUrl);
             sendIntent.setType("text/plain");
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent,"share"));*/
-           if (user!=null){
-               Intent intent=new Intent(getActivity(), InviteActivity.class);
-               startActivity(intent);
-           }else{   //跳转到登陆页
-               Intent intent1 = new Intent(getActivity(), LoginActivity.class);
-               startActivity(intent1);
-           }
+            if (user != null) {
+                Intent intent = new Intent(getActivity(), InviteActivity.class);
+                startActivity(intent);
+            } else {   //跳转到登陆页
+                Intent intent1 = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent1);
+            }
 
         }
 
-        if (id==R.id.exit){   //退出
+        if (id == R.id.exit) {   //退出
 
             MyApplication.getInstance().exit();
         }
 
-        if (id==R.id.member_recharge){  //会员充值
-            Intent intent=new Intent(getActivity(),MemberActivity.class);
+        if (id == R.id.member_recharge) {  //会员充值
+            Intent intent = new Intent(getActivity(), MemberActivity.class);
             startActivity(intent);
         }
-        if (id==R.id.messageNotification){
-            if (user!=null){
+        if (id == R.id.messageNotification) {
+            if (user != null) {
 
-                Intent intent=new Intent(getActivity(), MessageActivity.class);
+                Intent intent = new Intent(getActivity(), MessageActivity.class);
                 startActivity(intent);
-            }else{   //跳转到登陆页
+            } else {   //跳转到登陆页
                 Intent intent1 = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent1);
             }
@@ -248,10 +260,11 @@ public class MyFragment extends BaseFragment implements View.OnClickListener , N
 
         return true;
     }
+
     public void setMessgae() {
         final LinearLayout msgLayout = (LinearLayout) navigationView.getMenu().findItem(R.id.messageNotification).getActionView();
-      //  final TextView msg = (TextView) msgLayout.findViewById(R.id.msg);
-        final  ImageView msgImg=(ImageView)msgLayout.findViewById(R.id.msg_notify_img);
+        //  final TextView msg = (TextView) msgLayout.findViewById(R.id.msg);
+        final ImageView msgImg = (ImageView) msgLayout.findViewById(R.id.msg_notify_img);
 
         if (user != null) {
             BmobQuery<MsgNotification> msgQuery = new BmobQuery<>();
@@ -259,29 +272,29 @@ public class MyFragment extends BaseFragment implements View.OnClickListener , N
             msgQuery.findObjects(new FindListener<MsgNotification>() {
                 @Override
                 public void done(List<MsgNotification> list, BmobException e) {
-                    if (e==null) {
-                        boolean hasNotRead=false;
+                    if (e == null && list != null) {
+                        boolean hasNotRead = false;
                         if (list.size() > 0) {
                             for (MsgNotification msg : list) {
                                 if (!msg.getRead()) {
-                                   hasNotRead=true;
-                                   break;
+                                    hasNotRead = true;
+                                    break;
                                 }
                             }
 
                         }
-                        if (hasNotRead){
+                        if (hasNotRead) {
                             msgImg.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             msgImg.setVisibility(View.GONE);
                         }
-                    }else{
-                        Utils.toastMessage(getActivity(),e.getMessage());
-                        Log.i("bmob",e.toString());
+                    } else {
+                        Utils.toastMessage(getActivity(), e.getMessage());
+                        Log.i("bmob", e.toString());
                     }
                 }
             });
-        }else{   //没有登陆
+        } else {   //没有登陆
             msgImg.setVisibility(View.GONE);
         }
     }

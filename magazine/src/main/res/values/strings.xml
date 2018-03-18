@@ -7,10 +7,13 @@
     <string name="memberIntro">
       会员用户可阅读所有杂志内容，更多会员权益敬请期待！
     </string>
-    <string name="magazine_member">普通用户可免费阅读部分章节内容，会员用户可畅享所有杂志，后面我们将会推出单独购买功能，敬请期待！</string>
+    <string name="magazine_member">普通用户可免费阅读部分章节内容，会员用户可畅享所有杂志，或者你也可以选择下面的购买选项，单独购买该本杂志！</string>
     <string name="feedbackHint">
        你在使用杂志天下的过程中发现了任何bug，或者你对杂志天下的开发有什么建议，都可以在这里进行反馈。
-       如果经查实你的反馈真实有效，我们将会赠送你不少十天的会员，请留下你的联系方式，以便我们联系您！
+       如果经查实你的反馈真实有效，我们将会赠送你不少十天的会员，请留下你的联系方式，以便我们联系您！\n\n
+        你也可以通过以下方式直接联系我们： \n
+        QQ：1746569077(添加好友时备注“我是杂志天下用户”，否则不予通过)\n
+        Email：1746569077@qq.com
     </string>
     <string name="inviteIntro">
         1、分享你的“邀请码”给好友，好友使用你的专属邀请码后，你和你的好友均可免费获得3天会员体验服务。\n
@@ -20,6 +23,4 @@
         5、活动最终解释权归杂志天下所有。\n
     </string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

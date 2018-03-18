@@ -301,5 +301,10 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         return true;
     }
 
-
+    /*@Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Utils.dismissDialog();
+        finish();
+    }*/
 }

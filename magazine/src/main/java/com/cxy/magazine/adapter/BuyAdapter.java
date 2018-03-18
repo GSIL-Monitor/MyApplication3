@@ -13,10 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.bumptech.glide.Glide;
-import com.cxy.magazine.bmobBean.Bookshelf;
 import com.cxy.magazine.R;
+import com.cxy.magazine.bmobBean.BuyBean;
 import com.cxy.magazine.util.Utils;
 
 import java.util.List;
@@ -30,17 +29,17 @@ import butterknife.ButterKnife;
  */
 
 
-public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyViewHolder>{
+public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.MyViewHolder>{
     private Context context;
-    private List<Bookshelf> dataDisplayList;
-  //  private Bitmap defaultImage;
+    private List<BuyBean> dataDisplayList;
+    private Bitmap defaultImage;
     private GridLayoutManager gridLayoutManager;
 
-    public BookshelfAdapter(Context context, List<Bookshelf> dataDisplayList, GridLayoutManager gridLayoutManager) {
+    public BuyAdapter(Context context, List<BuyBean> dataDisplayList, GridLayoutManager gridLayoutManager) {
         this.context = context;
         this.dataDisplayList = dataDisplayList;
         this.gridLayoutManager=gridLayoutManager;
-      //  defaultImage = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.default_book);
+        defaultImage = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.default_book);
     }
 
     @Override
@@ -51,14 +50,14 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final Bookshelf bookshelf=dataDisplayList.get(position);
-        final String imageSrc=bookshelf.getCoverUrl();
+        final BuyBean buyBean=dataDisplayList.get(position);
+        final String imageSrc=buyBean.getCoverUrl();
 
-        holder.tvCoverName.setText(bookshelf.getBookName());
-        holder.tvCoverOrder.setText(bookshelf.getPulishTime());
-      //  holder.imCover.setImageBitmap(defaultImage);
-    //    holder.imCover.setTag(imageSrc);
-    //    holder.imTag=imageSrc;
+        holder.tvCoverName.setText(buyBean.getBookName());
+        holder.tvCoverOrder.setText(buyBean.getPublishTime());
+        holder.imCover.setImageBitmap(defaultImage);
+     //   holder.imCover.setTag(imageSrc);
+      //  holder.imTag=imageSrc;
 
         int width=(gridLayoutManager.getWidth()-120)/2;
         int height=width+width/3;
@@ -67,8 +66,8 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
         lp.height = height;
         holder.imCover.setLayoutParams(lp);
 
-      //  holder.imCover.setMaxWidth(width);
-      //  holder.imCover.setMaxHeight(height);
+     /*   holder.imCover.setMaxWidth(width);
+        holder.imCover.setMaxHeight(height);*/
 
         Glide.with(context)
                 .load(imageSrc)
@@ -76,10 +75,8 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
                 .error(R.drawable.default_book)
                 .into(holder.imCover);
 
-
-
-        //新的线程中根据url获取图片
-       /* new Thread(){
+      /*  //新的线程中根据url获取图片
+        new Thread(){
             @Override
             public void run() {
                 Bitmap bitmap= Utils.getbitmap(imageSrc);
@@ -90,8 +87,8 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
                 uiHandler.sendMessage(message);
 
             }
-        }.start();*/
-
+        }.start();
+*/
 
     }
 
@@ -123,7 +120,7 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
         @BindView(R.id.coverImage)
         ImageView imCover;
         Bitmap bitmap;
-    //    String imTag="";
+        String imTag="";
 
 
 

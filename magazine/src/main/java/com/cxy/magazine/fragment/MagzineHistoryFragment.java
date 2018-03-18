@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cxy.magazine.R;
+import com.cxy.magazine.activity.MagazineDetailActivity;
 import com.cxy.magazine.activity.MagazineDirectoryActivity;
 import com.cxy.magazine.adapter.ImageTextAdapter;
 import com.cxy.magazine.util.Utils;
@@ -83,17 +84,18 @@ public class MagzineHistoryFragment extends BaseFragment {
         GridLayoutManager manager=new GridLayoutManager(this.getContext(),2);
         mRecyclerView.setLayoutManager(manager);
 
-        recycleViewAdapter=new ImageTextAdapter(getContext(),dataDisplayList);
+        recycleViewAdapter=new ImageTextAdapter(getContext(),dataDisplayList,manager);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(recycleViewAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         //禁用下拉刷新功能
         mRecyclerView.setPullRefreshEnabled(false);
         //禁用自动加载更多功能
         mRecyclerView.setLoadMoreEnabled(false);
+
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent=new Intent(getActivity(), MagazineDirectoryActivity.class);
+                Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
                 intent.putExtra("href",ClassFragment.MAGAZIENE_URL+dataDisplayList.get(position).get("href").toString());
                 startActivity(intent);
             }

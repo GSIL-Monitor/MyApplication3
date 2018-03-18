@@ -1,5 +1,6 @@
 package com.cxy.magazine.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -58,7 +59,7 @@ public class MagazineListFragment extends BaseFragment {
 
     private List<HashMap> dataList;   //服务器端总数据
     private List<HashMap> dataDisplayList;  //显示在界面上的数据
-    private PreviewHandler mHandler = new PreviewHandler(this);
+    private PreviewHandler mHandler ;
     private Bitmap defaultImage=null;
 
     private Context context;
@@ -97,6 +98,7 @@ public class MagazineListFragment extends BaseFragment {
          View layoutView=inflater.inflate(R.layout.fragment_magazine_list, container, false);
          unbinder=ButterKnife.bind(this,layoutView);
          context=this.getContext();
+         mHandler = new PreviewHandler(this);
          setRecyclerView();
          return layoutView;
     }
@@ -114,7 +116,7 @@ public class MagazineListFragment extends BaseFragment {
         //设置RecycleView布局为网格布局 2列
         GridLayoutManager manager=new GridLayoutManager(this.getContext(),2);
         mRecyclerView.setLayoutManager(manager);
-        recycleViewAdapter=new ImageTextAdapter(getContext(),dataDisplayList);
+        recycleViewAdapter=new ImageTextAdapter(getContext(),dataDisplayList,manager);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(recycleViewAdapter);
 
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
@@ -215,7 +217,8 @@ public class MagazineListFragment extends BaseFragment {
 
             switch (msg.what) {
                 case -1:
-
+                 //   Activity activity= fragment.getActivity();
+                //    Utils.toastMessage(activity,"测试");
                     updateDisplayList();
 
                     break;
@@ -277,10 +280,14 @@ public class MagazineListFragment extends BaseFragment {
 
                     TOTAL_COUNTER=dataList.size();
 
+             //       throw  new  Exception("测试");
 
-                } catch (IOException e) {
+
+                } catch (Exception e) {
                     e.printStackTrace();
                     mHandler.sendEmptyMessage(101);
+                    return;
+
                 }
 
                 //模拟一下网络请求失败的情况

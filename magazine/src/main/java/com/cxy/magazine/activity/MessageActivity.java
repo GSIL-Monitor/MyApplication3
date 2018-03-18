@@ -111,7 +111,7 @@ public class MessageActivity extends BasicActivity {
         query.findObjects(new FindListener<MsgNotification>() {
             @Override
             public void done(List<MsgNotification> list, BmobException e) {
-              if (e==null){
+              if (e==null && list!=null){
                   msgList.clear();
                   if (list.size()>0){
                       msgList.addAll(list);

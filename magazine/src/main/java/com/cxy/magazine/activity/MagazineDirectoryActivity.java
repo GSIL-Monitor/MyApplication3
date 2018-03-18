@@ -17,12 +17,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cxy.magazine.bmobBean.Bookshelf;
+import com.cxy.magazine.bmobBean.BuyBean;
 import com.cxy.magazine.bmobBean.Member;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.adapter.DataAdapter;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.view.CommonFooter;
@@ -54,14 +56,17 @@ import com.cxy.magazine.util.Utils;
 
 
 public class MagazineDirectoryActivity extends BasicActivity {
-    private static final String MAGAZINE_URL = "http://m.fx361.com";
+  //  private static final String MAGAZINE_URL = "http://m.fx361.com";
     private String httpUrl = "";
     private String magazineTitle = "", magazineIntro = "", magazineTime = "", magazineHistoryHref = "", coverImageUrl = "";
+    private String magazieId="";
     private List<HashMap> dataList;
     private DataAdapter dataAdapter = null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
-    private View header = null;
+ //   private View header = null;
     private int memberState = 0;    // 1 :不是会员 2：是会员，但会员已过期 3：是会员，且未过期
+    private int buyState=0;     //1、已购买  2、未购买
+    private boolean checkdMember=false;
     @BindView(R.id.rv_directory)
     LRecyclerView mRecyclerView;
     @BindView(R.id.magazine_title)
@@ -70,6 +75,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
     Toolbar toolbar;
 
     private TextView tv_time;
+ //   User user;
 
 
     @Override
@@ -84,9 +90,16 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
         httpUrl = getIntent().getStringExtra("href");
         dataList = new ArrayList<HashMap>();
+
+        String[] names=httpUrl.split("//")[1].split("/");
+        magazieId=names[2]+names[3].split(".html")[0];
+
+
+        // queryMemberState();
+      //  checkBuyState();
         setRecycleView();
-        Thread thread = new GetData();
-        thread.start();
+     //   Thread thread = new GetData();
+    //    thread.start();
         Log.i(LOG_TAG, "MagazineDirectoryActivity onCreate()");
     }
 
@@ -122,7 +135,15 @@ public class MagazineDirectoryActivity extends BasicActivity {
         mLRecyclerViewAdapter.addHeaderView(headerView);
 
         //禁用下拉刷新功能
-        mRecyclerView.setPullRefreshEnabled(false);
+      //  mRecyclerView.setPullRefreshEnabled(false);
+        mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Thread thread = new GetData();
+                thread.start();
+            }
+        });
+        mRecyclerView.refresh();
         //禁用自动加载更多功能
         mRecyclerView.setLoadMoreEnabled(false);
         //add a FooterView
@@ -136,26 +157,45 @@ public class MagazineDirectoryActivity extends BasicActivity {
             public void onItemClick(View view, final int position) {
 
                 if (position > 10) {
-                    if (memberState == 0) {
-                        queryMemberState(position);
-                    } else {
-                        Log.i(LOG_TAG, "MagazineDirectoryActivity member state has selected");
-                        readArticle(position);
-                    }
+                   User user=BmobUser.getCurrentUser(User.class);
+                   if (user==null){
+                       Utils.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "亲，登录后才可查看内容哦", new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialogInterface, int i) {
+                               checkdMember=false;
+                               Intent intent1 = new Intent(MagazineDirectoryActivity.this, LoginActivity.class);
+                               startActivity(intent1);
+                           }
+                       });
+                   }else{   //user不为null，肯定已经查询过会员状态了
+                          if (buyState==1){
+                              checkdMember=true;
+                              toContentView(position);
+                          }else{
+                              readArticle(position);
+                          }
+
+
+                   }
 
 
                 } else {   //前10条随意查看
-                    String type = dataList.get(position).get("type").toString();
-                    if ("item".equals(type)) {
-                        String url = dataList.get(position).get("href").toString();
-                        //跳转至内容显示Activity
-                        Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
-                        //  String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
-                        intent.putExtra("url", url);
-                        startActivity(intent);
-                    }
+                    checkdMember=true;
+                    toContentView(position);
+
 
                 }
+
+              //不检查会员，华为接口
+              /*  String type = dataList.get(position).get("type").toString();
+                if ("item".equals(type)) {
+                    String url = dataList.get(position).get("href").toString();
+                    //跳转至内容显示Activity
+                    Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
+                    //  String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+                    intent.putExtra("url", url);
+                    startActivity(intent);
+                }*/
 
 
             }
@@ -166,10 +206,11 @@ public class MagazineDirectoryActivity extends BasicActivity {
     private void readArticle(int position) {
         if (memberState == 1) {  //不是会员，提示购买会员
 
-            AlertDialog dlg = new AlertDialog.Builder(MagazineDirectoryActivity.this).setTitle("提示").setMessage("亲，该部分内容会员才可观看")
+            AlertDialog dlg = new AlertDialog.Builder(MagazineDirectoryActivity.this).setTitle("提示").setMessage("亲，该部分内容会员才可观看，请充值会员或者返回单独购买该本杂志")
                     .setPositiveButton("去充值会员", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            checkdMember=false;
                             Intent intent = new Intent(MagazineDirectoryActivity.this, MemberActivity.class);
                             startActivity(intent);
                         }
@@ -181,10 +222,11 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
         if (memberState == 2) {   //是会员，已过期
 
-            AlertDialog dlg = new AlertDialog.Builder(MagazineDirectoryActivity.this).setTitle("提示").setMessage("亲，该部分内容为会员专享，你的会员已过期！")
+            AlertDialog dlg = new AlertDialog.Builder(MagazineDirectoryActivity.this).setTitle("提示").setMessage("亲，该部分内容为会员专享，你的会员已过期！请充值会员或者返回单独购买该本杂志")
                     .setPositiveButton("去充值会员", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            checkdMember=false;
                             Intent intent = new Intent(MagazineDirectoryActivity.this, MemberActivity.class);
                             startActivity(intent);
                         }
@@ -195,36 +237,52 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
         }
         if (memberState == 3) {  //没有过期，正常查看
-            String type = dataList.get(position).get("type").toString();
-            if ("item".equals(type)) {
-                String url = dataList.get(position).get("href").toString();
-                //跳转至内容显示Activity
-                Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
-                //       String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
-                intent.putExtra("url", url);
-                startActivity(intent);
-            }
+            checkdMember=true;
+            toContentView(position);
         }//
     }
 
-    private void queryMemberState(final int position) {
-        User user = BmobUser.getCurrentUser(User.class);
-        if (user == null) {
-            Utils.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "亲，登录后才可查看内容哦", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent1 = new Intent(MagazineDirectoryActivity.this, LoginActivity.class);
-                    startActivity(intent1);
-                }
-            });
-        } else {
+    public void toContentView(int position){
+        String type = dataList.get(position).get("type").toString();
+        if ("item".equals(type)) {
+
+            String url = dataList.get(position).get("href").toString();
+            //跳转至内容显示Activity
+            Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
+            //       String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+            intent.putExtra("url", url);
+            startActivity(intent);
+        }
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!checkdMember){
+            queryBuyState();
+            queryMemberState();
+
+        }
+
+        Log.i(LOG_TAG,"MagazineDetailActivity---onStart()");
+
+    }
+
+
+
+    private void queryMemberState() {
+        Log.i(LOG_TAG,"查询用户会员状态");
+        User  user = BmobUser.getCurrentUser(User.class);
+        if(user!=null){
             //判断用户的会员状态
             BmobQuery<Member> query = new BmobQuery<Member>();
             query.addWhereEqualTo("user", user);
             query.findObjects(new FindListener<Member>() {
                 @Override
                 public void done(List<Member> list, BmobException e) {
-                    if (e == null) {
+                    if (e == null && list!=null) {
                         if (list.size() <= 0) {   //不是会员，提示购买会员
                             memberState = 1;
                         } else {   //分两种情况：1、是会员且会员没有过期 2、是会员，已过期
@@ -249,8 +307,8 @@ public class MagazineDirectoryActivity extends BasicActivity {
                             }
 
                         }
-                        //查询玩状态之后，查看文章
-                        readArticle(position);
+                        //查询完状态之后，查看文章
+                     //   readArticle(position);
 
                     } else {
                         Utils.toastMessage(MagazineDirectoryActivity.this, "查询会员状态出错：" + e.getMessage());
@@ -259,6 +317,31 @@ public class MagazineDirectoryActivity extends BasicActivity {
             });//
         }
     }
+
+    //查询该书的购买情况
+    public void queryBuyState(){
+        Log.i(LOG_TAG,"查询购买状态");
+        User user=BmobUser.getCurrentUser(User.class);
+        if (user!=null){
+            BmobQuery<BuyBean> query=new BmobQuery<BuyBean>();
+            query.addWhereEqualTo("user",user);
+            query.addWhereEqualTo("id",magazieId);
+            query.findObjects(new FindListener<BuyBean>() {
+                @Override
+                public void done(List<BuyBean> list, BmobException e) {
+                    if (e==null&&list!=null){
+                        if (list.size()>0){
+                            buyState=1;
+                            Utils.toastMessage(MagazineDirectoryActivity.this,"你已购买该本杂志，可免费畅读所有内容");
+                        }else{
+                            buyState=2;
+                        }
+                    }
+                }
+            });
+        }
+    }
+
 
 
     class GetData extends Thread {
@@ -311,6 +394,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 100) {
+                mRecyclerView.refreshComplete(1000);
                 tv_title.setText(magazineTitle);
                 tv_time.setText(magazineTime + "目录");
                 mLRecyclerViewAdapter.notifyDataSetChanged();

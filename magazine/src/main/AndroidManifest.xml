@@ -24,7 +24,8 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -81,8 +82,7 @@
         <activity
             android:name=".activity.MagazineDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.LoginActivity" />
         <activity
             android:name=".activity.RegisterActivity"
             android:parentActivityName=".activity.LoginActivity" />
@@ -104,7 +104,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.MagazineContentActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"/>
         <activity android:name=".activity.FeedbackActivity">
             <intent-filter>
                 <action android:name="tongzhi.feedbackActivity" />
@@ -119,7 +120,9 @@
 
         <service
             android:name=".Service.DownloadService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name=".activity.HaveBuyActivity"></activity>
     </application>
 
 </manifest>

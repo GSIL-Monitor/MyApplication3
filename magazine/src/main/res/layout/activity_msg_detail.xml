@@ -13,7 +13,9 @@
          android:padding="@dimen/dp_10"
          android:textColor="@color/colorFontText"
          android:lineSpacingExtra="@dimen/dp_10"
-         android:text="消息详情"/>
+         android:text="消息详情"
+         android:textIsSelectable="true"
+         />
     <Button
         android:id="@+id/button_msg_delete"
         android:layout_width="wrap_content"

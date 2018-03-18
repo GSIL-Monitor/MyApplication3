@@ -52,25 +52,29 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         String text=map.get("text").toString();
         if (holder instanceof TitleHolder){
             TitleHolder titleHolder=(TitleHolder)holder;
-           // titleHolder.titleTv.setText(text);
-            if (position==10){
+
+           if (position==10){
                 titleHolder.titleTv.setText(text+"(以下内容为会员专项)");
                 titleHolder.titleTv.setTextColor(context.getResources().getColor(R.color.colorAccent));
             }else{
                 titleHolder.titleTv.setText(text);
                 titleHolder.titleTv.setTextColor(context.getResources().getColor(R.color.colorFontText));
             }
+          /*  titleHolder.titleTv.setText(text);
+            titleHolder.titleTv.setTextColor(context.getResources().getColor(R.color.colorFontText));*/
         }
         if (holder instanceof ItemHolder){
              ItemHolder itemHolder=(ItemHolder)holder;
-            // itemHolder.itemTv.setText(text);
-             if (position==10){
+
+            if (position==10){
                  itemHolder.itemTv.setText(text+"(以下内容为会员专项)");
                  itemHolder.itemTv.setTextColor(context.getResources().getColor(R.color.colorAccent));
              }else{
                  itemHolder.itemTv.setText(text);
                  itemHolder.itemTv.setTextColor(context.getResources().getColor(R.color.colorFontDisable));
              }
+           /* itemHolder.itemTv.setText(text);
+            itemHolder.itemTv.setTextColor(context.getResources().getColor(R.color.colorFontDisable));*/
         }
     }
 

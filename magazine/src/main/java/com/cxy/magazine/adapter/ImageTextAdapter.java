@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.Utils;
 
@@ -29,13 +31,15 @@ import butterknife.ButterKnife;
 public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyViewHolder>{
     private Context context;
     private List<HashMap> dataDisplayList;
+    private GridLayoutManager gridLayoutManager;
 
-    private Bitmap defaultImage;
+  //  private Bitmap defaultImage;
 
-    public ImageTextAdapter(Context context, List<HashMap> dataDisplayList) {
+    public ImageTextAdapter(Context context, List<HashMap> dataDisplayList,GridLayoutManager gridLayoutManager) {
         this.context = context;
         this.dataDisplayList = dataDisplayList;
-        defaultImage = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.default_book);
+        this.gridLayoutManager=gridLayoutManager;
+      //  defaultImage = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.default_book);
     }
 
     @Override
@@ -51,13 +55,27 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
 
         holder.tvCoverName.setText(hashMap.get("name").toString());
         holder.tvCoverOrder.setText(hashMap.get("time").toString());
-        holder.imCover.setImageBitmap(defaultImage);
-        holder.imCover.setTag(imageSrc);
-        holder.imTag=imageSrc;
+     //   holder.imCover.setImageBitmap(defaultImage);
+     //      holder.imCover.setTag(imageSrc);
+    //    holder.imTag=imageSrc;
 
+        int width=(gridLayoutManager.getWidth()-120)/2;
+        int height=width+width/3;
+        ViewGroup.LayoutParams lp = holder.imCover.getLayoutParams();
+        lp.width = width;
+        lp.height = height;
+        holder.imCover.setLayoutParams(lp);
+        //holder.imCover.setMaxWidth(width);
+       // holder.imCover.setMaxHeight(height);
+
+        Glide.with(context)
+                .load(imageSrc)
+                .placeholder(R.drawable.default_book)
+                .error(R.drawable.default_book)
+                .into(holder.imCover);
 
         //新的线程中根据url获取图片
-        new Thread(){
+       /* new Thread(){
             @Override
             public void run() {
                 Bitmap bitmap= Utils.getbitmap(hashMap.get("imageSrc").toString());
@@ -68,7 +86,7 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
                 uiHandler.sendMessage(message);
 
             }
-        }.start();
+        }.start();*/
 
 
     }
@@ -80,7 +98,7 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
         return dataDisplayList.size();
     }
 
-    Handler uiHandler=new Handler(){
+    /*Handler uiHandler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -91,7 +109,7 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
                 }
             }
         }
-    };
+    };*/
 
     class MyViewHolder extends RecyclerView.ViewHolder
     {
@@ -101,7 +119,7 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
         @BindView(R.id.coverImage)
         ImageView imCover;
         Bitmap bitmap;
-        String imTag="";
+     //   String imTag="";
 
 
 

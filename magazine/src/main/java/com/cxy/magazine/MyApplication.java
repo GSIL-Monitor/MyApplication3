@@ -35,13 +35,14 @@ public class MyApplication extends Application {
         super.onCreate();
         //初始化66支付
         Pay66.init(PAY_66_APPLICATION_ID, getApplicationContext());
-        //初始化小米广告
-        MimoSdk.init(this, XIAOMI_APP_ID, "fake_app_key", "fake_app_token");
+
         try {
+            //初始化小米广告
+            MimoSdk.init(this, XIAOMI_APP_ID, "fake_app_key", "fake_app_token");
             PackageInfo mPackageInfo=this.getPackageManager().getPackageInfo(this.getPackageName(),0);
             CURRENT_VERSION=mPackageInfo.versionName;
             Utils.CURREN_VERSION_CODE=mPackageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

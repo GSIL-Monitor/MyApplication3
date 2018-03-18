@@ -61,7 +61,7 @@ public class InviteActivity extends BasicActivity {
         bmobQuery.findObjects(new FindListener<InviteCode>() {
             @Override
             public void done(List<InviteCode> list, BmobException e) {
-              if (e==null){
+              if (e==null && list!=null){
                    if (list.size()>0){
                        inviteCode=list.get(0).getInviteCode();
                        objectId=list.get(0).getObjectId();
@@ -104,7 +104,7 @@ public class InviteActivity extends BasicActivity {
             bmobQuery.getObject(objectId, new QueryListener<InviteCode>() {
                 @Override
                 public void done(InviteCode inviteCode, BmobException e) {
-                    if (e==null){
+                    if (e==null && inviteCode!=null){
                         Boolean isActivate=inviteCode.getActivate();
                         if (isActivate){
                             Utils.showResultDialog(InviteActivity.this,"每个新用户只能使用一次邀请码，快去分享你的邀请码吧，同样可以获得奖励哦！","提示");
@@ -116,7 +116,7 @@ public class InviteActivity extends BasicActivity {
                             query.findObjects(new FindListener<InviteCode>() {
                                 @Override
                                 public void done(List<InviteCode> list, BmobException e) {
-                                    if (e==null){
+                                    if (e==null && list!=null){
                                        if (list.size()<=0){
                                            Utils.toastMessage(InviteActivity.this,"请输入有效的邀请码");
                                        }else{
@@ -184,7 +184,7 @@ public class InviteActivity extends BasicActivity {
         memberQuery.findObjects(new FindListener<Member>() {
             @Override
             public void done(List<Member> list, BmobException e) {
-                   if (e==null){
+                   if (e==null && list!=null){
                        if (list.size()<=0){  //该用户没有开通会员
                            //插入一条会员信息
                            Member member=new Member();
