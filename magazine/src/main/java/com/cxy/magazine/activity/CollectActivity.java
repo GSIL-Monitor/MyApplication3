@@ -98,7 +98,7 @@ public class CollectActivity extends AppCompatActivity {
         query.findObjects(new FindListener<CollectBean>() {
             @Override
             public void done(List<CollectBean> list, BmobException e) {
-                if (e==null){
+                if (e==null && list!=null){
                     collectBeanList.clear();
                     if (list.size()>0){
                         collectBeanList.addAll(list);

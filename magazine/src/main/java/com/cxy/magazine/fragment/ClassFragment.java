@@ -1,6 +1,7 @@
 package com.cxy.magazine.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,11 +18,15 @@ import android.widget.TextView;
 import com.cxy.magazine.R;
 import com.cxy.magazine.activity.ClassDetailActivity;
 import com.cxy.magazine.util.ACache;
+import com.cxy.magazine.util.NetWorkUtils;
 import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.ItemDecoration.SpacesItemDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -40,13 +45,16 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassFragment extends Fragment {
+public class ClassFragment extends BaseFragment {
     public static final String MAGAZIENE_URL="http://www.fx361.com";
-    private List<HashMap> magazineList;
+   // private List<HashMap> magazineList;
+    private  JSONArray magazineArray;
     private static final int LOAD_FINISHED=100,LOAD_ERROR=101;
+    private String errorMessage="出错了，请稍后重试！";
     private MagazineAdapter adapter=null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
-    private ACache mAcache;
+  //  private ACache mAcache;
+    private Context context=null;
 
 
     @BindView(R.id.magazineRv)  LRecyclerView mLRecyclerview;
@@ -57,7 +65,11 @@ public class ClassFragment extends Fragment {
     public ClassFragment() {
 
     }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,8 +77,10 @@ public class ClassFragment extends Fragment {
 
         View view=inflater.inflate(R.layout.fragment_class, container, false);
         unbinder = ButterKnife.bind(this, view);
-        magazineList =new ArrayList<HashMap>();
-        mAcache=ACache.get(getContext());
+        context=this.getActivity();
+      //  magazineList =new ArrayList<HashMap>();
+   //     mAcache=ACache.get(getContext());
+        magazineArray=new JSONArray();
         setLRecyclerview();
         Thread thread=new getHtml();
         thread.start();
@@ -110,32 +124,40 @@ public class ClassFragment extends Fragment {
         @Override
         public void run() {
             try {
-                Document docHtml=null;
-                String magazineClass=mAcache.getAsString("magazineClass");
-                if (!TextUtils.isEmpty(magazineClass)){
-                    docHtml= Jsoup.parse(magazineClass);
+             //   Document docHtml=null;
+              //  String magazineClass=mAcache.getAsString("magazineClass");
+                JSONArray magazineArrayCache=mAcache.getAsJSONArray("magazineArrayCache");
+                if (magazineArrayCache!=null){
+                    magazineArray=magazineArrayCache;
                 }else{
-                    docHtml = Jsoup.connect(MAGAZIENE_URL).get();
-                    mAcache.put("magazineClass",docHtml.toString(),30* ACache.TIME_DAY);
-                }
+                    if (NetWorkUtils.isNetworkConnected(context)) {
+                        Document docHtml = Jsoup.connect(MAGAZIENE_URL).get();
+                        JSONArray magazineCache=new JSONArray();
 
-                Elements kinds=docHtml.getElementsByClass("navBox");
-                for (Element kind : kinds){
+                        Elements kinds = docHtml.getElementsByClass("navBox");
+                        for (Element kind : kinds) {
 
-                    Elements alist=kind.getElementsByTag("a");
-                    for (Element a : alist){
-                        HashMap kindMap=new HashMap<String,String>();
-                        kindMap.put("text",a.text());
-                        kindMap.put("href",a.attr("href"));
+                            Elements alist = kind.getElementsByTag("a");
+                            for (Element a : alist) {
 
-                        magazineList.add(kindMap);
+                                JSONObject kindObject=new JSONObject();
+                                kindObject.put("text", a.text());
+                                kindObject.put("href", a.attr("href"));
+
+                                magazineCache.put(kindObject);
+                            }
+
+                        }
+                        magazineArray=magazineCache;    //等于缓存
+                        mAcache.put("magazineArrayCache", magazineCache, 60 * ACache.TIME_DAY);   //缓存两个月
+                    }else{
+                        errorMessage="网络已断开，请检查网络连接";
+                        handler.sendEmptyMessage(LOAD_ERROR);
                     }
-
                 }
-
                 handler.sendEmptyMessage(LOAD_FINISHED);
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
               //  Utils.toastMessage(getActivity(),e.toString());
                 handler.sendEmptyMessage(LOAD_ERROR);
@@ -149,10 +171,10 @@ public class ClassFragment extends Fragment {
         public void handleMessage(Message msg) {
             switch(msg.what){
                 case LOAD_FINISHED:
-                    adapter.notifyDataSetChanged();
+                    mLRecyclerViewAdapter.notifyDataSetChanged();
                     break;
                 case LOAD_ERROR:
-                   Utils.toastMessage(getActivity(),"出错了，请稍后再试！");
+                   Utils.toastMessage(getActivity(),errorMessage);
                    break;
 
             }
@@ -177,24 +199,31 @@ public class ClassFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            final HashMap dataMap=magazineList.get(position);
-            holder.tvClassName.setText(dataMap.get("text").toString());
+            try {
+                // final HashMap dataMap=magazineList.get(position);
+                JSONObject dataJson=magazineArray.getJSONObject(position);
+                final  String href=dataJson.getString("href");
+                final  String title=dataJson.getString("text");
+                holder.tvClassName.setText(title);
 
-            //设置点击事件
-            holder.tvClassName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(getContext(), ClassDetailActivity.class);
-                    intent.putExtra("url",MAGAZIENE_URL+"/"+dataMap.get("href").toString());
-                    intent.putExtra("title",dataMap.get("text").toString());
-                    startActivity(intent);
-                }
-            });
+                //设置点击事件
+                holder.tvClassName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(getContext(), ClassDetailActivity.class);
+                        intent.putExtra("url",MAGAZIENE_URL+"/"+href);
+                        intent.putExtra("title",title);
+                        startActivity(intent);
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public int getItemCount() {
-            return magazineList.size();
+            return magazineArray.length();
         }
 
 

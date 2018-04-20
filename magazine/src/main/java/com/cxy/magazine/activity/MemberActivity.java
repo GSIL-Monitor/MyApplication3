@@ -141,7 +141,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
         query.findObjects(new FindListener<MemberPrice>() {
             @Override
             public void done(List<MemberPrice> list, BmobException e) {
-                if (e==null){
+                if (e==null&&list!=null){
                     for(MemberPrice memberPrice : list){
                         Integer monthSum=memberPrice.getMonthSum();
                         Double originalPrice=memberPrice.getOriginalPrice();  //原价
@@ -214,7 +214,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                 @Override
                 public void done(List<Member> list, BmobException e) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    if (e == null) {
+                    if (e == null && list!=null) {
                         if (list.size() <= 0) {  //未开通会员
                             memberInfo.setText("未开通会员");
                         } else if (list.size() == 1) {
@@ -395,7 +395,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             public void onCompleted() {
                 Log.d(TAG_CREATE_ORDER, "---onCompleted");
             }
-        });
+        });//
     }
 
     private void pay_66(String orderId, int consume){
@@ -416,7 +416,12 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             }
 
             if (!installPayPlugin()){  //用户未安装支付插件，无法进行微信支付
-                Toast.makeText(getApplicationContext(), "为了正常使用微信支付，需要安装安全支付插件",Toast.LENGTH_SHORT).show();
+                Utils.showConfirmCancelDialog(MemberActivity.this, "提示", "第一次使用微信支付，必须先安装我们的安全插件", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        installPayPlugin("db.db");  //安装插件
+                    }
+                });
                 return;
             }
         }
@@ -465,7 +470,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                 Log.d(TAG_PAY_ORDER, "onSuccess---onCompleted");
             }
         });
-    }
+    }//
 
     /**
      * 检查支付插件是否需要安装/更新
@@ -482,7 +487,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        installPayPlugin("db.db");
+      //  installPayPlugin("db.db");
         return false;
     }
 
@@ -617,7 +622,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                     addMonth=6;
 
                 }
-                if (e==null){
+                if (e==null&&list!=null){
                     if (list.size()<=0){ //插入操作
                         Member member=new Member();
                         member.setUser(user);

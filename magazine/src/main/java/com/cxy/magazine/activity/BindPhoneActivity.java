@@ -55,7 +55,7 @@ public class BindPhoneActivity extends BasicActivity implements View.OnClickList
             case R.id.tv_sendCode:
                 phoneNumber=etPhone.getText().toString();
                 if (Utils.isMobile(phoneNumber)){
-                    BmobSMS.requestSMSCode(phoneNumber, "注册模板",new QueryListener<Integer>() {
+                    BmobSMS.requestSMSCode(phoneNumber, "杂志天下",new QueryListener<Integer>() {
 
                         @Override
                         public void done(Integer smsId,BmobException ex) {

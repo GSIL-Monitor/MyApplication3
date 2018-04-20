@@ -8,8 +8,8 @@ android {
         applicationId "com.cxy.magazine"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.2"
+        versionCode 9
+        versionName "1.9"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -55,7 +55,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    provided 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:support-vector-drawable:25.3.1'
@@ -74,4 +73,9 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.2'
     //小米更新sdk
     compile 'mi-appstore:xiaomi-update-sdk:2.8'
+    //AndFix 热修复框架
+    compile 'com.alipay.euler:andfix:0.5.0@aar'
+    //Glide库
+    compile 'com.github.bumptech.glide:glide:3.8.0'
+
 }

@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.cxy.magazine.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,12 +21,13 @@ import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<HashMap> dataList;
+    //private List<HashMap> dataList;
+    private List<JSONObject> searchArray;
     private LayoutInflater mInflater;
     private Context context;
 
-    public SearchAdapter(List<HashMap> dataList, Context context) {
-        this.dataList = dataList;
+    public SearchAdapter(List<JSONObject> jsonArray,Context context) {
+        this.searchArray = jsonArray;
         this.context=context;
         this.mInflater=LayoutInflater.from(context);
     }
@@ -39,19 +44,21 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        HashMap map=dataList.get(position);
-        String text=map.get("text").toString();
-
-
-             ItemHolder itemHolder=(ItemHolder)holder;
-             itemHolder.itemTv.setText(text);
+        try {
+            JSONObject searchObject=searchArray.get(position);
+            String text=searchObject.getString("text");
+            ItemHolder itemHolder=(ItemHolder)holder;
+            itemHolder.itemTv.setText(text);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
     }
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return searchArray.size();
     }
 
 

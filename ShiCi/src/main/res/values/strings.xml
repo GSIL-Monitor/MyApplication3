@@ -16,6 +16,13 @@
        如果经查实你的反馈真实有效，我们将会赠送你不少十天的会员，请留下你的联系方式，以便我们联系您！
 
     </string>
+    <string name="inviteIntro">
+        1、分享你的“邀请码”给好友，好友使用你的专属邀请码后，你和你的好友均可免费获得3天会员体验服务。\n
+        2、免费获得的会员体验服务天数可以累加，邀请的人数越多奖励天数越长。\n
+        3、邀请成功，好友使用你的专属邀请码后，系统会通知，请注意查收。\n
+        4、每个新用户只能使用一次邀请码。\n
+        5、活动最终解释权归杂志天下所有。\n
+    </string>
     <string name="QQHint">
 
        语文助手官方QQ群：497594319，欢迎加入，我们一起讨论和交流！
@@ -25,6 +32,8 @@
       会员用户可阅读所有杂志内容，更多会员权益敬请期待！
     </string>
     <string name="magazine_member">普通用户可免费阅读部分章节内容，会员用户可畅享所有杂志，后面我们将会推出单独购买功能，敬请期待！</string>
+
+
     <string name="ok">确认</string>
     <string name="cancel">取消</string>
     <string name="set_alias">设置别名</string>
@@ -137,8 +146,5 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_magazine_detail">MagazineDetailActivity</string>
 
 </resources>

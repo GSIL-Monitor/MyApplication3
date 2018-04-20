@@ -124,7 +124,7 @@ public class MagzineHistoryFragment extends Fragment {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                Util.toastMessage(getActivity(),"出错了："+e.getMessage());
+                uiHandler.sendEmptyMessage(101);
             }
 
         }
@@ -136,6 +136,9 @@ public class MagzineHistoryFragment extends Fragment {
            if (msg.what==100){
                mLRecyclerViewAdapter.notifyDataSetChanged();
            }
+            if(msg.what==101){
+                Util.toastMessage(getActivity(),"出错了,该内容暂时无法查看！");
+            }
         }
     };
 

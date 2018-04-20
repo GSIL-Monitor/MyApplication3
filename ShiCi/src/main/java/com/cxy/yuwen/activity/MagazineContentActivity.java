@@ -44,6 +44,8 @@ public class MagazineContentActivity extends BasicActivity {
     private String htmlStr="<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
             + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:180%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
             + "</style></head><body>";
+    private static final String MAGAZINE_URL="http://m.fx361.com";
+    private String intentUrl="";
     private StringBuilder content=null;
     private static ProgressDialog mProgressDialog;
     @BindView(R.id.wv_content)  WebView mWebview;
@@ -56,14 +58,15 @@ public class MagazineContentActivity extends BasicActivity {
         ButterKnife.bind(this);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        httpUrl=getIntent().getStringExtra("url").replace("page","news").replace("shtml","html");
+        intentUrl=getIntent().getStringExtra("url");
+        httpUrl=(MAGAZINE_URL + intentUrl).replace("page","news").replace("shtml","html");    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+
         content=new StringBuilder(htmlStr);
-        mProgressDialog=ProgressDialog.show(this, null, null);
+        mProgressDialog=ProgressDialog.show(this,   null, "请稍后");
         Thread getHtml=new GetHtml();
         getHtml.start();
         adContainer=(ViewGroup) findViewById(R.id.containerAd);
-        //设置广告
-        setAd();
+
 
 
     }
@@ -174,8 +177,9 @@ public class MagazineContentActivity extends BasicActivity {
 
 
                 uiHandler.sendEmptyMessage(100);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
+                uiHandler.sendEmptyMessage(101);
             }
         }
     }
@@ -187,6 +191,15 @@ public class MagazineContentActivity extends BasicActivity {
             if (msg.what==100){
                 mProgressDialog.dismiss();
                 mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
+                //设置广告
+                setAd();
+            }
+            if (msg.what==101){
+                mProgressDialog.dismiss();
+                String error="<h3>抱歉，该篇文章暂时无法阅读！<h3>";
+                mWebview.loadData(error, "text/html; charset=UTF-8", null);
+                //设置广告
+                setAd();
             }
         }
     };

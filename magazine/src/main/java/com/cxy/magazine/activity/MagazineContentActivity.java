@@ -2,6 +2,7 @@ package com.cxy.magazine.activity;
 
 
 import android.app.ProgressDialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +19,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.bmobBean.CollectBean;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.util.Utils;
+import com.github.jdsjlzx.ItemDecoration.LuSpacesItemDecoration;
 import com.miui.zeus.mimo.sdk.ad.AdWorkerFactory;
 import com.miui.zeus.mimo.sdk.ad.IAdWorker;
 import com.miui.zeus.mimo.sdk.listener.MimoAdListener;
@@ -49,6 +52,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -64,8 +68,10 @@ public class MagazineContentActivity extends BasicActivity {
     private IAdWorker mAdWorker;
     @BindView(R.id.wv_content)  WebView mWebview;
     @BindView(R.id.toolbar)  Toolbar toolbar;
-    @BindView(R.id.rb_collect)  CheckBox rbCollect;
+   // @BindView(R.id.rb_collect)  CheckBox rbCollect;
     @BindView(R.id.containerAd) ViewGroup adContainer;
+    @BindView(R.id.collectButton)
+    ImageButton collectButton;
     private User user;
     private String articleObjectId=null;
 
@@ -77,8 +83,9 @@ public class MagazineContentActivity extends BasicActivity {
     private String htmlStr="<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
             + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:180%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
             + "</style></head><body>";
-    private boolean isFirst=false;
+    private boolean isCollect=false;    //是否收藏
     private String intentUrl="";
+    private Drawable drawableSelected,drawableNoSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,144 +101,106 @@ public class MagazineContentActivity extends BasicActivity {
         articleId=intentUrl.split("/")[4].split(".shtml")[0];
       //  setWebView();
         content=new StringBuilder(htmlStr);
-        mProgressDialog=ProgressDialog.show(this, null, null);
+        mProgressDialog=ProgressDialog.show(this, null, "请稍后");
         Thread getHtml=new GetHtml();
         getHtml.start();
+     //   drawableSelected=Drawable.
+      //  rbCollect.setBackgroundResource(R.drawable.collect_no_selected);
+    //    collectButton.setImageResource(R.drawable.collect_no_selected);
 
-        //设置广告
-        setAd();
         user= BmobUser.getCurrentUser(User.class);
-        //rbCollect.setChecked(true);
-        setCollect();
-        selectCollect();
+
+        selectCollect();     //查询收藏情况
+
+
 
 
 
 
     }
 
+//查询该文章的收藏情况
 public void selectCollect(){
-    BmobQuery<CollectBean> collctQuery=new BmobQuery<CollectBean>();
-    collctQuery.addWhereEqualTo("user",user);
-    collctQuery.addWhereEqualTo("articleId",articleId);
-    collctQuery.findObjects(new FindListener<CollectBean>() {
-        @Override
-        public void done(List<CollectBean> list, BmobException e) {
-            if (e==null){
-                isFirst=true;
-                if (list.size()==1){
-                    rbCollect.setChecked(true);
-                    articleObjectId=list.get(0).getObjectId();
-                }else{
-                    rbCollect.setChecked(false);
-                }
-                isFirst=false;
-            }else{
-                Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
-            }
-        }
-    });
-}
-public void setCollect(){
-    rbCollect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-            if (isChecked&&!isFirst){
-                //Utils.toastMessage(MagazineContentActivity.this,"选中");
-                //收藏
-                CollectBean collectBean=new CollectBean();
-                collectBean.setUser(user);
-                collectBean.setArticleUrl(intentUrl);
-                collectBean.setArticleTitle(title);
-                collectBean.setArticleId(articleId);
-                collectBean.save(new SaveListener<String>() {
-                    @Override
-                    public void done(String objectId, BmobException e) {
-                        if (e==null){
-                            Utils.toastMessage(MagazineContentActivity.this,"收藏文章成功");
-                            articleObjectId=objectId;
-                        }else{
-                            Utils.toastMessage(MagazineContentActivity.this,"收藏文章失败:"+e.getMessage());
-                        }
-                    }
-                });
-            }else if (!isFirst){
-           //     Utils.toastMessage(MagazineContentActivity.this,"取消");
-                //删除收藏
-                CollectBean collectBean=new CollectBean();
-                collectBean.setObjectId(articleObjectId);
-                collectBean.delete(new UpdateListener() {
-                    @Override
-                    public void done(BmobException e) {
-                        if (e==null){
-                            Utils.toastMessage(MagazineContentActivity.this,"取消收藏成功");
-                        }else{
-                            Utils.toastMessage(MagazineContentActivity.this,"取消收藏失败:"+e.getMessage());
-                        }
-                    }
-                });
-
-            }
-        }
-    });
-}
-
-
-   /* public void setAd(){
-        final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
-        adContainer.post(new Runnable() {
+    if (user!=null) {
+        BmobQuery<CollectBean> collctQuery = new BmobQuery<CollectBean>();
+        collctQuery.addWhereEqualTo("user", user);
+        collctQuery.addWhereEqualTo("articleId", articleId);
+        collctQuery.findObjects(new FindListener<CollectBean>() {
             @Override
-            public void run() {
-                try {
-                    standardNewsFeedAd.requestAd(AD_ID, 1, new NativeAdListener() {
-                        @Override
-                        public void onNativeInfoFail(AdError adError) {
-                            Log.e(LOG_TAG, "onNativeInfoFail e : " + adError);
-                        }
+            public void done(List<CollectBean> list, BmobException e) {
+                if (e == null && list != null) {
+                //    isFirst = true;
+                    if (list.size() == 1) {   //查询到收藏数据
+                      //  rbCollect.setChecked(true);
+                        articleObjectId = list.get(0).getObjectId();
+                        isCollect=true;
+                        collectButton.setImageResource(R.drawable.collect_selected);
 
-                        @Override
-                        public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
-                            NativeAdInfoIndex response = list.get(0);
-
-                            standardNewsFeedAd.buildViewAsync(response, adContainer.getWidth(), new AdListener() {
-                                @Override
-                                public void onAdError(AdError adError) {
-                                    Log.e(LOG_TAG, "error : remove all views");
-                                    adContainer.removeAllViews();
-                                }
-
-                                @Override
-                                public void onAdEvent(AdEvent adEvent) {
-                                    //目前考虑了３种情况，用户点击信息流广告，用户点击x按钮，以及信息流展示的３种回调，范例如下
-                                    if (adEvent.mType == AdEvent.TYPE_CLICK) {
-                                        Log.d(LOG_TAG, "ad has been clicked!");
-                                    } else if (adEvent.mType == AdEvent.TYPE_SKIP) {
-                                        Log.d(LOG_TAG, "x button has been clicked!");
-                                    } else if (adEvent.mType == AdEvent.TYPE_VIEW) {
-                                        Log.d(LOG_TAG, "ad has been showed!");
-                                    }
-                                }
-
-                                @Override
-                                public void onAdLoaded() {
-
-                                }
-
-                                @Override
-                                public void onViewCreated(View view) {
-                                    Log.e(LOG_TAG, "onViewCreated");
-                                    adContainer.removeAllViews();
-                                    adContainer.addView(view);
-                                }
-                            });
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    }
+                 //   isFirst = false;
+                } else {
+                    Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
                 }
             }
         });
-    }*/
+    }
+}
+
+@OnClick(R.id.collectButton)
+public void collectClick(){
+
+            if (user!=null) {
+                if (!isCollect) {        //没有收藏
+                    //Utils.toastMessage(MagazineContentActivity.this,"选中");
+                    //收藏
+                    CollectBean collectBean = new CollectBean();
+                    collectBean.setUser(user);
+                    collectBean.setArticleUrl(intentUrl);
+                    collectBean.setArticleTitle(title);
+                    collectBean.setArticleId(articleId);
+                    collectBean.save(new SaveListener<String>() {
+                        @Override
+                        public void done(String objectId, BmobException e) {
+                            if (e == null) {
+                                Utils.toastMessage(MagazineContentActivity.this, "收藏文章成功");
+                                articleObjectId = objectId;
+                             //   rbCollect.setBackgroundResource(R.drawable.collect_selected);
+                                collectButton.setImageResource(R.drawable.collect_selected);
+                                isCollect=true;
+                            } else {
+                                Utils.toastMessage(MagazineContentActivity.this, "收藏文章失败:" + e.getMessage());
+
+                            }
+                        }
+                    });
+                } else{      //已收藏，删除收藏
+                    //     Utils.toastMessage(MagazineContentActivity.this,"取消");
+                    //删除收藏
+                    final CollectBean collectBean = new CollectBean();
+                    collectBean.setObjectId(articleObjectId);
+                    collectBean.delete(new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                Utils.toastMessage(MagazineContentActivity.this, "取消收藏成功");
+                              //  rbCollect.setBackgroundResource(R.drawable.collect_no_selected);
+                                collectButton.setImageResource(R.drawable.collect_no_selected);
+                                isCollect=false;
+                            } else {
+                                Utils.toastMessage(MagazineContentActivity.this, "取消收藏失败:" + e.getMessage());
+                            }
+                        }
+                    });
+
+                }
+            }else{
+                Utils.toastMessage(MagazineContentActivity.this,"请先返回登录，再收藏");
+            }
+
+
+}
+
+
 
    public void setAd() {
        try {
@@ -316,7 +285,7 @@ public void setCollect(){
 
 
                 uiHandler.sendEmptyMessage(100);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 uiHandler.sendEmptyMessage(101);
             }
@@ -334,22 +303,20 @@ public void setCollect(){
                 // tvContent.setText(content);
                 mProgressDialog.dismiss();
                 mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
+                //设置广告
+                setAd();
             }
             if (msg.what==101){
+                mProgressDialog.dismiss();
                 String error="<h3>抱歉，该篇文章暂时无法阅读！<h3>";
-                mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
+                mWebview.loadData(error, "text/html; charset=UTF-8", null);
+                //设置广告
+                setAd();
             }
         }
     };
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-
-        getMenuInflater().inflate(R.menu.menu_magazine_content, menu);
-
-        return true;
-    }*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -362,6 +329,14 @@ public void setCollect(){
         return true;
     }
 
+  /*@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+
+        getMenuInflater().inflate(R.menu.menu_magazine_content, menu);
+
+        return true;
+    }*/
    /* @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && mWebview.canGoBack()) {

@@ -3,6 +3,8 @@ package com.cxy.yuwen.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import com.cxy.yuwen.R;
 import com.cxy.yuwen.activity.MagazineDetailActivity;
 import com.cxy.yuwen.activity.MagazineDirectoryActivity;
 import com.cxy.yuwen.tool.CommonUtil;
+import com.cxy.yuwen.tool.Util;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -80,7 +83,7 @@ public class SearchFragment extends Fragment {
         datalist=new ArrayList<HashMap>();
         dataShowList=new ArrayList<HashMap>();
         setRecyclerView();
-        setSearchView();
+
 
         Thread thread=new GetAllData();
         thread.start();
@@ -184,11 +187,26 @@ public class SearchFragment extends Fragment {
                     map.put("type","item");
                     datalist.add(map);
                 }
+                handler.sendEmptyMessage(100);
             } catch (IOException e) {
                 e.printStackTrace();
+                handler.sendEmptyMessage(101);
             }
         }
     }
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what==100){
+                setSearchView();
+            }
+            if (msg.what==101){
+                Util.toastMessage(getActivity(),"出错了，请稍后重试！");
+            }
+        }
+    };
 
 
 

@@ -12,6 +12,7 @@
     <style name="ButtonStyle">
         <item name="android:background">@drawable/button</item>
         <item name="android:textColor">#FFFFFF</item>
+        <item name="android:minHeight">40dp</item>
 
 
     </style>

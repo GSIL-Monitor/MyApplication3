@@ -1,5 +1,7 @@
 package com.cxy.magazine;
 
+import com.cxy.magazine.util.Utils;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -22,5 +24,21 @@ public class ExampleUnitTest {
             System.out.println(a);
         }
 
+    }
+    @Test
+    public void creatRandomStr(){
+        String str=Utils.createRandomCharData(5);
+        System.out.println(str);
+    }
+    @Test
+    public void testIf(){
+        int i=3;
+        if (i>2){
+            System.out.println("---");
+            i+=2;
+        }
+        if (i>3) {
+            System.out.println("+++++");
+        }
     }
 }

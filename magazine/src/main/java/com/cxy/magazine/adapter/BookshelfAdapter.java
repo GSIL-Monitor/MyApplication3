@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
 import com.cxy.magazine.bmobBean.Bookshelf;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.Utils;
@@ -32,14 +33,14 @@ import butterknife.ButterKnife;
 public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyViewHolder>{
     private Context context;
     private List<Bookshelf> dataDisplayList;
-    private Bitmap defaultImage;
+  //  private Bitmap defaultImage;
     private GridLayoutManager gridLayoutManager;
 
     public BookshelfAdapter(Context context, List<Bookshelf> dataDisplayList, GridLayoutManager gridLayoutManager) {
         this.context = context;
         this.dataDisplayList = dataDisplayList;
         this.gridLayoutManager=gridLayoutManager;
-        defaultImage = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.default_book);
+      //  defaultImage = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.default_book);
     }
 
     @Override
@@ -55,9 +56,9 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
 
         holder.tvCoverName.setText(bookshelf.getBookName());
         holder.tvCoverOrder.setText(bookshelf.getPulishTime());
-        holder.imCover.setImageBitmap(defaultImage);
-        holder.imCover.setTag(imageSrc);
-        holder.imTag=imageSrc;
+      //  holder.imCover.setImageBitmap(defaultImage);
+    //    holder.imCover.setTag(imageSrc);
+    //    holder.imTag=imageSrc;
 
         int width=(gridLayoutManager.getWidth()-120)/2;
         int height=width+width/3;
@@ -66,13 +67,19 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
         lp.height = height;
         holder.imCover.setLayoutParams(lp);
 
-        holder.imCover.setMaxWidth(width);
-        holder.imCover.setMaxHeight(height);
+      //  holder.imCover.setMaxWidth(width);
+      //  holder.imCover.setMaxHeight(height);
+
+        Glide.with(context)
+                .load(imageSrc)
+                .placeholder(R.drawable.default_book)
+                .error(R.drawable.default_book)
+                .into(holder.imCover);
 
 
 
         //新的线程中根据url获取图片
-        new Thread(){
+       /* new Thread(){
             @Override
             public void run() {
                 Bitmap bitmap= Utils.getbitmap(imageSrc);
@@ -83,7 +90,7 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
                 uiHandler.sendMessage(message);
 
             }
-        }.start();
+        }.start();*/
 
 
     }
@@ -95,7 +102,7 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
         return dataDisplayList.size();
     }
 
-    Handler uiHandler=new Handler(){
+   /* Handler uiHandler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -106,7 +113,7 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
                 }
             }
         }
-    };
+    };*/
 
     class MyViewHolder extends RecyclerView.ViewHolder
     {
@@ -116,7 +123,7 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
         @BindView(R.id.coverImage)
         ImageView imCover;
         Bitmap bitmap;
-        String imTag="";
+    //    String imTag="";
 
 
 

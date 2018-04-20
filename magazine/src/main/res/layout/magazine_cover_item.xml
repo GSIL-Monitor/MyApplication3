@@ -16,7 +16,6 @@
         android:padding="10dp"
         android:layout_gravity="center_horizontal"
         android:scaleType="fitXY"
-        android:adjustViewBounds="true"
         android:background="@color/layoutBackground"
         />
     <TextView

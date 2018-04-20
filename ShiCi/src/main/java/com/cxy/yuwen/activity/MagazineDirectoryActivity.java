@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -68,7 +69,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
     @BindView(R.id.rv_directory)   LRecyclerView mRecyclerView;
     @BindView(R.id.magazine_title) TextView tv_title;
     @BindView(R.id.toolbar)   Toolbar toolbar;
-
+    private int memberState = 0;    // 1 :不是会员 2：是会员，但会员已过期 3：是会员，且未过期
     private TextView tv_time;
 
 
@@ -128,105 +129,131 @@ public class MagazineDirectoryActivity extends BasicActivity {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, final int position) {
-                User user = BmobUser.getCurrentUser(User.class);
-                if (user == null) {
-                    Util.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "亲，登录后才可查看内容哦", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent1 = new Intent(MagazineDirectoryActivity.this, LoginActivity.class);
-                            startActivity(intent1);
-                        }
-                    });
-                } else {
 
-                    if (position > 10) {
+                if (position > 10) {
+                    if (memberState == 0) {
+                        queryMemberState(position);
+                    } else {
+                        Log.i(TAG, "MagazineDirectoryActivity member state has selected");
+                        readArticle(position);
+                    }
 
 
-                        //判断用户的会员状态
-                        BmobQuery<Member> query = new BmobQuery<Member>();
-                        query.addWhereEqualTo("user", user);
-                        query.findObjects(new FindListener<Member>() {
-                            @Override
-                            public void done(List<Member> list, BmobException e) {
-                                if (e == null) {
-                                    if (list.size() <= 0) {   //不是会员，提示购买会员
-                                        AlertDialog dlg = new AlertDialog.Builder(MagazineDirectoryActivity.this).setTitle("提示").setMessage("亲，该部分内容会员才可观看")
-                                                .setPositiveButton("去充值会员", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        Intent intent = new Intent(MagazineDirectoryActivity.this, MemberActivity.class);
-                                                        startActivity(intent);
-                                                    }
-                                                })
-                                                .setNegativeButton("取消", null).create();
-                                        dlg.setCanceledOnTouchOutside(false);
-                                        dlg.show();
-                                    } else {   //分两种情况：1、是会员且会员没有过期 2、是会员，已过期
-                                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                                        Member queryMember = list.get(0);
-                                        String finishTime = queryMember.getFinishTime();  //数据库里存储的会员到期时间
-                                        Calendar nowCal = Calendar.getInstance();  //当前日期
-                                        Calendar finishCal = Calendar.getInstance();   //会员到期日期
-                                        try {
-
-                                            nowCal.setTime(sdf.parse((sdf.format(new Date()))));
-                                            finishCal.setTime(sdf.parse(finishTime));
-                                            int value = finishCal.compareTo(nowCal);
-                                            if (value == -1) {   //会员已经过期
-                                                AlertDialog dlg = new AlertDialog.Builder(MagazineDirectoryActivity.this).setTitle("提示").setMessage("亲，该部分内容为会员专项，你的会员已过期！")
-                                                        .setPositiveButton("去充值会员", new DialogInterface.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                Intent intent = new Intent(MagazineDirectoryActivity.this, MemberActivity.class);
-                                                                startActivity(intent);
-                                                            }
-                                                        })
-                                                        .setNegativeButton("取消", null).create();
-                                                dlg.setCanceledOnTouchOutside(false);
-                                                dlg.show();
-
-                                            } else {  //没有过期，正常查看
-                                                String type = dataList.get(position).get("type").toString();
-                                                if ("item".equals(type)) {
-                                                    String url = dataList.get(position).get("href").toString();
-                                                    //跳转至内容显示Activity
-                                                    Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
-                                                    intent.putExtra("url", MAGAZINE_URL + url);
-                                                    startActivity(intent);
-                                                }
-                                            }
-                                        } catch (ParseException e1) {
-                                            e1.printStackTrace();
-                                        }
-
-                                    }
-                                } else {
-                                    Util.toastMessage(MagazineDirectoryActivity.this, "查询会员状态出错：" + e.getMessage());
-                                }
-                            }
-                        });
-
-
-                    }else{   //前10条随意查看
-                        String type = dataList.get(position).get("type").toString();
-                        if ("item".equals(type)) {
-                            String url = dataList.get(position).get("href").toString();
-                            //跳转至内容显示Activity
-                            Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
-                            intent.putExtra("url", MAGAZINE_URL + url);
-                            startActivity(intent);
-                        }
-
+                } else {   //前10条随意查看
+                    String type = dataList.get(position).get("type").toString();
+                    if ("item".equals(type)) {
+                        String url = dataList.get(position).get("href").toString();
+                        //跳转至内容显示Activity
+                        Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
+                        //  String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+                        intent.putExtra("url", url);
+                        startActivity(intent);
                     }
 
                 }
+
 
             }
         });
 
     }
 
+    private void readArticle(int position) {
+        if (memberState == 1) {  //不是会员，提示购买会员
 
+            AlertDialog dlg = new AlertDialog.Builder(MagazineDirectoryActivity.this).setTitle("提示").setMessage("亲，该部分内容会员才可观看")
+                    .setPositiveButton("去充值会员", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(MagazineDirectoryActivity.this, MemberActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("取消", null).create();
+            dlg.setCanceledOnTouchOutside(false);
+            dlg.show();
+        }
+
+        if (memberState == 2) {   //是会员，已过期
+
+            AlertDialog dlg = new AlertDialog.Builder(MagazineDirectoryActivity.this).setTitle("提示").setMessage("亲，该部分内容为会员专享，你的会员已过期！")
+                    .setPositiveButton("去充值会员", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(MagazineDirectoryActivity.this, MemberActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("取消", null).create();
+            dlg.setCanceledOnTouchOutside(false);
+            dlg.show();
+
+        }
+        if (memberState == 3) {  //没有过期，正常查看
+            String type = dataList.get(position).get("type").toString();
+            if ("item".equals(type)) {
+                String url = dataList.get(position).get("href").toString();
+                //跳转至内容显示Activity
+                Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
+                //       String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+                intent.putExtra("url", url);
+                startActivity(intent);
+            }
+        }//
+    }
+
+    private void queryMemberState(final int position) {
+        User user = BmobUser.getCurrentUser(User.class);
+        if (user == null) {
+            Util.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "亲，登录后才可查看内容哦", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent1 = new Intent(MagazineDirectoryActivity.this, LoginActivity.class);
+                    startActivity(intent1);
+                }
+            });
+        } else {
+            //判断用户的会员状态
+            BmobQuery<Member> query = new BmobQuery<Member>();
+            query.addWhereEqualTo("user", user);
+            query.findObjects(new FindListener<Member>() {
+                @Override
+                public void done(List<Member> list, BmobException e) {
+                    if (e == null) {
+                        if (list.size() <= 0) {   //不是会员，提示购买会员
+                            memberState = 1;
+                        } else {   //分两种情况：1、是会员且会员没有过期 2、是会员，已过期
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            Member queryMember = list.get(0);
+                            String finishTime = queryMember.getFinishTime();  //数据库里存储的会员到期时间
+                            Calendar nowCal = Calendar.getInstance();  //当前日期
+                            Calendar finishCal = Calendar.getInstance();   //会员到期日期
+                            try {
+
+                                nowCal.setTime(sdf.parse((sdf.format(new Date()))));
+                                finishCal.setTime(sdf.parse(finishTime));
+                                int value = finishCal.compareTo(nowCal);
+                                if (value == -1) {   //会员已经过期
+                                    memberState = 2;
+
+                                } else {  //没有过期，正常查看
+                                    memberState = 3;
+                                }
+                            } catch (ParseException e1) {
+                                e1.printStackTrace();
+                            }
+
+                        }
+                        //查询玩状态之后，查看文章
+                        readArticle(position);
+
+                    } else {
+                        Util.toastMessage(MagazineDirectoryActivity.this, "查询会员状态出错：" + e.getMessage());
+                    }
+                }
+            });//
+        }
+    }
 
 
     class GetData extends Thread {
@@ -234,30 +261,30 @@ public class MagazineDirectoryActivity extends BasicActivity {
         public void run() {
             try {
                 Document docHtml = Jsoup.connect(httpUrl).get();
-                Element introDiv=docHtml.getElementsByClass("magBox1").first();
-                magazineTime=introDiv.getElementsByTag("p").first().text();
-                coverImageUrl=introDiv.getElementsByTag("a").first().attr("href");
-                magazineIntro=introDiv.getElementsByClass("rec").first().getElementsByTag("p").first().text();
-                magazineTitle=docHtml.getElementsByTag("h3").first().text();
-                magazineHistoryHref=docHtml.getElementsByClass("btn_history act_history").first().attr("href");   //没有前缀
+                Element introDiv = docHtml.getElementsByClass("magBox1").first();
+                magazineTime = introDiv.getElementsByTag("p").first().text();
+                coverImageUrl = introDiv.getElementsByTag("a").first().attr("href");
+                magazineIntro = introDiv.getElementsByClass("rec").first().getElementsByTag("p").first().text();
+                magazineTitle = docHtml.getElementsByTag("h3").first().text();
+                magazineHistoryHref = docHtml.getElementsByClass("btn_history act_history").first().attr("href");   //没有前缀
 
-                Element dirDiv=docHtml.getElementById("dirList");  //目录div
-                Elements dirElements=dirDiv.getElementsByClass("dirItem02");
-                for (Element dirElement : dirElements){
-                    String subTitle=dirElement.getElementsByTag("h5").first().text();
-                    HashMap titleMap=new HashMap<String,String>();
-                    titleMap.put("type","title");
-                    titleMap.put("text",subTitle);
+                Element dirDiv = docHtml.getElementById("dirList");  //目录div
+                Elements dirElements = dirDiv.getElementsByClass("dirItem02");
+                for (Element dirElement : dirElements) {
+                    String subTitle = dirElement.getElementsByTag("h5").first().text();
+                    HashMap titleMap = new HashMap<String, String>();
+                    titleMap.put("type", "title");
+                    titleMap.put("text", subTitle);
                     dataList.add(titleMap);
 
-                    Elements lis=dirElement.getElementsByTag("ul").first().getElementsByTag("li");
-                    for (Element li : lis){
-                        String text=li.getElementsByTag("a").first().text();
-                        String href=li.getElementsByTag("a").first().attr("href");
-                        HashMap dirMap=new HashMap<String,String>();
-                        dirMap.put("type","item");
-                        dirMap.put("text",text);
-                        dirMap.put("href",href);
+                    Elements lis = dirElement.getElementsByTag("ul").first().getElementsByTag("li");
+                    for (Element li : lis) {
+                        String text = li.getElementsByTag("a").first().text();
+                        String href = li.getElementsByTag("a").first().attr("href");
+                        HashMap dirMap = new HashMap<String, String>();
+                        dirMap.put("type", "item");
+                        dirMap.put("text", text);
+                        dirMap.put("href", href);
                         dataList.add(dirMap);
                     }
                 }
@@ -274,20 +301,19 @@ public class MagazineDirectoryActivity extends BasicActivity {
         }
     }
 
-     Handler handler=new Handler(){
-         @Override
-         public void handleMessage(Message msg) {
-              super.handleMessage(msg);
-              if (msg.what==100){
-                  tv_title.setText(magazineTitle);
-                  tv_time.setText(magazineTime+"目录");
-                  mLRecyclerViewAdapter.notifyDataSetChanged();
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 100) {
+                tv_title.setText(magazineTitle);
+                tv_time.setText(magazineTime + "目录");
+                mLRecyclerViewAdapter.notifyDataSetChanged();
+            } else if (msg.what == 101) {
+                Util.toastMessage(MagazineDirectoryActivity.this, "出错了,该杂志内容暂无法查看，换本杂志看看吧！");
             }
-            else if(msg.what==101){
-                  Util.toastMessage(MagazineDirectoryActivity.this,"出错了,该杂志内容暂无法查看，换本杂志看看吧！");
-              }
         }
-};
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
