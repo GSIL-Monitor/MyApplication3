@@ -1,5 +1,6 @@
 package com.cxy.magazine.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -61,7 +62,7 @@ public class MagazineListFragment extends Fragment {
     private PreviewHandler mHandler = new PreviewHandler(this);
     private Bitmap defaultImage=null;
 
-    private Context context;
+    private Activity activity;
     private Unbinder unbinder;
 
    @BindView(R.id.allList)  LRecyclerView mRecyclerView;
@@ -96,7 +97,7 @@ public class MagazineListFragment extends Fragment {
                              Bundle savedInstanceState) {
          View layoutView=inflater.inflate(R.layout.fragment_magazine_list, container, false);
          unbinder=ButterKnife.bind(this,layoutView);
-         context=this.getContext();
+         activity=this.getActivity();
          setRecyclerView();
          return layoutView;
     }
@@ -234,9 +235,11 @@ public class MagazineListFragment extends Fragment {
 
                         }
                     });
+
                     break;
                 case 101:
-                    Utils.toastMessage(getActivity(),"亲，出错了，请稍后重试！");
+                    Utils.toastMessage(activity,"亲，出错了，请稍后重试！");
+                    break;
 
             }
         }
@@ -284,7 +287,7 @@ public class MagazineListFragment extends Fragment {
                 }
 
                 //模拟一下网络请求失败的情况
-                if(Utils.checkNetworkState(getActivity())) {    //网络可用
+                if(Utils.checkNetworkState(activity)) {    //网络可用
                     mHandler.sendEmptyMessage(-1);
                 } else {                                 //网络不可用
                     mHandler.sendEmptyMessage(-3);
