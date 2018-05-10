@@ -12,8 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="我的"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:background="@color/colorPrimary"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/OverflowMenuStyle"
         />
     <LinearLayout
         android:id="@+id/clickLayout"
@@ -25,9 +26,11 @@
 
         <ImageView
             android:id="@+id/userImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/people"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/head_image"
+            android:scaleType="fitXY"
+            />
         <TextView
             android:id="@+id/tv_login"
             android:layout_width="wrap_content"
@@ -60,7 +63,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="false"
-        app:menu="@menu/menu_setting" />
+        app:menu="@menu/menu_setting"
+        />
 
 
 </LinearLayout>

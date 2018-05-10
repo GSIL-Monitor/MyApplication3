@@ -90,12 +90,6 @@ public class ClassFragment extends BaseFragment {
         GridLayoutManager manager=new GridLayoutManager(this.getContext(),3);
         mLRecyclerview.setLayoutManager(manager);
         mLRecyclerview.setPullRefreshEnabled(false);
-       /* GridItemDecoration divider = new GridItemDecoration.Builder(this.getContext())
-                .setHorizontal(R.dimen.activity_horizontal_margin)
-                .setVertical(R.dimen.activity_vertical_margin)
-                .setColorResource(android.R.color.white)
-                .build();
-           mLRecyclerview.addItemDecoration(divider);*/
         int spacing = getResources().getDimensionPixelSize(R.dimen.dp_14);
         mLRecyclerview.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(),android.R.color.white));
 
@@ -127,7 +121,7 @@ public class ClassFragment extends BaseFragment {
              //   Document docHtml=null;
               //  String magazineClass=mAcache.getAsString("magazineClass");
                 JSONArray magazineArrayCache=mAcache.getAsJSONArray("magazineArrayCache");
-                if (magazineArrayCache!=null){
+                if (magazineArrayCache!=null && magazineArrayCache.length()>0){
                     magazineArray=magazineArrayCache;
                 }else{
                     if (NetWorkUtils.isNetworkConnected(context)) {
@@ -211,7 +205,7 @@ public class ClassFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent=new Intent(getContext(), ClassDetailActivity.class);
-                        intent.putExtra("url",MAGAZIENE_URL+"/"+href);
+                        intent.putExtra("url",MAGAZIENE_URL+href);
                         intent.putExtra("title",title);
                         startActivity(intent);
                     }

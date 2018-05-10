@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
    >
     <item
-        android:id="@+id/collectArticle"
+        android:id="@+id/fontSize"
         android:orderInCategory="100"
-        android:title="收藏"
-        android:icon="@drawable/collect"
-        app:showAsAction="always" />
+        android:title="字体大小"
+        app:showAsAction="never" />
     <!--<item
         android:id="@+id/scanHistory"
         android:orderInCategory="101"

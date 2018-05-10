@@ -30,7 +30,7 @@ public class CollectAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = mInflater.inflate(R.layout.magazine_title_item, parent, false);
+        View view = mInflater.inflate(R.layout.magazine_subtitle_item, parent, false);
         CollectAdapter.ItemHolder viewHolder = new CollectAdapter.ItemHolder(view);
         return viewHolder;
 
@@ -62,7 +62,7 @@ public class CollectAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public ItemHolder(View itemView) {
             super(itemView);
-            itemTv = (TextView) itemView.findViewById(R.id.yilin_title);
+            itemTv = (TextView) itemView.findViewById(R.id.tv_item);
         }
     }
 }

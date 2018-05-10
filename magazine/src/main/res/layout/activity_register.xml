@@ -20,7 +20,8 @@
             android:id="@+id/et_userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请输入用户名">
+            android:hint="请输入用户名"
+            style="@style/EditTextStyle">
             <requestFocus/>
         </EditText>
     </android.support.design.widget.TextInputLayout>
@@ -39,13 +40,14 @@
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="@color/colorFontText"
         >
-    <EditText
-        android:id="@+id/et_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="请输入密码"
-        android:inputType="textPassword"
-       />
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            style="@style/EditTextStyle"
+            />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -60,13 +62,14 @@
         app:layout_constraintTop_toBottomOf="@+id/pwdLayout"
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="@color/colorFontText">
-    <EditText
-        android:id="@+id/et_password2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="请再次输入密码"
-        android:inputType="textPassword"
-         />
+        <EditText
+            android:id="@+id/et_password2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请再次输入密码"
+            android:inputType="textPassword"
+            style="@style/EditTextStyle"
+            />
     </android.support.design.widget.TextInputLayout>
 
 
@@ -92,7 +95,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="请输入要绑定的手机号码"
-                android:inputType="phone"/>
+                android:inputType="phone"
+                style="@style/EditTextStyle"/>
         </android.support.design.widget.TextInputLayout>
 
         <TextView
@@ -120,7 +124,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入手机验证码"
-            android:inputType="number" />
+            android:inputType="number"
+            style="@style/EditTextStyle"/>
     </android.support.design.widget.TextInputLayout>
 
     <Button

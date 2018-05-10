@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.cxy.magazine.activity.CollectActivity;
 import com.cxy.magazine.activity.FeedbackActivity;
 import com.cxy.magazine.activity.HaveBuyActivity;
@@ -39,6 +40,8 @@ import com.cxy.magazine.activity.LoginActivity;
 import com.cxy.magazine.activity.MemberActivity;
 import com.cxy.magazine.activity.SettingInfomationActivity;
 import com.cxy.magazine.util.Utils;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.util.List;
 
@@ -80,7 +83,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
 
         //获取默认用户头像
         Resources resources = this.getResources();
-        defaultHeadImage = resources.getDrawable(R.drawable.people);
+        defaultHeadImage = resources.getDrawable(R.drawable.head_image);
 
 
         // setUserInfo();
@@ -116,13 +119,18 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
 
             //获取用户头像
             if (!Utils.isEmpty(user.getHeadImageUrl())) {
-                headImage = mAcache.getAsBitmap("headImageBitmap");  //从缓存中获取用户头像
+               /* headImage = mAcache.getAsBitmap("headImageBitmap");  //从缓存中获取用户头像
                 if (headImage != null) {
                     headImageView.setImageBitmap(headImage);
                 } else {
                     Thread thread = new GetImageThread();
                     thread.start();
-                }
+                }*/
+
+                Glide.with(context)
+                        .load(user.getHeadImageUrl())
+                        .error(R.drawable.head_image)
+                        .into(headImageView);
 
 
             }
@@ -191,13 +199,10 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
                 Intent intent = new Intent(getActivity(), CollectActivity.class);
                 startActivity(intent);
             } else {
-                Utils.showConfirmCancelDialog(getActivity(), "提示", "请先登录！", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+
                         Intent intent1 = new Intent(getActivity(), LoginActivity.class);
                         startActivity(intent1);
-                    }
-                });
+
             }
 
 

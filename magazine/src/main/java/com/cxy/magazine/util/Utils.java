@@ -12,6 +12,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cxy.magazine.activity.LoginActivity;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -32,46 +37,90 @@ public class Utils {
     private static final String TAG = "SDK_Sample.Util";
     public static String TencentAppId="101457752";    //QQ登录AppId
     public static final String KEY_SHA = "SHA";
-    private static Dialog mProgressDialog;
+ //   private static Dialog mProgressDialog;
     private static Toast mToast;
     public static Integer CURREN_VERSION_CODE=0;
+    public  static  QMUITipDialog tipDialog;
 
 
     public static final void showResultDialog(Context context, String msg, String title) {
         if(msg == null) return;
-        //String rmsg = msg.replace(",", "\n");
-        Log.d("Util", msg);
-        new AlertDialog.Builder(context).setTitle(title).setMessage(msg)
-                .setNegativeButton("知道了", null).create().show();
+        QMUIDialog.MessageDialogBuilder messageDialogBuilder=new QMUIDialog.MessageDialogBuilder(context);
+        QMUIDialog dialog;
+        messageDialogBuilder.setMessage(msg);
+        messageDialogBuilder.setTitle(title);
+       // messageDialogBuilder.setLeftAction("确定",null);
+        messageDialogBuilder.addAction("知道了", new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                if (dialog!=null){
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog= messageDialogBuilder.create();
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+
     }
 
-    public static final void showProgressDialog(Context context, String title,
-                                                String message) {
+    public static final void showTipDialog(Context context, String message) {
         dismissDialog();
-        if (TextUtils.isEmpty(title)) {
-            title = "请稍候";
-        }
+
         if (TextUtils.isEmpty(message)) {
             message = "正在加载...";
         }
-        mProgressDialog = ProgressDialog.show(context, title, message);
+        tipDialog=new QMUITipDialog.Builder(context)
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                .setTipWord(message).create();
+        tipDialog.show();
     }
 
-    public static AlertDialog showConfirmCancelDialog(Context context,
-                                                      String title, String message,
-                                                      DialogInterface.OnClickListener posListener) {
-        AlertDialog dlg = new AlertDialog.Builder(context).setMessage(message)
+    public static void showConfirmCancelDialog(Context context,
+                                               String title, String message,
+                                               final QMUIDialogAction.ActionListener listener) {
+        QMUIDialog dialog;
+
+        QMUIDialog.MessageDialogBuilder messageDialogBuilder=new QMUIDialog.MessageDialogBuilder(context);
+        messageDialogBuilder.setMessage(message);
+        messageDialogBuilder.setTitle(title);
+        messageDialogBuilder.addAction("取消", new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                if (dialog!=null){
+                    dialog.dismiss();
+                }
+            }
+        });
+        messageDialogBuilder.addAction("确认", new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                listener.onClick(dialog,index);
+                dialog.dismiss();
+            }
+        });
+
+
+
+        dialog = messageDialogBuilder.create();
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+
+
+      /*  AlertDialog dlg = new AlertDialog.Builder(context).setMessage(message)
                 .setPositiveButton("确认", posListener)
                 .setNegativeButton("取消", null).create();
         dlg.setCanceledOnTouchOutside(false);
         dlg.show();
-        return dlg;
+        return dlg;*/
+    //  return dialog;
     }
 
     public static final void dismissDialog() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
+        if (tipDialog != null) {
+            tipDialog.dismiss();
+            tipDialog = null;
         }
     }
 
@@ -92,18 +141,13 @@ public class Utils {
         } else {
             Log.d("sdkDemo", message);
         }
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                if (mToast != null) {
+        if (mToast != null) {
                     mToast.cancel();
                     mToast = null;
-                }
-                mToast = Toast.makeText(activity, message, Toast.LENGTH_SHORT);
-                mToast.show();
-            }
-        });
+        }
+        mToast = Toast.makeText(activity, message, Toast.LENGTH_SHORT);
+        mToast.show();
+
     }
 
     /**

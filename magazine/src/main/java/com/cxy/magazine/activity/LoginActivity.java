@@ -18,6 +18,7 @@ import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.BaseUIListener;
 import com.cxy.magazine.util.Utils;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
@@ -40,6 +41,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     public static Tencent mTencent;
     private  String token;
     private UserInfo mInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +67,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         tvQQLogin.setOnClickListener(this);
     }
 
+
     @Override
     public void onClick(View view) {
         if (view.getId()==R.id.tv_register) {  //注册
@@ -72,7 +75,9 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
             startActivity(intent);
         }
         if (view.getId()==R.id.btn_login){  //登录
-            Utils.showProgressDialog(LoginActivity.this,null,"登录中，请稍候！");
+
+             Utils.showTipDialog(LoginActivity.this,"登录中...");
+
             String userName=etUserName.getText().toString();
             String password=etPassword.getText().toString();
 
@@ -85,7 +90,8 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                 @Override
                 public void done(BmobUser bmobUser, BmobException e) {
                     if(e==null){  //login success
-                        Utils.dismissDialog();
+                         Utils.dismissDialog();
+
 
                         finish();
                     }else{
@@ -113,8 +119,10 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     private void onClickLogin() {
 
         mTencent.login(this, "all", loginListener);
-        Utils.showProgressDialog(LoginActivity.this, null, "请稍后");
+     //   Utils.showProgressDialog(LoginActivity.this, null, "请稍后");
 
+     //   loginDialog.show();
+        Utils.showTipDialog(LoginActivity.this,"登录中...");
         Log.d("SDKQQAgentPref", "FirstLaunch_SDK:" + SystemClock.elapsedRealtime());
 
     }
@@ -124,8 +132,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         protected void doComplete(JSONObject jsonObject) {
             Log.d("SDKQQAgentPref", "AuthorSwitch_SDK:" + SystemClock.elapsedRealtime());
             initOpenidAndToken(jsonObject);
-            //  updateUserInfo();
-            //  updateLoginButton();
+
         }
     };
 
@@ -205,7 +212,13 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
             public void done(JSONObject userAuth,BmobException e) {
                 Log.i("SDKQQAgentPref",authInfo.getSnsType()+"登陆成功返回:"+userAuth);
 
-                getUserInfo();  //获取QQ用户的信息
+            //    getUserInfo();  //获取QQ用户的信息
+                if (e==null){
+                    Utils.dismissDialog();
+                    finish();
+                }else{
+                  Utils.showResultDialog(LoginActivity.this,"登录失败，请稍后重试","提示");
+                }
 
 
             }
@@ -218,7 +231,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         BaseUIListener listener = new BaseUIListener(LoginActivity.this,"get_simple_userinfo") {
             @Override
             public void onComplete(Object response) {
-                Utils.dismissDialog();
+
                 Message msg = mHandler.obtainMessage();
                 msg.what = 0;
                 msg.obj = response;
@@ -239,19 +252,22 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == 0) {
-                // Util.dismissDialog();
+           /* if (msg.what == 0) {
+                User newUser = new User();
                 JSONObject response = (JSONObject) msg.obj;
+
                 User user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
-                user.setUserType(User.QQ_USER);
+
+                newUser.setUserType(User.QQ_USER);
 
                 try {
+
                     if (response.has("nickname")) {
-                        user.setUsername(response.getString("nickname"));
+                        newUser.setUsername(response.getString("nickname"));
                     }
                     if (response.has("figureurl_qq_2")) {  //获取用户头像
                         String userImageUrl=response.getString("figureurl_qq_2");
-                        user.setHeadImageUrl(userImageUrl);
+                        newUser.setHeadImageUrl(userImageUrl);
                         // Bitmap bitmap = Util.getbitmap(response.getString("figureurl_qq_2"));
 
                     }
@@ -259,15 +275,14 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                     e.printStackTrace();
                 }
 
-                user.update(user.getObjectId(), new UpdateListener() {
+                newUser.update(user.getObjectId(), new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
                         if (e == null) {
-                            Log.i("bmob", "更新成功");
-                                    /*Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                                    intent.putExtra("param","我的");
-                                    startActivity(intent);
-                                    */
+                         //   Log.i("bmob", "更新成功");
+
+                            Utils.dismissDialog();
+                            //loginDialog.dismiss();
                             finish();
 
                         } else {
@@ -276,7 +291,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                     }
                 });
 
-            }
+            }*/
 
 
         }

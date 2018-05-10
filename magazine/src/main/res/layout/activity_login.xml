@@ -18,21 +18,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:id="@+id/userNameLayout"
-          >
-        <EditText
-            android:id="@+id/et_account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:hint="请输入用户名或者手机号"
-            android:paddingLeft="20dip"
-            android:paddingRight="10dip"
-            android:singleLine="true"
-            android:textColor="#ff444444"
-            android:textColorHint="#ffcccccc"
-            android:textSize="16sp" >
-            <requestFocus />
-        </EditText>
+            >
+            <EditText
+                android:id="@+id/et_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:hint="请输入用户名或者手机号"
+                android:paddingLeft="20dip"
+                android:paddingRight="10dip"
+                style="@style/EditTextStyle">
+                <requestFocus />
+            </EditText>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -43,23 +40,20 @@
             app1:passwordToggleEnabled="true"
             app1:passwordToggleTint="@color/colorFontText"
             >
-        <EditText
-            android:id="@+id/et_pwd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="请输入密码"
-            android:inputType="textPassword"
-            android:paddingLeft="20dip"
-            android:paddingRight="10dip"
-            android:singleLine="true"
-            android:textColor="#ff444444"
-            android:textColorHint="#ffcccccc"
-            android:textSize="16sp" />
+            <EditText
+                android:id="@+id/et_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="请输入密码"
+                android:inputType="textPassword"
+                android:paddingLeft="20dip"
+                android:paddingRight="10dip"
+                style="@style/EditTextStyle" />
         </android.support.design.widget.TextInputLayout>
         <Button
             android:id="@+id/btn_login"
             android:layout_width="fill_parent"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             style="@style/ButtonStyle"
             android:text="登录"
             android:textColor="#FFFFFF"
@@ -107,10 +101,10 @@
         android:gravity="center"
         android:orientation="horizontal" >
 
-   <ImageView
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:src="@drawable/qq"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/qq"/>
 
         <TextView
             android:id="@+id/tv_qq"
@@ -122,17 +116,17 @@
             android:textColor="#4285F4"
             />
 
-      <!--  <Button
-            android:id="@+id/btn_weixin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/find_friend_icon_tencent"
-            android:clickable="true"
-            android:gravity="center"
-            android:paddingLeft="10dp"
-            android:textSize="16sp" />-->
+        <!--  <Button
+              android:id="@+id/btn_weixin"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:layout_marginLeft="10dp"
+              android:background="@drawable/find_friend_icon_tencent"
+              android:clickable="true"
+              android:gravity="center"
+              android:paddingLeft="10dp"
+              android:textSize="16sp" />-->
     </LinearLayout>
 
 </RelativeLayout>

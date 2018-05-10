@@ -37,7 +37,7 @@ import butterknife.Unbinder;
 public class MagzineHistoryFragment extends BaseFragment {
 
     private static final String ARG_PARAM1 = "param1";
-    private List<HashMap> dataDisplayList;
+    private ArrayList<HashMap> dataDisplayList;
 
     private String httpUrl;
     private Unbinder unbinder;

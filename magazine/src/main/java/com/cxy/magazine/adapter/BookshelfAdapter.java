@@ -33,14 +33,14 @@ import butterknife.ButterKnife;
 public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyViewHolder>{
     private Context context;
     private List<Bookshelf> dataDisplayList;
-  //  private Bitmap defaultImage;
+
     private GridLayoutManager gridLayoutManager;
 
     public BookshelfAdapter(Context context, List<Bookshelf> dataDisplayList, GridLayoutManager gridLayoutManager) {
         this.context = context;
         this.dataDisplayList = dataDisplayList;
         this.gridLayoutManager=gridLayoutManager;
-      //  defaultImage = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.default_book);
+
     }
 
     @Override
