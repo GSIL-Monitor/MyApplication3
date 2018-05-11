@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cxy.magazine.bmobBean.User;
+import cn.bmob.v3.BmobUser.BmobThirdUserAuth;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.BaseUIListener;
 import com.cxy.magazine.util.Utils;
@@ -24,6 +25,7 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.bmob.v3.BmobUser;
@@ -37,7 +39,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     EditText etUserName,etPassword;
     TextView tvRegister,tvQQLogin,tvForgetPassword;
     Button btnLogin;
-    public static Tencent mTencent;
+
     private  String token;
     private UserInfo mInfo;
     @Override
@@ -48,9 +50,9 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         ActionBar bar= getSupportActionBar();
         bar.setTitle("登录账号");
         bar.setDisplayHomeAsUpEnabled(true);
-        if (mTencent == null) {
+      /*  if (mTencent == null) {
             mTencent = Tencent.createInstance(Utils.TencentAppId, this);
-        }
+        }*/
 
         etUserName=(EditText)findViewById(R.id.et_account) ;
         etPassword=(EditText)findViewById(R.id.et_pwd) ;
@@ -110,12 +112,50 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         }
     }
 
+    public static Tencent mTencent;
+
     private void onClickLogin() {
 
-        mTencent.login(this, "all", loginListener);
+       /* mTencent.login(this, "all", loginListener);
         Utils.showProgressDialog(LoginActivity.this, null, "请稍后");
 
-        Log.d("SDKQQAgentPref", "FirstLaunch_SDK:" + SystemClock.elapsedRealtime());
+        Log.d("SDKQQAgentPref", "FirstLaunch_SDK:" + SystemClock.elapsedRealtime());*/
+
+        if(mTencent==null){
+            mTencent = Tencent.createInstance(Utils.TencentAppId, getApplicationContext());
+        }
+        mTencent.logout(this);
+        mTencent.login(this, "all", new IUiListener() {
+
+            @Override
+            public void onComplete(Object arg0) {
+                // TODO Auto-generated method stub
+                if(arg0!=null){
+                    JSONObject jsonObject = (JSONObject) arg0;
+                    try {
+                        String token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
+                        String expires = jsonObject.getString(Constants.PARAM_EXPIRES_IN);
+                        String openId = jsonObject.getString(Constants.PARAM_OPEN_ID);
+                        BmobThirdUserAuth authInfo = new BmobThirdUserAuth(BmobThirdUserAuth.SNS_TYPE_QQ,token, expires,openId);
+                        loginWithAuth(authInfo);
+                    } catch (JSONException e) {
+                    }
+                }
+            }
+
+            @Override
+            public void onError(UiError arg0) {
+                // TODO Auto-generated method stub
+
+                Utils.toastMessage(LoginActivity.this,"QQ授权出错："+arg0.errorCode+"--"+arg0.errorDetail);
+            }
+
+            @Override
+            public void onCancel() {
+                // TODO Auto-generated method stub
+                Utils.toastMessage(LoginActivity.this,"取消qq授权");
+            }
+        });
 
     }
 
@@ -198,18 +238,24 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
      * @return void
      * @exception
      */
-    public  void loginWithAuth(final BmobUser.BmobThirdUserAuth authInfo){
+    public  void loginWithAuth(final BmobThirdUserAuth authInfo){
+
         BmobUser.loginWithAuthData(authInfo, new LogInListener<JSONObject>() {
 
             @Override
             public void done(JSONObject userAuth,BmobException e) {
-                Log.i("SDKQQAgentPref",authInfo.getSnsType()+"登陆成功返回:"+userAuth);
+                if (e==null){
+                    Log.i("SDKQQAgentPref",authInfo.getSnsType()+"登陆成功返回:"+userAuth);
+                }
 
-                getUserInfo();  //获取QQ用户的信息
+
+                //getUserInfo();  //获取QQ用户的信息
 
 
             }
         });
+
+
     }
 
     public void getUserInfo()
