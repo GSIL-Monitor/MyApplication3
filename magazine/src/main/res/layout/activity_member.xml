@@ -29,9 +29,9 @@
 
         <ImageView
             android:id="@+id/imageHead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/people" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/head_image" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -50,7 +50,8 @@
                 android:id="@+id/tvMemberInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="当前未开通" />
+                android:text="当前未开通"
+                android:textColor="@color/colorFontDisable"/>
 
         </LinearLayout>
 
@@ -102,7 +103,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_1month_original"
             android:layout_marginLeft="10dp"
-            android:text=""/>
+            android:text=""
+            android:textColor="@color/colorFontDisable"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="2"
@@ -147,7 +149,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_3month_original"
             android:layout_marginLeft="10dp"
-            android:text=""/>
+            android:text=""
+            android:textColor="@color/colorFontDisable"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="2"
@@ -192,7 +195,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_6month_original"
             android:layout_marginLeft="10dp"
-            android:text=""/>
+            android:text=""
+            android:textColor="@color/colorFontDisable"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="2"

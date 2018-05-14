@@ -12,8 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:title=""
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        android:background="@color/colorPrimary"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/OverflowMenuStyle">
 
         <TextView
             android:id="@+id/tv_title"
@@ -39,8 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingBottom="80dp"
-           >
+            android:paddingBottom="80dp">
             <ImageView
                 android:layout_marginTop="@dimen/dp_10"
                 android:id="@+id/im_cover"
@@ -73,9 +73,10 @@
                 android:id="@+id/tv_intro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:textSize="18sp"
-                android:padding="8dp"
+                android:layout_marginTop="15dp"
+                android:textSize="17sp"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
                 android:textColor="@color/colorFontText"
                 android:lineSpacingExtra="@dimen/dp_10"/>
 
@@ -84,10 +85,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:padding="8dp"
                 android:lineSpacingExtra="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:singleLine="false"
+                android:maxEms="50"
                 android:text="@string/magazine_member"
-                android:textSize="15sp"/>
+                android:textColor="@color/colorFontDisable"
+                android:textSize="17sp" />
 
         </LinearLayout>
 

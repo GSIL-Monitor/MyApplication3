@@ -47,8 +47,8 @@ public class FeedbackActivity extends BasicActivity {
                 weChat=editWechat.getText().toString();
                 email=editEmail.getText().toString();
                 if (feedback.length()>0){
-                    Utils.showProgressDialog(FeedbackActivity.this,null,"正在发送，请稍候");
-
+                 //   Utils.showProgressDialog(FeedbackActivity.this,"正在发送，请稍候");
+                    Utils.showTipDialog(FeedbackActivity.this,"正在发送，请稍候");
                     Thread thread=new Thread(new Runnable() {
                        @Override
                        public void run() {

@@ -27,12 +27,17 @@ import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.qmuiteam.qmui.widget.QMUIEmptyView;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Optional;
 import butterknife.Unbinder;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
@@ -45,11 +50,15 @@ public class ShelfFragment extends BaseFragment {
 
     @BindView(R.id.recyclerView_shelf)
     LRecyclerView mRecyclerView;
+    @BindView(R.id.emptyView)
+    QMUIEmptyView emptyView;
 
     private BookshelfAdapter recycleViewAdapter=null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
     private User user;
     Unbinder unbinder;
+    boolean needInit=true;
+
 
     private ArrayList<Bookshelf> bookList;
 
@@ -83,7 +92,33 @@ public class ShelfFragment extends BaseFragment {
     }
 
     public void getAllBook(){
-        bookList.clear();
+
+        //查询数据
+        user = BmobUser.getCurrentUser(User.class);
+        if (user == null) {
+            mRecyclerView.refreshComplete(1);
+          /*  Utils.showConfirmCancelDialog(getActivity(), "提示", "请先登录,以同步书架！", new QMUIDialogAction.ActionListener() {
+                @Override
+                public void onClick(QMUIDialog dialog, int index) {
+
+                    needInit=true;
+                    Intent intent1 = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent1);
+                }
+
+            });*/
+          mRecyclerView.setVisibility(View.GONE);
+          emptyView.setVisibility(View.VISIBLE);
+          emptyView.show(false, "提示", "请先登录,以同步书架！", "去登录", new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                  needInit=true;
+                  Intent intent1 = new Intent(getActivity(), LoginActivity.class);
+                  startActivity(intent1);
+              }
+          });
+        } else {
+            bookList.clear();
             if (NetWorkUtils.isNetworkConnected(context)) {
                 BmobQuery<Bookshelf> query = new BmobQuery<Bookshelf>();
 
@@ -99,19 +134,36 @@ public class ShelfFragment extends BaseFragment {
                             Log.i("bmob", "查询成功：共" + queryList.size() + "条数据。");
 
                             bookList.addAll(queryList);
+                            mAcache.put("shelfCache",bookList);
                             mRecyclerView.refreshComplete(1000);
                             mLRecyclerViewAdapter.notifyDataSetChanged();
+                            if(queryList.size()<=0){
+                              //  Utils.showResultDialog(getActivity(),"你的书架空空如也，快去添加几本吧","提示");
+                                mRecyclerView.setVisibility(View.GONE);
+                                emptyView.setVisibility(View.VISIBLE);
+                                emptyView.show(null,"你的书架空空如也，快去添加几本吧");
+
+                            }
 
                         } else {
                             Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
-                            Toast.makeText(getContext(), "出错了，请稍候再试！", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getContext(), "出错了，请稍候再试！", Toast.LENGTH_SHORT).show();
+                         //   QMUIEmptyView emptyView=new QMUIEmptyView(getActivity());
+                            mRecyclerView.setVisibility(View.GONE);
+                            emptyView.setVisibility(View.VISIBLE);
+                            emptyView.show(null,"出错了，请稍候再试！");
                         }
                     }
                 });
             }else{
-                Utils.toastMessage(activity,"网络已断开，请检查网络连接");
+
+                mRecyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
+                emptyView.show(null,"网络已断开，请检查网络连接");
             }
 
+
+        }
 
 
     }
@@ -119,18 +171,26 @@ public class ShelfFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        //查询数据
-        user= BmobUser.getCurrentUser(User.class);
-        if (user==null){
-            Utils.showConfirmCancelDialog(getActivity(), "提示", "请先登录,以同步书架！", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent1 = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(intent1);
+        if (needInit) {
+            Object shelfObject = mAcache.getAsObject("shelfCache");
+            if (shelfObject != null ) {
+                bookList.clear();
+                ArrayList<Bookshelf> tempBookList = (ArrayList<Bookshelf>) shelfObject;
+                bookList.addAll(tempBookList);
+                mLRecyclerViewAdapter.notifyDataSetChanged();
+                if(tempBookList.size()<=0){
+
+                    mRecyclerView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                    emptyView.show(null,"你的书架空空如也，快去添加几本吧");
                 }
-            });
-        }else{
-            mRecyclerView.refresh();
+            } else {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                    mRecyclerView.refresh();
+
+
+            }
         }
 
     }
@@ -155,10 +215,7 @@ public class ShelfFragment extends BaseFragment {
         recycleViewAdapter=new BookshelfAdapter(getContext(),bookList,manager);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(recycleViewAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
-       // int spacing = getResources().getDimensionPixelSize(R.dimen.dp_18);
-      //  mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(),android.R.color.white));
-        //禁用下拉刷新功能
-      //  mRecyclerView.setPullRefreshEnabled(false);
+
 
         //设置下拉刷新
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
@@ -173,6 +230,7 @@ public class ShelfFragment extends BaseFragment {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                needInit=false;
                 String href=bookList.get(position).getDirectoryUrl();
                 Intent intent=new Intent(getActivity(), MagazineDirectoryActivity.class);
                 intent.putExtra("href",href);
@@ -195,6 +253,7 @@ public class ShelfFragment extends BaseFragment {
                              if (e==null){
                                  Utils.toastMessage(getActivity(),"删除书籍成功");
                                  bookList.remove(position);
+                                 mAcache.put("shelfCache",bookList);
                                  mLRecyclerViewAdapter.notifyDataSetChanged();
                              }else{
                                 Utils.toastMessage(getActivity(),e.getMessage());

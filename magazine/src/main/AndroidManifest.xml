@@ -24,8 +24,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,73 +55,89 @@
         <activity
             android:name="com.eagle.pay66.PayActivity"
             android:exported="true" />
-        <!-- 小米广告 -->
-        <activity
-            android:name="com.miui.zeus.mimo.sdk.activityProxy.ProxyActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
+            android:authorities="com.cxy.magazine.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-            ;
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+                android:resource="@xml/gdt_file_path" />
         </provider>
 
         <activity android:name=".activity.BasicActivity" />
         <activity
-            android:name=".activity.ClassDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activity.ClassDetailActivity" />
         <activity
-            android:name=".activity.MagazineDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.LoginActivity" />
+            android:name=".activity.MagazineDetailActivity" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:theme="@style/AppTheme.ActionBar" />
         <activity
             android:name=".activity.RegisterActivity"
-            android:parentActivityName=".activity.LoginActivity" />
+            android:parentActivityName=".activity.LoginActivity"
+            android:theme="@style/AppTheme.ActionBar" />
         <activity
             android:name=".activity.SettingInfomationActivity"
-            android:parentActivityName=".activity.MainActivity" />
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.ActionBar" />
         <activity
             android:name=".activity.BindPhoneActivity"
-            android:parentActivityName=".activity.SettingInfomationActivity" />
+            android:parentActivityName=".activity.SettingInfomationActivity"
+            android:theme="@style/AppTheme.ActionBar" />
         <activity
             android:name=".activity.FindPasswordActivity"
-            android:parentActivityName=".activity.LoginActivity" />
-        <activity android:name=".activity.MemberActivity" />
+            android:parentActivityName=".activity.LoginActivity"
+            android:theme="@style/AppTheme.ActionBar" />
         <activity
-            android:name=".activity.MagazineDirectoryActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activity.MemberActivity"
+            android:theme="@style/AppTheme.ActionBar" />
         <activity
-            android:name=".activity.MagazineHistoryActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activity.MagazineDirectoryActivity" />
         <activity
-            android:name=".activity.MagazineContentActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop"/>
-        <activity android:name=".activity.FeedbackActivity">
+            android:name=".activity.MagazineHistoryActivity" />
+        <activity
+            android:name=".activity.MagazineContentActivity" />
+        <activity
+            android:name=".activity.FeedbackActivity"
+            android:theme="@style/AppTheme.ActionBar">
             <intent-filter>
                 <action android:name="tongzhi.feedbackActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.CollectActivity" />
-        <activity android:name=".activity.InviteActivity" />
-        <activity android:name=".activity.MessageActivity" />
-        <activity android:name=".activity.MsgDetailActivity" />
-
+        <activity
+            android:name=".activity.CollectActivity"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".activity.InviteActivity"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".activity.MessageActivity"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".activity.MsgDetailActivity"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".activity.HaveBuyActivity"
+            android:theme="@style/AppTheme.ActionBar" />
+        <!-- 广点通广告 -->
         <service
-            android:name=".Service.DownloadService"
+            android:name="com.qq.e.comm.DownloadService"
             android:exported="false" />
 
-        <activity android:name=".activity.HaveBuyActivity"></activity>
+        <activity
+            android:name="com.qq.e.ads.ADActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".activity.EmptyActivity">
+        </activity>
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>

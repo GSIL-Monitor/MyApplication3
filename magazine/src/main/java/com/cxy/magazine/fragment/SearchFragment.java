@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SearchView;
 
 import com.cxy.magazine.R;
@@ -34,6 +35,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -200,7 +202,7 @@ public class SearchFragment extends BaseFragment {
         public void run() {
             try {
                 JSONArray dataCacheArray=mAcache.getAsJSONArray("searchArray");
-                if (dataCacheArray==null){
+                if (dataCacheArray==null||dataCacheArray.length()<=0){
                     Log.i("com.cxy.magzine","缓存为空");
                     Document docHtml = Jsoup.connect(DATA_URL).get();
                    // mCache.put("searchList",docHtml.toString());

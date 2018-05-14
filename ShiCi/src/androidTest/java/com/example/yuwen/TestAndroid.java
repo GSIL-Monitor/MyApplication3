@@ -19,6 +19,6 @@ public class TestAndroid extends ActivityInstrumentationTestCase2<FeedbackActivi
     }
     @Test
     public void sendEmail(){
-        EmailUtil.autoSendMail(getActivity(),"456");
+        //EmailUtil.autoSendMail(getActivity(),"456");
     }
 }

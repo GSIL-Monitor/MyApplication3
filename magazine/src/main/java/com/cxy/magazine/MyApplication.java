@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.multidex.MultiDex;
 
 import com.alipay.euler.andfix.patch.PatchManager;
 import com.cxy.magazine.activity.MainActivity;
 import com.cxy.magazine.util.Utils;
 import com.eagle.pay66.Pay66;
-import com.miui.zeus.mimo.sdk.MimoSdk;
-import com.xiaomi.market.sdk.Patcher;
-//import com.xiaomi.ad.AdSdk;
+
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,12 +32,13 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         //初始化66支付
         Pay66.init(PAY_66_APPLICATION_ID, getApplicationContext());
 
         try {
             //初始化小米广告
-            MimoSdk.init(this, XIAOMI_APP_ID, "fake_app_key", "fake_app_token");
+          //  MimoSdk.init(this, XIAOMI_APP_ID, "fake_app_key", "fake_app_token");
             PackageInfo mPackageInfo=this.getPackageManager().getPackageInfo(this.getPackageName(),0);
             CURRENT_VERSION=mPackageInfo.versionName;
             Utils.CURREN_VERSION_CODE=mPackageInfo.versionCode;
@@ -71,12 +71,10 @@ public class MyApplication extends Application {
         return instance;
     }
     public void addActivity(Activity activity) {
-        if (activitys != null && activitys.size() > 0) {
+        if (activitys != null ) {
             if(!activitys.contains(activity)){
                 activitys.add(activity);
             }
-        }else{
-            activitys.add(activity);
         }
     }
     // 遍历所有Activity并finish
@@ -86,7 +84,7 @@ public class MyApplication extends Application {
                 activity.finish();
             }
         }
-        System.exit(0);
+      // System.exit(0);
     }
 
 

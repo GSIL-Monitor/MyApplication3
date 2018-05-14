@@ -53,6 +53,8 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
 import com.cxy.magazine.util.Utils;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 
 public class MagazineDirectoryActivity extends BasicActivity {
@@ -131,7 +133,6 @@ public class MagazineDirectoryActivity extends BasicActivity {
         //add a HeaderView
         View headerView = new CommonHeader(this, R.layout.header_magazine_recycleview);
         tv_time = (TextView) headerView.findViewById(R.id.tv_time);
-        // ButterKnife.bind(this,headerView);
         mLRecyclerViewAdapter.addHeaderView(headerView);
 
         //禁用下拉刷新功能
@@ -159,14 +160,15 @@ public class MagazineDirectoryActivity extends BasicActivity {
                 if (position > 10) {
                    User user=BmobUser.getCurrentUser(User.class);
                    if (user==null){
-                       Utils.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "亲，登录后才可查看内容哦", new DialogInterface.OnClickListener() {
-                           @Override
-                           public void onClick(DialogInterface dialogInterface, int i) {
-                               checkdMember=false;
-                               Intent intent1 = new Intent(MagazineDirectoryActivity.this, LoginActivity.class);
-                               startActivity(intent1);
-                           }
-                       });
+
+                      Utils.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "亲，登录后才可查看内容哦", new QMUIDialogAction.ActionListener() {
+                          @Override
+                          public void onClick(QMUIDialog dialog, int index) {
+                              checkdMember=false;
+                              Intent intent1 = new Intent(MagazineDirectoryActivity.this, LoginActivity.class);
+                              startActivity(intent1);
+                          }
+                      });
                    }else{   //user不为null，肯定已经查询过会员状态了
                           if (buyState==1){
                               checkdMember=true;
@@ -186,16 +188,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
                 }
 
-              //不检查会员，华为接口
-              /*  String type = dataList.get(position).get("type").toString();
-                if ("item".equals(type)) {
-                    String url = dataList.get(position).get("href").toString();
-                    //跳转至内容显示Activity
-                    Intent intent = new Intent(MagazineDirectoryActivity.this, MagazineContentActivity.class);
-                    //  String mobileUrl=(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
-                    intent.putExtra("url", url);
-                    startActivity(intent);
-                }*/
+
 
 
             }
@@ -206,34 +199,65 @@ public class MagazineDirectoryActivity extends BasicActivity {
     private void readArticle(int position) {
         if (memberState == 1) {  //不是会员，提示购买会员
 
-            AlertDialog dlg = new AlertDialog.Builder(MagazineDirectoryActivity.this).setTitle("提示").setMessage("亲，该部分内容会员才可观看，请充值会员或者返回单独购买该本杂志")
-                    .setPositiveButton("去充值会员", new DialogInterface.OnClickListener() {
+
+            new QMUIDialog.MessageDialogBuilder(MagazineDirectoryActivity.this)
+                    .setTitle("提示")
+                    .setMessage("亲，该部分内容会员才可观看，请充值会员或者返回上一页单独购买该本杂志")
+                    .addAction("取消", new QMUIDialogAction.ActionListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
+                            dialog.dismiss();
+                        }
+                    })
+                    .addAction("去单独购买", new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            finish();
+                        }
+                    })
+                    .addAction(0, "去充值会员", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
                             checkdMember=false;
                             Intent intent = new Intent(MagazineDirectoryActivity.this, MemberActivity.class);
                             startActivity(intent);
                         }
                     })
-                    .setNegativeButton("取消", null).create();
-            dlg.setCanceledOnTouchOutside(false);
-            dlg.show();
+                    .create().show();
         }
 
         if (memberState == 2) {   //是会员，已过期
 
-            AlertDialog dlg = new AlertDialog.Builder(MagazineDirectoryActivity.this).setTitle("提示").setMessage("亲，该部分内容为会员专享，你的会员已过期！请充值会员或者返回单独购买该本杂志")
-                    .setPositiveButton("去充值会员", new DialogInterface.OnClickListener() {
+
+
+            new QMUIDialog.MessageDialogBuilder(MagazineDirectoryActivity.this)
+                    .setTitle("提示")
+                    .setMessage("亲，该部分内容会员才可观看，请充值会员或者返回上一页单独购买该本杂志")
+                    .addAction("取消", new QMUIDialogAction.ActionListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .addAction("去单独购买", new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    })
+                    .addAction(0, "去充值会员", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
                             checkdMember=false;
                             Intent intent = new Intent(MagazineDirectoryActivity.this, MemberActivity.class);
                             startActivity(intent);
                         }
                     })
-                    .setNegativeButton("取消", null).create();
-            dlg.setCanceledOnTouchOutside(false);
-            dlg.show();
+                    .create().show();
 
         }
         if (memberState == 3) {  //没有过期，正常查看
@@ -347,7 +371,11 @@ public class MagazineDirectoryActivity extends BasicActivity {
     class GetData extends Thread {
         @Override
         public void run() {
+
+
             try {
+                dataList.clear();
+
                 Document docHtml = Jsoup.connect(httpUrl).get();
                 Element introDiv = docHtml.getElementsByClass("magBox1").first();
                 magazineTime = introDiv.getElementsByTag("p").first().text();
@@ -425,16 +453,17 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
             User user = BmobUser.getCurrentUser(User.class);
             if (user == null) {   //未登录
-                Utils.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+             Utils.showConfirmCancelDialog(MagazineDirectoryActivity.this, "提示", "请先登录！", new QMUIDialogAction.ActionListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(QMUIDialog dialogs, int i) {
+                    //    dialogs.dismiss();
                         Intent intent1 = new Intent(MagazineDirectoryActivity.this, LoginActivity.class);
                         startActivity(intent1);
                     }
                 });
             } else {
                 //加入书架
-                Bookshelf bookshelf = new Bookshelf();
+                final  Bookshelf bookshelf = new Bookshelf();
                 bookshelf.setUser(user);
                 bookshelf.setBookName(magazineTitle);
                 bookshelf.setPulishTime(magazineTime);
@@ -447,8 +476,17 @@ public class MagazineDirectoryActivity extends BasicActivity {
                     public void done(String s, BmobException e) {
 
                         if (e == null) {
-
-                            Snackbar.make(tv_title, "已将该杂志加入书架", Snackbar.LENGTH_LONG).setAction("", null).show();
+                           ArrayList<Bookshelf> shelfList=null;
+                           Object object=mCache.getAsObject("shelfCache");
+                           if (object==null){
+                               shelfList=new ArrayList<Bookshelf>();
+                           }else{
+                               shelfList=( ArrayList<Bookshelf>)object;
+                           }
+                           shelfList.add(0,bookshelf);
+                        //   shelfList.add(bookshelf);
+                           mCache.put("shelfCache",shelfList);
+                           Snackbar.make(tv_title, "已将该杂志加入书架", Snackbar.LENGTH_LONG).setAction("", null).show();
                         } else {
                             Utils.toastMessage(MagazineDirectoryActivity.this, e.getMessage());
                         }

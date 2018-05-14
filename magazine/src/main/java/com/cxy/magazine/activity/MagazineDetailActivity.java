@@ -45,6 +45,8 @@ import com.eagle.pay66.vo.OrderPreMessage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -223,9 +225,9 @@ public class MagazineDetailActivity extends BasicActivity {
             }
 
             if (!installPayPlugin()){  //用户未安装支付插件，无法进行微信支付
-                Utils.showConfirmCancelDialog(MagazineDetailActivity.this, "提示", "使用微信支付，必须先安装我们的安全插件", new DialogInterface.OnClickListener() {
+                Utils.showConfirmCancelDialog(MagazineDetailActivity.this, "提示", "使用微信支付，必须先安装我们的安全插件", new QMUIDialogAction.ActionListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(QMUIDialog dialog, int which) {
                         installPayPlugin("db.db");  //安装插件
                     }
                 });
@@ -247,9 +249,9 @@ public class MagazineDetailActivity extends BasicActivity {
                 //  Utils.showResultDialog(MemberActivity.this,reason,"出错了");
                 Log.i(TAG_CREATE_ORDER,reason);
                 if ( code == 4){ //内嵌APP不存在
-                    Utils.showConfirmCancelDialog(MagazineDetailActivity.this, "提示", "第一次使用微信支付，必须先安装我们的安全插件", new DialogInterface.OnClickListener() {
+                    Utils.showConfirmCancelDialog(MagazineDetailActivity.this, "提示", "第一次使用微信支付，必须先安装我们的安全插件", new QMUIDialogAction.ActionListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(QMUIDialog dialog, int which) {
                             installPayPlugin("db.db");  //安装插件
                         }
                     });
@@ -260,12 +262,10 @@ public class MagazineDetailActivity extends BasicActivity {
             @Override
             public void onSuccess(String response) {
                 Log.d(TAG_PAY_ORDER, "onSuccess---response="+response);
-                //  createOrderTv.setText(response);
-                if (count<1){
                     //加入数据库
                     saveBuyBook();
                     count++;
-                }
+
 
 
 
@@ -404,7 +404,7 @@ public class MagazineDetailActivity extends BasicActivity {
     {
         User user= BmobUser.getCurrentUser(User.class);
         if (user == null) {   //未登录
-            Utils.showConfirmCancelDialog(MagazineDetailActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+            Utils.showConfirmCancelDialog(MagazineDetailActivity.this, "提示", "请先登录！", new QMUIDialogAction.ActionListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Intent intent1 = new Intent(MagazineDetailActivity.this, LoginActivity.class);
@@ -449,9 +449,9 @@ public class MagazineDetailActivity extends BasicActivity {
    public void buy(){
         user= BmobUser.getCurrentUser(User.class);
        if (user == null) {   //未登录
-           Utils.showConfirmCancelDialog(MagazineDetailActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+           Utils.showConfirmCancelDialog(MagazineDetailActivity.this, "提示", "请先登录！", new QMUIDialogAction.ActionListener() {
                @Override
-               public void onClick(DialogInterface dialogInterface, int i) {
+               public void onClick(QMUIDialog dialog, int i) {
                    Intent intent1 = new Intent(MagazineDetailActivity.this, LoginActivity.class);
                    startActivity(intent1);
                }

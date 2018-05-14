@@ -2,9 +2,6 @@ package com.cxy.magazine.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,9 +12,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cxy.magazine.R;
-import com.cxy.magazine.util.Utils;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,14 +28,14 @@ import butterknife.ButterKnife;
  */
 
 
-public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyViewHolder>{
+public class MagazineListAdapter extends RecyclerView.Adapter<MagazineListAdapter.MyViewHolder>{
     private Context context;
-    private ArrayList<HashMap> dataDisplayList;
+    private JSONArray dataDisplayList;
     private GridLayoutManager gridLayoutManager;
 
   //  private Bitmap defaultImage;
 
-    public ImageTextAdapter(Context context, ArrayList<HashMap> dataDisplayList,GridLayoutManager gridLayoutManager) {
+    public MagazineListAdapter(Context context, JSONArray dataDisplayList, GridLayoutManager gridLayoutManager) {
         this.context = context;
         this.dataDisplayList = dataDisplayList;
         this.gridLayoutManager=gridLayoutManager;
@@ -51,26 +50,32 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final HashMap hashMap=dataDisplayList.get(position);
-        final String imageSrc=hashMap.get("imageSrc").toString();
+        //final HashMap hashMap=dataDisplayList.get(position);
+        //final String imageSrc=hashMap.get("imageSrc").toString();
 
-        holder.tvCoverName.setText(hashMap.get("name").toString());
-        holder.tvCoverOrder.setText(hashMap.get("time").toString());
+        try {
+            JSONObject jsonObject=dataDisplayList.getJSONObject(position);
 
-
-        int width=(gridLayoutManager.getWidth()-120)/2;
-        int height=width+width/3;
-        ViewGroup.LayoutParams lp = holder.imCover.getLayoutParams();
-        lp.width = width;
-        lp.height = height;
-        holder.imCover.setLayoutParams(lp);
+            holder.tvCoverName.setText(jsonObject.getString("name"));    //hashMap.get("name").toString()
+            holder.tvCoverOrder.setText(jsonObject.getString("time"));                         //hashMap.get("time").toString()
 
 
-        Glide.with(context)
-                .load(imageSrc)
-                .placeholder(R.drawable.default_book)
-                .error(R.drawable.default_book)
-                .into(holder.imCover);
+            int width=(gridLayoutManager.getWidth()-120)/2;
+            int height=width+width/3;
+            ViewGroup.LayoutParams lp = holder.imCover.getLayoutParams();
+            lp.width = width;
+            lp.height = height;
+            holder.imCover.setLayoutParams(lp);
+
+
+            Glide.with(context)
+                    .load(jsonObject.getString("imageSrc"))
+                    .placeholder(R.drawable.default_book)
+                    .error(R.drawable.default_book)
+                    .into(holder.imCover);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -79,21 +84,10 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return dataDisplayList.size();
+        return dataDisplayList.length();
     }
 
-    /*Handler uiHandler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            MyViewHolder holder=(MyViewHolder) msg.obj;
-            if (msg.what==101){
-                if (holder.imTag.equals(holder.imCover.getTag())){
-                    holder.imCover.setImageBitmap(holder.bitmap);
-                }
-            }
-        }
-    };*/
+
 
     class MyViewHolder extends RecyclerView.ViewHolder
     {

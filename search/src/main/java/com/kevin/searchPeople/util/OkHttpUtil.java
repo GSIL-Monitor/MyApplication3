@@ -21,8 +21,7 @@ import static com.kevin.searchPeople.util.Constant.TAG;
 
 public class OkHttpUtil {
     public static final OkHttpClient client = new OkHttpClient();
-    private static final MediaType JSON
-            = MediaType.parse("application/json; charset=utf-8");
+    private static final MediaType JSON= MediaType.parse("application/json; charset=utf-8");
 
     /**
      *post方法

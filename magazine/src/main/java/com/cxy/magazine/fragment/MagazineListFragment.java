@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.cxy.magazine.R;
 import com.cxy.magazine.activity.MagazineDetailActivity;
 import com.cxy.magazine.adapter.ImageTextAdapter;
+import com.cxy.magazine.adapter.MagazineListAdapter;
 import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -24,6 +25,9 @@ import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -54,18 +58,25 @@ public class MagazineListFragment extends BaseFragment {
 
     /**已经获取到多少条数据了*/
     private static int mCurrentCounter = 0;
-    private ImageTextAdapter recycleViewAdapter=null;
+    private MagazineListAdapter recycleViewAdapter=null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
 
-    private List<HashMap> dataList;   //服务器端总数据
-    private List<HashMap> dataDisplayList;  //显示在界面上的数据
-    private PreviewHandler mHandler ;
-    private Bitmap defaultImage=null;
+  //  private List<HashMap> dataList;   //服务器端总数据
+
+    private JSONArray dataArray=new JSONArray();     //服务器端总数据
+
+//    private List<HashMap> dataDisplayList;  //显示在界面上的数据
+    private JSONArray dataDisplayArray=new JSONArray();
+  //  private PreviewHandler mHandler ;
+   // private Bitmap defaultImage=null;
 
     private Context context;
     private Unbinder unbinder;
+    private String cacheKey="";
 
-   @BindView(R.id.allList)  LRecyclerView mRecyclerView;
+   @BindView(R.id.allList)
+   LRecyclerView mRecyclerView;
+   private   GridLayoutManager manager=null;
 
 
     public MagazineListFragment() {
@@ -81,11 +92,17 @@ public class MagazineListFragment extends BaseFragment {
         return fragment;
     }
 
+    /**
+     * Fragment 生命周期  onCreate()在OnCreateView()之前
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             htmlUrl = getArguments().getString(HTTP_URL);
+            String[] tempArray=htmlUrl.split("//")[1].split("/");
+            cacheKey=tempArray[1]+tempArray[2].split(".html")[0];
 
         }
 
@@ -98,7 +115,9 @@ public class MagazineListFragment extends BaseFragment {
          View layoutView=inflater.inflate(R.layout.fragment_magazine_list, container, false);
          unbinder=ButterKnife.bind(this,layoutView);
          context=this.getContext();
-         mHandler = new PreviewHandler(this);
+
+
+      //   mHandler = new PreviewHandler(this);
          setRecyclerView();
          return layoutView;
     }
@@ -110,15 +129,16 @@ public class MagazineListFragment extends BaseFragment {
     }
 
     private  void setRecyclerView(){
-        dataList=new ArrayList<HashMap>();
-        dataDisplayList=new ArrayList<HashMap>();
+      //  dataList=new ArrayList<HashMap>();
+      //  dataDisplayList=new ArrayList<HashMap>();
+
         //设置RecycleView
         //设置RecycleView布局为网格布局 2列
-        GridLayoutManager manager=new GridLayoutManager(this.getContext(),2);
+        manager=new GridLayoutManager(this.getContext(),2);
         mRecyclerView.setLayoutManager(manager);
-        recycleViewAdapter=new ImageTextAdapter(getContext(),dataDisplayList,manager);
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(recycleViewAdapter);
 
+        recycleViewAdapter=new MagazineListAdapter(getContext(),dataDisplayArray,manager);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(recycleViewAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         //设置头部加载颜色
         mRecyclerView.setHeaderViewColor(R.color.colorAccent, android.R.color.darker_gray,android.R.color.white);
@@ -129,14 +149,12 @@ public class MagazineListFragment extends BaseFragment {
         mRecyclerView.setHasFixedSize(true);
 
         //mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
+
+        //下拉刷新
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mCurrentCounter = 0;
-                // recycleViewAdapter.clear();
-                dataList.clear();
-                dataDisplayList.clear();
-                mLRecyclerViewAdapter.notifyDataSetChanged();
+
                 requestData();
             }
         });
@@ -146,7 +164,9 @@ public class MagazineListFragment extends BaseFragment {
             public void onLoadMore() {
                 if (mCurrentCounter < TOTAL_COUNTER) {
                     // loading more
-                    updateDisplayList();
+                    addItems();
+                    mRecyclerView.refreshComplete(REQUEST_COUNT);// REQUEST_COUNT为每页加载数量
+                    mLRecyclerViewAdapter.notifyDataSetChanged();
                 } else {
                     //the end
                     mRecyclerView.setNoMore(true);
@@ -154,96 +174,97 @@ public class MagazineListFragment extends BaseFragment {
             }
         });
 
-        mRecyclerView.refresh();
+       setOnItemClick();
 
+
+        JSONArray cacheArray=mAcache.getAsJSONArray(cacheKey);
+        if (cacheArray!=null&&cacheArray.length()>0){
+            dataArray=cacheArray;
+            TOTAL_COUNTER=dataArray.length();
+            addItems();
+            mRecyclerView.refreshComplete(REQUEST_COUNT);
+            mLRecyclerViewAdapter.notifyDataSetChanged();
+        }else{
+            mRecyclerView.refresh();
+        }
+
+    }
+
+    public void  setOnItemClick(){
         //设置点击事件
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
-                HashMap hashMap=dataDisplayList.get(position);
-                String href=hashMap.get("href").toString();
-                intent.putExtra("href",href);
-                startActivity(intent);
+                try {
+                    Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
+                    JSONObject jsonObject=dataDisplayArray.getJSONObject(position);
+                    //   HashMap hashMap=dataDisplayList.get(position);
+                    String href=jsonObject.getString("href");    //hashMap.get("href").toString();
+                    intent.putExtra("href",href);
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
             }
         });
-
     }
 
-    private void notifyDataSetChanged() {
-        mLRecyclerViewAdapter.notifyDataSetChanged();
-    }
 
-    private void addItems(ArrayList<HashMap> list) {
-        dataDisplayList.addAll(list);
-        mCurrentCounter += list.size();
-    }
 
-    public void updateDisplayList(){
-        int currentSize = recycleViewAdapter.getItemCount();
+   private void addItems(){
+       int currentSize = recycleViewAdapter.getItemCount();
+       for (int i = currentSize; i < currentSize+REQUEST_COUNT; i++){
+           try {
+               if (dataArray.getJSONObject(i)!=null){
+                   dataDisplayArray.put(dataArray.getJSONObject(i));
+                   mCurrentCounter += 1;
+               }
+           } catch (JSONException e) {
+               e.printStackTrace();
+           }
+       }
+   }
 
-        //模拟组装10个数据
-        ArrayList<HashMap> newList = new ArrayList<HashMap>();
-        for (int i = currentSize; i < currentSize+REQUEST_COUNT; i++) {
-            if (newList.size() + currentSize >= TOTAL_COUNTER) {
-                break;
+    private void reSetItems(){
+
+        for (int i = 0; i < REQUEST_COUNT; i++){
+            try {
+                if (dataArray.getJSONObject(i)!=null){
+                    dataDisplayArray.put(dataArray.getJSONObject(i));
+                    mCurrentCounter += 1;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
-
-            newList.add(dataList.get(i));
         }
-
-
-        addItems(newList);
-
-        mRecyclerView.refreshComplete(REQUEST_COUNT);
     }
 
-    private class PreviewHandler extends Handler {
 
-        private WeakReference<MagazineListFragment> ref;
 
-        PreviewHandler(MagazineListFragment fragment) {
-            ref = new WeakReference<>(fragment);
-        }
-
+    private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            final MagazineListFragment fragment = ref.get();
-            if (fragment == null || fragment.getActivity().isFinishing()) {
-                return;
-            }
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 100:    //重新获取数据
+                    reSetItems();
+                     mRecyclerView.refreshComplete(REQUEST_COUNT);
+                  //   mLRecyclerViewAdapter.notifyDataSetChanged();
+                    recycleViewAdapter=new MagazineListAdapter(getContext(),dataDisplayArray,manager);
 
-            switch (msg.what) {
-                case -1:
-                 //   Activity activity= fragment.getActivity();
-                //    Utils.toastMessage(activity,"测试");
-                    updateDisplayList();
+                    mLRecyclerViewAdapter = new LRecyclerViewAdapter(recycleViewAdapter);
+                    setOnItemClick();
+
+                    mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
                     break;
-                case -2:
-                    fragment.notifyDataSetChanged();
-                    break;
-                case -3:
-                    fragment.mRecyclerView.refreshComplete(REQUEST_COUNT);
-                    fragment.notifyDataSetChanged();
-                    fragment.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                        @Override
-                        public void reload() {
-                            dataList.clear();
-                            dataDisplayList.clear();
-                            requestData();
-
-                        }
-                    });
-                    break;
-                case 101:
-                    Utils.toastMessage(fragment.getActivity(),"亲，出错了，请稍后重试！");
-
+                case 101:   //发生错误
+                    Utils.toastMessage(getActivity(),"出错了，请稍后再试");
             }
         }
-    }
+    };
 
     /**
      * 模拟请求网络
@@ -255,47 +276,58 @@ public class MagazineListFragment extends BaseFragment {
             @Override
             public void run() {
                 super.run();
-
+                mCurrentCounter = 0;
+                dataArray=new JSONArray();
+                dataDisplayArray=new JSONArray();
                 try {
                     Document docHtml = Jsoup.connect(htmlUrl).get();
                     Elements uls=docHtml.getElementsByClass("rowWrap mb20");
                     for (Element ul : uls){
                         Elements lis=ul.getElementsByTag("li");
                         for (Element li : lis){
-                            HashMap map=new HashMap<String,String>();
+                          //  HashMap map=new HashMap<String,String>();
+                            JSONObject jsonObject=new JSONObject();
                             Element a=li.select("p.pel_m_pic").get(0).getElementsByTag("a").get(0);
-                            map.put("href",ClassFragment.MAGAZIENE_URL+a.attr("href"));
-                            map.put("imageSrc",a.getElementsByTag("img").get(0).attr("src"));
+                         //   map.put("href",ClassFragment.MAGAZIENE_URL+a.attr("href"));
+                        //    map.put("imageSrc",a.getElementsByTag("img").get(0).attr("src"));
+                            jsonObject.put("href",ClassFragment.MAGAZIENE_URL+a.attr("href"));
+                            jsonObject.put("imageSrc",a.getElementsByTag("img").get(0).attr("src"));
 
                             Element p2=li.select("p.pel_name").get(0);
-                            map.put("name",p2.text());
+                      //      map.put("name",p2.text());
+
+                            jsonObject.put("name",p2.text());
 
                             Element p3=li.select("p.pel_time").get(0);
-                            map.put("time",p3.text());
+                        //    map.put("time",p3.text());
+                            jsonObject.put("time",p3.text());
+                          //  dataList.add(map);
+                            dataArray.put(jsonObject);
 
-                            dataList.add(map);
 
                         }
                     }
 
-                    TOTAL_COUNTER=dataList.size();
+                 //   TOTAL_COUNTER=dataList.size();
+                 //   dataDisplayArray=tempDisplayArray;
+                    //缓存数据
+                    mAcache.put(cacheKey,dataArray);
+                    TOTAL_COUNTER=dataArray.length();
+                    handler.sendEmptyMessage(100);
 
              //       throw  new  Exception("测试");
 
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    mHandler.sendEmptyMessage(101);
+                    handler.sendEmptyMessage(101);
                     return;
 
                 }
 
-                //模拟一下网络请求失败的情况
-                if(Utils.checkNetworkState(getActivity())) {    //网络可用
-                    mHandler.sendEmptyMessage(-1);
-                } else {                                 //网络不可用
-                    mHandler.sendEmptyMessage(-3);
-                }
+
+
+
             }
         }.start();
     }

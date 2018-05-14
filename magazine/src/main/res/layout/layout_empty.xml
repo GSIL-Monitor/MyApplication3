@@ -6,12 +6,12 @@
         android:id="@+id/tv_foot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:text=""
-        android:textColor="#ff898989"
-        android:textSize="18sp"
-        android:paddingTop="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_18"
+        android:textColor="@color/colorFontDisable"
+        android:textSize="16sp"
+        android:padding="@dimen/dp_10"
+        android:gravity="center"
+
         />
 
 </LinearLayout>

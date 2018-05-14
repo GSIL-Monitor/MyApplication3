@@ -42,6 +42,8 @@ import com.eagle.pay66.vo.OrderPreMessage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,6 +57,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -380,7 +383,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                     //防止重复提交订单
                     if (count<1){
                         pay_66(responseParam.getData().getOrderId(), responseParam.getData().getConsume()); //进行支付
-                        // count++;
+
                     }
 
 
@@ -416,9 +419,9 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             }
 
             if (!installPayPlugin()){  //用户未安装支付插件，无法进行微信支付
-                Utils.showConfirmCancelDialog(MemberActivity.this, "提示", "第一次使用微信支付，必须先安装我们的安全插件", new DialogInterface.OnClickListener() {
+                Utils.showConfirmCancelDialog(MemberActivity.this, "提示", "第一次使用微信支付，必须先安装我们的安全插件", new QMUIDialogAction.ActionListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(QMUIDialog dialog, int which) {
                         installPayPlugin("db.db");  //安装插件
                     }
                 });
@@ -436,15 +439,17 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             @Override
             public void onError(int code, String reason) {
                 Log.d(TAG_PAY_ORDER, "onError---code="+code + ",reason="+reason);
-                //  createOrderTv.setText(reason);
-                //  Utils.showResultDialog(MemberActivity.this,reason,"出错了");
+
                 Log.i(TAG_CREATE_ORDER,reason);
                 if ( code == 4){ //内嵌APP不存在
-                    Utils.showConfirmCancelDialog(MemberActivity.this, "提示", "使用微信支付，必须先安装我们的安全插件", new DialogInterface.OnClickListener() {
+                    Utils.showConfirmCancelDialog(MemberActivity.this, "提示", "使用微信支付，必须先安装我们的安全插件", new QMUIDialogAction.ActionListener() {
+
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(QMUIDialog dialog, int index) {
                             installPayPlugin("db.db");  //安装插件
                         }
+
+
                     });
 
                 }
@@ -453,16 +458,10 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             @Override
             public void onSuccess(String response) {
                 Log.d(TAG_PAY_ORDER, "onSuccess---response="+response);
-                //  createOrderTv.setText(response);
-                if (count<1){
+
                     //加入数据库
                     saveOrUpdate(orderNumber);
                     count++;
-                }
-
-
-
-
             }
 
             @Override
@@ -487,7 +486,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-      //  installPayPlugin("db.db");
+
         return false;
     }
 

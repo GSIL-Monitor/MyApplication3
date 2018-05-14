@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cxy.magazine.R;
@@ -22,6 +23,7 @@ import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.github.jdsjlzx.view.CommonFooter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,7 @@ public class HaveBuyActivity extends BasicActivity {
     private BuyAdapter recycleViewAdapter=null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
     private User user;
-
+    private TextView tvFoot;
     private ArrayList<BuyBean> bookList;
 
     @Override
@@ -49,7 +51,7 @@ public class HaveBuyActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_have_buy);
         ButterKnife.bind(this);
-        getSupportActionBar().setTitle("已购");
+        getSupportActionBar().setTitle("已购杂志");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         bookList=new ArrayList<BuyBean>();
      //   setBookList();
@@ -72,6 +74,9 @@ public class HaveBuyActivity extends BasicActivity {
                  public void done(List<BuyBean> list, BmobException e) {
                      if (e==null && list!=null){
                          bookList.addAll(list);
+                         if (list.size()<=0){
+                             tvFoot.setText("你还没有已购杂志，快去购买几本吧！每本仅需2元");
+                         }
                          mRecyclerView.refreshComplete(1000);  //刷新完成
                          mLRecyclerViewAdapter.notifyDataSetChanged();
                      }else{
@@ -88,13 +93,15 @@ public class HaveBuyActivity extends BasicActivity {
     public void setRecyclerView(){
         GridLayoutManager manager=new GridLayoutManager(this,2);
         mRecyclerView.setLayoutManager(manager);
-
         recycleViewAdapter=new BuyAdapter(this,bookList,manager);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(recycleViewAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
-        // int spacing = getResources().getDimensionPixelSize(R.dimen.dp_18);
-        //  mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(),android.R.color.white));
-        //下拉刷新
+        mRecyclerView.setLoadMoreEnabled(false);
+        //添加foot
+        CommonFooter footerView = new CommonFooter(this, R.layout.layout_empty);
+        tvFoot=(TextView)footerView.findViewById(R.id.tv_foot);
+        mLRecyclerViewAdapter.addFooterView(footerView);
+
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -103,8 +110,7 @@ public class HaveBuyActivity extends BasicActivity {
         });
         mRecyclerView.refresh();
 
-        //禁用自动加载更多功能
-        mRecyclerView.setLoadMoreEnabled(false);
+
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

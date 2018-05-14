@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:title=""
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:popupTheme="@style/AppTheme.PopupOverlay">
+        android:theme="@style/ToolbarTheme">
 
        <TextView
             android:id="@+id/tv_title"

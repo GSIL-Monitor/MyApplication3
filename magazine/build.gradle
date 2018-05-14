@@ -1,19 +1,23 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "27.0.1"
 
     defaultConfig {
         applicationId "com.cxy.magazine"
         minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 9
-        versionName "1.9"
+        targetSdkVersion 26
+        versionCode 13
+        versionName "2.3"
+
+        multiDexEnabled true
+
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
+        android.defaultConfig.vectorDrawables.useSupportLibrary = true
         // 指定支持的so架构
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
@@ -37,6 +41,8 @@ android {
         }
     }
 
+
+
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']//将so文件目录指向libs目录
@@ -48,34 +54,47 @@ repositories {
         dirs 'libs'
     }
 }
-
+configurations.all {
+    resolutionStrategy {
+        force "com.android.support:recyclerview-v7:27.0.1"
+        force "com.android.support:appcompat-v7:27.0.1"
+        force "com.android.support:design:27.0.1"
+        force "com.android.support:support-vector-drawable:27.0.1"
+        force  "com.android.support:support-v4:27.0.1"
+    }
+}
 dependencies {
     /*导入本地jar包*/
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:support-vector-drawable:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    /* compile 'com.google.code.gson:gson:2.3.1'*/
+    /* compile 'com.squareup.okhttp3:okhttp:3.6.0'*/
+    /*compile 'com.android.support:appcompat-v7:26.3.1'*/
+    /*compile 'com.android.support:design:26.3.1'*/
+    /*  compile 'com.android.support:support-vector-drawable:26.3.1'*/
+    /*compile 'com.android.support:support-v4:25.3.1'*/
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     //butterknife
-    compile 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //bmob数据库
-    compile 'cn.bmob.android:bmob-sdk:3.5.5'
-    compile 'cn.bmob.android:http-legacy:1.0'
+    implementation 'cn.bmob.android:bmob-sdk:3.6.0'
     //LRecyclerView
-    compile 'com.github.jdsjlzx:LRecyclerView:1.4.3'
+    implementation 'com.github.jdsjlzx:LRecyclerView:1.4.3'
     //jsoup 爬虫
-    compile 'org.jsoup:jsoup:1.10.2'
+    implementation 'org.jsoup:jsoup:1.10.2'
     //小米更新sdk
-    compile 'mi-appstore:xiaomi-update-sdk:2.8'
+    implementation 'mi-appstore:xiaomi-update-sdk:2.8'
     //AndFix 热修复框架
-    compile 'com.alipay.euler:andfix:0.5.0@aar'
+    implementation 'com.alipay.euler:andfix:0.5.0@aar'
     //Glide库
-    compile 'com.github.bumptech.glide:glide:3.8.0'
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    //QMUI
+    compile 'com.qmuiteam:qmui:1.1.0'
+    //ucrop
+    implementation 'com.github.yalantis:ucrop:2.2.2'
 
 }
