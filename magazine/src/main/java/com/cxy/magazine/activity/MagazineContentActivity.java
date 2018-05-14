@@ -71,7 +71,7 @@ public class MagazineContentActivity extends BasicActivity implements  NativeExp
     private StringBuilder content=null;
     private static final String MAGAZINE_URL="http://m.fx361.com";
     private String htmlStr="<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
-            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:180%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
+            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:200%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
             + "</style></head><body>";
     private boolean isCollect=false;    //是否收藏
     private String intentUrl="";
@@ -125,7 +125,7 @@ public void selectCollect(){
                       //  rbCollect.setChecked(true);
                         articleObjectId = list.get(0).getObjectId();
                         isCollect=true;
-                        collectButton.setImageResource(R.drawable.collect_selected);
+                        collectButton.setImageResource(R.drawable.ic_collect_selected);
 
                     }
                  //   isFirst = false;
@@ -156,7 +156,7 @@ public void collectClick(){
                                 Utils.toastMessage(MagazineContentActivity.this, "收藏文章成功");
                                 articleObjectId = objectId;
                              //   rbCollect.setBackgroundResource(R.drawable.collect_selected);
-                                collectButton.setImageResource(R.drawable.collect_selected);
+                                collectButton.setImageResource(R.drawable.ic_collect_selected);
                                 isCollect=true;
                             } else {
                                 Utils.toastMessage(MagazineContentActivity.this, "收藏文章失败:" + e.getMessage());
@@ -175,7 +175,7 @@ public void collectClick(){
                             if (e == null) {
                                 Utils.toastMessage(MagazineContentActivity.this, "取消收藏成功");
                               //  rbCollect.setBackgroundResource(R.drawable.collect_no_selected);
-                                collectButton.setImageResource(R.drawable.collect_no_selected);
+                                collectButton.setImageResource(R.drawable.ic_collect_no_selected);
                                 isCollect=false;
                             } else {
                                 Utils.toastMessage(MagazineContentActivity.this, "取消收藏失败:" + e.getMessage());
