@@ -59,12 +59,13 @@ configurations.all {
         force "com.android.support:appcompat-v7:27.0.1"
         force "com.android.support:design:27.0.1"
         force "com.android.support:support-vector-drawable:27.0.1"
-        force  "com.android.support:support-v4:27.0.1"
+        force "com.android.support:support-v4:27.0.1"
     }
 }
 dependencies {
     /*导入本地jar包*/
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -92,9 +93,10 @@ dependencies {
     //Glide库
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     //QMUI
-    implementation 'com.qmuiteam:qmui:1.1.0'
+    compile 'com.qmuiteam:qmui:1.1.0'
     //ucrop
     implementation 'com.github.yalantis:ucrop:2.2.2'
     compile 'com.android.support:multidex:1.0.1'
-
+    //photoview
+    implementation 'com.bm.photoview:library:1.4.1'
 }

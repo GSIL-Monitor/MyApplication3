@@ -67,10 +67,8 @@
         </provider>
 
         <activity android:name=".activity.BasicActivity" />
-        <activity
-            android:name=".activity.ClassDetailActivity" />
-        <activity
-            android:name=".activity.MagazineDetailActivity" />
+        <activity android:name=".activity.ClassDetailActivity" />
+        <activity android:name=".activity.MagazineDetailActivity" />
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme.ActionBar" />
@@ -93,12 +91,9 @@
         <activity
             android:name=".activity.MemberActivity"
             android:theme="@style/AppTheme.ActionBar" />
-        <activity
-            android:name=".activity.MagazineDirectoryActivity" />
-        <activity
-            android:name=".activity.MagazineHistoryActivity" />
-        <activity
-            android:name=".activity.MagazineContentActivity" />
+        <activity android:name=".activity.MagazineDirectoryActivity" />
+        <activity android:name=".activity.MagazineHistoryActivity" />
+        <activity android:name=".activity.MagazineContentActivity" />
         <activity
             android:name=".activity.FeedbackActivity"
             android:theme="@style/AppTheme.ActionBar">
@@ -131,13 +126,14 @@
         <activity
             android:name="com.qq.e.ads.ADActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name=".activity.EmptyActivity">
-        </activity>
+        <activity android:name=".activity.EmptyActivity"></activity>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".activity.PhotoBrowserActivity">
+
+        </activity>
     </application>
 
 </manifest>

@@ -9,8 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/ShiCi" />
-            <option value="$PROJECT_DIR$/drawlayoudemo" />
-            <option value="$PROJECT_DIR$/newsreader" />
+            <option value="$PROJECT_DIR$/magazine" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
