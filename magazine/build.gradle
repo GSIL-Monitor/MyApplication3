@@ -8,8 +8,8 @@ android {
         applicationId "com.cxy.magazine"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 13
-        versionName "2.3"
+        versionCode 15
+        versionName "2.5"
 
         multiDexEnabled true
 
@@ -17,7 +17,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
-        android.defaultConfig.vectorDrawables.useSupportLibrary = true
         // 指定支持的so架构
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
@@ -93,8 +92,9 @@ dependencies {
     //Glide库
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     //QMUI
-    compile 'com.qmuiteam:qmui:1.1.0'
+    implementation 'com.qmuiteam:qmui:1.1.0'
     //ucrop
     implementation 'com.github.yalantis:ucrop:2.2.2'
+    compile 'com.android.support:multidex:1.0.1'
 
 }
