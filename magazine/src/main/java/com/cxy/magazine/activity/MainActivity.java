@@ -22,7 +22,6 @@ import com.cxy.magazine.fragment.ShelfFragment;
 import com.cxy.magazine.util.NetWorkUtils;
 import com.cxy.magazine.util.PermissionHelper;
 import com.cxy.magazine.util.Utils;
-import com.google.gson.Gson;
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 import org.json.JSONException;

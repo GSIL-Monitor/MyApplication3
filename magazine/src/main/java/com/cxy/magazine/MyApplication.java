@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.alipay.euler.andfix.patch.PatchManager;
 import com.cxy.magazine.activity.MainActivity;
@@ -19,7 +20,7 @@ import java.util.List;
  * Created by cxy on 2018/1/17.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
     private static final String PAY_66_APPLICATION_ID="42cb2259320944d9a297ce09bf23e8eb";
     private static final String XIAOMI_APP_ID="2882303761517702196";
     private static MainActivity sMainActivity = null;
