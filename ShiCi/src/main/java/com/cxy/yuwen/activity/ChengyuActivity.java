@@ -9,30 +9,23 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.cxy.yuwen.tool.Constants;
 import com.google.gson.Gson;
-import com.xiaomi.ad.AdListener;
-import com.xiaomi.ad.NativeAdInfoIndex;
-import com.xiaomi.ad.NativeAdListener;
-import com.xiaomi.ad.adView.BannerAd;
-import com.xiaomi.ad.adView.InterstitialAd;
-import com.xiaomi.ad.adView.StandardNewsFeedAd;
-import com.xiaomi.ad.common.pojo.AdError;
-import com.xiaomi.ad.common.pojo.AdEvent;
+import com.qq.e.ads.nativ.ADSize;
+import com.qq.e.ads.nativ.NativeExpressAD;
+import com.qq.e.ads.nativ.NativeExpressADView;
 import com.cxy.yuwen.bmobBean.Collect;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.entity.Chengyu;
-import com.cxy.yuwen.MyApplication;
 
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.DBOperate;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import java.util.List;
 
@@ -42,16 +35,12 @@ import cn.bmob.v3.listener.SaveListener;
 public class ChengyuActivity extends BasicActivity {
    // public static final String TAG = "AD-StandardNewsFeed";
     public static final String TAG2 = "AD-StandardFeed";
-    //for app
-    private final static String APP_POSITION_ID_INFO1= "4a69307fd900443f8352830d2e22d962";
-    private final static String APP_POSITION_ID_INFO2 = "9361a745af85674ace175693d77367b8";
-   // private static final String CHAPING_ID = "4a69307fd900443f8352830d2e22d962";   //小米插屏广告id
     TextView nametv,pinyintv,jiehsitv,fromtv,exampletv,yufatv,yinzhengtv,tongyitv,fanyitv,yinzhengjs;
     ScrollView scrollView;
-    private InterstitialAd mInterstitialAd;
-    boolean adFlag=false,isFirst=true;
     private FloatingActionButton fb;
-    private   BannerAd mBannerAd;
+    private NativeExpressAD nativeExpressAD2;
+    private NativeExpressADView nativeExpressADView2;
+    private ViewGroup container2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +64,6 @@ public class ChengyuActivity extends BasicActivity {
 
 
         fb=(FloatingActionButton)findViewById(R.id.chengYuFb);
-        mInterstitialAd = new InterstitialAd(getApplicationContext(),getWindow().getDecorView());
         Intent intent=this.getIntent();
         final Chengyu chengyu=(Chengyu) intent.getSerializableExtra("chengyu");
 
@@ -99,7 +87,7 @@ public class ChengyuActivity extends BasicActivity {
                 //添加收藏action
                 User user= BmobUser.getCurrentUser(User.class);
                 if (user==null){
-                    Util.showConfirmCancelDialog(ChengyuActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+                    Utils.showConfirmCancelDialog(ChengyuActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Intent intent1 = new Intent(ChengyuActivity.this, LoginActivity.class);
@@ -164,122 +152,81 @@ public class ChengyuActivity extends BasicActivity {
 
     public void setXiaoMiAd(){
         //设置信息流大图广告
-        final ViewGroup container = (ViewGroup) findViewById(R.id.adInfomation);
-        final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
-        container.post(new Runnable() {
+        container2 = (ViewGroup) findViewById(R.id.adBanner);
+        nativeExpressAD2 = new NativeExpressAD(this, new ADSize(ADSize.FULL_WIDTH, ADSize.AUTO_HEIGHT), Constants.TENCENT_APPID, Constants.CHENGYU_POS_ID, new NativeExpressAD.NativeExpressADListener() {
             @Override
-            public void run() {
-                try {
-                    standardNewsFeedAd.requestAd(APP_POSITION_ID_INFO1, 1, new NativeAdListener() {
-                        @Override
-                        public void onNativeInfoFail(AdError adError) {
-                            Log.e(TAG, "onNativeInfoFail e : " + adError);
-                        }
+            public void onNoAD(com.qq.e.comm.util.AdError adError) {
 
-                        @Override
-                        public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
-                            NativeAdInfoIndex response = list.get(0);
-                            standardNewsFeedAd.buildViewAsync(response, container.getWidth(), new AdListener() {
-                                @Override
-                                public void onAdError(AdError adError) {
-                                    Log.e(TAG, "error : remove all views");
-                                    container.removeAllViews();
-                                }
+            }
 
-                                @Override
-                                public void onAdEvent(AdEvent adEvent) {
-                                    //目前考虑了３种情况，用户点击信息流广告，用户点击x按钮，以及信息流展示的３种回调，范例如下
-                                    if (adEvent.mType == AdEvent.TYPE_CLICK) {
-                                        Log.d(TAG, "ad has been clicked!");
-                                    } else if (adEvent.mType == AdEvent.TYPE_SKIP) {
-                                        Log.d(TAG, "x button has been clicked!");
-                                    } else if (adEvent.mType == AdEvent.TYPE_VIEW) {
-                                        Log.d(TAG, "ad has been showed!");
-                                    }
-                                }
+            @Override
+            public void onADLoaded(List<NativeExpressADView> adList) {
+                if (nativeExpressADView2 != null) {
+                    nativeExpressADView2.destroy();
+                }
+                if (container2.getVisibility() != View.VISIBLE) {
+                    container2.setVisibility(View.VISIBLE);
+                }
+                if (container2.getChildCount() > 0) {
+                    container2.removeAllViews();
+                }
 
-                                @Override
-                                public void onAdLoaded() {
+                  nativeExpressADView2 = adList.get(0);
+                  container2.addView(nativeExpressADView2);
 
-                                }
+                  nativeExpressADView2.render();
+            }
 
-                                @Override
-                                public void onViewCreated(View view) {
-                                    Log.e(TAG, "onViewCreated");
-                                    container.removeAllViews();
-                                    container.addView(view);
-                                }
-                            });
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
+            @Override
+            public void onRenderFail(NativeExpressADView nativeExpressADView) {
+
+            }
+
+            @Override
+            public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
+
+            }
+
+            @Override
+            public void onADExposure(NativeExpressADView nativeExpressADView) {
+
+            }
+
+            @Override
+            public void onADClicked(NativeExpressADView nativeExpressADView) {
+
+            }
+
+            @Override
+            public void onADClosed(NativeExpressADView nativeExpressADView) {
+                // 当广告模板中的关闭按钮被点击时，广告将不再展示。NativeExpressADView也会被Destroy，释放资源，不可以再用来展示。
+                if (container2 != null && container2.getChildCount() > 0) {
+                    container2.removeAllViews();
+                    container2.setVisibility(View.GONE);
                 }
             }
-        });
 
-        //设置Banner
-        final ViewGroup containerBanner = (ViewGroup) findViewById(R.id.adBanner);
-        containerBanner.post(new Runnable() {
             @Override
-            public void run() {
-                try {
-                    standardNewsFeedAd.requestAd(APP_POSITION_ID_INFO2, 1, new NativeAdListener() {
-                        @Override
-                        public void onNativeInfoFail(AdError adError) {
-                            Log.e(TAG, "onNativeInfoFail e : " + adError);
-                        }
+            public void onADLeftApplication(NativeExpressADView nativeExpressADView) {
 
-                        @Override
-                        public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
-                            NativeAdInfoIndex response = list.get(0);
-                            standardNewsFeedAd.buildViewAsync(response, containerBanner.getWidth(), new AdListener() {
-                                @Override
-                                public void onAdError(AdError adError) {
-                                    Log.e(TAG, "error : remove all views");
-                                    containerBanner.removeAllViews();
-                                }
-
-                                @Override
-                                public void onAdEvent(AdEvent adEvent) {
-                                    //目前考虑了３种情况，用户点击信息流广告，用户点击x按钮，以及信息流展示的３种回调，范例如下
-                                    if (adEvent.mType == AdEvent.TYPE_CLICK) {
-                                        Log.d(TAG, "ad has been clicked!");
-                                    } else if (adEvent.mType == AdEvent.TYPE_SKIP) {
-                                        Log.d(TAG, "x button has been clicked!");
-                                    } else if (adEvent.mType == AdEvent.TYPE_VIEW) {
-                                        Log.d(TAG, "ad has been showed!");
-                                    }
-                                }
-
-                                @Override
-                                public void onAdLoaded() {
-
-                                }
-
-                                @Override
-                                public void onViewCreated(View view) {
-                                    Log.e(TAG, "onViewCreated");
-                                    containerBanner.removeAllViews();
-                                    containerBanner.addView(view);
-                                }
-                            });
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
-        });
+
+            @Override
+            public void onADOpenOverlay(NativeExpressADView nativeExpressADView) {
+
+            }
+
+            @Override
+            public void onADCloseOverlay(NativeExpressADView nativeExpressADView) {
+
+            }
+        });// 传入Activity
+        nativeExpressAD2.loadAD(1);
+
+
 
 
     }
-
-
-
-
-
-
 
 
     @Override

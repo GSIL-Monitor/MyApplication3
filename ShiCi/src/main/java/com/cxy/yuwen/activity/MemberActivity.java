@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -30,7 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cxy.yuwen.bmobBean.MemberPrice;
-import com.cxy.yuwen.tool.CommonUtil;
 import com.eagle.pay66.Pay66;
 import com.eagle.pay66.listener.CommonListener;
 import com.eagle.pay66.vo.OrderPreMessage;
@@ -40,10 +38,9 @@ import com.google.gson.reflect.TypeToken;
 import com.cxy.yuwen.bmobBean.Member;
 import com.cxy.yuwen.bmobBean.MemberRecharge;
 import com.cxy.yuwen.bmobBean.User;
-import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.ResponseParam;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -63,6 +60,8 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+
+import static com.cxy.yuwen.tool.Utils.isEmpty;
 
 
 public class MemberActivity extends BasicActivity implements View.OnClickListener{
@@ -142,7 +141,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
         query.findObjects(new FindListener<MemberPrice>() {
             @Override
             public void done(List<MemberPrice> list, BmobException e) {
-                if (e==null){
+                if (e==null && list!=null){
                     for(MemberPrice memberPrice : list){
                         Integer monthSum=memberPrice.getMonthSum();
                         Double originalPrice=memberPrice.getOriginalPrice();  //原价
@@ -215,7 +214,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                 @Override
                 public void done(List<Member> list, BmobException e) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    if (e == null) {
+                    if (e == null && list!=null) {
                         if (list.size() <= 0) {  //未开通会员
                             memberInfo.setText("未开通会员");
                         } else if (list.size() == 1) {
@@ -246,7 +245,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
 
                         }
                     } else {
-                        Util.toastMessage(MemberActivity.this, "出错了");
+                        Utils.toastMessage(MemberActivity.this, "出错了");
                     }
                 }
             });
@@ -258,7 +257,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
 
     public void setUserImage(){
         String userImageUrl=user.getHeadImageUrl();
-        if (!CommonUtil.isEmpty(userImageUrl)){
+        if (!isEmpty(userImageUrl)){
                headImage=mCache.getAsBitmap("headImageBitmap");
                if (headImage!=null){
                    imageView.setImageBitmap(headImage);
@@ -273,7 +272,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
         @Override
         public void run() {
 
-            headImage = Util.getbitmap(user.getHeadImageUrl());
+            headImage = Utils.getbitmap(user.getHeadImageUrl());
             handler.sendEmptyMessage(IMAGE_LOAD_FINISHED);
         }
     }
@@ -366,7 +365,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             public void onError(int code, String msg) {
                 Log.d(TAG_CREATE_ORDER, "---onError");
                 Log.d(TAG_CREATE_ORDER, "--onError--code=" + code + ",msg=" + msg);
-                Util.showResultDialog(MemberActivity.this,msg,"创建订单失败");
+                Utils.showResultDialog(MemberActivity.this,msg,"创建订单失败");
             }
 
             @Override
@@ -436,7 +435,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
               //  Util.showResultDialog(MemberActivity.this,reason,"出错了");
                 Log.i(TAG_CREATE_ORDER,reason);
                 if ( code == 4){ //内嵌APP不存在
-                    Util.showConfirmCancelDialog(MemberActivity.this, "提示", "使用微信支付，必须先安装我们的安全插件", new DialogInterface.OnClickListener() {
+                    Utils.showConfirmCancelDialog(MemberActivity.this, "提示", "使用微信支付，必须先安装我们的安全插件", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             installPayPlugin("db.db");  //安装插件
@@ -594,7 +593,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                     Log.i("bmob","添加订单成功");
 
                 }else{
-                    Util.toastMessage(MemberActivity.this,"添加订单失败："+e.getMessage()+","+e.getErrorCode());
+                    Utils.toastMessage(MemberActivity.this,"添加订单失败："+e.getMessage()+","+e.getErrorCode());
                 }
 
             }
@@ -618,7 +617,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                     addMonth=6;
 
                 }
-               if (e==null){
+               if (e==null && list!=null){
                    if (list.size()<=0){ //插入操作
                        Member member=new Member();
                        member.setUser(user);
@@ -641,7 +640,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                                    checkMemberState();
 
                                }else{
-                                   Util.toastMessage(MemberActivity.this,"添加数据失败："+e.getMessage()+","+e.getErrorCode());
+                                   Utils.toastMessage(MemberActivity.this,"添加数据失败："+e.getMessage()+","+e.getErrorCode());
                                    Log.i("bmob","添加数据失败："+e.getMessage()+","+e.getErrorCode());
                                }
                            }
@@ -681,7 +680,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                                        checkMemberState();
                                    }else{
                                        Log.i("bmob","更新数据更新失败："+e.getMessage()+","+e.getErrorCode());
-                                       Util.toastMessage(MemberActivity.this,"更新失败："+e.getMessage()+","+e.getErrorCode());
+                                       Utils.toastMessage(MemberActivity.this,"更新失败："+e.getMessage()+","+e.getErrorCode());
                                    }
                                }
                            });
@@ -692,11 +691,11 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                        }
 
                    }else{
-                       Util.showResultDialog(MemberActivity.this,"出错了","提示");
+                       Utils.showResultDialog(MemberActivity.this,"出错了","提示");
                    }
 
                }else{
-                   Util.toastMessage(MemberActivity.this,"查询失败："+e.getMessage()+","+e.getErrorCode());
+                   Utils.toastMessage(MemberActivity.this,"查询失败："+e.getMessage()+","+e.getErrorCode());
                    Log.i("bmob","查询失败："+e.getMessage()+","+e.getErrorCode());
                }
             }

@@ -1,28 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:ignore="HardcodedText"
+android:id="@+id/cl_zi">
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="HardcodedText"
-    tools:context=".activity.ZidianActivity"
-    android:id="@+id/zidianConlayout"
-    >
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/hanzi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="中"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:textColor="#000"
+            android:textSize="25sp"
+            tools:textIsSelectable="true"/>
+        <TextView
+            android:id="@+id/py"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/fontBackground"
+            android:text="拼音"
+            android:textSize="16sp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            tools:textIsSelectable="true" />
+        <TextView
+            android:id="@+id/pinyin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="zhong"
+            android:textSize="18sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="10dp"
+            android:textColor="#000" />
+        <TextView
+            android:id="@+id/dy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/fontBackground"
+            android:text="读音"
+            android:textSize="15sp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+        <TextView
+            android:id="@+id/duyin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="zhòng,zhōng"
+            android:textSize="18sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="10dp"
+            tools:textIsSelectable="true"
+            android:textColor="#000"/>
+        <TextView
+            android:id="@+id/bs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/fontBackground"
+            android:text="部首"
+            android:textSize="15sp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+        <TextView
+            android:id="@+id/bushou"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="丨"
+            android:textSize="18sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="10dp"
+            android:textColor="#000"
+            tools:textIsSelectable="true"
+            />
+        <TextView
+            android:id="@+id/bh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/fontBackground"
+            android:text="笔画"
+            android:textSize="15sp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+        <TextView
+            android:id="@+id/bihua"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="4"
+            android:textSize="18sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="10dp"
+            tools:textIsSelectable="true"
+            android:textColor="#000"/>
+        <TextView
+            android:id="@+id/jj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/fontBackground"
+            android:text="简解"
+            android:textSize="15sp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+        <TextView
+            android:id="@+id/jianjie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="中 zhōng 和四方、上下或两端距离同等的地位：中心。......"
+            android:textSize="18sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="10dp"
+            tools:textIsSelectable="true"
+            android:textColor="#000"
+            android:lineSpacingExtra="10dp"/>
+        <TextView
+            android:id="@+id/xj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/fontBackground"
+            android:text="详解（点我呀）"
+            android:textSize="15sp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:id="@+id/xiangjie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="中 zhōng 和四方、上下或两端距离同等的地位：中心。......"
+            android:textSize="18sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="10dp"
+            tools:textIsSelectable="true"
+            android:textColor="#000"
+            android:lineSpacingExtra="10dp"
+            android:visibility="gone"/>
+        <FrameLayout
+            android:id="@+id/ziAd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        
+    </LinearLayout>
+    
+</ScrollView>
 
-    <ListView
-        android:id="@+id/zidianLv"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
-        <!--android:divider="#000"
-        android:dividerHeight="1dp"-->
-
-    </ListView>
+<android.support.design.widget.FloatingActionButton
+    android:id="@+id/zidianFb"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    app:fabSize="mini"
+    app:srcCompat="@android:drawable/btn_star_big_on"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_marginTop="20dp"
+    android:layout_marginRight="10dp"
+    app:layout_constraintRight_toRightOf="parent"
+    tools:ignore="RtlHardcoded"
+    android:layout_marginEnd="10dp" />
 
 </android.support.constraint.ConstraintLayout>

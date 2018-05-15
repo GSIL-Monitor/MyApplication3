@@ -1,13 +1,11 @@
 package com.cxy.yuwen.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,8 +22,7 @@ import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.BaseUIListener;
-import com.cxy.yuwen.tool.Util;
-import com.cxy.yuwen.tool.CommonUtil;
+import com.cxy.yuwen.tool.Utils;
 
 import org.json.JSONObject;
 
@@ -51,7 +48,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         ActionBar bar= getSupportActionBar();
         bar.setTitle("登录账号");
         if (mTencent == null) {
-            mTencent = Tencent.createInstance(CommonUtil.TencentAppId, this);
+            mTencent = Tencent.createInstance(Utils.TencentAppId, this);
         }
 
         etUserName=(EditText)findViewById(R.id.et_account) ;
@@ -74,31 +71,36 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
             startActivity(intent);
         }
          if (view.getId()==R.id.btn_login){  //登录
-             Util.showProgressDialog(LoginActivity.this,null,"登录中，请稍候！");
              String userName=etUserName.getText().toString();
              String password=etPassword.getText().toString();
+             if (TextUtils.isEmpty(userName)||TextUtils.isEmpty(password)){
+                Utils.toastMessage(LoginActivity.this,"请输入用户名和密码！");
+             }else{
+
+
+             Utils.showProgressDialog(LoginActivity.this,null,"登录中，请稍候！");
 
              User user=new User();
              user.setUsername(userName);
-             user.setPassword(CommonUtil.encryptBySHA(password));
+             user.setPassword(Utils.encryptBySHA(password));
 
              user.login(new SaveListener<BmobUser>() {
 
                  @Override
                  public void done(BmobUser bmobUser, BmobException e) {
                      if(e==null){  //login success
-                         Util.dismissDialog();
+                         Utils.dismissDialog();
 
                          finish();
                      }else{
-                         Util.dismissDialog();
-                         Util.showResultDialog(LoginActivity.this,"用户名或密码错误,请重新输入！",null);
+                         Utils.dismissDialog();
+                         Utils.showResultDialog(LoginActivity.this,"用户名或密码错误,请重新输入！",null);
                          Log.i(MyApplication.TAG,e.toString());
                      }
                  }
              });
 
-
+             }
 
          }
         if (view.getId()==R.id.tv_qq) { //qq登录
@@ -115,7 +117,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     private void onClickLogin() {
 
             mTencent.login(this, "all", loginListener);
-            Util.showProgressDialog(LoginActivity.this, null, "请稍后");
+            Utils.showProgressDialog(LoginActivity.this, null, "请稍后");
 
             Log.d("SDKQQAgentPref", "FirstLaunch_SDK:" + SystemClock.elapsedRealtime());
 
@@ -159,12 +161,12 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         @Override
         public void onComplete(Object response) {
             if (null == response) {
-                Util.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
+                Utils.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
                 return;
             }
             JSONObject jsonResponse = (JSONObject) response;
             if (null != jsonResponse && jsonResponse.length() == 0) {
-                Util.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
+                Utils.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
                 return;
             }
           //  Util.showResultDialog(LoginActivity.this, response.toString(), "登录成功");
@@ -181,14 +183,14 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
 
         @Override
         public void onError(UiError e) {
-            Util.toastMessage(LoginActivity.this, "onError: " + e.errorDetail);
-            Util.dismissDialog();
+            Utils.toastMessage(LoginActivity.this, "onError: " + e.errorDetail);
+            Utils.dismissDialog();
         }
 
         @Override
         public void onCancel() {
-            Util.toastMessage(LoginActivity.this, "onCancel: ");
-            Util.dismissDialog();
+            Utils.toastMessage(LoginActivity.this, "onCancel: ");
+            Utils.dismissDialog();
 
         }
     }
@@ -220,7 +222,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         BaseUIListener listener = new BaseUIListener(LoginActivity.this,"get_simple_userinfo") {
                 @Override
                 public void onComplete(Object response) {
-                    Util.dismissDialog();
+                    Utils.dismissDialog();
                     Message msg = mHandler.obtainMessage();
                     msg.what = 0;
                     msg.obj = response;

@@ -11,22 +11,21 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cxy.yuwen.tool.Constants;
 import com.google.gson.Gson;
-import com.xiaomi.ad.AdListener;
-import com.xiaomi.ad.NativeAdInfoIndex;
-import com.xiaomi.ad.NativeAdListener;
-import com.xiaomi.ad.adView.StandardNewsFeedAd;
-import com.xiaomi.ad.common.pojo.AdError;
-import com.xiaomi.ad.common.pojo.AdEvent;
+import com.qq.e.ads.banner.ADSize;
+import com.qq.e.ads.banner.AbstractBannerADListener;
+import com.qq.e.ads.banner.BannerADListener;
+import com.qq.e.ads.banner.BannerView;
 import com.cxy.yuwen.bmobBean.Collect;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.entity.CiYu;
-import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.PermissionHelper;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import java.util.List;
 
@@ -37,21 +36,19 @@ import cn.bmob.v3.listener.SaveListener;
 
 public class CiYuActivity extends BasicActivity {
     TextView tvTitle,tvPinyin,tvJieshi;
-    private PermissionHelper mPermissionHelper;
     public static final String TAG = "AD-StandardNewsFeed";
     private final static String APP_POSITION_ID ="8d0d22595b6cf5057d6bd467eb09c3d8";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ciyu);
-     //   MyApplication.getInstance().addActivity(this);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
 
         tvTitle = (TextView) findViewById(R.id.ci_title);
         tvPinyin = (TextView) findViewById(R.id.ci_pinyin);
         tvJieshi = (TextView) findViewById(R.id.ci_jieshi);
-        final ViewGroup container = (ViewGroup) findViewById(R.id.containerCi);
+
 
         Intent intent = this.getIntent();
         final CiYu ciYu = (CiYu) intent.getSerializableExtra("ciYu");
@@ -60,7 +57,7 @@ public class CiYuActivity extends BasicActivity {
         tvTitle.setText(ciYu.getName());
         tvPinyin.setText(ciYu.getContent().split("<br>")[0]);
         tvJieshi.setText(ciYu.getContent().split("<br>")[1]);
-        final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
+      /*  final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
         container.post(new Runnable() {
             @Override
             public void run() {
@@ -111,7 +108,7 @@ public class CiYuActivity extends BasicActivity {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.ciYuFb);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +118,7 @@ public class CiYuActivity extends BasicActivity {
             public void onClick(View view) {
                 User user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
                 if (user == null) {   //未登录
-                    Util.showConfirmCancelDialog(CiYuActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+                    Utils.showConfirmCancelDialog(CiYuActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Intent intent1 = new Intent(CiYuActivity.this, LoginActivity.class);
@@ -145,7 +142,7 @@ public class CiYuActivity extends BasicActivity {
                             if (e == null) {
                                 Log.i("bmob", "收藏保存成功");
 
-                                ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.ciYuConstraintLayout);
+                                RelativeLayout layout = (RelativeLayout) findViewById(R.id.ciYuConstraintLayout);
 
                                 Snackbar.make(layout, "已收藏该词语", Snackbar.LENGTH_LONG).setAction("查看我的收藏", new View.OnClickListener() {
                                     @Override
@@ -167,7 +164,62 @@ public class CiYuActivity extends BasicActivity {
 
         });
 
+        setAd();
+
     }
+public void setAd(){
+    final ViewGroup container = (ViewGroup) findViewById(R.id.containerCi);
+    // 创建Banner广告AdView对象
+    // appId : 在 http://e.qq.com/dev/ 能看到的app唯一字符串
+    // posId : 在 http://e.qq.com/dev/ 生成的数字串，并非 appid 或者 appkey
+    final BannerView banner = new BannerView(this, ADSize.BANNER, Constants.TENCENT_APPID, Constants.CIYU_POS_ID);
+    container.addView(banner);
+    //设置广告轮播时间，为0或30~120之间的数字，单位为s,0标识不自动轮播
+    banner.setRefresh(30);
+    banner.setADListener(new BannerADListener() {
+        @Override
+        public void onNoAD(com.qq.e.comm.util.AdError adError) {
+
+        }
+
+        @Override
+        public void onADReceiv() {
+
+        }
+
+        @Override
+        public void onADExposure() {
+
+        }
+
+        @Override
+        public void onADClosed() {
+
+        }
+
+        @Override
+        public void onADClicked() {
+
+        }
+
+        @Override
+        public void onADLeftApplication() {
+
+        }
+
+        @Override
+        public void onADOpenOverlay() {
+
+        }
+
+        @Override
+        public void onADCloseOverlay() {
+
+        }
+    });
+        /* 发起广告请求，收到广告数据后会展示数据   */
+    banner.loadAD();
+}
 
 
 

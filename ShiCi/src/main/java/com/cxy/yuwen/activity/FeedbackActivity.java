@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,12 +14,8 @@ import android.widget.EditText;
 
 import com.cxy.yuwen.tool.EmailUtil;
 import com.google.gson.JsonObject;
-import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.R;
-import com.cxy.yuwen.tool.Email;
-import com.cxy.yuwen.tool.Util;
-
-import java.security.GeneralSecurityException;
+import com.cxy.yuwen.tool.Utils;
 
 
 public class FeedbackActivity extends BasicActivity {
@@ -50,7 +45,7 @@ public class FeedbackActivity extends BasicActivity {
                 weChat=editWechat.getText().toString();
                 email=editEmail.getText().toString();
                 if (feedback.length()>0){
-                    Util.showProgressDialog(FeedbackActivity.this,null,"正在发送，请稍候");
+                    Utils.showProgressDialog(FeedbackActivity.this,null,"正在发送，请稍候");
 
                     Thread thread=new Thread(new Runnable() {
                        @Override
@@ -86,7 +81,7 @@ public class FeedbackActivity extends BasicActivity {
     private Handler mUIHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Util.dismissDialog();
+            Utils.dismissDialog();
             switch (msg.what) {
                 case 1:
 

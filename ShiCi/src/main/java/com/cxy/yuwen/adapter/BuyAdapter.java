@@ -1,6 +1,8 @@
 package com.cxy.yuwen.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,32 +13,30 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cxy.yuwen.R;
+import com.cxy.yuwen.bmobBean.BuyBean;
 
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 /**
  * Created by cxy on 2017/12/31.
  */
 
 
-public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyViewHolder>{
+public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.MyViewHolder>{
     private Context context;
-    private ArrayList<HashMap> dataDisplayList;
+    private List<BuyBean> dataDisplayList;
+    private Bitmap defaultImage;
     private GridLayoutManager gridLayoutManager;
 
-    //  private Bitmap defaultImage;
-
-    public ImageTextAdapter(Context context, ArrayList<HashMap> dataDisplayList,GridLayoutManager gridLayoutManager) {
+    public BuyAdapter(Context context, List<BuyBean> dataDisplayList, GridLayoutManager gridLayoutManager) {
         this.context = context;
         this.dataDisplayList = dataDisplayList;
         this.gridLayoutManager=gridLayoutManager;
-        //  defaultImage = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.default_book);
+        defaultImage = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.default_book);
     }
 
     @Override
@@ -47,14 +47,14 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final HashMap hashMap=dataDisplayList.get(position);
-        final String imageSrc=hashMap.get("imageSrc").toString();
+        final BuyBean buyBean=dataDisplayList.get(position);
+        final String imageSrc=buyBean.getCoverUrl();
 
-        holder.tvCoverName.setText(hashMap.get("name").toString());
-        holder.tvCoverOrder.setText(hashMap.get("time").toString());
-        //   holder.imCover.setImageBitmap(defaultImage);
-        //      holder.imCover.setTag(imageSrc);
-        //    holder.imTag=imageSrc;
+        holder.tvCoverName.setText(buyBean.getBookName());
+        holder.tvCoverOrder.setText(buyBean.getPublishTime());
+        holder.imCover.setImageBitmap(defaultImage);
+     //   holder.imCover.setTag(imageSrc);
+      //  holder.imTag=imageSrc;
 
         int width=(gridLayoutManager.getWidth()-120)/2;
         int height=width+width/3;
@@ -62,8 +62,9 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
         lp.width = width;
         lp.height = height;
         holder.imCover.setLayoutParams(lp);
-        //holder.imCover.setMaxWidth(width);
-        // holder.imCover.setMaxHeight(height);
+
+     /*   holder.imCover.setMaxWidth(width);
+        holder.imCover.setMaxHeight(height);*/
 
         Glide.with(context)
                 .load(imageSrc)
@@ -71,7 +72,20 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
                 .error(R.drawable.default_book)
                 .into(holder.imCover);
 
+      /*  //新的线程中根据url获取图片
+        new Thread(){
+            @Override
+            public void run() {
+                Bitmap bitmap= Utils.getbitmap(imageSrc);
+                holder.bitmap=bitmap;
+                Message message=new Message();
+                message.what=101;
+                message.obj=holder;
+                uiHandler.sendMessage(message);
 
+            }
+        }.start();
+*/
 
     }
 
@@ -82,6 +96,19 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
         return dataDisplayList.size();
     }
 
+   /* Handler uiHandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            MyViewHolder holder=(MyViewHolder) msg.obj;
+            if (msg.what==101){
+                if (holder.imTag.equals(holder.imCover.getTag())){
+                    holder.imCover.setImageBitmap(holder.bitmap);
+                }
+            }
+        }
+    };*/
+
     class MyViewHolder extends RecyclerView.ViewHolder
     {
         @BindView(R.id.coverName)
@@ -89,6 +116,8 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
         @BindView(R.id.coverOrder) TextView tvCoverOrder;
         @BindView(R.id.coverImage)
         ImageView imCover;
+        Bitmap bitmap;
+        String imTag="";
 
 
 

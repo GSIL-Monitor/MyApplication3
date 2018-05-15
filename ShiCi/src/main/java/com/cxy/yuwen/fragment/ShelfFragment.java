@@ -13,19 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.cxy.yuwen.Adapter.BookshelfAdapter;
-import com.cxy.yuwen.Adapter.ImageTextAdapter;
+import com.cxy.yuwen.adapter.BookshelfAdapter;
 import com.cxy.yuwen.R;
-import com.cxy.yuwen.activity.CollectActivity;
 import com.cxy.yuwen.activity.LoginActivity;
 import com.cxy.yuwen.activity.MagazineDirectoryActivity;
-import com.cxy.yuwen.activity.MainActivity;
 import com.cxy.yuwen.bmobBean.Bookshelf;
-import com.cxy.yuwen.bmobBean.Collect;
 import com.cxy.yuwen.bmobBean.User;
-import com.cxy.yuwen.tool.Util;
-import com.github.jdsjlzx.ItemDecoration.GridItemDecoration;
-import com.github.jdsjlzx.ItemDecoration.SpacesItemDecoration;
+import com.cxy.yuwen.tool.Utils;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -85,7 +79,7 @@ public class ShelfFragment extends Fragment {
         //查询数据
        user= BmobUser.getCurrentUser(User.class);
         if (user==null){
-            Util.showConfirmCancelDialog(getActivity(), "提示", "请先登录,以同步书架！", new DialogInterface.OnClickListener() {
+            Utils.showConfirmCancelDialog(getActivity(), "提示", "请先登录,以同步书架！", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Intent intent1 = new Intent(getActivity(), LoginActivity.class);
@@ -93,7 +87,7 @@ public class ShelfFragment extends Fragment {
                 }
             });
         }else{
-            BmobQuery<Bookshelf> query = new BmobQuery<Bookshelf>();
+            final BmobQuery<Bookshelf> query = new BmobQuery<Bookshelf>();
 
             query.addWhereEqualTo("user", user);    // 查询当前用户的所有收藏内容
             query.order("-updatedAt");      //按照创建时间排序
@@ -103,7 +97,7 @@ public class ShelfFragment extends Fragment {
             query.findObjects(new FindListener<Bookshelf>() {
                 @Override
                 public void done(List<Bookshelf> queryList, BmobException e) {
-                    if(e==null){
+                    if(e==null && query!=null){
                         Log.i("bmob","查询成功：共"+queryList.size()+"条数据。");
 
                         bookList.addAll(queryList);
@@ -172,11 +166,11 @@ public class ShelfFragment extends Fragment {
                          @Override
                          public void done(BmobException e) {
                              if (e==null){
-                                 Util.toastMessage(getActivity(),"删除书籍成功");
+                                 Utils.toastMessage(getActivity(),"删除书籍成功");
                                  bookList.remove(position);
                                  mLRecyclerViewAdapter.notifyDataSetChanged();
                              }else{
-                                Util.toastMessage(getActivity(),e.getMessage());
+                                Utils.toastMessage(getActivity(),e.getMessage());
                              }
                          }
                      });

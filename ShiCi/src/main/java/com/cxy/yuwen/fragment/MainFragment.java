@@ -1,5 +1,6 @@
 package com.cxy.yuwen.fragment;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,9 +10,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +24,7 @@ import android.widget.TextView;
 
 import com.cxy.yuwen.activity.ChengyuActivity;
 import com.cxy.yuwen.activity.CiYuActivity;
+import com.cxy.yuwen.activity.MainActivity;
 import com.cxy.yuwen.activity.ShiciActivity;
 import com.cxy.yuwen.activity.ZidianActivity;
 import com.cxy.yuwen.entity.Article;
@@ -35,7 +35,7 @@ import com.cxy.yuwen.tool.Adapter;
 import com.cxy.yuwen.tool.NetWorkUtils;
 import com.cxy.yuwen.tool.NetworkConnection;
 import com.cxy.yuwen.tool.OkHttpUtil;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,10 +70,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
     private LinearLayout layout;
     private View layoutView;
    // private ImageView mUserLogo;
-
-
-    //String json = "";
-  //  String from = "";
+    Context  context=null;
 
     Article    article;
     Chengyu chengYu;
@@ -90,7 +87,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         layoutView = inflater.inflate(R.layout.fragment_main, null);
 
-
+        context=this.getContext();
         textView = (TextView)layoutView.findViewById(R.id.tv);
         listView = (ListView)layoutView.findViewById(R.id.lv);
         btnZi = (Button)layoutView.findViewById(R.id.btnZi);
@@ -260,7 +257,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 
 
             if (text == null || text.length() <= 0) {
-                Util.showResultDialog(getActivity(), "请输入要查询的内容!", "提示");
+                Utils.showResultDialog(getActivity(), "请输入要查询的内容!", "提示");
 
              //   new AlertDialog.Builder(MainActivity.this).setMessage("请输入要查询的内容!").setPositiveButton("确定", null).create().show();
 
@@ -269,16 +266,19 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 
                 boolean networkSate= NetWorkUtils.isNetworkConnected(this.getActivity());
                 if (!networkSate){
-                    Util.toastMessage(this.getActivity(),"网络连接不可用，请检查网络状态");
+                    Utils.toastMessage(this.getActivity(),"网络连接不可用，请检查网络状态");
                 }else{
                     pageNum = 1;
                     switch (v.getId()) {
                         case R.id.btnZi:    //字典
-                            Intent intent=new Intent(getActivity(),ZidianActivity.class);
+                            if (text.length()>1){
+                                 Utils.showResultDialog(getActivity(),"字典查询每次只能输入一个汉字","提示");
+                            }else{
+                                Intent intent=new Intent(getActivity(),ZidianActivity.class);
+                                intent.putExtra("queryText",text);
+                                startActivity(intent);
+                            }
 
-                            intent.putExtra("queryText",text);
-
-                            startActivity(intent);
                             break;
                         case R.id.btnIdiom:    //成语
                             mark = FLAG_IDIOM;
@@ -375,7 +375,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 
                     break;
                 case MSG_LOADED_fail:
-                    Util.showResultDialog(getActivity(), "查询不到相关内容，请重新输入！", "提示");
+                  Utils.showResultDialog(context,"查询不到相关内容，请重新输入！","提示");
                    // new AlertDialog.Builder(MainActivity.this).setMessage("查询不到相关内容，请重新输入！").setPositiveButton("确定", null).create().show();
                     break;
 

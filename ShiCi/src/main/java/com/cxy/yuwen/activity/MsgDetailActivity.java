@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.bmobBean.MsgNotification;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +51,7 @@ public class MsgDetailActivity extends BasicActivity {
                     Log.i("bmob","更新成功");
 
                 }else{
-                    Util.toastMessage(MsgDetailActivity.this,"更新信息失败："+e.getMessage());
+                    Utils.toastMessage(MsgDetailActivity.this,"更新信息失败："+e.getMessage());
                 }
             }
         });
@@ -70,7 +70,7 @@ public class MsgDetailActivity extends BasicActivity {
                     finish();
 
                 }else{
-                    Util.toastMessage(MsgDetailActivity.this,"删除失败：" + e.getMessage());
+                    Utils.toastMessage(MsgDetailActivity.this,"删除失败：" + e.getMessage());
                 }
             }
         });

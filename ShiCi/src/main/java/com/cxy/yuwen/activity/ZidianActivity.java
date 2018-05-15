@@ -15,24 +15,20 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.xiaomi.ad.AdListener;
-import com.xiaomi.ad.NativeAdInfoIndex;
-import com.xiaomi.ad.NativeAdListener;
-import com.xiaomi.ad.adView.StandardNewsFeedAd;
-import com.xiaomi.ad.common.pojo.AdError;
-import com.xiaomi.ad.common.pojo.AdEvent;
 import com.cxy.yuwen.bmobBean.Collect;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.entity.Zi;
-import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.R;
 
+import com.cxy.yuwen.tool.Constants;
 import com.cxy.yuwen.tool.NetworkConnection;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
+import com.qq.e.ads.nativ.ADSize;
+import com.qq.e.ads.nativ.NativeExpressAD;
+import com.qq.e.ads.nativ.NativeExpressADView;
+import com.qq.e.comm.util.AdError;
 
 
 import org.json.JSONArray;
@@ -43,63 +39,152 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
 
-public class ZidianActivity extends BasicActivity {
-    public static final String TAG = "AD-StandardNewsFeed";
-    private final static String APP_POSITION_ID = "35e0adcb1e64ae7d3d2f964f71ff8b2f";
-    private int[] mAdPositionList = {1, 3, 5};
-    private ArrayList<NativeAdInfoIndex> mStuffList;
-    private StandardNewsFeedAd mStandardNewsFeedAd;
-  //  private Map<Integer,Boolean> pyMap,dyMap,bsMap,bhMap,jjMap,xjMap;
+public class ZidianActivity extends BasicActivity implements NativeExpressAD.NativeExpressADListener{
+
 
     private List<Object> ziList;
-
-
-
     private String queryText;  // 要查询的内容
-    private ListView listView;
-    private ZidianAdapter adapter;
+   
+  //  private ZidianAdapter adapter;
     private static final int MSG_LOAD_SUCCESS=100;
     private static final int MSG_ERROR=0;
     private String error="";
 
+    @BindView(R.id.hanzi)
+    TextView hanzi;
+    @BindView(R.id.pinyin)
+    TextView pinyin;
+    @BindView(R.id.duyin )
+    TextView duyin;
+    @BindView(R.id.bushou)
+    TextView bushou;
+    @BindView(R.id.bihua)
+    TextView bihua;
+    @BindView(R.id.jianjie)
+    TextView jianjie;
+    @BindView(R.id.xiangjie)
+    TextView xiangjie;
 
+    @BindView(R.id.cl_zi)
+    ConstraintLayout constraintLayout;
+    @BindView(R.id.zidianFb)
+    FloatingActionButton fab;
+
+    ViewGroup containerAd;
+
+    private NativeExpressAD nativeExpressAD;
+    private NativeExpressADView nativeExpressADView;
+
+
+    Zi zi=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.zidian);
-     //   MyApplication.getInstance().addActivity(this);
-
-
+        ButterKnife.bind(this);
+        containerAd=(ViewGroup)findViewById(R.id.ziAd);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
 
-        mStuffList = new ArrayList<NativeAdInfoIndex>();
-        mStandardNewsFeedAd = new StandardNewsFeedAd(this);
-        listView=(ListView)findViewById(R.id.zidianLv);
+      
 
         Intent intent=this.getIntent();
         queryText=intent.getStringExtra("queryText");
-        ziList=new ArrayList<Object>();
+      //  ziList=new ArrayList<Object>();
 
 
-       // Util.showProgressDialog(this,"请稍候","正在加载");
         Thread thread=new Thread(zidianRunnable);
         thread.start();
 
-
-
-
+        setAd();
 
 
     }
 
+    public void setAd(){
+        //设置信息流大图广告
+        nativeExpressAD = new NativeExpressAD(this, new ADSize(ADSize.FULL_WIDTH, ADSize.AUTO_HEIGHT), Constants.TENCENT_APPID,
+                Constants.ZI_POS_ID, this);
+        nativeExpressAD.loadAD(1);
 
+    }
+
+    @Override
+    public void onNoAD(AdError adError) {
+
+    }
+
+    @Override
+    public void onADLoaded(List<NativeExpressADView> adList) {
+        if (nativeExpressADView != null) {
+            nativeExpressADView.destroy();
+        }
+        if (containerAd.getVisibility() != View.VISIBLE) {
+            containerAd.setVisibility(View.VISIBLE);
+        }
+        if (containerAd.getChildCount() > 0) {
+            containerAd.removeAllViews();
+        }
+
+        nativeExpressADView = adList.get(0);
+        containerAd.addView(nativeExpressADView);
+
+        nativeExpressADView.render();
+    }
+
+    @Override
+    public void onRenderFail(NativeExpressADView nativeExpressADView) {
+
+    }
+
+    @Override
+    public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
+
+    }
+
+    @Override
+    public void onADExposure(NativeExpressADView nativeExpressADView) {
+
+    }
+
+    @Override
+    public void onADClicked(NativeExpressADView nativeExpressADView) {
+
+    }
+
+    @Override
+    public void onADClosed(NativeExpressADView nativeExpressADView) {
+        // 当广告模板中的关闭按钮被点击时，广告将不再展示。NativeExpressADView也会被Destroy，释放资源，不可以再用来展示。
+        if (containerAd != null && containerAd.getChildCount() > 0) {
+            containerAd.removeAllViews();
+            containerAd.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onADLeftApplication(NativeExpressADView nativeExpressADView) {
+
+    }
+
+    @Override
+    public void onADOpenOverlay(NativeExpressADView nativeExpressADView) {
+
+    }
+
+    @Override
+    public void onADCloseOverlay(NativeExpressADView nativeExpressADView) {
+
+    }
 
     Runnable zidianRunnable=new Runnable() {
         @Override
@@ -120,6 +205,7 @@ public class ZidianActivity extends BasicActivity {
         }
     };
 
+
     /**
      * 解析数据字符串
      * @param str
@@ -130,9 +216,9 @@ public class ZidianActivity extends BasicActivity {
            JSONObject jsonObject = new JSONObject(str);
            if(jsonObject.getInt("error_code")==0){
                JSONArray dataArray=jsonObject.getJSONArray("result");
-               for (int i=0;i<dataArray.length();i++){
+               for (int i=0;i<dataArray.length();i++){      //length=1;
                    JSONObject ziData=dataArray.getJSONObject(i);
-                   Zi zi=new Zi();
+                   zi=new Zi();
                   // zi.setId(ziData.getString("id"));
                    zi.setHanzi(ziData.getString("hanzi"));
                    zi.setPinyin(ziData.getString("pinyin"));
@@ -142,7 +228,7 @@ public class ZidianActivity extends BasicActivity {
                    zi.setJianjie(ziData.getString("jianjie"));
                    zi.setXiangjie(ziData.getString("xiangjie"));
 
-                   ziList.add(zi);
+                 //  ziList.add(zi);
 
                }
 
@@ -164,17 +250,18 @@ public class ZidianActivity extends BasicActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_LOAD_SUCCESS:
-                   // footer.setVisibility(View.GONE);
-
-                 //   Util.dismissDialog();
-                    //更新ListView显示
-                    adapter = new ZidianAdapter(ZidianActivity.this);
-                    listView.setAdapter(adapter);
-                    loadAd();
+                    hanzi.setText(zi.getHanzi());
+                    pinyin.setText(zi.getPinyin());
+                    duyin.setText(zi.getDuyin());
+                    bushou.setText(zi.getBushou());
+                    bihua.setText(zi.getBihua());
+                    jianjie.setText(zi.getJianjie());
+                    xiangjie.setText(zi.getXiangjie());
+                 //   loadAd();
                     break;
                 case MSG_ERROR:
 
-                Util.showResultDialog(ZidianActivity.this,error,"警告");
+                Utils.showResultDialog(ZidianActivity.this,error,"警告");
                     break;
 
 
@@ -191,283 +278,107 @@ public class ZidianActivity extends BasicActivity {
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //注意要在这里重设一遍adpater，以免事件处理出现问题
-      listView.setAdapter(adapter);
+  @OnClick(R.id.py)
+    public void  pyClick(){
+      if (pinyin.getVisibility() == View.GONE) {
+          pinyin.setVisibility(View.VISIBLE);
+      } else if (pinyin.getVisibility() == View.VISIBLE) {
+
+          pinyin.setVisibility(View.GONE);
+      }
+   }
+    @OnClick(R.id.dy)
+    public void  dyClick(){
+        if (duyin.getVisibility() == View.GONE) {
+            duyin.setVisibility(View.VISIBLE);
+        } else if (duyin.getVisibility() == View.VISIBLE) {
+
+            duyin.setVisibility(View.GONE);
+        }
+    }
+    @OnClick(R.id.bs)
+    public void  bsClick(){
+        if (bushou.getVisibility() == View.GONE) {
+            bushou.setVisibility(View.VISIBLE);
+        } else if (bushou.getVisibility() == View.VISIBLE) {
+
+            bushou.setVisibility(View.GONE);
+        }
+    }
+    @OnClick(R.id.bh)
+    public void  bhClick(){
+        if (bihua.getVisibility() == View.GONE) {
+            bihua.setVisibility(View.VISIBLE);
+        } else if (bihua.getVisibility() == View.VISIBLE) {
+
+            bihua.setVisibility(View.GONE);
+        }
+    }
+    @OnClick(R.id.jj)
+    public void  jjClick(){
+        if (jianjie.getVisibility() == View.GONE) {
+            jianjie.setVisibility(View.VISIBLE);
+        } else if (jianjie.getVisibility() == View.VISIBLE) {
+
+            jianjie.setVisibility(View.GONE);
+        }
+    }
+    @OnClick(R.id.xj)
+    public void  xjClick(){
+        if (xiangjie.getVisibility() == View.GONE) {
+            xiangjie.setVisibility(View.VISIBLE);
+        } else if (xiangjie.getVisibility() == View.VISIBLE) {
+
+            xiangjie.setVisibility(View.GONE);
+        }
     }
 
+    @OnClick(R.id.zidianFb)
+    public  void  collect(){
 
-    class ZidianAdapter extends BaseAdapter {
-
-        private LayoutInflater mInflater;
-
-
-
-        public ZidianAdapter(Context context) {
-
-
-
-            mInflater = LayoutInflater.from(context);
-
-
-        }
-
-
-        @Override
-        public int getCount() {
-            return ziList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return ziList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-
-        private boolean isAdPosition(int index) {
-            for (int i = 0; i < mAdPositionList.length; i++) {
-                if (mAdPositionList[i] == index) {
-                    return true;
+        User user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
+        if (user == null) {   //未登录
+            Utils.showConfirmCancelDialog(ZidianActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent1 = new Intent(ZidianActivity.this, LoginActivity.class);
+                    startActivity(intent1);
                 }
-            }
-            return false;
-        }
+            });
+        } else {
 
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-
-              Log.i("Listview",position+"---");
-            if (isAdPosition(position) && ziList.get(position) instanceof ViewGroup) {
-                return (View) ziList.get(position);
-            }
-            else {
-                ViewHolder holder = null;
-                ConstraintLayout constraintLayout;
-                //判断是否缓存
-                if (convertView != null && convertView instanceof ConstraintLayout) {
-
-                    //通过tag找到缓存的布局
-                    holder = (ViewHolder) convertView.getTag();
-                    constraintLayout=(ConstraintLayout)convertView;
+            //添加收藏action
+            //  User user= BmobUser.getCurrentUser(User.class);
+            Collect collect = new Collect();
+            collect.setName(hanzi.getText().toString());
+            collect.setUser(user);
+            collect.setType(Collect.ZI);
 
 
-                } else {
-
-                    holder = new ViewHolder();
-                    //通过LayoutInflater实例化布局
-                    constraintLayout = (ConstraintLayout )mInflater.inflate(R.layout.zidian_item, null);
-
-                    holder.hanzi = (TextView) constraintLayout.findViewById(R.id.hanzi);   //下次不用再findViewById()
-                    holder.pinyin = (TextView) constraintLayout.findViewById(R.id.pinyin);
-                    holder.duyin = (TextView) constraintLayout.findViewById(R.id.duyin);
-                    holder.bushou = (TextView) constraintLayout.findViewById(R.id.bushou);
-                    holder.bihua = (TextView) constraintLayout.findViewById(R.id.bihua);
-                    holder.jianjie = (TextView) constraintLayout.findViewById(R.id.jianjie);
-                    holder.xiangjie = (TextView) constraintLayout.findViewById(R.id.xiangjie);
-                    holder.constraintLayout = (ConstraintLayout) constraintLayout.findViewById(R.id.containerLayout);
-                    holder.xjTextView = (TextView) constraintLayout.findViewById(R.id.xj);
-                    holder.jjTextView = (TextView) constraintLayout.findViewById(R.id.jj);
-                    holder.pyTextView = (TextView) constraintLayout.findViewById(R.id.py);
-                    holder.dyTextView = (TextView) constraintLayout.findViewById(R.id.dy);
-                    holder.bsTextView = (TextView) constraintLayout.findViewById(R.id.bs);
-                    holder.bhTextView = (TextView) constraintLayout.findViewById(R.id.bh);
-                    holder.fab = (FloatingActionButton) constraintLayout.findViewById(R.id.zidianFb);
-
-
-                    constraintLayout.setTag(holder);
-                }
-
-                if (ziList.get(position) instanceof Zi){
-                    holder.hanzi.setTextIsSelectable(true);
-                    holder.pinyin.setTextIsSelectable(true);
-                    holder.duyin.setTextIsSelectable(true);
-                    holder.bushou.setTextIsSelectable(true);
-                    holder.bihua.setTextIsSelectable(true);
-                    holder.jianjie.setTextIsSelectable(true);
-                    holder.xiangjie.setTextIsSelectable(true);
-
-                    Zi zi = (Zi) ziList.get(position);
-                    holder.hanzi.setText(zi.getHanzi());
-                    holder.pinyin.setText(zi.getPinyin());
-                    holder.duyin.setText(zi.getDuyin());
-                    holder.bushou.setText(zi.getBushou());
-                    holder.bihua.setText(zi.getBihua());
-                    holder.jianjie.setText(zi.getJianjie());
-                    holder.xiangjie.setText(zi.getXiangjie());
-                    holder.fab.setOnClickListener(new ViewClicklistener(holder.hanzi.getText().toString(), holder.constraintLayout));
-
-
-
-
-
-
-                    holder.xjTextView.setOnClickListener(new ViewClicklistener(holder.xiangjie));
-                    holder.jjTextView.setOnClickListener(new ViewClicklistener(holder.jianjie));
-                    holder.pyTextView.setOnClickListener(new ViewClicklistener(holder.pinyin));
-                    holder.dyTextView.setOnClickListener(new ViewClicklistener(holder.duyin));
-                    holder.bsTextView.setOnClickListener(new ViewClicklistener(holder.bushou));
-                    holder.bhTextView.setOnClickListener(new ViewClicklistener(holder.bihua));
-
-                }
-
-
-
-                return constraintLayout;
-            }
-        }
-
-        public synchronized void loadAdView(View view, int index) {
-           // ziList.remove(mAdPositionList[index]);   //index
-           // this.notifyDataSetChanged();
-            ziList.add(mAdPositionList[index], view);
-            this.notifyDataSetChanged();
-        }
-
-
-
-    }
-
-
-    public final class ViewHolder{
-
-        TextView hanzi,pinyin,duyin,bushou,bihua,jianjie,xiangjie,pyTextView,dyTextView,bsTextView,bhTextView,xjTextView,jjTextView;
-        ConstraintLayout constraintLayout;
-        FloatingActionButton fab;
-
-    }
-
-    public final class ViewClicklistener implements View.OnClickListener {
-        View visableView;
-        String hanzi;
-
-        public ViewClicklistener(View view) {
-            visableView = view;
-
-        }
-
-        public ViewClicklistener(String hanzi, View view) {
-            this.hanzi = hanzi;
-            this.visableView = view;
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (v.getId() == R.id.zidianFb) {
-                if (v.getId() == R.id.zidianFb) {   //添加收藏到数据库
-                    User user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
-                    if (user == null) {   //未登录
-                        Util.showConfirmCancelDialog(ZidianActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+            collect.save(new SaveListener<String>() {
+                @Override
+                public void done(String s, BmobException e) {
+                    if (e == null) {
+                        Log.i("bmob", "收藏保存成功");
+                        Snackbar.make(constraintLayout, "已收藏该生字", Snackbar.LENGTH_LONG).setAction("查看我的收藏", new View.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent1 = new Intent(ZidianActivity.this, LoginActivity.class);
-                                startActivity(intent1);
+                            public void onClick(View view) {
+                                Intent intent = new Intent(ZidianActivity.this, CollectActivity.class);
+                                startActivity(intent);
                             }
-                        });
+                        }).show();
+
                     } else {
-
-                        //添加收藏action
-                        //  User user= BmobUser.getCurrentUser(User.class);
-                        Collect collect = new Collect();
-                        collect.setName(hanzi);
-                        collect.setUser(user);
-                        collect.setType(Collect.ZI);
-
-
-                        collect.save(new SaveListener<String>() {
-                            @Override
-                            public void done(String s, BmobException e) {
-                                if (e == null) {
-                                    Log.i("bmob", "收藏保存成功");
-                                    Snackbar.make(visableView, "已收藏该生字", Snackbar.LENGTH_LONG).setAction("查看我的收藏", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            Intent intent = new Intent(ZidianActivity.this, CollectActivity.class);
-                                            startActivity(intent);
-                                        }
-                                    }).show();
-
-                                } else {
-                                    Log.i("bmob", "收藏保存失败：" + e.getMessage());
-                                }
-                            }
-                        });
-
-                    }
-                }
-            } else {
-                if (visableView.getVisibility() == View.GONE) {
-                    // visableView.startAnimation(mShowAction);
-                    visableView.setVisibility(View.VISIBLE);
-                } else if (visableView.getVisibility() == View.VISIBLE) {
-                    //   visableView.startAnimation(mHiddenAction);
-                    visableView.setVisibility(View.GONE);
-                }
-            }
-        }
-
-
-
-
-    }//
-
-
-    public void loadAd(){
-        try {
-            mStuffList.clear();
-            mStandardNewsFeedAd.requestAd(APP_POSITION_ID, mAdPositionList.length, new NativeAdListener() {
-                @Override
-                public void onNativeInfoFail(AdError adError) {
-                    Log.e(TAG, "onNativeInfoFail e : " + adError);
-                }
-
-                @Override
-                public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
-                    Log.e(TAG, "onNativeInfoSuccess is " + list);
-                    mStuffList.addAll(list);
-                    int size = (mStuffList.size() <= mAdPositionList.length) ? mStuffList.size() : mAdPositionList.length;
-                    for (int i = 0; i < size; i++) {
-                        final int index = i;
-                        final NativeAdInfoIndex adInfoResponse = mStuffList.get(index);
-                        mStandardNewsFeedAd.buildViewAsync(adInfoResponse, listView.getWidth(), new AdListener() {
-                            @Override
-                            public void onAdError(AdError adError) {
-                                Log.e(TAG, "onAdError : " + adError + " at index : " + index);
-                            }
-
-                            @Override
-                            public void onAdEvent(AdEvent adEvent) {
-                                if (adEvent.mType == AdEvent.TYPE_CLICK) {
-                                    Log.d(TAG, "ad has been clicked at position: " + index);
-                                } else if (adEvent.mType == AdEvent.TYPE_SKIP) {
-//                                            Log.d(TAG, "x button has been clicked at position : " + index);
-                                } else if (adEvent.mType == AdEvent.TYPE_VIEW) {
-                                    Log.d(TAG, "ad has been showed at position: " + index);
-                                }
-                            }
-
-                            @Override
-                            public void onAdLoaded() {
-
-                            }
-
-                            @Override
-                            public void onViewCreated(View view) {
-                                adapter.loadAdView(view, index);
-                            }
-                        });
+                        Log.i("bmob", "收藏保存失败：" + e.getMessage());
                     }
                 }
             });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }//
+
+        }
     }
+
+
+
+
 
 }

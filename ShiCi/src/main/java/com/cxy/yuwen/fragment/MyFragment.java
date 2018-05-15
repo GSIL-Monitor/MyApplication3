@@ -20,10 +20,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.activity.CollectActivity;
 import com.cxy.yuwen.activity.FeedbackActivity;
+import com.cxy.yuwen.activity.HaveBuyActivity;
 import com.cxy.yuwen.activity.InviteActivity;
 import com.cxy.yuwen.activity.LoginActivity;
 import com.cxy.yuwen.activity.MemberActivity;
@@ -33,8 +35,7 @@ import com.cxy.yuwen.bmobBean.MsgNotification;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.ACache;
-import com.cxy.yuwen.tool.CommonUtil;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import java.util.List;
 
@@ -110,14 +111,11 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
             tvLogin.setText(user.getUsername());
 
             //获取用户头像
-            if (!CommonUtil.isEmpty(user.getHeadImageUrl())){
-                headImage=aCache.getAsBitmap("headImageBitmap");  //从缓存中获取用户头像
-                if (headImage!=null){
-                    headImageView.setImageBitmap(headImage);
-                }else{
+            if (!Utils.isEmpty(user.getHeadImageUrl())){
+              //  headImage=aCache.getAsBitmap("headImageBitmap");  //从缓存中获取用户头像
                     Thread thread=new GetImageThread();
                     thread.start();
-                }
+
 
 
             }
@@ -133,7 +131,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
         @Override
         public void run() {
 
-            headImage = Util.getbitmap(user.getHeadImageUrl());
+            headImage = Utils.getbitmap(user.getHeadImageUrl());
             if (headImage!=null){
                 handler.sendEmptyMessage(IMAGE_LOAD_FINISHED);
             }
@@ -151,7 +149,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
             switch (msg.what) {
                 case IMAGE_LOAD_FINISHED:
                     headImageView.setImageBitmap(headImage);
-                    aCache.put("headImageBitmap",headImage);
+                  //  aCache.put("headImageBitmap",headImage);
                     break;
             }
 
@@ -185,7 +183,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
                 Intent intent=new Intent(getActivity(),CollectActivity.class);
                 startActivity(intent);
             }else{
-                Util.showConfirmCancelDialog(getActivity(), "提示", "请先登录！", new DialogInterface.OnClickListener() {
+                Utils.showConfirmCancelDialog(getActivity(), "提示", "请先登录！", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent1 = new Intent(getActivity(), LoginActivity.class);
@@ -249,6 +247,18 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
             }
         }
 
+        //已购
+        if (id == R.id.haveBuy) {
+            if (user != null) {
+                Intent intent = new Intent(getActivity(), HaveBuyActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent1 = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent1);
+            }
+
+        }
+
 
 
         return true;
@@ -265,7 +275,7 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
             msgQuery.findObjects(new FindListener<MsgNotification>() {
                 @Override
                 public void done(List<MsgNotification> list, BmobException e) {
-                    if (e==null) {
+                    if (e==null && list!=null) {
                         boolean hasNotRead=false;
                         if (list.size() > 0) {
                             for (MsgNotification msg : list) {
@@ -282,7 +292,8 @@ public class MyFragment extends Fragment implements View.OnClickListener , Navig
                             msgImg.setVisibility(View.GONE);
                         }
                     }else{
-                        Util.toastMessage(getActivity(),e.getMessage());
+
+                        Toast.makeText(getActivity(),e.getMessage(),Toast.LENGTH_LONG).show();
                         Log.i("bmob",e.toString());
                     }
                 }

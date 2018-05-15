@@ -1,4 +1,4 @@
-package com.cxy.yuwen.Adapter;
+package com.cxy.yuwen.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.bmobBean.Bookshelf;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,8 +55,6 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
         holder.tvCoverName.setText(bookshelf.getBookName());
         holder.tvCoverOrder.setText(bookshelf.getPulishTime());
         holder.imCover.setImageBitmap(defaultImage);
-        holder.imCover.setTag(imageSrc);
-        holder.imTag=imageSrc;
 
         int width=(gridLayoutManager.getWidth()-120)/2;
         int height=width+width/3;
@@ -65,26 +63,11 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
         lp.height = height;
         holder.imCover.setLayoutParams(lp);
 
-        holder.imCover.setMaxWidth(width);
-        holder.imCover.setMaxHeight(height);
-
-
-
-        //新的线程中根据url获取图片
-        new Thread(){
-            @Override
-            public void run() {
-                Bitmap bitmap= Util.getbitmap(imageSrc);
-                holder.bitmap=bitmap;
-                Message message=new Message();
-                message.what=101;
-                message.obj=holder;
-                uiHandler.sendMessage(message);
-
-            }
-        }.start();
-
-
+        Glide.with(context)
+                .load(imageSrc)
+                .placeholder(R.drawable.default_book)
+                .error(R.drawable.default_book)
+                .into(holder.imCover);
     }
 
 
@@ -94,18 +77,7 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
         return dataDisplayList.size();
     }
 
-    Handler uiHandler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            MyViewHolder holder=(MyViewHolder) msg.obj;
-            if (msg.what==101){
-                if (holder.imTag.equals(holder.imCover.getTag())){
-                    holder.imCover.setImageBitmap(holder.bitmap);
-                }
-            }
-        }
-    };
+
 
     class MyViewHolder extends RecyclerView.ViewHolder
     {
@@ -114,8 +86,7 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
         @BindView(R.id.coverOrder) TextView tvCoverOrder;
         @BindView(R.id.coverImage)
         ImageView imCover;
-        Bitmap bitmap;
-        String imTag="";
+
 
 
 

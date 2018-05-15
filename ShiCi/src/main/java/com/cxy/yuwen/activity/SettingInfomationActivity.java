@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.R;
-import com.cxy.yuwen.tool.CommonUtil;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import java.util.List;
 
@@ -110,7 +107,7 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
                       showDialog();
                 }else {
 
-                    Util.showResultDialog(SettingInfomationActivity.this,"你是用第三方账号进行登录，无需修改密码",null);
+                    Utils.showResultDialog(SettingInfomationActivity.this,"你是用第三方账号进行登录，无需修改密码",null);
                 }
 
 
@@ -148,26 +145,26 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
         String oldPassword=etOldpassword.getText().toString();
         final String newPassword=etNewPassword.getText().toString();
         String newPassword2=etPassword2.getText().toString();
-        if (CommonUtil.isEmpty(oldPassword)||CommonUtil.isEmpty(newPassword)||CommonUtil.isEmpty(newPassword2)){
-            Util.toastMessage(SettingInfomationActivity.this,"内容不能为空");
+        if (Utils.isEmpty(oldPassword)|| Utils.isEmpty(newPassword)|| Utils.isEmpty(newPassword2)){
+            Utils.toastMessage(SettingInfomationActivity.this,"内容不能为空");
         }else if(!newPassword.equals(newPassword2)){
-            Util.toastMessage(SettingInfomationActivity.this,"两次输入的密码必须一致");
-        }else if(!CommonUtil.isPassword(newPassword)){
-            Util.toastMessage(SettingInfomationActivity.this,"密码至少为6位，可以包含数字和字母");
+            Utils.toastMessage(SettingInfomationActivity.this,"两次输入的密码必须一致");
+        }else if(!Utils.isPassword(newPassword)){
+            Utils.toastMessage(SettingInfomationActivity.this,"密码至少为6位，可以包含数字和字母");
         }
         else{  //重置密码
            // user=BmobUser.getCurrentUser(User.class);
             BmobQuery<User> query = new BmobQuery<User>();
             query.addWhereEqualTo("username", user.getUsername());
-            query.addWhereEqualTo("password",CommonUtil.encryptBySHA(oldPassword));
+            query.addWhereEqualTo("password", Utils.encryptBySHA(oldPassword));
             query.findObjects(new FindListener<User>() {
                 @Override
                 public void done(List<User> object,BmobException e) {
-                    if(e==null){
+                    if(e==null && object!=null){
                         if (object.size()==1){
                            // Util.toastMessage(SettingInfomationActivity.this,"查询用户成功:"+object.size());
                             User newUsr=new User();
-                            newUsr.setPassword(CommonUtil.encryptBySHA(newPassword));
+                            newUsr.setPassword(Utils.encryptBySHA(newPassword));
                             newUsr.update(user.getObjectId(), new UpdateListener() {
                                 @Override
                                 public void done(BmobException e) {
@@ -188,18 +185,18 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
                                         dlg.show();
 
                                     }else{
-                                        Util.toastMessage(SettingInfomationActivity.this,"密码修改失败:" + e.toString());
+                                        Utils.toastMessage(SettingInfomationActivity.this,"密码修改失败:" + e.toString());
                                     }
                                 }
                             });
 
                         }
                         else{
-                            Util.toastMessage(SettingInfomationActivity.this,"旧密码错误");
+                            Utils.toastMessage(SettingInfomationActivity.this,"旧密码错误");
                         }
 
                     }else{
-                        Util.toastMessage(SettingInfomationActivity.this,"查询用户失败:" + e.getMessage());
+                        Utils.toastMessage(SettingInfomationActivity.this,"查询用户失败:" + e.getMessage());
                     }
                 }
             });

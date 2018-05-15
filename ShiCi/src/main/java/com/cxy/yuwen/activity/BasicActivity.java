@@ -10,23 +10,27 @@ import android.util.Log;
 
 import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.tool.ACache;
-import com.cxy.yuwen.tool.CommonUtil;
+import com.cxy.yuwen.tool.NetWorkUtils;
 import com.cxy.yuwen.tool.PermissionHelper;
+import com.cxy.yuwen.tool.Utils;
 
 public class BasicActivity extends AppCompatActivity {
 
     protected PermissionHelper mPermissionHelper;
     protected static final String TAG = "com.example.yuwen";
-    protected static final String YOUMI_AD_TAG="youmi";
+    protected static  final  String TENCENT_LOG="tencentAd";
     protected ACache mCache;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.getInstance().addActivity(this);
-        CommonUtil.checkNetworkState(this);
+    //    CommonUtil.checkNetworkState(this);
         mCache=ACache.get(this);
         checkPermmion(this);
        // setContentView(R.layout.activity_basic);
+        if(!NetWorkUtils.isNetworkConnected(this)){
+            Utils.toastMessage(this,"网络未连接,请检查网络状态");
+        }
     }
 
     public void checkPermmion(Activity activity){

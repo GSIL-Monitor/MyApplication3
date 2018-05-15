@@ -145,13 +145,6 @@
                     android:textColor="#000"
                     android:textIsSelectable="true"
                     android:textSize="18sp" />
-
-                <FrameLayout
-                    android:id="@+id/adInfomation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

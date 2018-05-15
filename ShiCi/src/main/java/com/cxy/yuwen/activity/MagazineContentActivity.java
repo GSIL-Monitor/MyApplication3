@@ -17,12 +17,11 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
 import com.cxy.yuwen.R;
-import com.xiaomi.ad.AdListener;
-import com.xiaomi.ad.NativeAdInfoIndex;
-import com.xiaomi.ad.NativeAdListener;
-import com.xiaomi.ad.adView.StandardNewsFeedAd;
-import com.xiaomi.ad.common.pojo.AdError;
-import com.xiaomi.ad.common.pojo.AdEvent;
+import com.cxy.yuwen.tool.Constants;
+import com.qq.e.ads.nativ.ADSize;
+import com.qq.e.ads.nativ.NativeExpressAD;
+import com.qq.e.ads.nativ.NativeExpressADView;
+import com.qq.e.comm.util.AdError;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,12 +34,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MagazineContentActivity extends BasicActivity {
+public class MagazineContentActivity extends BasicActivity implements  NativeExpressAD.NativeExpressADListener{
 
     private String httpUrl="";
     private WebSettings mWebSettings;
     private String title="";
-    private static final String AD_ID = "73de7ce1acfd8777553c367d5a4aab06";   //广告id
     private String htmlStr="<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
             + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:180%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
             + "</style></head><body>";
@@ -48,8 +46,12 @@ public class MagazineContentActivity extends BasicActivity {
     private String intentUrl="";
     private StringBuilder content=null;
     private static ProgressDialog mProgressDialog;
-    @BindView(R.id.wv_content)  WebView mWebview;
+    @BindView(R.id.wv_content)
+    WebView mWebview;
+    @BindView(R.id.containerAd)
     ViewGroup adContainer;
+    private NativeExpressAD nativeExpressAD;
+    private NativeExpressADView nativeExpressADView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,68 +67,88 @@ public class MagazineContentActivity extends BasicActivity {
         mProgressDialog=ProgressDialog.show(this,   null, "请稍后");
         Thread getHtml=new GetHtml();
         getHtml.start();
-        adContainer=(ViewGroup) findViewById(R.id.containerAd);
+
 
 
 
     }
 
     public void setAd(){
-        final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
-        adContainer.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    standardNewsFeedAd.requestAd(AD_ID, 1, new NativeAdListener() {
-                        @Override
-                        public void onNativeInfoFail(AdError adError) {
-                            Log.e(TAG, "onNativeInfoFail e : " + adError);
-                        }
-
-                        @Override
-                        public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
-                            NativeAdInfoIndex response = list.get(0);
-                            standardNewsFeedAd.buildViewAsync(response, adContainer.getWidth(), new AdListener() {
-                                @Override
-                                public void onAdError(AdError adError) {
-                                    Log.e(TAG, "error : remove all views");
-                                    adContainer.removeAllViews();
-                                }
-
-                                @Override
-                                public void onAdEvent(AdEvent adEvent) {
-                                    //目前考虑了３种情况，用户点击信息流广告，用户点击x按钮，以及信息流展示的３种回调，范例如下
-                                    if (adEvent.mType == AdEvent.TYPE_CLICK) {
-                                        Log.d(TAG, "ad has been clicked!");
-                                    } else if (adEvent.mType == AdEvent.TYPE_SKIP) {
-                                        Log.d(TAG, "x button has been clicked!");
-                                    } else if (adEvent.mType == AdEvent.TYPE_VIEW) {
-                                        Log.d(TAG, "ad has been showed!");
-                                    }
-                                }
-
-                                @Override
-                                public void onAdLoaded() {
-
-                                }
-
-                                @Override
-                                public void onViewCreated(View view) {
-                                    Log.e(TAG, "onViewCreated");
-                                    adContainer.removeAllViews();
-                                    adContainer.addView(view);
-                                }
-                            });
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        nativeExpressAD = new NativeExpressAD(this,new ADSize(ADSize.FULL_WIDTH,ADSize.AUTO_HEIGHT), Constants.TENCENT_APPID, Constants.ZAZHI_POS_ID, this);// 传入Activity
+        nativeExpressAD.loadAD(1);
     }
 
-    public void setWebView(){
+    @Override
+    public void onNoAD(AdError adError) {
+        Log.i(TENCENT_LOG, String.format("onADError, error code: %d, error msg: %s", adError.getErrorCode(), adError.getErrorMsg()));
+    }
+
+    @Override
+    public void onADLoaded(List<NativeExpressADView> adList) {
+        // 释放前一个展示的NativeExpressADView的资源
+        if (nativeExpressADView != null) {
+            nativeExpressADView.destroy();
+        }
+
+        if (adContainer.getVisibility() != View.VISIBLE) {
+            adContainer.setVisibility(View.VISIBLE);
+        }
+
+        if (adContainer.getChildCount() > 0) {
+            adContainer.removeAllViews();
+        }
+
+        nativeExpressADView = adList.get(0);
+        // 广告可见才会产生曝光，否则将无法产生收益。
+        adContainer.addView(nativeExpressADView);
+        nativeExpressADView.render();
+    }
+
+    @Override
+    public void onRenderFail(NativeExpressADView nativeExpressADView) {
+       Log.i(TENCENT_LOG,"onRenderFail");
+    }
+
+    @Override
+    public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
+
+    }
+
+    @Override
+    public void onADExposure(NativeExpressADView nativeExpressADView) {
+
+    }
+
+    @Override
+    public void onADClicked(NativeExpressADView nativeExpressADView) {
+
+    }
+
+    @Override
+    public void onADClosed(NativeExpressADView nativeExpressADView) {
+        // 当广告模板中的关闭按钮被点击时，广告将不再展示。NativeExpressADView也会被Destroy，释放资源，不可以再用来展示。
+        if (adContainer != null && adContainer.getChildCount() > 0) {
+            adContainer.removeAllViews();
+            adContainer.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onADLeftApplication(NativeExpressADView nativeExpressADView) {
+
+    }
+
+    @Override
+    public void onADOpenOverlay(NativeExpressADView nativeExpressADView) {
+
+    }
+
+    @Override
+    public void onADCloseOverlay(NativeExpressADView nativeExpressADView) {
+
+    }
+
+    /* public void setWebView(){
         mWebSettings = mWebview.getSettings();
         mWebSettings.setDefaultFontSize(22);
         //支持缩放，默认为true。
@@ -158,8 +180,7 @@ public class MagazineContentActivity extends BasicActivity {
 
         });
 
-
-    }
+    }*/
 
     class GetHtml extends Thread{
         @Override
@@ -217,29 +238,9 @@ public class MagazineContentActivity extends BasicActivity {
         return true;
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-       /* if (keyCode == KeyEvent.KEYCODE_BACK && mWebview.canGoBack()) {
-            mWebview.goBack();
-            return true;
-        }
-*/
-        return super.onKeyDown(keyCode, event);
-    }
 
-    //销毁Webview
-    @Override
-    protected void onDestroy() {
-        /*if (mWebview != null) {
-            mWebview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
-            mWebview.clearHistory();
 
-            ((ViewGroup) mWebview.getParent()).removeView(mWebview);
-            mWebview.destroy();
-            mWebview = null;
-        }*/
-        super.onDestroy();
-    }
+
 
 
 }

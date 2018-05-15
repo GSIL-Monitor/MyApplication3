@@ -1,7 +1,6 @@
 package com.cxy.yuwen.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,8 +14,7 @@ import com.cxy.yuwen.bmobBean.InviteCode;
 import com.cxy.yuwen.bmobBean.Member;
 import com.cxy.yuwen.bmobBean.MsgNotification;
 import com.cxy.yuwen.bmobBean.User;
-import com.cxy.yuwen.tool.CommonUtil;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,13 +60,13 @@ public class InviteActivity extends BasicActivity {
         bmobQuery.findObjects(new FindListener<InviteCode>() {
             @Override
             public void done(List<InviteCode> list, BmobException e) {
-                if (e==null){
+                if (e==null && list!=null){
                     if (list.size()>0){
                         inviteCode=list.get(0).getInviteCode();
                         objectId=list.get(0).getObjectId();
                     }
                     else{
-                        inviteCode= CommonUtil.createRandomCharData(5);  //生成5位随机码
+                        inviteCode= Utils.createRandomCharData(5);  //生成5位随机码
                         //保存数据库
                         InviteCode inviteCodeBmob=new InviteCode();
                         inviteCodeBmob.setUser(user);
@@ -78,7 +76,7 @@ public class InviteActivity extends BasicActivity {
                             @Override
                             public void done(String id, BmobException e) {
                                 if (e!=null){
-                                    Util.toastMessage(InviteActivity.this,"保存数据失败");
+                                    Utils.toastMessage(InviteActivity.this,"保存数据失败");
                                 }else{
                                     objectId=id;
                                 }
@@ -87,7 +85,7 @@ public class InviteActivity extends BasicActivity {
                     }
                     tvShareCode.setText("分享我的邀请码 "+inviteCode);
                 }else{
-                    Util.toastMessage(InviteActivity.this,"查询数据失败");
+                    Utils.toastMessage(InviteActivity.this,"查询数据失败");
                 }
             }
         });
@@ -98,17 +96,17 @@ public class InviteActivity extends BasicActivity {
     public void activate(){
         final String code=editCode.getText().toString();
         if (TextUtils.isEmpty(code)||code.length()!=5){
-            Util.toastMessage(InviteActivity.this,"请输入5位数的邀请码");
+            Utils.toastMessage(InviteActivity.this,"请输入5位数的邀请码");
         }else{
             //查询该用户是否已被激活
             final BmobQuery<InviteCode> bmobQuery=new BmobQuery<InviteCode>();
             bmobQuery.getObject(objectId, new QueryListener<InviteCode>() {
                 @Override
                 public void done(InviteCode inviteCode, BmobException e) {
-                    if (e==null){
+                    if (e==null && inviteCode!=null){
                         Boolean isActivate=inviteCode.getActivate();
                         if (isActivate){
-                            Util.showResultDialog(InviteActivity.this,"每个新用户只能使用一次邀请码，快去分享你的邀请码吧，同样可以获得奖励哦！","提示");
+                            Utils.showResultDialog(InviteActivity.this,"每个新用户只能使用一次邀请码，快去分享你的邀请码吧，同样可以获得奖励哦！","提示");
                         }else{
                             //没有激活
                             //查询是否有该邀请码
@@ -117,9 +115,9 @@ public class InviteActivity extends BasicActivity {
                             query.findObjects(new FindListener<InviteCode>() {
                                 @Override
                                 public void done(List<InviteCode> list, BmobException e) {
-                                    if (e==null){
+                                    if (e==null && list!=null){
                                         if (list.size()<=0){
-                                            Util.toastMessage(InviteActivity.this,"请输入有效的邀请码");
+                                            Utils.toastMessage(InviteActivity.this,"请输入有效的邀请码");
                                         }else{
 
                                             //当前用户和发送邀请码的用户各获得3天会员
@@ -145,9 +143,9 @@ public class InviteActivity extends BasicActivity {
                                             });
                                             //当前用户和发送邀请码的用户会员信息都已更新
                                             if (inviteResult){
-                                                Util.showResultDialog(InviteActivity.this,"恭喜你获得了3天免费会员，你还可以继续分享你的邀请码，累加会员时间哦！",null);
+                                                Utils.showResultDialog(InviteActivity.this,"恭喜你获得了3天免费会员，你还可以继续分享你的邀请码，累加会员时间哦！",null);
                                             }else{
-                                                Util.toastMessage(InviteActivity.this,"出错了，请稍后再试！");
+                                                Utils.toastMessage(InviteActivity.this,"出错了，请稍后再试！");
                                             }
 
                                         }
@@ -158,7 +156,7 @@ public class InviteActivity extends BasicActivity {
                             });
                         }
                     }else{
-                        Util.toastMessage(InviteActivity.this,"查询数据失败"+e.getMessage());
+                        Utils.toastMessage(InviteActivity.this,"查询数据失败"+e.getMessage());
                     }
                 }
             });
@@ -168,7 +166,7 @@ public class InviteActivity extends BasicActivity {
     }
 
     public void toastError(BmobException e){
-        Util.toastMessage(InviteActivity.this,"查询数据失败:"+e.getMessage());
+        Utils.toastMessage(InviteActivity.this,"查询数据失败:"+e.getMessage());
     }
 
     boolean result=true;
@@ -185,7 +183,7 @@ public class InviteActivity extends BasicActivity {
         memberQuery.findObjects(new FindListener<Member>() {
             @Override
             public void done(List<Member> list, BmobException e) {
-                if (e==null){
+                if (e==null && list!=null){
                     if (list.size()<=0){  //该用户没有开通会员
                         //插入一条会员信息
                         Member member=new Member();

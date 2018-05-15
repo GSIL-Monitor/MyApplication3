@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -25,18 +23,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.cxy.yuwen.activity.CompositionDetailActivity;
 import com.cxy.yuwen.activity.LoginActivity;
-import com.cxy.yuwen.activity.MainActivity;
 import com.cxy.yuwen.activity.MemberActivity;
 import com.cxy.yuwen.bmobBean.Member;
 import com.cxy.yuwen.bmobBean.SelectCount;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.entity.Composition;
 import com.cxy.yuwen.R;
-import com.cxy.yuwen.tool.CommonUtil;
 import com.cxy.yuwen.tool.NetWorkUtils;
 import com.cxy.yuwen.tool.NetworkConnection;
 import com.cxy.yuwen.tool.OkHttpUtil;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -237,7 +233,7 @@ public class CompositionFragment extends Fragment
         });
 
 
-        CommonUtil.checkNetworkState(this.getActivity());
+
         //获取缓存
         mCache = ACache.get(this.getActivity());
         String gradeData=mCache.getAsString("gradeData");
@@ -250,7 +246,7 @@ public class CompositionFragment extends Fragment
             Thread thread=new Thread(runnable);
             boolean networkSate=NetWorkUtils.isNetworkConnected(this.getActivity());
             if (!networkSate){
-                Util.toastMessage(this.getActivity(),"网络连接不可用，请检查网络状态");
+                Utils.toastMessage(this.getActivity(),"网络连接不可用，请检查网络状态");
             }else{
                 thread.start();
             }
@@ -344,7 +340,7 @@ public class CompositionFragment extends Fragment
 
         boolean networkSate= NetWorkUtils.isNetworkConnected(this.getActivity());
         if (!networkSate){
-            Util.toastMessage(this.getActivity(),"网络连接不可用，请检查网络状态");
+            Utils.toastMessage(this.getActivity(),"网络连接不可用，请检查网络状态");
         }else{
             baseThread.start();
         }
@@ -601,7 +597,7 @@ public void resolveJson(String gradeData,String typeData,String fontData, String
                   break;
 
               case 0:
-                  Util.showResultDialog(getActivity(),error,"出错了");
+                  Utils.showResultDialog(getActivity(),error,"出错了");
                   break;
 
           }
@@ -756,12 +752,12 @@ public void resolveJson(String gradeData,String typeData,String fontData, String
                             query.findObjects(new FindListener<Member>() {
                                 @Override
                                 public void done(List<Member> list, BmobException e) {
-                                    if (e == null) {
+                                    if (e == null && list!=null) {
                                         seeComposition(list, composition);
 
 
                                     } else {
-                                        Util.toastMessage(getActivity(), "查询会员状态出错");
+                                        Utils.toastMessage(getActivity(), "查询会员状态出错");
 
                                     }
                                 }
@@ -813,7 +809,7 @@ public void resolveJson(String gradeData,String typeData,String fontData, String
                         query.findObjects(new FindListener<SelectCount>() {
                             @Override
                             public void done(List<SelectCount> list, BmobException e) {
-                                if (e == null) {
+                                if (e == null && list!=null) {
                                     if (list.size() == 0) {  //
 
                                         AlertDialog dlg = new AlertDialog.Builder(getActivity()).setTitle("提示").setMessage("你的会员已经过期,现在每天只能免费查看1篇作文")
@@ -886,7 +882,7 @@ public void resolveJson(String gradeData,String typeData,String fontData, String
                 query.findObjects(new FindListener<SelectCount>() {
                     @Override
                     public void done(List<SelectCount> list, BmobException e) {
-                        if (e == null) {
+                        if (e == null && list!=null) {
                             if (list.size() == 0) {  //正常查询，向selectCount表插入一条数据
 
                                 AlertDialog dlg = new AlertDialog.Builder(getActivity()).setTitle("提示").setMessage("你当前是免费用户，每天只能免费查看1篇作文")

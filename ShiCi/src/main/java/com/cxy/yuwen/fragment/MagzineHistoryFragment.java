@@ -10,10 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cxy.yuwen.Adapter.ImageTextAdapter;
 import com.cxy.yuwen.R;
-import com.cxy.yuwen.activity.MagazineDirectoryActivity;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.activity.MagazineDetailActivity;
+import com.cxy.yuwen.adapter.ImageTextAdapter;
+import com.cxy.yuwen.tool.Utils;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -26,7 +26,6 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +35,7 @@ import butterknife.Unbinder;
 public class MagzineHistoryFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
-    private List<HashMap> dataDisplayList;
+    private ArrayList<HashMap> dataDisplayList;
 
     private String httpUrl;
     private Unbinder unbinder;
@@ -83,17 +82,18 @@ public class MagzineHistoryFragment extends Fragment {
         GridLayoutManager manager=new GridLayoutManager(this.getContext(),2);
         mRecyclerView.setLayoutManager(manager);
 
-        recycleViewAdapter=new ImageTextAdapter(getContext(),dataDisplayList);
+        recycleViewAdapter=new ImageTextAdapter(getContext(),dataDisplayList,manager);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(recycleViewAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         //禁用下拉刷新功能
         mRecyclerView.setPullRefreshEnabled(false);
         //禁用自动加载更多功能
         mRecyclerView.setLoadMoreEnabled(false);
+
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent=new Intent(getActivity(), MagazineDirectoryActivity.class);
+                Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
                 intent.putExtra("href",MagazineFragment.MAGAZIENE_URL+dataDisplayList.get(position).get("href").toString());
                 startActivity(intent);
             }
@@ -136,9 +136,9 @@ public class MagzineHistoryFragment extends Fragment {
            if (msg.what==100){
                mLRecyclerViewAdapter.notifyDataSetChanged();
            }
-            if(msg.what==101){
-                Util.toastMessage(getActivity(),"出错了,该内容暂时无法查看！");
-            }
+           if(msg.what==101){
+               Utils.toastMessage(getActivity(),"出错了,该内容暂时无法查看！");
+           }
         }
     };
 

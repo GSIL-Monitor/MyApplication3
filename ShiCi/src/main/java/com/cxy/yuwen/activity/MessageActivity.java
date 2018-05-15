@@ -7,11 +7,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.cxy.yuwen.Adapter.MessageAdapter;
+import com.cxy.yuwen.adapter.MessageAdapter;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.bmobBean.MsgNotification;
 import com.cxy.yuwen.bmobBean.User;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -108,7 +108,7 @@ public class MessageActivity extends BasicActivity {
         query.findObjects(new FindListener<MsgNotification>() {
             @Override
             public void done(List<MsgNotification> list, BmobException e) {
-                if (e==null){
+                if (e==null && list!=null){
                     msgList.clear();
                     if (list.size()>0){
                         msgList.addAll(list);
@@ -118,7 +118,7 @@ public class MessageActivity extends BasicActivity {
                     mLRecycleView.refreshComplete(1000);  //刷新完成
                     mLRecyclerAdapter.notifyDataSetChanged();
                 }else{
-                    Util.toastMessage(MessageActivity.this,"出错了："+e.getMessage());
+                    Utils.toastMessage(MessageActivity.this,"出错了："+e.getMessage());
                 }
             }
         });

@@ -43,12 +43,6 @@
         <activity android:name=".activity.ShiciActivity" />
         <activity android:name=".activity.ZidianActivity" />
         <activity android:name=".activity.ChengyuActivity" />
-        <activity
-            android:name="com.xiaomi.ad.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity android:name=".activity.CiYuActivity" />
         <activity
             android:name=".activity.FeedbackActivity"
@@ -109,7 +103,8 @@
             </intent-filter>
         </receiver>
 
-        <provider
+        <!--小米更新-->
+    <!--   <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.cxy.yuwen.selfupdate.fileprovider"
             android:exported="false"
@@ -117,6 +112,16 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
+        </provider>-->
+        <!--腾讯广告-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.cxy.yuwen.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/gdt_file_path" />
         </provider>
 
         <activity android:name=".activity.PushActivity" />
@@ -168,18 +173,6 @@
             android:parentActivityName=".activity.SettingInfomationActivity" />
         <activity android:name=".activity.YilinDirectoryActivity" />
         <activity android:name=".activity.YilinArticleActivity" />
-        <!--
-        <activity android:name=".activity.SplashActivity"
-                   android:screenOrientation="portrait"
-                   android:theme="@style/AppTheme.NoActionBar"
-                   android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout">
-            &lt;!&ndash;<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>&ndash;&gt;
-        </activity>
-        -->
         <activity
             android:name=".activity.MagazineActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -196,6 +189,9 @@
         <activity android:name=".activity.InviteActivity" />
         <activity android:name=".activity.MessageActivity" />
         <activity android:name=".activity.MsgDetailActivity"></activity>
+        <activity android:name=".activity.HaveBuyActivity"></activity>
+        <service android:name="com.qq.e.comm.DownloadService" android:exported="false" />
+        <activity android:name="com.qq.e.ads.ADActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
     </application>
 
 </manifest>

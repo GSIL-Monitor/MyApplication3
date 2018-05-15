@@ -11,6 +11,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.cxy.yuwen.tool.Utils;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
@@ -20,7 +21,6 @@ import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.activity.MainActivity;
 import com.cxy.yuwen.activity.PushActivity;
 import com.cxy.yuwen.R;
-import com.cxy.yuwen.tool.CommonUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -102,7 +102,7 @@ public class MessageReceiver extends PushMessageReceiver {
         }
         MyApplication.getHandler().sendMessage(msg);
 
-        if (!CommonUtil.isEmpty(message.getExtra().get("activityUri"))){
+        if (!Utils.isEmpty(message.getExtra().get("activityUri"))){
             Log.v(MyApplication.TAG,message.getExtra().get("activityUri"));
             String uri=message.getExtra().get("activityUri");   //Action
             Intent intent=new Intent(uri);

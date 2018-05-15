@@ -6,21 +6,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 
-import com.cxy.yuwen.Adapter.DataAdapter;
-import com.cxy.yuwen.Adapter.SearchAdapter;
+import com.cxy.yuwen.adapter.SearchAdapter;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.activity.MagazineDetailActivity;
-import com.cxy.yuwen.activity.MagazineDirectoryActivity;
-import com.cxy.yuwen.tool.CommonUtil;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -203,7 +198,7 @@ public class SearchFragment extends Fragment {
                 setSearchView();
             }
             if (msg.what==101){
-                Util.toastMessage(getActivity(),"出错了，请稍后重试！");
+                Utils.toastMessage(getActivity(),"出错了，请稍后重试！");
             }
         }
     };

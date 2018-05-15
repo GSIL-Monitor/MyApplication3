@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -20,13 +19,12 @@ import com.cxy.yuwen.entity.Article;
 import com.cxy.yuwen.entity.Chengyu;
 import com.cxy.yuwen.entity.CiYu;
 import com.cxy.yuwen.entity.Composition;
-import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.DBHelper;
 import com.cxy.yuwen.tool.DBOperate;
 import com.cxy.yuwen.tool.Divider;
 import com.cxy.yuwen.tool.RecyclerAdapter;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +96,7 @@ public class CollectActivity extends BasicActivity {
        query.findObjects(new FindListener<Collect>() {
            @Override
            public void done(List<Collect> queryList, BmobException e) {
-               if(e==null){
+               if(e==null && queryList!=null){
                    Log.i("bmob","查询成功：共"+queryList.size()+"条数据。");
 
                    list.addAll(queryList);
@@ -175,7 +173,7 @@ public class CollectActivity extends BasicActivity {
                                 queryData();  //重新查询
                             }else{
                                 Log.i("bmob","删除失败："+e.getMessage()+","+e.getErrorCode());
-                                Util.showResultDialog(CollectActivity.this,"删除失败",e.getMessage());
+                                Utils.showResultDialog(CollectActivity.this,"删除失败",e.getMessage());
                             }
                         }
                     });

@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,10 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cxy.yuwen.bmobBean.User;
-import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.R;
-import com.cxy.yuwen.tool.Util;
-import com.cxy.yuwen.tool.CommonUtil;
+import com.cxy.yuwen.tool.Utils;
 
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.exception.BmobException;
@@ -59,8 +56,8 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
 
         if (view.getId()==R.id.tv_sendVertifyCode){  //发送验证码
             String phoneNumber=etPhoneNumber.getText().toString();
-            if (!CommonUtil.isMobile(phoneNumber)){
-                Util.showResultDialog(RegisterActivity.this,"请输入有效的手机号码!",null);
+            if (!Utils.isMobile(phoneNumber)){
+                Utils.showResultDialog(RegisterActivity.this,"请输入有效的手机号码!",null);
             }else{
                 BmobSMS.requestSMSCode(phoneNumber,"注册模板", new QueryListener<Integer>() {
 
@@ -69,11 +66,11 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
                         if(ex==null){//验证码发送成功
 
                             Log.i("smile", "短信id："+smsId);//用于查询本次短信发送详情
-                            Util.toastMessage(RegisterActivity.this,"验证码发送成功");
+                            Utils.toastMessage(RegisterActivity.this,"验证码发送成功");
                         }
                         else{
                             Log.i("smile", ex.getErrorCode()+":"+ex.getMessage());//用于查询本次短信发送详情
-                            Util.toastMessage(RegisterActivity.this,ex.getMessage());
+                            Utils.toastMessage(RegisterActivity.this,ex.getMessage());
                         }
                     }
                 });
@@ -91,16 +88,16 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
             String phoneNumber=etPhoneNumber.getText().toString();
             String vertifyCode=etVertifyCode.getText().toString();
 
-            if (CommonUtil.isEmpty(userName)|| CommonUtil.isEmpty(password)|| CommonUtil.isEmpty(password2)||CommonUtil.isEmpty(phoneNumber)||CommonUtil.isEmpty(vertifyCode)) {
+            if (Utils.isEmpty(userName)|| Utils.isEmpty(password)|| Utils.isEmpty(password2)|| Utils.isEmpty(phoneNumber)|| Utils.isEmpty(vertifyCode)) {
                   //内容不能为空
-                Util.showResultDialog(RegisterActivity.this,"内容不能为空！",null);
+                Utils.showResultDialog(RegisterActivity.this,"内容不能为空！",null);
 
             } else if (!password2.equals(password)) {
-                Util.showResultDialog(RegisterActivity.this,"两次输入的密码必须一致！",null);
+                Utils.showResultDialog(RegisterActivity.this,"两次输入的密码必须一致！",null);
 
-            }else if (!CommonUtil.isPassword(password)){
+            }else if (!Utils.isPassword(password)){
 
-                Util.showResultDialog(RegisterActivity.this,"密码至少为6位，可以包含数字和字母！","提示");
+                Utils.showResultDialog(RegisterActivity.this,"密码至少为6位，可以包含数字和字母！","提示");
 
 
 
@@ -109,7 +106,7 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
              //   Util.showProgressDialog(RegisterActivity.this,null,"正在注册中，请稍候！");
                 User user = new User();
                 user.setUsername(userName);
-                user.setPassword(CommonUtil.encryptBySHA(password));
+                user.setPassword(Utils.encryptBySHA(password));
                 user.setMobilePhoneNumber(phoneNumber);  //手机号
                 user.setUserType(User.REGISTER_USER);
 
@@ -124,7 +121,7 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
                                 }
                             }).create().show();
                         }else{
-                           Util.showResultDialog(RegisterActivity.this,"注册失败："+e.getErrorCode()+","+e.getMessage(),null);
+                           Utils.showResultDialog(RegisterActivity.this,"注册失败："+e.getErrorCode()+","+e.getMessage(),null);
                         }
 
                     }

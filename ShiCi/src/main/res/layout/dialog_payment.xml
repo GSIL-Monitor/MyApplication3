@@ -71,7 +71,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="15dp"
-            android:text="支付宝支付"
+            android:text="支付宝支付(推荐使用)"
             android:checked="true"/>
         <RadioButton
             android:id="@+id/wxPay"

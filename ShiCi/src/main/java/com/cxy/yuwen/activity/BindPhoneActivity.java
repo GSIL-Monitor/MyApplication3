@@ -3,7 +3,6 @@ package com.cxy.yuwen.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,11 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.R;
-import com.cxy.yuwen.tool.CommonUtil;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.BmobUser;
@@ -56,28 +53,28 @@ public class BindPhoneActivity extends BasicActivity implements View.OnClickList
         switch (v.getId()){
             case R.id.tv_sendCode:
                 phoneNumber=etPhone.getText().toString();
-                if (CommonUtil.isMobile(phoneNumber)){
+                if (Utils.isMobile(phoneNumber)){
                     BmobSMS.requestSMSCode(phoneNumber, "注册模板",new QueryListener<Integer>() {
 
                         @Override
                         public void done(Integer smsId,BmobException ex) {
                             if(ex==null){//验证码发送成功
                                 Log.i("smile", "短信id："+smsId);//用于查询本次短信发送详情
-                                Util.toastMessage(BindPhoneActivity.this,"验证码发送成功");
+                                Utils.toastMessage(BindPhoneActivity.this,"验证码发送成功");
                             }
                             else{
-                                Util.showResultDialog(BindPhoneActivity.this,ex.toString(),"验证码发送失败");
+                                Utils.showResultDialog(BindPhoneActivity.this,ex.toString(),"验证码发送失败");
                             }
                         }
                     });
                 }else {
-                    Util.showResultDialog(BindPhoneActivity.this,"请输入有效的手机号码",null);
+                    Utils.showResultDialog(BindPhoneActivity.this,"请输入有效的手机号码",null);
                 }
 
                 break;
             case R.id.btn_bindPhone:
                 phoneVertifyCode=etVertifyCode.getText().toString();
-                if (!CommonUtil.isEmpty(phoneVertifyCode)){
+                if (Utils.isEmpty(phoneVertifyCode)){
                     BmobSMS.verifySmsCode(phoneNumber, phoneVertifyCode, new UpdateListener() {
 
                         @Override
@@ -104,7 +101,7 @@ public class BindPhoneActivity extends BasicActivity implements View.OnClickList
                                             dlg.setCanceledOnTouchOutside(false);
                                             dlg.show();
                                         }else{
-                                            Util.showResultDialog(BindPhoneActivity.this,e.toString(),"绑定失败");
+                                            Utils.showResultDialog(BindPhoneActivity.this,e.toString(),"绑定失败");
                                         }
                                     }
                                 });
@@ -115,7 +112,7 @@ public class BindPhoneActivity extends BasicActivity implements View.OnClickList
                     });
 
                 }else{
-                    Util.showResultDialog(BindPhoneActivity.this,"请输入验证码",null);
+                    Utils.showResultDialog(BindPhoneActivity.this,"请输入验证码",null);
                 }
 
                 break;

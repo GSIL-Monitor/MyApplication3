@@ -28,12 +28,12 @@ public class BaseUIListener implements IUiListener {
                 break;
             case ON_ERROR:
                 UiError e = (UiError)msg.obj;
-                Util.showResultDialog(mContext, "errorMsg:" + e.errorMessage
+                Utils.showResultDialog(mContext, "errorMsg:" + e.errorMessage
                         + "errorDetail:" + e.errorDetail, "onError");
-                Util.dismissDialog();
+                Utils.dismissDialog();
                 break;
             case ON_CANCEL:
-                Util.toastMessage((Activity)mContext, "onCancel");
+                Utils.toastMessage((Activity)mContext, "onCancel");
                 break;
             }
         }	    

@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.fragment.MagzineHistoryFragment;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -108,7 +108,7 @@ public class MagazineHistoryActivity extends BasicActivity {
                 //绑定
                 tabLayout.setupWithViewPager(viewPager);
             }else if(msg.what==101){
-                Util.toastMessage(MagazineHistoryActivity.this,"出错了,该杂志内容暂无法查看，换本杂志看看吧！");
+                Utils.toastMessage(MagazineHistoryActivity.this,"出错了,该杂志内容暂无法查看，换本杂志看看吧！");
             }
         }
     };

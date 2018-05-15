@@ -16,19 +16,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.xiaomi.ad.AdListener;
-import com.xiaomi.ad.NativeAdInfoIndex;
-import com.xiaomi.ad.NativeAdListener;
-import com.xiaomi.ad.adView.StandardNewsFeedAd;
-import com.xiaomi.ad.common.pojo.AdError;
-import com.xiaomi.ad.common.pojo.AdEvent;
 import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.bmobBean.Collect;
 import com.cxy.yuwen.bmobBean.User;
 import com.cxy.yuwen.entity.Composition;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.OkHttpUtil;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import org.json.JSONObject;
 
@@ -86,7 +80,7 @@ public class CompositionDetailActivity extends BasicActivity {
             public void onClick(View view) {
                 User user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
                 if (user == null) {   //未登录
-                    Util.showConfirmCancelDialog(CompositionDetailActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
+                    Utils.showConfirmCancelDialog(CompositionDetailActivity.this, "提示", "请先登录！", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Intent intent1 = new Intent(CompositionDetailActivity.this, LoginActivity.class);
@@ -133,60 +127,7 @@ public class CompositionDetailActivity extends BasicActivity {
         });
 
 
-      //  mInterstitialAd = new InterstitialAd(getApplicationContext(),getWindow().getDecorView());
 
-        final StandardNewsFeedAd standardNewsFeedAd = new StandardNewsFeedAd(this);
-        adContainer.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    standardNewsFeedAd.requestAd(AD_ID, 1, new NativeAdListener() {
-                        @Override
-                        public void onNativeInfoFail(AdError adError) {
-                            Log.e(TAG, "onNativeInfoFail e : " + adError);
-                        }
-
-                        @Override
-                        public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
-                            NativeAdInfoIndex response = list.get(0);
-                            standardNewsFeedAd.buildViewAsync(response, adContainer.getWidth(), new AdListener() {
-                                @Override
-                                public void onAdError(AdError adError) {
-                                    Log.e(TAG, "error : remove all views");
-                                    adContainer.removeAllViews();
-                                }
-
-                                @Override
-                                public void onAdEvent(AdEvent adEvent) {
-                                    //目前考虑了３种情况，用户点击信息流广告，用户点击x按钮，以及信息流展示的３种回调，范例如下
-                                    if (adEvent.mType == AdEvent.TYPE_CLICK) {
-                                        Log.d(TAG, "ad has been clicked!");
-                                    } else if (adEvent.mType == AdEvent.TYPE_SKIP) {
-                                        Log.d(TAG, "x button has been clicked!");
-                                    } else if (adEvent.mType == AdEvent.TYPE_VIEW) {
-                                        Log.d(TAG, "ad has been showed!");
-                                    }
-                                }
-
-                                @Override
-                                public void onAdLoaded() {
-
-                                }
-
-                                @Override
-                                public void onViewCreated(View view) {
-                                    Log.e(TAG, "onViewCreated");
-                                    adContainer.removeAllViews();
-                                    adContainer.addView(view);
-                                }
-                            });
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
 
     }
@@ -237,7 +178,7 @@ public class CompositionDetailActivity extends BasicActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0:
-                    Util.showResultDialog(CompositionDetailActivity.this,error,"出错了");
+                    Utils.showResultDialog(CompositionDetailActivity.this,error,"出错了");
                     break;
                 case 100:
                     tvName.setText(composition.getName());

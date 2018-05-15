@@ -1,4 +1,4 @@
-package com.cxy.yuwen.Adapter;
+package com.cxy.yuwen.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

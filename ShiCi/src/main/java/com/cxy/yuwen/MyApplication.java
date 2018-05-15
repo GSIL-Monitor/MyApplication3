@@ -16,7 +16,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.eagle.pay66.Pay66;
-import com.xiaomi.ad.AdSdk;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -55,9 +54,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-       // AdSdk.setDebugOn();
-        // AdSdk.setMockOn();
-        AdSdk.initialize(this, APP_ID);   //小米广告
+
 
         //66支付
         Pay66.init(PAY_66_APPLICATION_ID, getApplicationContext());

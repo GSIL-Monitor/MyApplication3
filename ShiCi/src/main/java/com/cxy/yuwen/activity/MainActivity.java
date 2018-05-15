@@ -7,22 +7,17 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.fragment.MagazineFragment;
 import com.cxy.yuwen.fragment.ShelfFragment;
-import com.cxy.yuwen.fragment.YilinFragment;
-import com.cxy.yuwen.tool.NetWorkUtils;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
+import com.xiaomi.market.sdk.Constants;
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
-import com.cxy.yuwen.MyApplication;
 import com.cxy.yuwen.fragment.CompositionFragment;
 import com.cxy.yuwen.fragment.MainFragment;
 import com.cxy.yuwen.fragment.MyFragment;
-import com.cxy.yuwen.tool.CommonUtil;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -45,7 +40,7 @@ public class MainActivity extends BasicActivity {
         XiaomiUpdateAgent.update(this);//这种情况下, 若本地版本是debug版本则使用沙盒环境，否则使用线上环境
 
         //初始化Bmob
-        Bmob.initialize(this, CommonUtil.BmobApplicationId,"bmob");
+        Bmob.initialize(this, Utils.BmobApplicationId,"bmob");
 
         switchFragmentSupport(R.id.content,tabs[0]);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -78,9 +73,6 @@ public class MainActivity extends BasicActivity {
                     switchFragmentSupport(R.id.content,tabs[1]);
                     return true;*/
 
-               /* case R.id.navigation_yilin:
-                    switchFragmentSupport(R.id.content,tabs[3]);
-                    return true;*/
                 case R.id.navigation_magazine:
                     switchFragmentSupport(R.id.content,tabs[2]);
                     return true;

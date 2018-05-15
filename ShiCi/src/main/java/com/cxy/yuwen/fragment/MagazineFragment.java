@@ -1,6 +1,7 @@
 package com.cxy.yuwen.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,10 +17,8 @@ import android.widget.TextView;
 
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.activity.MagazineActivity;
-import com.cxy.yuwen.activity.MainActivity;
 import com.cxy.yuwen.tool.ACache;
-import com.cxy.yuwen.tool.CommonUtil;
-import com.cxy.yuwen.tool.Util;
+import com.cxy.yuwen.tool.Utils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,7 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +45,7 @@ public class MagazineFragment extends Fragment {
     private static final int LOAD_FINISHED=100,LOAD_ERROR=101;
     private MagazineAdapter adapter;
     private ACache mAcache;
-
+    Activity activity;
 
     @BindView(R.id.magazineRv) RecyclerView  magazineRv;
     private Unbinder unbinder;
@@ -64,7 +62,7 @@ public class MagazineFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_magazine, container, false);
         unbinder = ButterKnife.bind(this, view);
-
+        activity=this.getActivity();
         //设置RecycleView布局为网格布局 3列
         magazineRv.setLayoutManager(new GridLayoutManager(getContext(),3));
         magazineList =new ArrayList<HashMap>();
@@ -105,7 +103,7 @@ public class MagazineFragment extends Fragment {
             try {
                 Document docHtml=null;
                 String magazineClass=mAcache.getAsString("magazineClass");
-                if (!CommonUtil.isEmpty(magazineClass)){
+                if (!Utils.isEmpty(magazineClass)){
                     docHtml=Jsoup.parse(magazineClass);
                 }else{
                     docHtml = Jsoup.connect(MAGAZIENE_URL).get();
@@ -146,7 +144,7 @@ public class MagazineFragment extends Fragment {
 
                    break;
                case LOAD_ERROR:
-                   Util.toastMessage(getActivity(),"出错了，请稍后再试！");
+                   Utils.toastMessage(getActivity(),"出错了，请稍后再试！");
                    break;
 
            }
@@ -179,7 +177,7 @@ public class MagazineFragment extends Fragment {
                    @Override
                    public void onClick(View v) {
                        Intent intent=new Intent(getContext(), MagazineActivity.class);
-                       intent.putExtra("url",MAGAZIENE_URL+"/"+dataMap.get("href").toString());
+                       intent.putExtra("url",MAGAZIENE_URL+dataMap.get("href").toString());
                        intent.putExtra("title",dataMap.get("text").toString());
                        startActivity(intent);
                    }

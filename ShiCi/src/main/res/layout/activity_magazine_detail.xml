@@ -97,11 +97,11 @@
             >
 
             <TextView
-                android:id="@+id/add_shelf"
+                android:id="@+id/buy"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="+书架"
+                android:text="  购买"
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp"/>
 
