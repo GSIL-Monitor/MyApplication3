@@ -17,12 +17,15 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
 import com.cxy.yuwen.R;
+import com.cxy.yuwen.jsInterface.JavascriptInterface;
+import com.cxy.yuwen.tool.Util;
 import com.xiaomi.ad.AdListener;
 import com.xiaomi.ad.NativeAdInfoIndex;
 import com.xiaomi.ad.NativeAdListener;
 import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
+import com.xiaomi.market.sdk.Utils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,7 +45,7 @@ public class MagazineContentActivity extends BasicActivity {
     private String title="";
     private static final String AD_ID = "73de7ce1acfd8777553c367d5a4aab06";   //广告id
     private String htmlStr="<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
-            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:180%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
+            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:200%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
             + "</style></head><body>";
     private static final String MAGAZINE_URL="http://m.fx361.com";
     private String intentUrl="";
@@ -58,6 +61,7 @@ public class MagazineContentActivity extends BasicActivity {
         ButterKnife.bind(this);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setWebView();
         intentUrl=getIntent().getStringExtra("url");
         httpUrl=(MAGAZINE_URL + intentUrl).replace("page","news").replace("shtml","html");    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
 
@@ -127,37 +131,36 @@ public class MagazineContentActivity extends BasicActivity {
     }
 
     public void setWebView(){
+
         mWebSettings = mWebview.getSettings();
-        mWebSettings.setDefaultFontSize(22);
-        //支持缩放，默认为true。
-       // mWebSettings .setSupportZoom(false);
-        //设置自适应屏幕，两者合用
-        mWebSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
-        mWebSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
-        mWebSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        // 设置支持缩放
-        mWebSettings.setSupportZoom(true);
-       // 设置缩放工具的显示
-        mWebSettings.setBuiltInZoomControls(true);
-        //设置默认编码
-        mWebSettings .setDefaultTextEncodingName("utf-8");
-        //设置自动加载图片
-        mWebSettings .setLoadsImagesAutomatically(true);
-        mWebview.loadUrl(httpUrl);
+        mWebSettings.setTextSize(WebSettings.TextSize.NORMAL);
+        // 设置与Js交互的权限
+        mWebSettings.setJavaScriptEnabled(true);
+        // 设置允许JS弹窗
+        mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        //防止中文乱码
+        mWebSettings.setDefaultTextEncodingName("UTF-8");
+        // 先载入JS代码
+        // 格式规定为:file:///android_asset/文件名.html
+        // mWebView.loadUrl("file:///android_asset/image.html");
+        //mWebView.loadUrl("http://www.toutiao.com/a6401738581286682881/#p=1");
+        //载入js
+        // mWebview.addJavascriptInterface(new JavascriptInterface(this,htmlStr), "imagelistner");
 
 
         mWebview.setWebViewClient(new WebViewClient() {
-
-            //设置不用系统浏览器打开,直接显示在当前Webview
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                //这段js函数的功能就是注册监听，遍历所有的img标签，并添加onClick函数，函数的功能是在图片点击的时候调用本地java接口并传递url过去
+                mWebview.loadUrl("javascript:(function(){"
+                        + "var objs = document.getElementsByTagName(\"img\"); "
+                        + "for(var i=0;i<objs.length;i++)  " + "{"
+                        + "    objs[i].onclick=function()  " + "    {  "
+                        + "        window.imagelistner.openImage(this.src);  "
+                        + "    }  " + "}" + "})()");
             }
-
-
         });
-
 
     }
 
@@ -190,6 +193,8 @@ public class MagazineContentActivity extends BasicActivity {
 
             if (msg.what==100){
                 mProgressDialog.dismiss();
+                String[] imageUrls= Util.returnImageUrlsFromHtml(content.toString());
+                mWebview.addJavascriptInterface(new JavascriptInterface(MagazineContentActivity.this,imageUrls), "imagelistner");
                 mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
                 //设置广告
                 setAd();
@@ -239,6 +244,7 @@ public class MagazineContentActivity extends BasicActivity {
             mWebview = null;
         }*/
         super.onDestroy();
+
     }
 
 

@@ -1,6 +1,27 @@
 apply plugin: 'com.android.application'
 
 android {
+    compileSdkVersion 26
+    buildToolsVersion "27.0.1"
+
+    defaultConfig {
+        applicationId "com.cxy.magazine"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 15
+        versionName "2.5"
+
+        multiDexEnabled true
+
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
+        // 指定支持的so架构
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+        }
+    }
     //为了解决部分第三方库重复打包了META-INF的问题
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
@@ -9,79 +30,73 @@ android {
     lintOptions {
         abortOnError false
     }
-    compileSdkVersion 25
-    buildToolsVersion '27.0.1'
-
     //兼容Android6.0系统所需，如果这句话报错，可在dependencies标签下使用compile 'cn.bmob.android:http-legacy:1.0'**
     useLibrary 'org.apache.http.legacy'
 
-
-    defaultConfig {
-        applicationId "com.cxy.yuwen"
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 27
-        versionName "2.7.5"
-        // 指定支持的so架构
-        ndk {
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
-        }
-        /* jackOptions {
-            enabled true
-        }*/
-
-        vectorDrawables.useSupportLibrary = true
-    }
     buildTypes {
         release {
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
+
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']//将so文件目录指向libs目录
         }
     }
-
-    /* compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }*/
-
 }
-
 repositories {
     flatDir {
         dirs 'libs'
     }
 }
-
-
-
-
+configurations.all {
+    resolutionStrategy {
+        force "com.android.support:recyclerview-v7:27.0.1"
+        force "com.android.support:appcompat-v7:27.0.1"
+        force "com.android.support:design:27.0.1"
+        force "com.android.support:support-vector-drawable:27.0.1"
+        force "com.android.support:support-v4:27.0.1"
+    }
+}
 dependencies {
     /*导入本地jar包*/
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    /*compile 'com.google.code.gson:gson:2.6.2'*/
-    /*compile 'com.squareup.okhttp3:okhttp:3.6.0'*/
-    compile files('libs/pay66.jar')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
-    compile 'com.github.jdsjlzx:LRecyclerView:1.4.3'
-    compile 'com.jakewharton:butterknife:8.8.1'
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:25.3.0'
-    compile 'cn.bmob.android:bmob-sdk:3.5.5'
-    compile 'cn.bmob.android:http-legacy:1.0'
-
-    compile 'mi-appstore:xiaomi-update-sdk:2.8'
-
-    compile 'com.android.support:support-vector-drawable:25.3.0'
-    compile 'com.android.support:support-v4:25.3.0'
-    compile 'org.jsoup:jsoup:1.10.2'
+    /* compile 'com.google.code.gson:gson:2.3.1'*/
+    /* compile 'com.squareup.okhttp3:okhttp:3.6.0'*/
+    /*compile 'com.android.support:appcompat-v7:26.3.1'*/
+    /*compile 'com.android.support:design:26.3.1'*/
+    /*  compile 'com.android.support:support-vector-drawable:26.3.1'*/
+    /*compile 'com.android.support:support-v4:25.3.1'*/
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+    //butterknife
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //bmob数据库
+    implementation 'cn.bmob.android:bmob-sdk:3.6.0'
+    //LRecyclerView
+    implementation 'com.github.jdsjlzx:LRecyclerView:1.4.3'
+    //jsoup 爬虫
+    implementation 'org.jsoup:jsoup:1.10.2'
+    //小米更新sdk
+    implementation 'mi-appstore:xiaomi-update-sdk:2.8'
+    //AndFix 热修复框架
+    implementation 'com.alipay.euler:andfix:0.5.0@aar'
+    //Glide库
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    //QMUI
+    compile 'com.qmuiteam:qmui:1.1.0'
+    //ucrop
+    implementation 'com.github.yalantis:ucrop:2.2.2'
+    compile 'com.android.support:multidex:1.0.1'
+    //photoview
+    implementation 'com.bm.photoview:library:1.4.1'
 }

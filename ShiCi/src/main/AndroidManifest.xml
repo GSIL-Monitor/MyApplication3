@@ -196,6 +196,11 @@
         <activity android:name=".activity.InviteActivity" />
         <activity android:name=".activity.MessageActivity" />
         <activity android:name=".activity.MsgDetailActivity"></activity>
+        <activity
+            android:name=".activity.PhotoBrowserActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>
