@@ -23,14 +23,7 @@ import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeExpressADView;
 import com.qq.e.comm.util.AdError;
 import com.cxy.yuwen.jsInterface.JavascriptInterface;
-import com.cxy.yuwen.tool.Util;
-import com.xiaomi.ad.AdListener;
-import com.xiaomi.ad.NativeAdInfoIndex;
-import com.xiaomi.ad.NativeAdListener;
-import com.xiaomi.ad.adView.StandardNewsFeedAd;
-import com.xiaomi.ad.common.pojo.AdError;
-import com.xiaomi.ad.common.pojo.AdEvent;
-import com.xiaomi.market.sdk.Utils;
+import com.cxy.yuwen.tool.Utils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -223,7 +216,7 @@ public class MagazineContentActivity extends BasicActivity implements  NativeExp
 
             if (msg.what==100){
                 mProgressDialog.dismiss();
-                String[] imageUrls= Util.returnImageUrlsFromHtml(content.toString());
+                String[] imageUrls= Utils.returnImageUrlsFromHtml(content.toString());
                 mWebview.addJavascriptInterface(new JavascriptInterface(MagazineContentActivity.this,imageUrls), "imagelistner");
                 mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
                 //设置广告
