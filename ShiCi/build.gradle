@@ -55,34 +55,50 @@ repositories {
         dirs 'libs'
     }
 }
-
-
-
-
+configurations.all {
+    resolutionStrategy {
+        force "com.android.support:recyclerview-v7:27.0.1"
+        force "com.android.support:appcompat-v7:27.0.1"
+        force "com.android.support:design:27.0.1"
+        force "com.android.support:support-vector-drawable:27.0.1"
+        force "com.android.support:support-v4:27.0.1"
+    }
+}
 dependencies {
     /*导入本地jar包*/
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-   /* compile 'com.google.code.gson:gson:2.3.1'*/
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.github.jdsjlzx:LRecyclerView:1.4.3'
-    compile 'com.jakewharton:butterknife:8.8.1'
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:25.3.0'
-    compile 'cn.bmob.android:bmob-sdk:3.6.0'
-    //小米检查更新
-    compile 'mi-appstore:xiaomi-update-sdk:2.8'
-
-    compile 'com.android.support:support-vector-drawable:25.3.0'
-    compile 'com.android.support:support-v4:25.3.0'
-    compile 'org.jsoup:jsoup:1.10.2'
+    /* compile 'com.google.code.gson:gson:2.3.1'*/
+    /* compile 'com.squareup.okhttp3:okhttp:3.6.0'*/
+    /*compile 'com.android.support:appcompat-v7:26.3.1'*/
+    /*compile 'com.android.support:design:26.3.1'*/
+    /*  compile 'com.android.support:support-vector-drawable:26.3.1'*/
+    /*compile 'com.android.support:support-v4:25.3.1'*/
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+    //butterknife
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //bmob数据库
+    implementation 'cn.bmob.android:bmob-sdk:3.6.0'
+    //LRecyclerView
+    implementation 'com.github.jdsjlzx:LRecyclerView:1.4.3'
+    //jsoup 爬虫
+    implementation 'org.jsoup:jsoup:1.10.2'
+    //小米更新sdk
+    implementation 'mi-appstore:xiaomi-update-sdk:2.8'
+    //AndFix 热修复框架
+    implementation 'com.alipay.euler:andfix:0.5.0@aar'
     //Glide库
-    compile 'com.github.bumptech.glide:glide:3.8.0'
-
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    //QMUI
+    compile 'com.qmuiteam:qmui:1.1.0'
+    //ucrop
+    implementation 'com.github.yalantis:ucrop:2.2.2'
+    compile 'com.android.support:multidex:1.0.1'
+    //photoview
+    implementation 'com.bm.photoview:library:1.4.1'
 }

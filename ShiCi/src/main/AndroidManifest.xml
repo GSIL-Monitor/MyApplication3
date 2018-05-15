@@ -173,6 +173,18 @@
             android:parentActivityName=".activity.SettingInfomationActivity" />
         <activity android:name=".activity.YilinDirectoryActivity" />
         <activity android:name=".activity.YilinArticleActivity" />
+        <!--
+        <activity android:name=".activity.SplashActivity"
+                   android:screenOrientation="portrait"
+                   android:theme="@style/AppTheme.NoActionBar"
+                   android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout">
+            &lt;!&ndash;<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>&ndash;&gt;
+        </activity>
+        -->
         <activity
             android:name=".activity.MagazineActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -192,6 +204,11 @@
         <activity android:name=".activity.HaveBuyActivity"></activity>
         <service android:name="com.qq.e.comm.DownloadService" android:exported="false" />
         <activity android:name="com.qq.e.ads.ADActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".activity.PhotoBrowserActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>
