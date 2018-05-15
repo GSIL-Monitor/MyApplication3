@@ -100,7 +100,7 @@ public class ClassFragment extends BaseFragment {
 
     }
 
-    @OnClick(R.id.tv_search)
+    @OnClick(R.id.rl_search)
     public void searchClick(){
         //  Util.toastMessage(getActivity(),"searchView");
         //跳转Fragment
