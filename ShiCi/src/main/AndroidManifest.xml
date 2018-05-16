@@ -171,8 +171,6 @@
         <activity
             android:name=".activity.BindPhoneActivity"
             android:parentActivityName=".activity.SettingInfomationActivity" />
-        <activity android:name=".activity.YilinDirectoryActivity" />
-        <activity android:name=".activity.YilinArticleActivity" />
         <!--
         <activity android:name=".activity.SplashActivity"
                    android:screenOrientation="portrait"

@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.cxy.magazine.activity.PhotoBrowserActivity;
+import com.cxy.yuwen.activity.PhotoBrowserActivity;
+
 
 // js通信接口
 public class JavascriptInterface {

@@ -28,7 +28,7 @@ public class FileUtils {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                File appDir = new File(sdDir, "out_photo");
+                File appDir = new File(sdDir, "yuwen_picture");
                 if (!appDir.exists()) {
                     appDir.mkdir();
                 }

@@ -249,15 +249,22 @@ public class MagazineContentActivity extends BasicActivity implements  NativeExp
     //销毁Webview
     @Override
     protected void onDestroy() {
-        /*if (mWebview != null) {
-            mWebview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+        super.onDestroy();
+        if (mWebview != null) {
+            //  mWebview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
             mWebview.clearHistory();
 
             ((ViewGroup) mWebview.getParent()).removeView(mWebview);
             mWebview.destroy();
             mWebview = null;
-        }*/
-        super.onDestroy();
+        }
+      //  Log.i(LOG_TAG,"MagazineContentActivity------->onDestroy");
+
+        // 使用完了每一个NativeExpressADView之后都要释放掉资源
+        if (nativeExpressADView != null) {
+            nativeExpressADView.destroy();
+        }
+
     }
 
 
