@@ -33,6 +33,7 @@ import com.cxy.magazine.jsInterface.JavascriptInterface;
 import com.cxy.magazine.util.Constants;
 import com.cxy.magazine.util.Utils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qq.e.ads.nativ.ADSize;
 import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeExpressADView;
@@ -71,7 +72,7 @@ public class MagazineContentActivity extends BasicActivity implements  NativeExp
     private StringBuilder content=null;
     private static final String MAGAZINE_URL="http://m.fx361.com";
     private String htmlStr="<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
-            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:200%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
+            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:250%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
             + "</style></head><body>";
     private boolean isCollect=false;    //是否收藏
     private String intentUrl="";
@@ -94,10 +95,10 @@ public class MagazineContentActivity extends BasicActivity implements  NativeExp
         intentUrl=getIntent().getStringExtra("url");
         httpUrl=(MAGAZINE_URL + intentUrl).replace("page","news").replace("shtml","html");    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
         articleId=intentUrl.split("/")[4].split(".shtml")[0];
-      //  setWebView();
+
         content=new StringBuilder(htmlStr);
      //   mProgressDialog=ProgressDialog.show(this, null, "请稍后");
-        Utils.showTipDialog(MagazineContentActivity.this,"加载中");
+        Utils.showTipDialog(MagazineContentActivity.this,"加载中", QMUITipDialog.Builder.ICON_TYPE_LOADING);
         Thread getHtml=new GetHtml();
         getHtml.start();
 
@@ -155,7 +156,6 @@ public void collectClick(){
                             if (e == null) {
                                 Utils.toastMessage(MagazineContentActivity.this, "收藏文章成功");
                                 articleObjectId = objectId;
-                             //   rbCollect.setBackgroundResource(R.drawable.collect_selected);
                                 collectButton.setImageResource(R.drawable.ic_collect_selected);
                                 isCollect=true;
                             } else {

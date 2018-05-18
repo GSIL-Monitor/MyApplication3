@@ -76,7 +76,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         }
         if (view.getId()==R.id.btn_login){  //登录
 
-             Utils.showTipDialog(LoginActivity.this,"登录中...");
+             Utils.showTipDialog(LoginActivity.this,"登录中...",QMUITipDialog.Builder.ICON_TYPE_LOADING);
 
             String userName=etUserName.getText().toString();
             String password=etPassword.getText().toString();
@@ -122,7 +122,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
      //   Utils.showProgressDialog(LoginActivity.this, null, "请稍后");
 
      //   loginDialog.show();
-        Utils.showTipDialog(LoginActivity.this,"登录中...");
+        Utils.showTipDialog(LoginActivity.this,"登录中...",QMUITipDialog.Builder.ICON_TYPE_LOADING);
         Log.d("SDKQQAgentPref", "FirstLaunch_SDK:" + SystemClock.elapsedRealtime());
 
     }
@@ -164,19 +164,19 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         @Override
         public void onComplete(Object response) {
             if (null == response) {
+                Utils.dismissDialog();
                 Utils.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
                 return;
             }
             JSONObject jsonResponse = (JSONObject) response;
             if (null != jsonResponse && jsonResponse.length() == 0) {
+                Utils.dismissDialog();
                 Utils.showResultDialog(LoginActivity.this, "返回为空", "登录失败");
                 return;
             }
-            //  Util.showResultDialog(LoginActivity.this, response.toString(), "登录成功");
+
             Log.d("SDKQQAgentPref", "登录成功" );
 
-            // 有奖分享处理
-            // handlePrizeShare();
             doComplete((JSONObject)response);
         }
 
@@ -211,10 +211,9 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
             @Override
             public void done(JSONObject userAuth,BmobException e) {
                 Log.i("SDKQQAgentPref",authInfo.getSnsType()+"登陆成功返回:"+userAuth);
-
+                Utils.dismissDialog();
             //    getUserInfo();  //获取QQ用户的信息
                 if (e==null){
-                    Utils.dismissDialog();
                     finish();
                 }else{
                   Utils.showResultDialog(LoginActivity.this,"登录失败，请稍后重试","提示");

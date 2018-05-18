@@ -43,7 +43,7 @@ public class Utils {
  //   private static Dialog mProgressDialog;
     private static Toast mToast;
     public static Integer CURREN_VERSION_CODE=0;
-    public  static  QMUITipDialog tipDialog;
+    private  static  QMUITipDialog tipDialog;
 
 
     public static final void showResultDialog(Context context, String msg, String title) {
@@ -68,16 +68,17 @@ public class Utils {
 
     }
 
-    public static final void showTipDialog(Context context, String message) {
+    public static final void showTipDialog(Context context, String message,int iconType) {
         dismissDialog();
 
         if (TextUtils.isEmpty(message)) {
             message = "正在加载...";
         }
         tipDialog=new QMUITipDialog.Builder(context)
-                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                .setIconType(iconType)
                 .setTipWord(message).create();
         tipDialog.show();
+
     }
 
     public static void showConfirmCancelDialog(Context context,
