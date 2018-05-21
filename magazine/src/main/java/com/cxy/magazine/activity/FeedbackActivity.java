@@ -17,6 +17,7 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.emailUtil.EmailUtil;
 import com.cxy.magazine.util.Utils;
 import com.google.gson.JsonObject;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 
 public class FeedbackActivity extends BasicActivity {
@@ -48,7 +49,7 @@ public class FeedbackActivity extends BasicActivity {
                 email=editEmail.getText().toString();
                 if (feedback.length()>0){
                  //   Utils.showProgressDialog(FeedbackActivity.this,"正在发送，请稍候");
-                    Utils.showTipDialog(FeedbackActivity.this,"正在发送，请稍候");
+                    Utils.showTipDialog(FeedbackActivity.this,"正在发送，请稍候", QMUITipDialog.Builder.ICON_TYPE_LOADING);
                     Thread thread=new Thread(new Runnable() {
                        @Override
                        public void run() {

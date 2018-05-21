@@ -49,6 +49,11 @@
                 android:id="@+id/exit"
                 android:icon="@drawable/ic_menu_close"
                 android:title="退出" />
+
+            <item
+                android:id="@+id/test"
+                android:icon="@drawable/ic_menu_close"
+                android:title="测试" />
         </menu>
     </item>
 

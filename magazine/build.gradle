@@ -8,8 +8,8 @@ android {
         applicationId "com.cxy.magazine"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 15
-        versionName "2.5"
+        versionCode 16
+        versionName "2.6"
 
         multiDexEnabled true
 
