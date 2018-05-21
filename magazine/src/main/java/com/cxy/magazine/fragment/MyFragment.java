@@ -282,6 +282,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
 
         BmobQuery<User> userQuery=new BmobQuery<User>();
         userQuery.setLimit(500);
+        userQuery.setSkip(400);
 
         userQuery.findObjects(new FindListener<User>() {
             @Override
@@ -302,9 +303,15 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
 
                     }
                     int index=0;
-                    for (int i=0;i<msgList.size();i++){
+                    for (int i=index;i<msgList.size();i++){
                         List<BmobObject> newMsgList=new ArrayList<BmobObject>();
-                        newMsgList=msgList.subList(index,index+40);
+                        if (index+40<msgList.size()){
+                            newMsgList=msgList.subList(index,index+40);
+                        }else{
+                            newMsgList=msgList.subList(index, msgList.size());
+                        }
+
+                        index+=40;
 
                         //批量插入
                         new BmobBatch().insertBatch(newMsgList).doBatch(new QueryListListener<BatchResult>() {
@@ -324,14 +331,16 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
                                 }else{
                                     Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
                                 }
+
+
                             }
+
+
                         });
 
-                        index+=40;
+
 
                     }
-
-
 
                 }
             }
