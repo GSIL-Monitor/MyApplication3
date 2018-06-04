@@ -283,13 +283,7 @@ public class MagazineDetailActivity extends BasicActivity {
     }//
 
     public void  saveBuyBook(){
-      /*  //加入书架
-        Bookshelf bookshelf=new Bookshelf();
-        bookshelf.setUser(user);
-        bookshelf.setBookName(magazineTitle);
-        bookshelf.setPulishTime(magazineTime);
-        bookshelf.setCoverUrl(coverImageUrl);
-        bookshelf.setDirectoryUrl(httpUrl);*/
+
         BuyBean buyBean=new BuyBean();
         buyBean.setUser(user);
         buyBean.setId(magazineId);
@@ -304,7 +298,7 @@ public class MagazineDetailActivity extends BasicActivity {
 
                     Snackbar.make(tv_title, "已成功购买该杂志", Snackbar.LENGTH_LONG).setAction("", null).show();
                 }else {
-                    Utils.toastMessage(MagazineDetailActivity.this,e.getMessage());
+                    Utils.toastMessage(MagazineDetailActivity.this,"购买书籍失败："+e.getMessage()+",请联系客服");
                 }
             }
         });

@@ -57,7 +57,7 @@ import cn.bmob.v3.listener.QueryListListener;
 
 
 public class MyFragment extends BaseFragment implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
-    public static final String appUrl = "http://a.app.qq.com/o/simple.jsp?pkgname=com.cxy.yuwen";
+   // public static final String appUrl = "http://a.app.qq.com/o/simple.jsp?pkgname=com.cxy.yuwen";
     User user;
     private NavigationView navigationView;
     private TextView tvLogin;
@@ -66,6 +66,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
     private Bitmap headImage;
     private Drawable defaultHeadImage;
     private static final int IMAGE_LOAD_FINISHED = 100;
+
     //  private mAcache mAcache;
 
     @Override
@@ -93,6 +94,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
 
         // setUserInfo();
         tvLogin.setOnClickListener(this);
+        headImageView.setOnClickListener(this);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -180,6 +182,17 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.tv_login) {
+            if (user != null) {  //用户详情
+                Intent intent = new Intent(getActivity(), SettingInfomationActivity.class);
+                startActivity(intent);
+            } else {   //跳转到注册界面
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+
+        }
+
+        if (v.getId() == R.id.userImage) {
             if (user != null) {  //用户详情
                 Intent intent = new Intent(getActivity(), SettingInfomationActivity.class);
                 startActivity(intent);
