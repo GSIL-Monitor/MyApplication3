@@ -1,1 +1,1 @@
-include ':ShiCi',  ':magazine'
+include ':ShiCi',':magazine'

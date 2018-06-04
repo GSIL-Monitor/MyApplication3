@@ -267,6 +267,9 @@ public class ACache {
      */
     public JSONArray getAsJSONArray(String key) {
         String JSONString = getAsString(key);
+        if (JSONString==null)
+            return null;
+
         try {
             JSONArray obj = new JSONArray(JSONString);
             return obj;

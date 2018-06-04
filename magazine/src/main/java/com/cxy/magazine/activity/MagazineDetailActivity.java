@@ -130,9 +130,12 @@ public class MagazineDetailActivity extends BasicActivity {
         layoutParams.height = height;
         im_cover.setLayoutParams(layoutParams);
 
-        httpUrl = getIntent().getStringExtra("href");
+        httpUrl = getIntent().getStringExtra("href");   //http://www.fx361.com/bk/sdzx/index.html
         String[] names=httpUrl.split("//")[1].split("/");
-        magazineId=names[2]+names[3].split(".html")[0];
+        if (names.length>=4){
+            magazineId=names[2]+names[3].split(".html")[0];
+        }
+
 
         Thread thread=new GetData();
         thread.start();
