@@ -217,7 +217,7 @@ public class MagazineListFragment extends BaseFragment {
        int currentSize = recycleViewAdapter.getItemCount();
        for (int i = currentSize; i < currentSize+REQUEST_COUNT; i++){
            try {
-               if (dataArray.getJSONObject(i)!=null){
+               if (i<dataArray.length() && dataArray.getJSONObject(i)!=null){
                    dataDisplayArray.put(dataArray.getJSONObject(i));
                    mCurrentCounter += 1;
                }
@@ -231,7 +231,7 @@ public class MagazineListFragment extends BaseFragment {
 
         for (int i = 0; i < REQUEST_COUNT; i++){
             try {
-                if (dataArray.getJSONObject(i)!=null){
+                if (i<dataArray.length() && dataArray.getJSONObject(i)!=null){
                     dataDisplayArray.put(dataArray.getJSONObject(i));
                     mCurrentCounter += 1;
                 }
@@ -249,7 +249,7 @@ public class MagazineListFragment extends BaseFragment {
             super.handleMessage(msg);
             switch (msg.what){
                 case 100:    //重新获取数据
-                    reSetItems();
+                     reSetItems();
                      mRecyclerView.refreshComplete(REQUEST_COUNT);
                   //   mLRecyclerViewAdapter.notifyDataSetChanged();
                     recycleViewAdapter=new MagazineListAdapter(getContext(),dataDisplayArray,manager);

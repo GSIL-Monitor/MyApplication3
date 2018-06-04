@@ -79,6 +79,21 @@ public class Utils {
                 .setTipWord(message).create();
         tipDialog.show();
 
+        if (iconType!=QMUITipDialog.Builder.ICON_TYPE_LOADING){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(1500);
+                        tipDialog.dismiss();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+
+
     }
 
     public static void showConfirmCancelDialog(Context context,

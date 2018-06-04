@@ -43,15 +43,15 @@
                 app:srcCompat="@drawable/ic_search"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="@dimen/dp_10"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/iv_search"
-                android:text="  请输入杂志名称，如意林、读者"
+                android:text=" 请输入杂志名称，如意林、读者"
                 android:textColor="@color/colorFontHint"
-                android:textSize="15sp"
-                android:layout_centerVertical="true"/>
+                android:textSize="16sp"
+                android:layout_alignTop="@id/iv_search"/>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 

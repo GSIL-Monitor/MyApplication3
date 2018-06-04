@@ -268,17 +268,17 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
         }
 
         //测试
-        if (id==R.id.test){
+      /*  if (id==R.id.test){
             //发送消息
             insertMessages();
 
-        }
+        }*/
 
 
         return true;
     }
 
-    public void  insertMessages(){
+   /* public void  insertMessages(){
 
         BmobQuery<User> userQuery=new BmobQuery<User>();
         userQuery.setLimit(500);
@@ -345,7 +345,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
                 }
             }
         });
-    }
+    }*/
 
     public void setMessgae() {
         final LinearLayout msgLayout = (LinearLayout) navigationView.getMenu().findItem(R.id.messageNotification).getActionView();

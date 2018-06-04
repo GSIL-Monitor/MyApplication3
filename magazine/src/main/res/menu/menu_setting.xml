@@ -50,10 +50,10 @@
                 android:icon="@drawable/ic_menu_close"
                 android:title="退出" />
 
-            <item
+          <!--  <item
                 android:id="@+id/test"
                 android:icon="@drawable/ic_menu_close"
-                android:title="测试" />
+                android:title="测试" />-->
         </menu>
     </item>
 

@@ -463,7 +463,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
 
                     });
                 }else{
-                   Utils.showResultDialog(MemberActivity.this,"充值失败，reason:"+reason+",请联系客服","提示");
+                   Utils.showResultDialog(MemberActivity.this,"充值失败，reason:"+reason,"提示");
 
                 }
             }

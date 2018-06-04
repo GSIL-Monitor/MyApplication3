@@ -216,6 +216,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                 if (e==null){
                     finish();
                 }else{
+                  Log.e(LOG_TAG,e.getMessage());
                   Utils.showResultDialog(LoginActivity.this,"登录失败，请稍后重试","提示");
                 }
 
