@@ -94,6 +94,7 @@ public class Utils {
         }
 
 
+
         if (iconType!=QMUITipDialog.Builder.ICON_TYPE_LOADING){
             new Thread(new Runnable() {
                 @Override
@@ -107,6 +108,7 @@ public class Utils {
                 }
             }).start();
         }
+
 
 
     }
