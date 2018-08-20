@@ -6,5 +6,8 @@ package com.cxy.magazine.util;
 
 public class Constants {
     public static final String APPID = "1106793860";
-    public static final String NativeExpressPosID = "3000331260217718";
+    public static final String NativeExpressPosID1 = "3000331260217718";
+    public static final String NativeExpressPosID2 = "8030030762855434";
+    public static final String NativeExpressPosID3 = "1050832722555405";
+    public static final String NativeExpressPosID4 = "2000629911207832";
 }

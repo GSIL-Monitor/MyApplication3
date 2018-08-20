@@ -8,11 +8,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
     <application
         android:name=".MyApplication"
@@ -93,7 +93,8 @@
             android:theme="@style/AppTheme.ActionBar" />
         <activity android:name=".activity.MagazineDirectoryActivity" />
         <activity android:name=".activity.MagazineHistoryActivity" />
-        <activity android:name=".activity.MagazineContentActivity" />
+        <activity android:name=".activity.MagazineContentActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"/>
         <activity
             android:name=".activity.FeedbackActivity"
             android:theme="@style/AppTheme.ActionBar">

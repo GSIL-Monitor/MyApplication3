@@ -34,15 +34,20 @@ import com.cxy.magazine.util.Constants;
 import com.cxy.magazine.util.Utils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.nativ.ADSize;
 import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeExpressADView;
+import com.qq.e.ads.nativ.NativeExpressMediaListener;
+import com.qq.e.comm.constants.AdPatternType;
+import com.qq.e.comm.pi.AdData;
 import com.qq.e.comm.util.AdError;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,7 +86,8 @@ public class MagazineContentActivity extends BasicActivity implements  NativeExp
     private NativeExpressADView nativeExpressADView;
     private String TAG="tencentAd";
     private int checkedIndex = 1;
-
+    //广告id数组
+    private String[]  adIds={Constants.NativeExpressPosID1,Constants.NativeExpressPosID2,Constants.NativeExpressPosID3};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,12 +200,17 @@ public void collectClick(){
 
     // 1.加载广告，先设置加载上下文环境和条件
     private void refreshAd() {
-        nativeExpressAD = new NativeExpressAD(MagazineContentActivity.this,new ADSize(ADSize.FULL_WIDTH,ADSize.AUTO_HEIGHT),Constants.APPID, Constants.NativeExpressPosID, this);// 传入Activity
+        Random random=new Random();
+        int index=random.nextInt(3);
+        Log.i(TAG,"AD index:"+index);
+        //从3个id中随机取一个
+        String adId=adIds[index];
+        nativeExpressAD = new NativeExpressAD(MagazineContentActivity.this,new ADSize(ADSize.FULL_WIDTH,ADSize.AUTO_HEIGHT),Constants.APPID, adId, this);// 传入Activity
         // 注意：如果您在联盟平台上新建原生模板广告位时，选择了“是”支持视频，那么可以进行个性化设置（可选）
-       /* nativeExpressAD.setVideoOption(new VideoOption.Builder()
+       nativeExpressAD.setVideoOption(new VideoOption.Builder()
                 .setAutoPlayPolicy(VideoOption.AutoPlayPolicy.WIFI) // WIFI环境下可以自动播放视频
                 .setAutoPlayMuted(true) // 自动播放时为静音
-                .build()); */
+                .build());
         nativeExpressAD.loadAD(1);
     }
 
@@ -225,6 +236,9 @@ public void collectClick(){
         }
 
         nativeExpressADView = adList.get(0);
+        if (nativeExpressADView.getBoundData().getAdPatternType() == AdPatternType.NATIVE_VIDEO) {
+            nativeExpressADView.setMediaListener(mediaListener);
+        }
         // 广告可见才会产生曝光，否则将无法产生收益。
         adContainer.addView(nativeExpressADView);
         nativeExpressADView.render();
@@ -447,9 +461,62 @@ public void collectClick(){
         // 使用完了每一个NativeExpressADView之后都要释放掉资源
         if (nativeExpressADView != null) {
             nativeExpressADView.destroy();
+            Log.i(TAG,"广告销毁");
         }
 
     }
+
+
+    private NativeExpressMediaListener mediaListener = new NativeExpressMediaListener() {
+        @Override
+        public void onVideoInit(NativeExpressADView nativeExpressADView) {
+        //    Log.i(TAG, "onVideoInit: "
+         //           + getVideoInfo(nativeExpressADView.getBoundData().getProperty(AdData.VideoPlayer.class)));
+        }
+
+        @Override
+        public void onVideoLoading(NativeExpressADView nativeExpressADView) {
+            Log.i(TAG, "onVideoLoading");
+        }
+
+        @Override
+        public void onVideoReady(NativeExpressADView nativeExpressADView, long l) {
+            Log.i(TAG, "onVideoReady");
+        }
+
+        @Override
+        public void onVideoStart(NativeExpressADView nativeExpressADView) {
+         //   Log.i(TAG, "onVideoStart: "
+         //           + getVideoInfo(nativeExpressADView.getBoundData().getProperty(AdData.VideoPlayer.class)));
+        }
+
+        @Override
+        public void onVideoPause(NativeExpressADView nativeExpressADView) {
+           // Log.i(TAG, "onVideoPause: "
+           //         + getVideoInfo(nativeExpressADView.getBoundData().getProperty(AdData.VideoPlayer.class)));
+        }
+
+        @Override
+        public void onVideoComplete(NativeExpressADView nativeExpressADView) {
+          //  Log.i(TAG, "onVideoComplete: "
+           //         + getVideoInfo(nativeExpressADView.getBoundData().getProperty(AdData.VideoPlayer.class)));
+        }
+
+        @Override
+        public void onVideoError(NativeExpressADView nativeExpressADView, AdError adError) {
+          //  Log.i(TAG, "onVideoError");
+        }
+
+        @Override
+        public void onVideoPageOpen(NativeExpressADView nativeExpressADView) {
+         //   Log.i(TAG, "onVideoPageOpen");
+        }
+
+        @Override
+        public void onVideoPageClose(NativeExpressADView nativeExpressADView) {
+          //  Log.i(TAG, "onVideoPageClose");
+        }
+    };
 
 
 }

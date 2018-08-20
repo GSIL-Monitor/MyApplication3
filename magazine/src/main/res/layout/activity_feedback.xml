@@ -83,6 +83,15 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_wechat"
         android:hint="邮箱"
         style="@style/EditTextStyle"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_mail"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="@string/downloadHint"
+        android:autoLink="all"/>
 
     <Button
         android:id="@+id/buttonCommit"
@@ -92,6 +101,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/ButtonStyle"/>
+
 
 
 

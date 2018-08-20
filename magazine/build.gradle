@@ -8,8 +8,8 @@ android {
         applicationId "com.cxy.magazine"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 17
-        versionName "2.7"
+        versionCode 20
+        versionName "3.0"
 
         multiDexEnabled true
 
@@ -65,7 +65,6 @@ configurations.all {
 dependencies {
     /*导入本地jar包*/
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -99,4 +98,5 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     //photoview
     implementation 'com.bm.photoview:library:1.4.1'
+
 }

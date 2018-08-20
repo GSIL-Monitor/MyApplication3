@@ -43,7 +43,10 @@
                 android:icon="@drawable/ic_menu_share"
                 android:title="邀请好友(邀请好友，各得3天会员)"/>
 
-
+            <!--<item
+                android:id="@+id/drawMember"
+                android:icon="@drawable/ic_menu_share"
+                android:title="免费抽会员"/>-->
 
             <item
                 android:id="@+id/exit"

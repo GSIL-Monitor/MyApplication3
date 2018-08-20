@@ -103,7 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="#fff"
-        >
+        android:id="@+id/toolbar3">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -119,37 +119,42 @@
                 android:text="+书架"
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp"/>-->
-            <TextView
+         <!--   <TextView
                 android:id="@+id/buy"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="  购  买"
                 android:textColor="@color/colorAccent"
-                android:textSize="18sp"/>
+                android:textSize="18sp"/>-->
 
             <TextView
                 android:id="@+id/start_read"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/colorAccent"
-                android:text="开始阅读"
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_10"
+                android:text="阅读最新期"
                 android:textAlignment="center"
                 android:textColor="#fff"
-                android:textSize="18sp"
-                android:paddingTop="@dimen/dp_10"
-                android:paddingBottom="@dimen/dp_10"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/watch_history"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@color/colorAccent"
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_10"
                 android:text="浏览往期"
                 android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="18sp"/>
+                android:textColor="#fff"
+                android:textSize="16sp"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="15dp"/>
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 

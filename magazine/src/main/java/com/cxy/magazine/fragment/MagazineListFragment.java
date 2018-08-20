@@ -288,13 +288,12 @@ public class MagazineListFragment extends BaseFragment {
                           //  HashMap map=new HashMap<String,String>();
                             JSONObject jsonObject=new JSONObject();
                             Element a=li.select("p.pel_m_pic").get(0).getElementsByTag("a").get(0);
-                         //   map.put("href",ClassFragment.MAGAZIENE_URL+a.attr("href"));
-                        //    map.put("imageSrc",a.getElementsByTag("img").get(0).attr("src"));
+
                             jsonObject.put("href",ClassFragment.MAGAZIENE_URL+a.attr("href"));
                             jsonObject.put("imageSrc",a.getElementsByTag("img").get(0).attr("src"));
 
                             Element p2=li.select("p.pel_name").get(0);
-                      //      map.put("name",p2.text());
+
 
                             jsonObject.put("name",p2.text());
 

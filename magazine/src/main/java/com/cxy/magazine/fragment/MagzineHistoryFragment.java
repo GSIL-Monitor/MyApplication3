@@ -95,7 +95,8 @@ public class MagzineHistoryFragment extends BaseFragment {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
+                //直接跳转到目录界面
+                Intent intent=new Intent(getActivity(), MagazineDirectoryActivity.class);
                 intent.putExtra("href",ClassFragment.MAGAZIENE_URL+dataDisplayList.get(position).get("href").toString());
                 startActivity(intent);
             }

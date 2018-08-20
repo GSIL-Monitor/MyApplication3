@@ -88,13 +88,13 @@ public class MainActivity extends BasicActivity {
     protected void onStart() {
         super.onStart();
         //初始化Bmob
-        Bmob.initialize(this,BmobApplicationId);
+        Bmob.initialize(this,BmobApplicationId,"bmob");
         boolean netConnect=NetWorkUtils.isNetworkConnected(this);
         if (netConnect){
             //小米更新
             XiaomiUpdateAgent.update(this);//这种情况下, 若本地版本是debug版本则使用沙盒环境，否则使用线上环境
             //检查补丁更新
-            checkPatch();
+         //   checkPatch();
         }
 
 

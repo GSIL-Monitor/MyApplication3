@@ -1,5 +1,6 @@
 package com.cxy.magazine.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -15,6 +16,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -34,11 +38,11 @@ import com.cxy.magazine.bmobBean.MemberPrice;
 import com.cxy.magazine.bmobBean.MemberRecharge;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
+import com.cxy.magazine.util.OrderPreMessage;
 import com.cxy.magazine.util.ResponseParam;
 import com.cxy.magazine.util.Utils;
 import com.eagle.pay66.Pay66;
 import com.eagle.pay66.listener.CommonListener;
-import com.eagle.pay66.vo.OrderPreMessage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -94,6 +98,8 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
     private ImageView imageView;
     private Bitmap headImage;
     private List<Member> memberList=new ArrayList<Member>();
+
+    private static final int REQUEST_INSTALL = 124;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -385,7 +391,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             @Override
             public void onSuccess(String response) {
            //     Log.d(TAG_CREATE_ORDER, "---onSuccess");
-           //     Log.d(TAG_CREATE_ORDER, "---onSuccess--response=" + response);
+                Log.d(TAG_CREATE_ORDER, "---onSuccess--response=" + response);
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 ResponseParam<OrderPreMessage> responseParam = gson.fromJson(response, new TypeToken<ResponseParam<OrderPreMessage>>() {
                 }.getType());
@@ -429,11 +435,11 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                 return;
             }
 
-            if (!installPayPlugin()){  //用户未安装支付插件，无法进行微信支付
+            if (!isInstallPayPlugin()){  //用户未安装支付插件，无法进行微信支付
                 Utils.showConfirmCancelDialog(MemberActivity.this, "提示", "第一次使用微信支付，必须先安装我们的安全插件", new QMUIDialogAction.ActionListener() {
                     @Override
                     public void onClick(QMUIDialog dialog, int which) {
-                        installPayPlugin("db.db");  //安装插件
+                        installPayPlugin();  //安装插件
                     }
                 });
                 return;
@@ -457,7 +463,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
 
                         @Override
                         public void onClick(QMUIDialog dialog, int index) {
-                            installPayPlugin("db.db");  //安装插件
+                            installPayPlugin();  //安装插件
                         }
 
 
@@ -628,7 +634,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
      * 需要的话，则进行安装
      * @return true安装
      */
-    boolean installPayPlugin(){
+    boolean isInstallPayPlugin(){
         try {
             PackageInfo packageInfo = getApplicationContext().getPackageManager().getPackageInfo("com.eagle.pay66safe", 0);
             Log.d(TAG_CREATE_ORDER, "versionCode = " + packageInfo.versionCode);
@@ -642,12 +648,33 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
         return false;
     }
 
+
     /**
      * 安装assets里的apk文件
      *
+     */
+    void installPayPlugin() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            boolean b = getPackageManager().canRequestPackageInstalls();
+            if (b) {
+                //安装应用的逻辑(写自己的就可以)
+                installApk("db.db");
+            } else {
+                //请求安装未知应用来源的权限
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, REQUEST_INSTALL);
+            }
+        } else {  //小于26，直接安装
+            installApk("db.db");
+        }
+
+
+    }
+
+    /**
+     * 安装apk文件
      * @param fileName
      */
-    void installPayPlugin(String fileName) {
+    void installApk(String fileName){
         try {
             InputStream is = getAssets().open(fileName);
             File file = new File(Environment.getExternalStorageDirectory()
@@ -687,7 +714,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             if (intent != null)
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             //通过FileProvider创建一个content类型的Uri
-            return FileProvider.getUriForFile(context, context.getPackageName() +".fileProvider", file);
+            return FileProvider.getUriForFile(context, context.getPackageName() +".fileprovider", file);
         }else {
             return Uri.fromFile(file);
         }
@@ -741,5 +768,28 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             finish();
         }
         return true;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_INSTALL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                installApk("db.db");
+            } else {
+                //启动授权页面
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, REQUEST_INSTALL);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_INSTALL) {
+            installPayPlugin();
+        }
     }
 }
