@@ -58,7 +58,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
     public static int mark;//查询的标志
     public  String httpUrl = "";
     public static final String tag="INFO";
-    public static String httpUrl1 = "http://api.avatardata.cn/TangShiSongCi/LookUp?key=9b42454896f54202be3767fd55930654";
+    public static String httpUrl1 = "https://api.avatardata.cn/TangShiSongCi/LookUp?key=9b42454896f54202be3767fd55930654";
     private static final int MSG_LOAD_SUCCESS = 100;   //指示数据已获取
     private static final int MSG_LOADED_fail = 0;   //指示数据未获取
     private static final int MSG_QQ_Name = 1;   //指示数据未获取
@@ -391,7 +391,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         public void run() {
 
             if (mark==FLAG_POEM){           //诗词
-                httpUrl="http://api.avatardata.cn/TangShiSongCi/Search?key=9b42454896f54202be3767fd55930654&keyWord=";
+                httpUrl="https://api.avatardata.cn/TangShiSongCi/Search?key=9b42454896f54202be3767fd55930654&keyWord=";
                 int value= 0;
                 try {
                     value = getList(httpUrl+URLEncoder.encode(text, "UTF-8"));
@@ -405,7 +405,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                 }
             }
             else if (mark==FLAG_IDIOM){                      //成语
-                httpUrl=" http://api.avatardata.cn/ChengYu/Search?key=24132c25d63c45ecbe9b6d3fe15d3cc1&keyWord=";
+                httpUrl=" https://api.avatardata.cn/ChengYu/Search?key=24132c25d63c45ecbe9b6d3fe15d3cc1&keyWord=";
                 int value= 0;
                 try {
                     value = getList(httpUrl+URLEncoder.encode(text, "UTF-8"));
@@ -419,7 +419,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                 }
             }
             else if (mark==FLAG_CI){                      //词语
-                httpUrl="http://api.avatardata.cn/CiHai/query?key=1d07f366f1f64551bac9fe80b63b2e28&keyword=";
+                httpUrl="https://api.avatardata.cn/CiHai/query?key=1d07f366f1f64551bac9fe80b63b2e28&keyword=";
                 int value= 0;
                 try {
 
