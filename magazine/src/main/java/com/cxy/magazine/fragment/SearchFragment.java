@@ -20,6 +20,7 @@ import com.cxy.magazine.activity.MagazineDetailActivity;
 import com.cxy.magazine.activity.MainActivity;
 import com.cxy.magazine.adapter.SearchAdapter;
 import com.cxy.magazine.util.ACache;
+import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
@@ -63,6 +64,7 @@ public class SearchFragment extends BaseFragment {
     //private List<HashMap> datalist=null;
     private List<JSONObject> dataShowList=null;
     private JSONArray dataArray=null;
+    private static Fragment fragment;
   //  private ACache mCache;
 
     public SearchFragment() {
@@ -70,9 +72,10 @@ public class SearchFragment extends BaseFragment {
     }
 
 
-    public static SearchFragment newInstance() {
-        SearchFragment fragment = new SearchFragment();
-        return fragment;
+    public static SearchFragment    newInstance(Fragment oldfragment) {
+        SearchFragment searchFragment = new SearchFragment();
+        fragment=oldfragment;
+        return searchFragment;
     }
 
     @Override
@@ -140,7 +143,7 @@ public class SearchFragment extends BaseFragment {
     }
     @OnClick(R.id.iv_back)
     public void back(){
-       getActivity().getSupportFragmentManager().popBackStack();//suport.v4包
+       getActivity().getSupportFragmentManager().beginTransaction().hide(this).show(fragment).commit();
 
 
     }
@@ -204,7 +207,8 @@ public class SearchFragment extends BaseFragment {
                 JSONArray dataCacheArray=mAcache.getAsJSONArray("searchArray");
                 if (dataCacheArray==null||dataCacheArray.length()<=0){
                     Log.i("com.cxy.magzine","缓存为空");
-                    Document docHtml = Jsoup.connect(DATA_URL).get();
+                    String html= OkHttpUtil.get(DATA_URL);
+                    Document docHtml = Jsoup.parse(html);
                    // mCache.put("searchList",docHtml.toString());
                     Elements aList=docHtml.getElementsByTag("a");
                     for (Element a : aList){
@@ -217,7 +221,6 @@ public class SearchFragment extends BaseFragment {
                     mAcache.put("searchArray",dataArray);        //缓存数据
                 }else{
                     Log.i("com.cxy.magzine","缓存不为空");
-                   // docHtml=Jsoup.parse(seachListCache);
                     dataArray=dataCacheArray;
                 }
                 handler.sendEmptyMessage(100);

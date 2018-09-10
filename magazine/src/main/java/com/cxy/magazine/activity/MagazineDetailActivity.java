@@ -38,6 +38,7 @@ import com.cxy.magazine.bmobBean.Bookshelf;
 import com.cxy.magazine.bmobBean.BuyBean;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
+import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.ResponseParam;
 import com.cxy.magazine.util.Utils;
 import com.eagle.pay66.Pay66;
@@ -52,6 +53,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -184,11 +186,15 @@ public class MagazineDetailActivity extends BasicActivity {
         @Override
         public void run() {
             try {
-                Document docHtml = Jsoup.connect(httpUrl).get();
+                String html= OkHttpUtil.get(httpUrl);
+                Document docHtml = Jsoup.parse(html);
                 Element introDiv = docHtml.getElementsByClass("magBox1").first();
                 magazineTime = introDiv.getElementsByTag("p").first().text();
                 coverImageUrl = introDiv.getElementsByTag("a").first().attr("href");
-                magazineIntro = introDiv.getElementsByClass("rec").first().getElementsByTag("p").first().text();
+                Elements introEles= introDiv.getElementsByClass("rec");
+                if (introEles.size()>0){
+                    magazineIntro = introEles.first().getElementsByTag("p").first().text();
+                }
                 magazineTitle = docHtml.getElementsByTag("h3").first().text();
                 magazineHistoryHref = docHtml.getElementsByClass("btn_history act_history").first().attr("href");   //没有前缀
             //    bookCover= Utils.getbitmap(coverImageUrl);

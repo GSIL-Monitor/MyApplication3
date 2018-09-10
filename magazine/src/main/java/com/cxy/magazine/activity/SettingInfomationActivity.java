@@ -100,7 +100,7 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
             if (!TextUtils.isEmpty(user.getHeadImageUrl())){
                 Glide.with(SettingInfomationActivity.this)
                         .load(user.getHeadImageUrl())
-                        .error(R.drawable.head_image)
+                        .error(R.drawable.ic_head)
                         .into(headImage);
             }
             if (user.getMobilePhoneNumberVerified()!=null&&user.getMobilePhoneNumberVerified()==true){

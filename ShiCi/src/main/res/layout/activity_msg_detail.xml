@@ -15,7 +15,9 @@
         android:padding="@dimen/dp_10"
         android:text="消息详情"
         android:textColor="@color/colorFont"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:textIsSelectable="true"
+        />
 
     <Button
         android:id="@+id/button_msg_delete"

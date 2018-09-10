@@ -23,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.cxy.yuwen.activity.CompositionDetailActivity;
 import com.cxy.yuwen.activity.LoginActivity;
-import com.cxy.yuwen.activity.MemberActivity;
 import com.cxy.yuwen.bmobBean.Member;
 import com.cxy.yuwen.bmobBean.SelectCount;
 import com.cxy.yuwen.bmobBean.User;
@@ -753,7 +752,7 @@ public void resolveJson(String gradeData,String typeData,String fontData, String
                                 @Override
                                 public void done(List<Member> list, BmobException e) {
                                     if (e == null && list!=null) {
-                                        seeComposition(list, composition);
+                                      //  seeComposition(list, composition);
 
 
                                     } else {
@@ -790,7 +789,7 @@ public void resolveJson(String gradeData,String typeData,String fontData, String
             return memberList;
 
         }
-        public void seeComposition(List<Member> memeberList,final Composition composition ) {
+      /*  public void seeComposition(List<Member> memeberList,final Composition composition ) {
             if (memeberList.size() > 0) {  //是会员
                 //2、如果是会员查询会员是否已经过期
                 Member queryMember = memeberList.get(0);
@@ -935,7 +934,7 @@ public void resolveJson(String gradeData,String typeData,String fontData, String
                     }
                 });   //
             }
-        }
+        }*/
 
         public void insertData(){
             SelectCount selectCount=new SelectCount();

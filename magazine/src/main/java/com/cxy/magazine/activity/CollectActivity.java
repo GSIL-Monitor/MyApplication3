@@ -13,13 +13,13 @@ import com.cxy.magazine.adapter.CollectAdapter;
 import com.cxy.magazine.bmobBean.CollectBean;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.util.Utils;
+import com.cxy.magazine.view.SampleFooter;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.jdsjlzx.view.CommonFooter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,8 +69,9 @@ public class CollectActivity extends AppCompatActivity {
         mLRecycleView.addItemDecoration(divider);
         //如果确定每个item的高度是固定的，设置这个选项可以提高性能
         mLRecycleView.setHasFixedSize(true);
+
         //添加foot
-        CommonFooter footerView = new CommonFooter(this, R.layout.layout_empty);
+        SampleFooter footerView = new SampleFooter(this);
         tvFoot=(TextView)footerView.findViewById(R.id.tv_foot);
 
         mLRecyclerAdapter.addFooterView(footerView);

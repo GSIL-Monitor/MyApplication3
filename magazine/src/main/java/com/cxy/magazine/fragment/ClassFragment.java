@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -17,8 +19,10 @@ import android.widget.TextView;
 
 import com.cxy.magazine.R;
 import com.cxy.magazine.activity.ClassDetailActivity;
+import com.cxy.magazine.activity.MainActivity;
 import com.cxy.magazine.util.ACache;
 import com.cxy.magazine.util.NetWorkUtils;
+import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.ItemDecoration.SpacesItemDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -99,16 +103,25 @@ public class ClassFragment extends BaseFragment {
         mLRecyclerview.setAdapter(mLRecyclerViewAdapter);
 
     }
-
+   private SearchFragment searchFragment;
     @OnClick(R.id.rl_search)
     public void searchClick(){
-        //  Util.toastMessage(getActivity(),"searchView");
+        FragmentManager fragmentManager= getActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.hide(this);
+       if (searchFragment==null){
+           searchFragment=SearchFragment.newInstance(this);
+           ft.add(R.id.content, searchFragment);
+       }else {
+           ft.show(searchFragment);
+       }
+       ft.commit();
         //跳转Fragment
-       getActivity().getSupportFragmentManager()
-                .beginTransaction()
+     /*  getActivity().getSupportFragmentManager()
+                .beginTransaction().hide(this).add()
                 .replace(R.id.content, SearchFragment.newInstance())
                 .addToBackStack(null)
-                .commit();
+                .commit();*/
 
 
     }
@@ -125,7 +138,8 @@ public class ClassFragment extends BaseFragment {
                     magazineArray=magazineArrayCache;
                 }else{
                     if (NetWorkUtils.isNetworkConnected(context)) {
-                        Document docHtml = Jsoup.connect(MAGAZIENE_URL).get();
+                        String html= OkHttpUtil.get(MAGAZIENE_URL);
+                        Document docHtml = Jsoup.parse(html);
                         JSONArray magazineCache=new JSONArray();
 
                         Elements kinds = docHtml.getElementsByClass("navBox");

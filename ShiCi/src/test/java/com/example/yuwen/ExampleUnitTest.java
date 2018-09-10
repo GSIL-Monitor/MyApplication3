@@ -1,7 +1,6 @@
 package com.example.yuwen;
 
 import com.cxy.yuwen.bmobBean.User;
-import com.cxy.yuwen.tool.Email;
 import com.cxy.yuwen.tool.CommonUtil;
 
 import org.jsoup.Jsoup;

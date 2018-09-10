@@ -103,8 +103,9 @@
             </intent-filter>
         </receiver>
 
-        <!--小米更新-->
-    <!--   <provider
+        <!-- 小米更新 -->
+        <!--
+           <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.cxy.yuwen.selfupdate.fileprovider"
             android:exported="false"
@@ -112,8 +113,9 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider>-->
-        <!--腾讯广告-->
+        </provider>
+        -->
+        <!-- 腾讯广告 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.cxy.yuwen.fileprovider"
@@ -183,30 +185,20 @@
             </intent-filter>&ndash;&gt;
         </activity>
         -->
-        <activity
-            android:name=".activity.MagazineActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.MagazineDirectoryActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.MagazineContentActivity" />
-        <activity
-            android:name=".activity.MagazineHistoryActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.MagazineDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".activity.InviteActivity" />
         <activity android:name=".activity.MessageActivity" />
-        <activity android:name=".activity.MsgDetailActivity"></activity>
-        <activity android:name=".activity.HaveBuyActivity"></activity>
-        <service android:name="com.qq.e.comm.DownloadService" android:exported="false" />
-        <activity android:name="com.qq.e.ads.ADActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name=".activity.PhotoBrowserActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".activity.MsgDetailActivity" />
 
-        </activity>
+        <service
+            android:name="com.qq.e.comm.DownloadService"
+            android:exported="false" />
+
+        <activity
+            android:name="com.qq.e.ads.ADActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
+        <activity android:name=".wxapi.WXEntryActivity"
+                   android:exported="true"></activity>
     </application>
 
 </manifest>

@@ -17,6 +17,7 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.activity.MagazineDetailActivity;
 import com.cxy.magazine.adapter.ImageTextAdapter;
 import com.cxy.magazine.adapter.MagazineListAdapter;
+import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -127,6 +128,7 @@ public class MagazineListFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
 
     private  void setRecyclerView(){
       //  dataList=new ArrayList<HashMap>();
@@ -280,41 +282,52 @@ public class MagazineListFragment extends BaseFragment {
                 dataArray=new JSONArray();
                 dataDisplayArray=new JSONArray();
                 try {
-                    Document docHtml = Jsoup.connect(htmlUrl).get();
-                    Elements uls=docHtml.getElementsByClass("rowWrap mb20");
-                    for (Element ul : uls){
-                        Elements lis=ul.getElementsByTag("li");
-                        for (Element li : lis){
-                          //  HashMap map=new HashMap<String,String>();
-                            JSONObject jsonObject=new JSONObject();
-                            Element a=li.select("p.pel_m_pic").get(0).getElementsByTag("a").get(0);
+                    if (htmlUrl.equals("http://www.fx361.com/bk/hqsb/")){  //环球时报，特殊处理
+                        JSONObject jsonObject=new JSONObject();
 
-                            jsonObject.put("href",ClassFragment.MAGAZIENE_URL+a.attr("href"));
-                            jsonObject.put("imageSrc",a.getElementsByTag("img").get(0).attr("src"));
-
-                            Element p2=li.select("p.pel_name").get(0);
-
-
-                            jsonObject.put("name",p2.text());
-
-                            Element p3=li.select("p.pel_time").get(0);
-                        //    map.put("time",p3.text());
-                            jsonObject.put("time",p3.text());
-                          //  dataList.add(map);
-                            dataArray.put(jsonObject);
+                        String html= OkHttpUtil.get(htmlUrl);
+                        Document docHtml = Jsoup.parse(html);
+                        Element introDiv = docHtml.getElementsByClass("magBox1").first();
+                        String magazineTime = introDiv.getElementsByTag("p").first().text();
+                        String coverImageUrl = introDiv.getElementsByTag("a").first().attr("href");
+                        String magazineTitle = docHtml.getElementsByTag("h3").first().text();
+                       //String href = docHtml.getElementsByClass("btn_history act_history").first().attr("href");   //没有前缀
+                        jsonObject.put("name",magazineTitle);
+                        jsonObject.put("href","http://www.fx361.com/bk/hqsb/index.html");
+                        jsonObject.put("imageSrc",coverImageUrl);
+                        jsonObject.put("time",magazineTime);
+                        dataArray.put(jsonObject);
 
 
+                    }else{
+                        String html= OkHttpUtil.get(htmlUrl);
+                        Document docHtml = Jsoup.parse(html);
+                        Elements uls=docHtml.getElementsByClass("rowWrap mb20");
+                        for (Element ul : uls){
+                            Elements lis=ul.getElementsByTag("li");
+                            for (Element li : lis){
+                                JSONObject jsonObject=new JSONObject();
+                                Element a=li.select("p.pel_m_pic").get(0).getElementsByTag("a").get(0);
+
+                                jsonObject.put("href",ClassFragment.MAGAZIENE_URL+a.attr("href"));
+                                jsonObject.put("imageSrc",a.getElementsByTag("img").get(0).attr("src"));
+
+                                Element p2=li.select("p.pel_name").get(0);
+                                jsonObject.put("name",p2.text());
+
+                                Element p3=li.select("p.pel_time").get(0);
+                                jsonObject.put("time",p3.text());
+                                dataArray.put(jsonObject);
+
+
+                            }
                         }
                     }
 
-                 //   TOTAL_COUNTER=dataList.size();
-                 //   dataDisplayArray=tempDisplayArray;
                     //缓存数据
                     mAcache.put(cacheKey,dataArray);
                     TOTAL_COUNTER=dataArray.length();
                     handler.sendEmptyMessage(100);
-
-             //       throw  new  Exception("测试");
 
 
                 } catch (Exception e) {

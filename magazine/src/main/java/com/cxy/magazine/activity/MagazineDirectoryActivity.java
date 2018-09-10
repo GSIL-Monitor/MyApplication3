@@ -37,7 +37,10 @@ import com.cxy.magazine.bmobBean.Member;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.adapter.DataAdapter;
+import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.ResponseParam;
+import com.cxy.magazine.view.SampleFooter;
+import com.cxy.magazine.view.SampleHeader;
 import com.eagle.pay66.Pay66;
 import com.eagle.pay66.listener.CommonListener;
 import com.eagle.pay66.vo.OrderPreMessage;
@@ -46,8 +49,7 @@ import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.jdsjlzx.view.CommonFooter;
-import com.github.jdsjlzx.view.CommonHeader;
+
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -86,7 +88,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 public class MagazineDirectoryActivity extends BasicActivity {
   //  private static final String MAGAZINE_URL = "http://m.fx361.com";
     private String httpUrl = "";
-    private String magazineTitle = "", magazineIntro = "", magazineTime = "", magazineHistoryHref = "", coverImageUrl = "";
+    private String magazineTitle = "", magazineTime = "", coverImageUrl = "";
     private String magazineId="";
     private List<HashMap> dataList;
     private DataAdapter dataAdapter = null;
@@ -157,7 +159,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
         //设置间隔线
         DividerDecoration divider = new DividerDecoration.Builder(this)
-                .setHeight(R.dimen.default_divider_height)
+                .setHeight(R.dimen.thin_divider_height)
                 .setPadding(R.dimen.default_divider_padding)
                 .setColorResource(R.color.layoutBackground)
                 .build();
@@ -165,7 +167,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(divider);
         //add a HeaderView
-        View headerView = new CommonHeader(this, R.layout.header_magazine_recycleview);
+        SampleHeader headerView = new SampleHeader(this);
         tv_time = (TextView) headerView.findViewById(R.id.tv_time);
         mLRecyclerViewAdapter.addHeaderView(headerView);
 
@@ -182,7 +184,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
         //禁用自动加载更多功能
         mRecyclerView.setLoadMoreEnabled(false);
         //add a FooterView
-        CommonFooter footerView = new CommonFooter(this, R.layout.layout_empty);
+        SampleFooter footerView = new SampleFooter(this);
         TextView tvFoot = (TextView) footerView.findViewById(R.id.tv_foot);
         tvFoot.setText("没有更多数据了");
         mLRecyclerViewAdapter.addFooterView(footerView);
@@ -690,13 +692,14 @@ public class MagazineDirectoryActivity extends BasicActivity {
             try {
                 dataList.clear();
 
-                Document docHtml = Jsoup.connect(httpUrl).get();
+                String html= OkHttpUtil.get(httpUrl);
+                Document docHtml = Jsoup.parse(html);
                 Element introDiv = docHtml.getElementsByClass("magBox1").first();
                 magazineTime = introDiv.getElementsByTag("p").first().text();
                 coverImageUrl = introDiv.getElementsByTag("a").first().attr("href");
-                magazineIntro = introDiv.getElementsByClass("rec").first().getElementsByTag("p").first().text();
+              //  magazineIntro = introDiv.getElementsByClass("rec").first().getElementsByTag("p").first().text();
                 magazineTitle = docHtml.getElementsByTag("h3").first().text();
-                magazineHistoryHref = docHtml.getElementsByClass("btn_history act_history").first().attr("href");   //没有前缀
+             //   magazineHistoryHref = docHtml.getElementsByClass("btn_history act_history").first().attr("href");   //没有前缀
 
                 Element dirDiv = docHtml.getElementById("dirList");  //目录div
                 Elements dirElements = dirDiv.getElementsByClass("dirItem02");

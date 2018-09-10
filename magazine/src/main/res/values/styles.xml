@@ -8,16 +8,18 @@
         <item name="colorAccent">@color/colorPrimaryDark</item>
 
 
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorFontText</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+
+
 
     </style>
 
-   <!-- <style name="AppTheme.NoActionBar" parent="QMUI.Compat.NoActionBar">
-       &lt;!&ndash; <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>&ndash;&gt;
-        &lt;!&ndash;<item name="colorPrimaryDark">@color/colorPrimaryDark</item>&ndash;&gt;
-
-
-    </style>-->
 
     <style name="AppTheme.ActionBar" parent="QMUI.Compat">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -39,7 +41,7 @@
 
     </style>
 
-    <style name="EditTextStyle" >
+    <style name="EditTextStyle">
         <item name="android:singleLine">true</item>
         <item name="android:textColor">#ff444444</item>
         <item name="android:textSize">16sp</item>
@@ -47,14 +49,18 @@
     </style>
 
 
-
     <!--以下两个用于设置Toolbar的style-->
-  <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <item name="android:background">@color/colorPrimary</item>
-    <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
 
-</style>
+    </style>
+
+    <style name="BottomToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/colorFontText</item>
+
+    </style>
     <!--menu text style-->
     <style name="MenuTextStyle">
         <item name="android:textSize">14sp</item>
@@ -69,7 +75,6 @@
         <item name="android:dropDownHorizontalOffset">-3dp</item>
     </style>
 
-    <!--<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
 
 
     <style name="BottomDialog" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
@@ -87,11 +92,5 @@
         <item name="android:textSize">15sp</item>
     </style>
 
-
-
-    <!--&lt;!&ndash;修改toolbar弹出剩余隐藏菜单条目按钮的样式&ndash;&gt;
-    <style name="OverflowButtonStyle" parent="@android:style/Widget.ActionButton.Overflow">
-        <item name="android:src">@mipmap/ic_menu_setting</item>
-    </style>-->
 
 </resources>

@@ -10,10 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
 import com.cxy.yuwen.R;
-import com.cxy.yuwen.fragment.MagazineFragment;
-import com.cxy.yuwen.fragment.ShelfFragment;
 import com.cxy.yuwen.tool.Utils;
-import com.xiaomi.market.sdk.Constants;
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 import com.cxy.yuwen.fragment.CompositionFragment;
 import com.cxy.yuwen.fragment.MainFragment;
@@ -26,7 +23,7 @@ import cn.bmob.v3.Bmob;
 public class MainActivity extends BasicActivity {
 
     public static List<String> logList = new CopyOnWriteArrayList<String>();
-    private String tabs[]={"查询","作文大全","杂志","书架","我的",};
+    private String tabs[]={"查询","作文大全","我的",};
 
 
 
@@ -73,14 +70,8 @@ public class MainActivity extends BasicActivity {
                     switchFragmentSupport(R.id.content,tabs[1]);
                     return true;*/
 
-                case R.id.navigation_magazine:
-                    switchFragmentSupport(R.id.content,tabs[2]);
-                    return true;
-                case R.id.navigation_shelf:
-                     switchFragmentSupport(R.id.content,tabs[3]);
-                     return true;
                 case R.id.navigation_mine:
-                    switchFragmentSupport(R.id.content,tabs[4]);
+                    switchFragmentSupport(R.id.content,tabs[2]);
                     return true;
 
             }
@@ -103,9 +94,7 @@ public class MainActivity extends BasicActivity {
         if (destFragment==null){
             if (tag.equals(tabs[0])) destFragment=new MainFragment();
             if (tag.equals(tabs[1])) destFragment=new CompositionFragment();
-            if (tag.equals(tabs[2])) destFragment=new MagazineFragment();
-            if (tag.equals(tabs[3])) destFragment=new ShelfFragment();
-            if (tag.equals(tabs[4])) destFragment=new MyFragment();
+            if (tag.equals(tabs[2])) destFragment=new MyFragment();
         }
         FragmentTransaction ft=manager.beginTransaction();
 

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">杂志天下</string>
-    <string name="title_home">首页</string>
+    <string name="title_class">分类</string>
+    <string name="title_recomm">推荐</string>
     <string name="title_shelf">书架</string>
     <string name="title_mine">我的</string>
 
@@ -13,7 +14,7 @@
        如果经查实你的反馈真实有效，我们将会赠送你不少十天的会员，请留下你的联系方式，以便我们联系您！
     </string>
     <string name="downloadHint">
-          P.s. 由于应用审核问题，最新版app可能无法在各大应用商店上线，大家可以在官网magazine.bmob.site下载
+          P.s. 由于应用审核问题，最新版app可能无法在各大应用商店及时上线，大家可以在<a href="http://magazine.bmob.site">杂志天下官网</a>下载
     </string>
     <string name="inviteIntro">
         1、分享你的“邀请码”给好友，好友使用你的专属邀请码后，你和你的好友均可免费获得3天会员体验服务。\n
@@ -23,5 +24,8 @@
         5、活动最终解释权归杂志天下所有。\n
     </string>
     <string name="title_activity_empty">EmptyActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

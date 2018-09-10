@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name=".MyApplication"
@@ -93,8 +93,9 @@
             android:theme="@style/AppTheme.ActionBar" />
         <activity android:name=".activity.MagazineDirectoryActivity" />
         <activity android:name=".activity.MagazineHistoryActivity" />
-        <activity android:name=".activity.MagazineContentActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"/>
+        <activity
+            android:name=".activity.MagazineContentActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".activity.FeedbackActivity"
             android:theme="@style/AppTheme.ActionBar">
@@ -127,14 +128,13 @@
         <activity
             android:name="com.qq.e.ads.ADActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
-        <activity android:name=".activity.EmptyActivity"></activity>
+        <activity android:name=".activity.EmptyActivity" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activity.PhotoBrowserActivity">
-
-        </activity>
+        <activity android:name=".activity.PhotoBrowserActivity"></activity>
+        <activity android:name=".activity.CommentActivity"></activity>
     </application>
 
 </manifest>

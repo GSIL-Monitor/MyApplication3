@@ -1,53 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MagazineContentActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activity.MagazineContentActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:title=""
         android:background="@color/colorPrimary"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/OverflowMenuStyle">
-        <ImageButton
-            android:id="@+id/collectButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            app:srcCompat="@drawable/ic_collect_no_selected"
-            android:background="@null"/>
+        android:title=""
+        app:popupTheme="@style/OverflowMenuStyle"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
     </android.support.v7.widget.Toolbar>
-
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:layout_below="@+id/toolbar">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <WebView
                 android:id="@+id/wv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingRight="@dimen/dp_10"
-                android:paddingBottom="20dp">
-            </WebView>
+                android:paddingTop="10dp"></WebView>
 
             <FrameLayout
                 android:id="@+id/containerAd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"/>
+                android:layout_marginTop="0dp" />
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:gravity="right"
+        android:paddingBottom="3dp">
+        <LinearLayout
+            android:id="@+id/recommView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="30dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                app:srcCompat="@drawable/ic_recomm"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/recommTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="推荐0"
+                android:textSize="10sp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/collectView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="30dp">
+
+            <ImageView
+                android:id="@+id/collectButton"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_collect_no_selected"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="收藏"
+                android:textSize="10sp"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

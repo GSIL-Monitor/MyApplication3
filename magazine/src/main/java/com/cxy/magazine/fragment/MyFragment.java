@@ -88,8 +88,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
         //   mAcache=mAcache.get(this.getContext());
 
         //获取默认用户头像
-        Resources resources = this.getResources();
-        defaultHeadImage = resources.getDrawable(R.drawable.head_image);
+       // Resources resources = this.getResources();
+       // defaultHeadImage = DrawableCompat.
 
 
         // setUserInfo();
@@ -136,7 +136,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
 
                 Glide.with(context)
                         .load(user.getHeadImageUrl())
-                        .error(R.drawable.head_image)
+                        .error(R.drawable.ic_head)
                         .into(headImageView);
 
 
@@ -144,7 +144,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
 
         } else {
             tvLogin.setText("点击登录学习账号");
-            headImageView.setImageDrawable(defaultHeadImage);
+            headImageView.setImageResource(R.drawable.ic_head);
+
         }
 
     }

@@ -53,7 +53,7 @@ public class PermissionHelper {
 	 * 有米 Android SDK 所需要向用户申请的权限列表
 	 */
 	private PermissionModel[] mPermissionModels = new PermissionModel[] {
-			new PermissionModel("电话", Manifest.permission.READ_PHONE_STATE, "我们需要读取手机信息的权限来标识您的身份", READ_PHONE_STATE_CODE),
+			new PermissionModel("手机信息", Manifest.permission.READ_PHONE_STATE, "我们需要读取手机信息的权限来标识您的身份", READ_PHONE_STATE_CODE),
 			new PermissionModel("存储空间", Manifest.permission.WRITE_EXTERNAL_STORAGE, "我们需要您允许我们读写你的存储卡，以方便我们临时保存一些数据",
 					WRITE_EXTERNAL_STORAGE_CODE)
 	};

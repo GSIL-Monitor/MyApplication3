@@ -14,7 +14,7 @@ public class EmailUtil {
     private static final String HOST = "smtp.qq.com";
     private static final String PORT = "587";
     private static final String FROM_ADD = "1746569077@qq.com"; //发送方邮箱
-    private static final String FROM_PSW = "kvauiljlgzbxbfif";//发送方邮箱授权码，并非密码
+    private static final String FROM_PSW = "tiuwrzvfkdgbegbd";//发送方邮箱授权码，并非密码
     private static final String TO_ADD = "1746569077@qq.com"; //接收方邮箱  自己给自己发
 
 //    //163

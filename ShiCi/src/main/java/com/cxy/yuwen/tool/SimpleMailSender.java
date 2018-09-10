@@ -1,5 +1,8 @@
 package com.cxy.yuwen.tool;
 
+import com.cxy.yuwen.mail.MailAuthenticator;
+import com.cxy.yuwen.mail.MailSenderInfo;
+
 import java.io.File;
 import java.util.Date;
 import java.util.Properties;
