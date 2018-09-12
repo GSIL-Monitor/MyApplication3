@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.cxy.yuwen.tool.EmailUtil;
+import com.cxy.yuwen.mail.EmailUtil;
 import com.google.gson.JsonObject;
 import com.cxy.yuwen.R;
 import com.cxy.yuwen.tool.Utils;

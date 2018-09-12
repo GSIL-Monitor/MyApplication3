@@ -57,7 +57,7 @@ public class MagazineListAdapter extends RecyclerView.Adapter<MagazineListAdapte
             JSONObject jsonObject=dataDisplayList.getJSONObject(position);
 
             holder.tvCoverName.setText(jsonObject.getString("name"));    //hashMap.get("name").toString()
-            holder.tvCoverOrder.setText(jsonObject.getString("time"));                         //hashMap.get("time").toString()
+            holder.tvCoverOrder.setText("更新至"+jsonObject.getString("time"));                         //hashMap.get("time").toString()
 
 
             int width=(gridLayoutManager.getWidth()-120)/2;

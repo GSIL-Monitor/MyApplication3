@@ -152,6 +152,7 @@ public abstract class PictureSelectFragment extends BaseFragment implements Sele
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == mActivity.RESULT_OK) {
             switch (requestCode) {
+
                 case CAMERA_REQUEST_CODE:   // 调用相机拍照
                     File temp = new File(mTempPhotoPath);
                     startCropActivity(Uri.fromFile(temp));

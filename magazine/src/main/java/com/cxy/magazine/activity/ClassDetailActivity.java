@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.cxy.magazine.MyApplication;
 import com.cxy.magazine.R;
 import com.cxy.magazine.fragment.MagazineListFragment;
 
@@ -55,7 +56,7 @@ public class ClassDetailActivity extends BasicActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            MyApplication.getInstance().closeActivity(this);
         }
         return true;
     }

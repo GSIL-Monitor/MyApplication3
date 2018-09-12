@@ -55,6 +55,7 @@ public class FindPasswordActivity extends BasicActivity implements View.OnClickL
                     public void done(Integer smsId,BmobException ex) {
                         if(ex==null){//验证码发送成功
                             Log.i("smile", "短信id："+smsId);//用于查询本次短信发送详情
+                            Utils.toastMessage(FindPasswordActivity.this,"验证码发送成功");
                         }else{
                             Utils.showResultDialog(FindPasswordActivity.this, ex.getErrorCode()+","+ex.getMessage(),"验证码发送失败");
                         }

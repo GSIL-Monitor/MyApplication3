@@ -44,7 +44,7 @@ public class InviteActivity extends BasicActivity {
     TextView tvShareCode;
     private User user;
     private String inviteCode;
-    private final String APP_URL="http://app.xiaomi.com/detail/563172";
+    private final String APP_URL="http://magazine.bmob.site";
     private String objectId="";
     private final String memberMsg="你使用了好友的邀请码，奖励你的3天会员服务已到账，敬请查收，你还可以分享你的专属邀请码给好友，分享多多，奖励多多。";
     @Override

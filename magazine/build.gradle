@@ -8,8 +8,8 @@ android {
         applicationId "com.cxy.magazine"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 16
-        versionName "2.6"
+        versionCode 21
+        versionName "3.1"
 
         multiDexEnabled true
 
@@ -65,7 +65,7 @@ configurations.all {
 dependencies {
     /*导入本地jar包*/
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
+    implementation 'com.android.support:support-v4:26.1.0'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -81,9 +81,9 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //bmob数据库
-    implementation 'cn.bmob.android:bmob-sdk:3.6.0'
+    implementation 'cn.bmob.android:bmob-sdk:3.6.3'
     //LRecyclerView
-    implementation 'com.github.jdsjlzx:LRecyclerView:1.4.3'
+    implementation 'com.github.jdsjlzx:LRecyclerView:1.5.0'
     //jsoup 爬虫
     implementation 'org.jsoup:jsoup:1.10.2'
     //小米更新sdk
@@ -96,7 +96,8 @@ dependencies {
     compile 'com.qmuiteam:qmui:1.1.0'
     //ucrop
     implementation 'com.github.yalantis:ucrop:2.2.2'
-    compile 'com.android.support:multidex:1.0.1'
+    //  compile 'com.android.support:multidex:1.0.1'
     //photoview
     implementation 'com.bm.photoview:library:1.4.1'
+
 }

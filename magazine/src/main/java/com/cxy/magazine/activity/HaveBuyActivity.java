@@ -18,12 +18,12 @@ import com.cxy.magazine.bmobBean.BuyBean;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.util.NetWorkUtils;
 import com.cxy.magazine.util.Utils;
+import com.cxy.magazine.view.SampleFooter;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.jdsjlzx.view.CommonFooter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +98,7 @@ public class HaveBuyActivity extends BasicActivity {
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         mRecyclerView.setLoadMoreEnabled(false);
         //添加foot
-        CommonFooter footerView = new CommonFooter(this, R.layout.layout_empty);
+        SampleFooter footerView = new SampleFooter(this);
         tvFoot=(TextView)footerView.findViewById(R.id.tv_foot);
         mLRecyclerViewAdapter.addFooterView(footerView);
 

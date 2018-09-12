@@ -57,7 +57,7 @@ import cn.bmob.v3.listener.QueryListListener;
 
 
 public class MyFragment extends BaseFragment implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
-    public static final String appUrl = "http://a.app.qq.com/o/simple.jsp?pkgname=com.cxy.yuwen";
+   // public static final String appUrl = "http://a.app.qq.com/o/simple.jsp?pkgname=com.cxy.yuwen";
     User user;
     private NavigationView navigationView;
     private TextView tvLogin;
@@ -66,6 +66,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
     private Bitmap headImage;
     private Drawable defaultHeadImage;
     private static final int IMAGE_LOAD_FINISHED = 100;
+
     //  private mAcache mAcache;
 
     @Override
@@ -87,12 +88,13 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
         //   mAcache=mAcache.get(this.getContext());
 
         //获取默认用户头像
-        Resources resources = this.getResources();
-        defaultHeadImage = resources.getDrawable(R.drawable.head_image);
+       // Resources resources = this.getResources();
+       // defaultHeadImage = DrawableCompat.
 
 
         // setUserInfo();
         tvLogin.setOnClickListener(this);
+        headImageView.setOnClickListener(this);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -134,7 +136,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
 
                 Glide.with(context)
                         .load(user.getHeadImageUrl())
-                        .error(R.drawable.head_image)
+                        .error(R.drawable.ic_head)
                         .into(headImageView);
 
 
@@ -142,7 +144,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
 
         } else {
             tvLogin.setText("点击登录学习账号");
-            headImageView.setImageDrawable(defaultHeadImage);
+            headImageView.setImageResource(R.drawable.ic_head);
+
         }
 
     }
@@ -180,6 +183,17 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.tv_login) {
+            if (user != null) {  //用户详情
+                Intent intent = new Intent(getActivity(), SettingInfomationActivity.class);
+                startActivity(intent);
+            } else {   //跳转到注册界面
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+
+        }
+
+        if (v.getId() == R.id.userImage) {
             if (user != null) {  //用户详情
                 Intent intent = new Intent(getActivity(), SettingInfomationActivity.class);
                 startActivity(intent);

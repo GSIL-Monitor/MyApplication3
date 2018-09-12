@@ -8,8 +8,8 @@ android {
         applicationId "com.cxy.yuwen"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 31
-        versionName "2.7.9"
+        versionCode 33
+        versionName "2.8.1"
 
         multiDexEnabled true
 
@@ -70,33 +70,29 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     /* compile 'com.google.code.gson:gson:2.3.1'*/
-    /* compile 'com.squareup.okhttp3:okhttp:3.6.0'*/
+
     /*compile 'com.android.support:appcompat-v7:26.3.1'*/
     /*compile 'com.android.support:design:26.3.1'*/
     /*  compile 'com.android.support:support-vector-drawable:26.3.1'*/
     /*compile 'com.android.support:support-v4:25.3.1'*/
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     //butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //bmob数据库
-    implementation 'cn.bmob.android:bmob-sdk:3.6.0'
+    implementation 'cn.bmob.android:bmob-sdk:3.6.3'
     //LRecyclerView
     implementation 'com.github.jdsjlzx:LRecyclerView:1.4.3'
-    //jsoup 爬虫
-    implementation 'org.jsoup:jsoup:1.10.2'
+
     //小米更新sdk
     implementation 'mi-appstore:xiaomi-update-sdk:2.8'
-    //AndFix 热修复框架
-    implementation 'com.alipay.euler:andfix:0.5.0@aar'
-    //Glide库
-    implementation 'com.github.bumptech.glide:glide:3.8.0'
+
     //QMUI
     compile 'com.qmuiteam:qmui:1.1.0'
-    //ucrop
-    implementation 'com.github.yalantis:ucrop:2.2.2'
-    compile 'com.android.support:multidex:1.0.1'
-    //photoview
-    implementation 'com.bm.photoview:library:1.4.1'
+    //WeXin SDK
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+
+
 }

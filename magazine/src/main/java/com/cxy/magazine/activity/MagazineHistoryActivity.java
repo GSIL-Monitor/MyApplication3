@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.cxy.magazine.fragment.MagzineHistoryFragment;
+import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.Utils;
 
 import com.cxy.magazine.R;
@@ -75,7 +76,8 @@ public class MagazineHistoryActivity extends BasicActivity {
         @Override
         public void run() {
             try {
-                Document document=Jsoup.connect(httpUrl).get();
+                String html= OkHttpUtil.get(httpUrl);
+                Document document = Jsoup.parse(html);
                 Elements aList=document.getElementsByClass("selBox").first().getElementsByTag("a");
                 for (Element a : aList){
                    HashMap map=new HashMap();

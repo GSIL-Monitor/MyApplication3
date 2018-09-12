@@ -100,7 +100,7 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
             if (!TextUtils.isEmpty(user.getHeadImageUrl())){
                 Glide.with(SettingInfomationActivity.this)
                         .load(user.getHeadImageUrl())
-                        .error(R.drawable.head_image)
+                        .error(R.drawable.ic_head)
                         .into(headImage);
             }
             if (user.getMobilePhoneNumberVerified()!=null&&user.getMobilePhoneNumberVerified()==true){
@@ -240,7 +240,7 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
 
     private void showEditTextDialog() {
         final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(SettingInfomationActivity.this);
-        builder.setTitle("标题")
+        builder.setTitle("修改用户名")
                 .setPlaceholder("在此输入新的用户名")
                 .setInputType(InputType.TYPE_CLASS_TEXT)
                 .addAction("取消", new QMUIDialogAction.ActionListener() {

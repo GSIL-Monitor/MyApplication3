@@ -16,7 +16,6 @@ import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.eagle.pay66.Pay66;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -58,7 +57,7 @@ public class MyApplication extends MultiDexApplication {
 
 
         //66支付
-        Pay66.init(PAY_66_APPLICATION_ID, getApplicationContext());
+      //  Pay66.init(PAY_66_APPLICATION_ID, getApplicationContext());
 
         // 注册push服务，注册成功后会向DemoMessageReceiver发送广播
         // 可以从DemoMessageReceiver的onCommandResult方法中MiPushCommandMessage对象参数中获取注册信息

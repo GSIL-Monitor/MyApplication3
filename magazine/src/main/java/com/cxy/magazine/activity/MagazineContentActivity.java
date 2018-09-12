@@ -3,6 +3,7 @@ package com.cxy.magazine.activity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,27 +23,39 @@ import android.webkit.WebViewClient;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cxy.magazine.R;
+import com.cxy.magazine.bmobBean.ArticleRecommBean;
 import com.cxy.magazine.bmobBean.CollectBean;
+import com.cxy.magazine.bmobBean.RecommBean;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.jsInterface.JavascriptInterface;
 import com.cxy.magazine.util.Constants;
+import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.Utils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.nativ.ADSize;
 import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeExpressADView;
+import com.qq.e.ads.nativ.NativeExpressMediaListener;
+import com.qq.e.comm.constants.AdPatternType;
+import com.qq.e.comm.pi.AdData;
 import com.qq.e.comm.util.AdError;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Evaluator;
+
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +63,7 @@ import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -63,16 +77,20 @@ public class MagazineContentActivity extends BasicActivity implements  NativeExp
     @BindView(R.id.toolbar)  Toolbar toolbar;
     @BindView(R.id.containerAd) ViewGroup adContainer;
     @BindView(R.id.collectButton)
-    ImageButton collectButton;
+    ImageView collectButton;
+    @BindView(R.id.recommTv)
+    TextView recommTv;
     private User user;
     private String articleObjectId=null;
 
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
-    private String title="",articleId="";
+    private String title="",articleId="",time="";
+    private Integer recommCount=0;
+    private String articleRecommId=null;
     private StringBuilder content=null;
     private static final String MAGAZINE_URL="http://m.fx361.com";
     private String htmlStr="<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
-            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:220%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
+            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:200%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
             + "</style></head><body>";
     private boolean isCollect=false;    //是否收藏
     private String intentUrl="";
@@ -81,7 +99,8 @@ public class MagazineContentActivity extends BasicActivity implements  NativeExp
     private NativeExpressADView nativeExpressADView;
     private String TAG="tencentAd";
     private int checkedIndex = 1;
-
+    //广告id数组
+    private String[]  adIds={Constants.NativeExpressPosID1,Constants.NativeExpressPosID2,Constants.NativeExpressPosID3};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,14 +123,22 @@ public class MagazineContentActivity extends BasicActivity implements  NativeExp
 
         user= BmobUser.getCurrentUser(User.class);
 
-        selectCollect();     //查询收藏情况
+
 
 
 
 
     }
 
-//查询该文章的收藏情况
+    @Override
+    protected void onStart() {
+        super.onStart();
+        selectCollect();     //查询收藏情况
+
+
+    }
+
+    //查询该文章的收藏情况
 public void selectCollect(){
     if (user!=null) {
         BmobQuery<CollectBean> collctQuery = new BmobQuery<CollectBean>();
@@ -138,7 +165,43 @@ public void selectCollect(){
     }
 }
 
-@OnClick(R.id.collectButton)
+public void selectRecomm(){
+    BmobQuery<ArticleRecommBean> recommQuery=new BmobQuery<>();
+    recommQuery.addWhereEqualTo("articleId", articleId);
+    recommQuery.findObjects(new FindListener<ArticleRecommBean>() {
+        @Override
+        public void done(List<ArticleRecommBean> list, BmobException e) {
+            if (e==null){
+                if (list.size()>0){
+                    recommCount=list.get(0).getRecommCount();  //推荐次数
+                    articleRecommId=list.get(0).getObjectId();
+                    recommTv.setText("推荐"+recommCount);
+                }else{
+                    //插入该文章的评论数据
+                    ArticleRecommBean recommBean=new ArticleRecommBean();
+                    recommBean.setArticleId(articleId);
+                    recommBean.setArticleTitle(title);
+                    recommBean.setArticleTime(time);
+                    recommBean.setArticleUrl(intentUrl);
+                    recommBean.setRecommCount(0);
+                    recommBean.save(new SaveListener<String>() {
+                        @Override
+                        public void done(String objectId, BmobException e) {
+                            if (e==null){
+                                articleRecommId=objectId;
+                            }
+                        }
+                    });  // end save
+                  }
+                }
+            }
+
+    });
+
+
+}
+
+@OnClick(R.id.collectView)
 public void collectClick(){
 
             if (user!=null) {
@@ -191,15 +254,74 @@ public void collectClick(){
 
 }
 
+@OnClick(R.id.recommView)
+public void recommView(){
+    //TODO:推荐
+    Intent intent=new Intent(this,CommentActivity.class);
+    intent.putExtra("articleRecommId",articleRecommId);
+    startActivity(intent);
+   /* if (user!=null){
+        String defaultRecommMsg="这个家伙很懒，什么理由也没说";
+        final QMUIDialog.EditTextDialogBuilder builder =new  QMUIDialog.EditTextDialogBuilder(MagazineContentActivity.this).setTitle("推荐理由").setPlaceholder("总有一句话说到了你的心坎里").setDefaultText(defaultRecommMsg);
+        builder .addAction("取消", new QMUIDialogAction.ActionListener() {
+                       @Override
+                       public void onClick(QMUIDialog dialog, int index) {
+                           dialog.dismiss();
+                       }
+                   }).addAction("推荐", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(final QMUIDialog dialog, int index) {
+                       RecommBean recommBean=new RecommBean();
+                       recommBean.setUser(user);
+                       recommBean.setComment(builder.getEditText().getText().toString());
+                       final ArticleRecommBean  articleRecommBean=new ArticleRecommBean();
+                       articleRecommBean.setObjectId(articleRecommId);
+                       recommBean.setArticleRecommBean(articleRecommBean);
+                       recommBean.save(new SaveListener<String>() {
+                           @Override
+                           public void done(String s, BmobException e) {
+                               dialog.dismiss();
+                               if (e==null){
+                                  // 更新推荐记录总数 +1
+                                   articleRecommBean.increment("recommCount");
+                                   articleRecommBean.update(new UpdateListener() {
+                                       @Override
+                                       public void done(BmobException e) {
+                                          if (e==null){
+                                              Utils.toastMessage(MagazineContentActivity.this,"你已成功推荐该篇文章");
+                                          }
+                                       }
+                                   });
+
+                               }else{
+                                   Utils.toastMessage(MagazineContentActivity.this,e.toString());
+                               }
+
+                           }
+                       });
+                    }
+                  }).create().show();
+
+    }else{
+        Utils.toastMessage(MagazineContentActivity.this,"请先返回登录，再来推荐");
+    }*/
+   // Utils.toastMessage(MagazineContentActivity.this,"推荐了这篇文章");
+}
+
 
     // 1.加载广告，先设置加载上下文环境和条件
     private void refreshAd() {
-        nativeExpressAD = new NativeExpressAD(MagazineContentActivity.this,new ADSize(ADSize.FULL_WIDTH,ADSize.AUTO_HEIGHT),Constants.APPID, Constants.NativeExpressPosID, this);// 传入Activity
+        Random random=new Random();
+        int index=random.nextInt(3);
+        Log.i(TAG,"AD index:"+index);
+        //从3个id中随机取一个
+        String adId=adIds[index];
+        nativeExpressAD = new NativeExpressAD(MagazineContentActivity.this,new ADSize(ADSize.FULL_WIDTH,ADSize.AUTO_HEIGHT),Constants.APPID, adId, this);// 传入Activity
         // 注意：如果您在联盟平台上新建原生模板广告位时，选择了“是”支持视频，那么可以进行个性化设置（可选）
-       /* nativeExpressAD.setVideoOption(new VideoOption.Builder()
+   /*    nativeExpressAD.setVideoOption(new VideoOption.Builder()
                 .setAutoPlayPolicy(VideoOption.AutoPlayPolicy.WIFI) // WIFI环境下可以自动播放视频
                 .setAutoPlayMuted(true) // 自动播放时为静音
-                .build()); */
+                .build());*/
         nativeExpressAD.loadAD(1);
     }
 
@@ -225,6 +347,7 @@ public void collectClick(){
         }
 
         nativeExpressADView = adList.get(0);
+
         // 广告可见才会产生曝光，否则将无法产生收益。
         adContainer.addView(nativeExpressADView);
         nativeExpressADView.render();
@@ -316,18 +439,26 @@ public void collectClick(){
     class GetHtml extends Thread{
         @Override
         public void run() {
+
             try {
-                Document docHtml = Jsoup.connect(httpUrl).get();
-                Element mainDiv=docHtml.getElementsByClass("main").first();
-                title=mainDiv.getElementsByClass("bt").first().text();  //文章标题   h3
-                mainDiv.getElementsByTag("h3").get(1).remove();
-                mainDiv.getElementsByTag("ul").first().remove();
-                content.append(mainDiv.html());
-                content.append("</body></html>");
+                String html=OkHttpUtil.get(httpUrl);
+                if (!Utils.isEmpty(html)){
+                    Document docHtml = Jsoup.parse(html);
+                    Element mainDiv=docHtml.getElementsByClass("main").first();
+                    title=mainDiv.getElementsByClass("bt").first().text();  //文章标题   h3
+                    //TODO:获取时间
+                    time=mainDiv.getElementsByClass("sj").first().text();
+                    mainDiv.getElementsByTag("h3").get(1).remove();
+                    mainDiv.getElementsByClass("others").first().remove();
+                    content.append(mainDiv.html());
+                    content.append("</body></html>");
+                    uiHandler.sendEmptyMessage(100);
+                }
 
 
 
-                uiHandler.sendEmptyMessage(100);
+
+
             } catch (Exception e) {
                 e.printStackTrace();
                 uiHandler.sendEmptyMessage(101);
@@ -346,6 +477,8 @@ public void collectClick(){
                 String[] imageUrls=Utils.returnImageUrlsFromHtml(content.toString());
                 mWebview.addJavascriptInterface(new JavascriptInterface(MagazineContentActivity.this,imageUrls), "imagelistner");
                 mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
+                //TODO:查询推荐情况
+                selectRecomm();
                 //设置广告
                 refreshAd();
             }
@@ -447,9 +580,13 @@ public void collectClick(){
         // 使用完了每一个NativeExpressADView之后都要释放掉资源
         if (nativeExpressADView != null) {
             nativeExpressADView.destroy();
+            Log.i(TAG,"广告销毁");
         }
 
     }
+
+
+
 
 
 }

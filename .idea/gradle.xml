@@ -5,10 +5,12 @@
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="$USER_HOME$/Documents/Important/gradle/gradle-4.4-all/gradle-4.4" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/ShiCi" />
+            <option value="$PROJECT_DIR$/gDTUnionDemo" />
             <option value="$PROJECT_DIR$/magazine" />
           </set>
         </option>

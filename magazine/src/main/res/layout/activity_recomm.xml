@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.CommentActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:title=""
+        app:popupTheme="@style/OverflowMenuStyle"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    </android.support.v7.widget.Toolbar>
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/recomm_lr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginBottom="?attr/actionBarSize">
+    </com.github.jdsjlzx.recyclerview.LRecyclerView>
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="?attr/actionBarSize"
+       android:layout_alignParentBottom="true">
+       <EditText
+           android:id="@+id/recomm_edit"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:hint="说点儿推荐理由吧"
+           android:layout_marginRight="40dp"/>
+       <ImageView
+           android:id="@+id/recomm_iv"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           app:srcCompat="@drawable/ic_send"
+           android:layout_alignParentRight="true"
+           android:layout_marginRight="@dimen/dp_10"
+           android:layout_centerVertical="true"/>
+
+   </RelativeLayout>
+
+</RelativeLayout>

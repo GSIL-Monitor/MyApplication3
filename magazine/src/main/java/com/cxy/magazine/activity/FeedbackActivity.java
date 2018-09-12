@@ -7,11 +7,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.cxy.magazine.R;
 import com.cxy.magazine.emailUtil.EmailUtil;
@@ -38,6 +41,11 @@ public class FeedbackActivity extends BasicActivity {
         editEmail=(EditText)findViewById(R.id.edit_mail);
         editWechat=(EditText)findViewById(R.id.edit_wechat);
         buttonCommit=(Button)findViewById(R.id.buttonCommit);
+
+        TextView tvPs=(TextView)findViewById(R.id.ps_tv);
+       // tvPs.setText(R.string.downloadHint);
+      //  tvPs.setAutoLinkMask(Linkify.WEB_URLS);
+        tvPs.setMovementMethod(LinkMovementMethod.getInstance());
 
         buttonCommit.setOnClickListener(new View.OnClickListener() {
             String qq="",weChat="",email="",feedback="";

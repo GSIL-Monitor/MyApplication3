@@ -5,8 +5,7 @@
     <item
         android:id="@+id/addShelf"
         android:orderInCategory="100"
-        android:title="加入书架"
-        android:icon="@drawable/add_shelf"
+        android:title="+书架"
         app:showAsAction="always" />
     <!--<item
         android:id="@+id/scanHistory"

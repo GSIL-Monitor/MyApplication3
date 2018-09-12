@@ -14,6 +14,7 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.activity.MagazineDetailActivity;
 import com.cxy.magazine.activity.MagazineDirectoryActivity;
 import com.cxy.magazine.adapter.ImageTextAdapter;
+import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -95,7 +96,8 @@ public class MagzineHistoryFragment extends BaseFragment {
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
+                //直接跳转到目录界面
+                Intent intent=new Intent(getActivity(), MagazineDirectoryActivity.class);
                 intent.putExtra("href",ClassFragment.MAGAZIENE_URL+dataDisplayList.get(position).get("href").toString());
                 startActivity(intent);
             }
@@ -111,7 +113,8 @@ public class MagzineHistoryFragment extends BaseFragment {
         @Override
         public void run() {
             try {
-                Document docHtml = Jsoup.connect(httpUrl).get();
+                String html= OkHttpUtil.get(httpUrl);
+                Document docHtml = Jsoup.parse(html);
                 Element ul=docHtml.getElementsByClass("results").first();
                 Elements resultes=ul.getElementsByTag("a");
                 for (Element a :resultes){

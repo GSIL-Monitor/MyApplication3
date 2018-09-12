@@ -23,7 +23,7 @@ public class NetworkConnection {
     public static final String APPKEY_ZI ="f3e3612dfc1346ec9085a5580d6a2694";   //18ca6e0f7bf1252047279c5458e53649
 
     public static final String APPKEY_CHENGYU ="78a86fe8b36ca8daff509c33f0345c10";
-    public static final String URL_ZI="http://api.avatardata.cn/XinHuaZiDian/LookUp";
+    public static final String URL_ZI="https://api.avatardata.cn/XinHuaZiDian/LookUp";
     public static final String URL_CHENGYU="http://v.juhe.cn/chengyu/query";
 
 

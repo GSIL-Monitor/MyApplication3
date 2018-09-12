@@ -9,7 +9,7 @@
          android:id="@+id/tv_msg_detail"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:textSize="15sp"
+         android:textSize="18sp"
          android:padding="@dimen/dp_10"
          android:textColor="@color/colorFontText"
          android:lineSpacingExtra="@dimen/dp_10"

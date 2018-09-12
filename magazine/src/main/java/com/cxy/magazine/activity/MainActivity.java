@@ -18,6 +18,8 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.bmobBean.PatchBean;
 import com.cxy.magazine.fragment.ClassFragment;
 import com.cxy.magazine.fragment.MyFragment;
+import com.cxy.magazine.fragment.RecommFragment;
+import com.cxy.magazine.fragment.SearchFragment;
 import com.cxy.magazine.fragment.ShelfFragment;
 import com.cxy.magazine.util.NetWorkUtils;
 import com.cxy.magazine.util.PermissionHelper;
@@ -40,9 +42,10 @@ import cn.bmob.v3.listener.FindListener;
 
 public class MainActivity extends BasicActivity {
 
-    private String tabs[]={"首页","书架","我的"};
+    private String tabs[]={"推荐","分类","书架","我的"};
     private static final String BmobApplicationId ="be69c91d46af21288d5b855ee9fe158e";
     protected PermissionHelper mPermissionHelper;
+    private  FragmentManager manager=null;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,14 +53,21 @@ public class MainActivity extends BasicActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    switchFragmentSupport(R.id.content,tabs[0]);
+                case R.id.navigation_class:
+                   // switchFragmentSupport(R.id.content,tabs[1]);
+                    showFragment(1);
                     return true;
                 case R.id.navigation_shelf:
-                    switchFragmentSupport(R.id.content,tabs[1]);
+                   // switchFragmentSupport(R.id.content,tabs[2]);
+                    showFragment(2);
                     return true;
                 case R.id.navigation_mine:
-                    switchFragmentSupport(R.id.content,tabs[2]);
+                   // switchFragmentSupport(R.id.content,tabs[3]);
+                    showFragment(3);
+                    return true;
+                case R.id.navigation_recomm:
+                   // switchFragmentSupport(R.id.content,tabs[0]);
+                    showFragment(0);
                     return true;
 
             }
@@ -74,12 +84,19 @@ public class MainActivity extends BasicActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        //初始化Bmob
+        Bmob.initialize(this,BmobApplicationId,"bmob");
+        //获取FragmentManager管理器
+        manager=getSupportFragmentManager();
+
        // navigation.setSelectedItemId(R.id.content);  //设置默认选中项
-        switchFragmentSupport(R.id.content,tabs[0]);
+      //  switchFragmentSupport(R.id.content,tabs[0]);
+        showFragment(0);
 
 
         //检查权限
         checkPermmion(this);
+
 
 
     }
@@ -87,15 +104,14 @@ public class MainActivity extends BasicActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //初始化Bmob
-        Bmob.initialize(this,BmobApplicationId);
         boolean netConnect=NetWorkUtils.isNetworkConnected(this);
         if (netConnect){
             //小米更新
             XiaomiUpdateAgent.update(this);//这种情况下, 若本地版本是debug版本则使用沙盒环境，否则使用线上环境
             //检查补丁更新
-            checkPatch();
+            //   checkPatch();
         }
+
 
 
 
@@ -231,15 +247,15 @@ public class MainActivity extends BasicActivity {
      * @param tag     目标Fragment的标签名称
      */
     public void switchFragmentSupport(int containerId,String tag){
-        //获取FragmentManager管理器
-        FragmentManager manager=getSupportFragmentManager();
+
         //根据tab标签名查找是否已存在对应的Fragment对象
         Fragment destFragment=manager.findFragmentByTag(tag);
 
         if (destFragment==null){
-            if (tag.equals(tabs[0])) destFragment= new ClassFragment();
-            if (tag.equals(tabs[1])) destFragment= new ShelfFragment();
-            if (tag.equals(tabs[2])) destFragment=new MyFragment();
+            if (tag.equals(tabs[0])) destFragment=new RecommFragment();
+            if (tag.equals(tabs[1])) destFragment= new ClassFragment();
+            if (tag.equals(tabs[2])) destFragment= new ShelfFragment();
+            if (tag.equals(tabs[3])) destFragment=new MyFragment();
 
         }
         FragmentTransaction ft=manager.beginTransaction();
@@ -252,6 +268,105 @@ public class MainActivity extends BasicActivity {
         //ft.addToBackStack(null);
         ft.commit();
     }
+    private RecommFragment recommFragment;
+    private ClassFragment classFragment;
+    private ShelfFragment shelfFragment;
+    private MyFragment myFragment;
+    private SearchFragment searchFragment;
+    private int position=0;
+    private String POSITION="fragmentIndex";
 
+    public void showFragment(int index) {
+        FragmentTransaction ft = manager.beginTransaction();
+        hideFragment(ft);
+        //注意这里设置位置
+        position = index;
+        switch (index) {
+            case 0:
+                /**
+                 * 如果Fragment为空，就新建一个实例
+                 * 如果不为空，就将它从栈中显示出来
+                 */
+                if (recommFragment == null) {
+                    recommFragment = new RecommFragment();
+                    ft.add(R.id.content, recommFragment);
 
+                } else {
+                    ft.show(recommFragment);
+                }
+                break;
+            case 1:
+                if (classFragment == null) {
+                    classFragment = new ClassFragment();
+                    ft.add(R.id.content, classFragment);
+                } else {
+                    ft.show(classFragment);
+                }
+                break;
+            case 2:
+                if (shelfFragment == null) {
+                    shelfFragment = new ShelfFragment();
+                    ft.add(R.id.content, shelfFragment);
+                } else {
+                    ft.show(shelfFragment);
+                }
+                break;
+            case 3:
+                if (myFragment == null) {
+                    myFragment = new MyFragment();
+                    ft.add(R.id.content, myFragment);
+                } else {
+                    ft.show(myFragment);
+                }
+                break;
+            case 4:
+                if (searchFragment == null) {
+                    searchFragment = new SearchFragment();
+                    ft.add(R.id.content, searchFragment);
+                } else {
+                    ft.show(searchFragment);
+                }
+                break;
+        }
+        ft.commitAllowingStateLoss();
+    }
+
+    public void hideFragment(FragmentTransaction ft) {
+        //如果不为空，就先隐藏起来
+        if (recommFragment != null) {
+            ft.hide(recommFragment);
+        }
+        if (classFragment != null) {
+            ft.hide(classFragment);
+        }
+        if (shelfFragment != null) {
+            ft.hide(shelfFragment);
+        }
+        if (myFragment != null) {
+            ft.hide(myFragment);
+        }
+        if (searchFragment!=null){
+            ft.hide(searchFragment);
+        }
+    }
+
+    /**
+     * 解决屏幕旋转时：重复添加fragment。
+     * @param outState
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //屏幕旋转时记录位置
+        outState.putInt(POSITION, position);
+        Log.e("tag","onSaveInstanceState");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.e("tag","onRestoreInstanceState");
+        //屏幕恢复时取出位置
+        showFragment(savedInstanceState.getInt(POSITION));
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 }

@@ -16,14 +16,14 @@
         android:id="@+id/navigation_yilin"
         android:icon="@drawable/ic_book"
         android:title="意林" />-->
-    <item
+    <!--<item
         android:id="@+id/navigation_magazine"
         android:icon="@drawable/ic_book"
         android:title="杂志" />
     <item
         android:id="@+id/navigation_shelf"
         android:icon="@drawable/ic_shelf"
-        android:title="书架" />
+        android:title="书架" />-->
     <item
         android:id="@+id/navigation_mine"
         android:icon="@drawable/ic_mine"

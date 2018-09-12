@@ -4,6 +4,8 @@ import com.cxy.magazine.util.Utils;
 
 import org.junit.Test;
 
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
 /**
@@ -40,5 +42,17 @@ public class ExampleUnitTest {
         if (i>3) {
             System.out.println("+++++");
         }
+    }
+
+    @Test
+    public void randomTest(){
+        Random random=new Random();
+        for (int i = 0; i <20 ; i++) {
+            int r=random.nextInt(3);
+            System.out.println("随机数："+r);
+        }
+
+
+
     }
 }

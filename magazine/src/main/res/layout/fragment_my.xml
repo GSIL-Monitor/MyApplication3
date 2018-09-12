@@ -28,7 +28,7 @@
             android:id="@+id/userImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/head_image"
+            app:srcCompat="@drawable/ic_head"
             android:scaleType="fitXY"
             />
         <TextView
