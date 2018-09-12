@@ -128,8 +128,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         protected void doComplete(JSONObject jsonObject) {
             Log.d("SDKQQAgentPref", "AuthorSwitch_SDK:" + SystemClock.elapsedRealtime());
             initOpenidAndToken(jsonObject);
-          //  updateUserInfo();
-          //  updateLoginButton();
+
         }
     };
 
@@ -209,15 +208,19 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
             public void done(JSONObject userAuth,BmobException e) {
                 Log.i("SDKQQAgentPref",authInfo.getSnsType()+"登陆成功返回:"+userAuth);
 
-                getUserInfo();  //获取QQ用户的信息
-
+            //    getUserInfo();  //获取QQ用户的信息
+                Utils.dismissDialog();
+                if (e==null){
+                    finish();
+                }else{
+                    Utils.showResultDialog(LoginActivity.this,"登录失败，请稍后重试","提示");
+                }
 
             }
         });
     }
 
-    public void getUserInfo()
-    {
+  /*    public void getUserInfo() {
 
         BaseUIListener listener = new BaseUIListener(LoginActivity.this,"get_simple_userinfo") {
                 @Override
@@ -240,7 +243,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
 
     }
 
-    private Handler mHandler = new Handler() {
+  private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
@@ -268,10 +271,10 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                     public void done(BmobException e) {
                         if (e == null) {
                             Log.i("bmob", "更新成功");
-                                    /*Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                                    *//*Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                                     intent.putExtra("param","我的");
                                     startActivity(intent);
-                                    */
+                                    *//*
                             finish();
 
                         } else {
@@ -284,7 +287,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
 
 
         }
-    };
+    };*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
