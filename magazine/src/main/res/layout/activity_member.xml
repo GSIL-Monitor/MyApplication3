@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:text="¥8"
             android:id="@+id/tv_1month_current"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="40dp"
             android:textColor="@color/colorFontText"
             android:textSize="16sp"/>
         <TextView

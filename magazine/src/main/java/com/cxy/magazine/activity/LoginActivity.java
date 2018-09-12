@@ -78,14 +78,38 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
 
              Utils.showTipDialog(LoginActivity.this,"登录中...",QMUITipDialog.Builder.ICON_TYPE_LOADING);
 
-            String userName=etUserName.getText().toString();
-            String password=etPassword.getText().toString();
+            final String userName=etUserName.getText().toString();
+            final String password=etPassword.getText().toString();
 
-            User user=new User();
+           /* User user=new User();
             user.setUsername(userName);
-            user.setPassword(Utils.encryptBySHA(password));
+            user.setPassword(Utils.encryptBySHA(password));*/
+            BmobUser.loginByAccount(userName, Utils.encryptBySHA(password), new LogInListener<User>() {
 
-            user.login(new SaveListener<BmobUser>() {
+                @Override
+                public void done(User user, BmobException e) {
+                    if(user!=null){
+                        Log.i("smile","用户登陆成功");
+                        Utils.dismissDialog();
+                        finish();
+                    }else{
+
+                        BmobUser.loginByAccount(userName, password, new LogInListener<User>() {
+                            @Override
+                            public void done(User user, BmobException e) {
+                               if (user!=null){
+                                   Utils.dismissDialog();
+                                   finish();
+                               }else{
+                                   Utils.showResultDialog(LoginActivity.this,"登录失败，请输入正确的用户名和密码！",null);
+                               }
+                            }
+                        });
+
+                    }
+                }
+            });
+           /* user.login(new SaveListener<BmobUser>() {
 
                 @Override
                 public void done(BmobUser bmobUser, BmobException e) {
@@ -100,7 +124,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                         Log.i(LOG_TAG,e.toString());
                     }
                 }
-            });
+            });*/
 
 
 

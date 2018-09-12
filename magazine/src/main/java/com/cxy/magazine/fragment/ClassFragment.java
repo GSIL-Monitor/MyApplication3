@@ -106,22 +106,12 @@ public class ClassFragment extends BaseFragment {
    private SearchFragment searchFragment;
     @OnClick(R.id.rl_search)
     public void searchClick(){
-        FragmentManager fragmentManager= getActivity().getSupportFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.hide(this);
-       if (searchFragment==null){
-           searchFragment=SearchFragment.newInstance(this);
-           ft.add(R.id.content, searchFragment);
-       }else {
-           ft.show(searchFragment);
-       }
-       ft.commit();
         //跳转Fragment
-     /*  getActivity().getSupportFragmentManager()
-                .beginTransaction().hide(this).add()
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
                 .replace(R.id.content, SearchFragment.newInstance())
                 .addToBackStack(null)
-                .commit();*/
+                .commit();
 
 
     }

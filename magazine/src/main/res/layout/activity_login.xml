@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:hint="请输入用户名或者手机号"
+                android:hint="请输入用户名或者手机号、邮箱"
                 android:paddingLeft="20dip"
                 android:paddingRight="10dip"
                 style="@style/EditTextStyle">

@@ -272,7 +272,6 @@ public class MainActivity extends BasicActivity {
     private ClassFragment classFragment;
     private ShelfFragment shelfFragment;
     private MyFragment myFragment;
-    private SearchFragment searchFragment;
     private int position=0;
     private String POSITION="fragmentIndex";
 
@@ -319,14 +318,6 @@ public class MainActivity extends BasicActivity {
                     ft.show(myFragment);
                 }
                 break;
-            case 4:
-                if (searchFragment == null) {
-                    searchFragment = new SearchFragment();
-                    ft.add(R.id.content, searchFragment);
-                } else {
-                    ft.show(searchFragment);
-                }
-                break;
         }
         ft.commitAllowingStateLoss();
     }
@@ -344,9 +335,6 @@ public class MainActivity extends BasicActivity {
         }
         if (myFragment != null) {
             ft.hide(myFragment);
-        }
-        if (searchFragment!=null){
-            ft.hide(searchFragment);
         }
     }
 

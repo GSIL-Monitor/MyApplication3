@@ -30,6 +30,7 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
     String userName,password,password2,place,person;
     TextView tvSendVertifyCode;
     LinearLayout phoneLayout,emailLayout;
+    RadioButton rbPhone,rbEmail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +49,15 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
         tvSendVertifyCode=(TextView)findViewById(R.id.tv_sendVertifyCode);
         phoneLayout=(LinearLayout)findViewById(R.id.phoneLayout);
         emailLayout=(LinearLayout)findViewById(R.id.emailLayout);
+        rbPhone=(RadioButton) findViewById(R.id.rb_phone);
+        rbEmail=(RadioButton) findViewById(R.id.rb_email);
 
         register=(Button)findViewById(R.id.btn_register);
         register.setOnClickListener(this);
         tvSendVertifyCode.setOnClickListener(this);
+        rbPhone.setOnClickListener(this);
+        rbEmail.setOnClickListener(this);
+
 
     }
 
@@ -115,14 +121,14 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
             String email=etEmail.getText().toString();
             if (Utils.isEmpty(userName)|| Utils.isEmpty(password)|| Utils.isEmpty(password2)) {
                   //内容不能为空
-                Utils.showResultDialog(RegisterActivity.this,"内容不能为空！",null);
+                Utils.showResultDialog(RegisterActivity.this,"用户名和密码不能为空！",null);
 
             } else if ((Utils.isEmpty(phoneNumber)&&Utils.isEmpty(email))){
                 Utils.showResultDialog(RegisterActivity.this,"请绑定手机或者邮箱，用以找回密码",null);
-                if (!Utils.isEmpty(phoneNumber)&&Utils.isEmpty(vertifyCode)){
-                    Utils.showResultDialog(RegisterActivity.this,"请输入手机验证码",null);
-                }
 
+
+            }else if (!Utils.isEmpty(phoneNumber)&&Utils.isEmpty(vertifyCode)){
+                Utils.showResultDialog(RegisterActivity.this,"请输入手机验证码",null);
             }else if (!password2.equals(password)) {
                 Utils.showResultDialog(RegisterActivity.this,"两次输入的密码必须一致！",null);
 
@@ -138,10 +144,10 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
                 User user = new User();
                 user.setUsername(userName);
                 user.setPassword(Utils.encryptBySHA(password));
-                user.setMobilePhoneNumber(phoneNumber);  //手机号
                 user.setUserType(User.REGISTER_USER);
-                user.setEmail(email);
-                if (!Utils.isEmpty(email)){
+
+                if (!Utils.isEmpty(vertifyCode)){
+                    user.setMobilePhoneNumber(phoneNumber);  //手机号
                     user.signOrLogin(vertifyCode, new SaveListener<User>() {
                         @Override
                         public void done(User user, BmobException e) {
@@ -160,6 +166,7 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
                     });
 
                 }else{
+                    user.setEmail(email);
                     user.signUp(new SaveListener<Object>() {
                         @Override
                         public void done(Object o, BmobException e) {

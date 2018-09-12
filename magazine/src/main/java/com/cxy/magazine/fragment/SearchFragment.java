@@ -64,7 +64,6 @@ public class SearchFragment extends BaseFragment {
     //private List<HashMap> datalist=null;
     private List<JSONObject> dataShowList=null;
     private JSONArray dataArray=null;
-    private static Fragment fragment;
   //  private ACache mCache;
 
     public SearchFragment() {
@@ -72,10 +71,9 @@ public class SearchFragment extends BaseFragment {
     }
 
 
-    public static SearchFragment    newInstance(Fragment oldfragment) {
-        SearchFragment searchFragment = new SearchFragment();
-        fragment=oldfragment;
-        return searchFragment;
+    public static SearchFragment    newInstance() {
+        SearchFragment fragment = new SearchFragment();
+        return fragment;
     }
 
     @Override
@@ -143,7 +141,7 @@ public class SearchFragment extends BaseFragment {
     }
     @OnClick(R.id.iv_back)
     public void back(){
-       getActivity().getSupportFragmentManager().beginTransaction().hide(this).show(fragment).commit();
+        getActivity().getSupportFragmentManager().popBackStack();//suport.v4包
 
 
     }
