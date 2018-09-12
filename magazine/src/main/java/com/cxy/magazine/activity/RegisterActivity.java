@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 
@@ -23,10 +25,11 @@ import cn.bmob.v3.listener.SaveListener;
 
 public class RegisterActivity extends BasicActivity implements View.OnClickListener{
 
-    private EditText etName,etPassword,etPassword2,etPhoneNumber,etVertifyCode,etPlace,etPerson;
+    private EditText etName,etPassword,etPassword2,etPhoneNumber,etVertifyCode,etEmail;
     private Button register;
     String userName,password,password2,place,person;
     TextView tvSendVertifyCode;
+    LinearLayout phoneLayout,emailLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +44,10 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
         etPassword2=(EditText)findViewById(R.id.et_password2);
         etPhoneNumber=(EditText)findViewById(R.id.et_phoneNumber);
         etVertifyCode=(EditText)findViewById(R.id.et_verifyCode);
+        etEmail=(EditText)findViewById(R.id.et_email);
         tvSendVertifyCode=(TextView)findViewById(R.id.tv_sendVertifyCode);
-     //   etPlace=(EditText)findViewById(R.id.et_place);
-     //   etPerson = (EditText) findViewById(R.id.et_person);
+        phoneLayout=(LinearLayout)findViewById(R.id.phoneLayout);
+        emailLayout=(LinearLayout)findViewById(R.id.emailLayout);
 
         register=(Button)findViewById(R.id.btn_register);
         register.setOnClickListener(this);
@@ -53,7 +57,26 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-
+        if (view.getId()==R.id.rb_phone){
+            boolean checked = ((RadioButton) view).isChecked();
+            if (checked){
+              phoneLayout.setVisibility(View.VISIBLE);
+              emailLayout.setVisibility(View.GONE);
+              etPhoneNumber.setText(null);
+              etVertifyCode.setText(null);
+              etEmail.setText(null);
+            }
+        }
+        if (view.getId()==R.id.rb_email){
+            boolean checked = ((RadioButton) view).isChecked();
+            if (checked){
+                phoneLayout.setVisibility(View.GONE);
+                emailLayout.setVisibility(View.VISIBLE);
+                etPhoneNumber.setText(null);
+                etVertifyCode.setText(null);
+                etEmail.setText(null);
+            }
+        }
 
         if (view.getId()==R.id.tv_sendVertifyCode){  //发送验证码
             String phoneNumber=etPhoneNumber.getText().toString();
@@ -82,18 +105,25 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
 
 
         }
+
         if (view.getId()==R.id.btn_register) {  //注册
             userName=etName.getText().toString();
             password=etPassword.getText().toString();
             password2=etPassword2.getText().toString();
             String phoneNumber=etPhoneNumber.getText().toString();
             String vertifyCode=etVertifyCode.getText().toString();
-
-            if (Utils.isEmpty(userName)|| Utils.isEmpty(password)|| Utils.isEmpty(password2)|| Utils.isEmpty(phoneNumber)|| Utils.isEmpty(vertifyCode)) {
+            String email=etEmail.getText().toString();
+            if (Utils.isEmpty(userName)|| Utils.isEmpty(password)|| Utils.isEmpty(password2)) {
                   //内容不能为空
                 Utils.showResultDialog(RegisterActivity.this,"内容不能为空！",null);
 
-            } else if (!password2.equals(password)) {
+            } else if ((Utils.isEmpty(phoneNumber)&&Utils.isEmpty(email))){
+                Utils.showResultDialog(RegisterActivity.this,"请绑定手机或者邮箱，用以找回密码",null);
+                if (!Utils.isEmpty(phoneNumber)&&Utils.isEmpty(vertifyCode)){
+                    Utils.showResultDialog(RegisterActivity.this,"请输入手机验证码",null);
+                }
+
+            }else if (!password2.equals(password)) {
                 Utils.showResultDialog(RegisterActivity.this,"两次输入的密码必须一致！",null);
 
             }else if (!Utils.isPassword(password)){
@@ -110,23 +140,42 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
                 user.setPassword(Utils.encryptBySHA(password));
                 user.setMobilePhoneNumber(phoneNumber);  //手机号
                 user.setUserType(User.REGISTER_USER);
+                user.setEmail(email);
+                if (!Utils.isEmpty(email)){
+                    user.signOrLogin(vertifyCode, new SaveListener<User>() {
+                        @Override
+                        public void done(User user, BmobException e) {
+                            if (e==null){
+                                new AlertDialog.Builder(RegisterActivity.this).setMessage("注册成功！请返回登录").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        finish();
+                                    }
+                                }).create().show();
+                            }else{
+                                Utils.showResultDialog(RegisterActivity.this,"注册失败："+e.getErrorCode()+","+e.getMessage(),null);
+                            }
 
-                user.signOrLogin(vertifyCode, new SaveListener<User>() {
-                    @Override
-                    public void done(User user, BmobException e) {
-                        if (e==null){
-                            new AlertDialog.Builder(RegisterActivity.this).setMessage("注册成功！请返回登录").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    finish();
-                                }
-                            }).create().show();
-                        }else{
-                           Utils.showResultDialog(RegisterActivity.this,"注册失败："+e.getErrorCode()+","+e.getMessage(),null);
                         }
+                    });
 
-                    }
-                });
+                }else{
+                    user.signUp(new SaveListener<Object>() {
+                        @Override
+                        public void done(Object o, BmobException e) {
+                            if (e==null){
+                                new AlertDialog.Builder(RegisterActivity.this).setMessage("注册成功！请返回登录").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        finish();
+                                    }
+                                }).create().show();
+                            }else{
+                                Utils.showResultDialog(RegisterActivity.this,"注册失败："+e.getErrorCode()+","+e.getMessage(),null);
+                            }
+                        }
+                    });
+                }
 
 
             }
