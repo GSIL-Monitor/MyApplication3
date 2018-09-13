@@ -88,7 +88,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 public class MagazineDirectoryActivity extends BasicActivity {
   //  private static final String MAGAZINE_URL = "http://m.fx361.com";
     private String httpUrl = "";
-    private String magazineTitle = "", magazineTime = "", coverImageUrl = "";
+    private String magazineTitle = "", magazineTime = "", coverImageUrl = "",magazineHistoryHref="";
     private String magazineId="";
     private List<HashMap> dataList;
     private DataAdapter dataAdapter = null;
@@ -699,7 +699,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
                 coverImageUrl = introDiv.getElementsByTag("a").first().attr("href");
               //  magazineIntro = introDiv.getElementsByClass("rec").first().getElementsByTag("p").first().text();
                 magazineTitle = docHtml.getElementsByTag("h3").first().text();
-             //   magazineHistoryHref = docHtml.getElementsByClass("btn_history act_history").first().attr("href");   //没有前缀
+                magazineHistoryHref = docHtml.getElementsByClass("btn_history act_history").first().attr("href");   //没有前缀
 
                 Element dirDiv = docHtml.getElementById("dirList");  //目录div
                 Elements dirElements = dirDiv.getElementsByClass("dirItem02");
@@ -753,8 +753,13 @@ public class MagazineDirectoryActivity extends BasicActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // 为toolbar创建Menu
         String type = getIntent().getStringExtra("type");
-        if (type == null) {   //"shelf"
-            getMenuInflater().inflate(R.menu.menu_magazine_directory, menu);
+        getMenuInflater().inflate(R.menu.menu_magazine_directory, menu);
+        if (type == null) {
+            menu.removeItem(R.id.scanHistory);
+        }
+        if ("shelf".equals(type)){  //从书架中进入，隐藏加入书架
+            menu.removeItem(R.id.addShelf);
+
         }
         return true;
     }
@@ -812,6 +817,14 @@ public class MagazineDirectoryActivity extends BasicActivity {
             }
 
 
+        }
+
+        if (item.getItemId()==R.id.scanHistory){
+            // Util.toastMessage(MagazineDirectoryActivity.this,"浏览往期");
+            Intent intent=new Intent(this,MagazineHistoryActivity.class);
+            intent.putExtra("historyUrl",magazineHistoryHref);
+            intent.putExtra("title",magazineTitle);
+            startActivity(intent);
         }
 
         return true;

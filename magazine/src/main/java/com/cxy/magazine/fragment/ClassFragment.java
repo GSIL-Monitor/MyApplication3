@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.cxy.magazine.R;
 import com.cxy.magazine.activity.ClassDetailActivity;
 import com.cxy.magazine.activity.MainActivity;
+import com.cxy.magazine.activity.SearchActivity;
 import com.cxy.magazine.util.ACache;
 import com.cxy.magazine.util.NetWorkUtils;
 import com.cxy.magazine.util.OkHttpUtil;
@@ -103,15 +104,16 @@ public class ClassFragment extends BaseFragment {
         mLRecyclerview.setAdapter(mLRecyclerViewAdapter);
 
     }
-   private SearchFragment searchFragment;
     @OnClick(R.id.rl_search)
     public void searchClick(){
         //跳转Fragment
-        getActivity().getSupportFragmentManager()
+       /* getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content, SearchFragment.newInstance())
                 .addToBackStack(null)
-                .commit();
+                .commit();*/
+       Intent intent=new Intent(getContext(), SearchActivity.class);
+       startActivity(intent);
 
 
     }

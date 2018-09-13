@@ -7,12 +7,12 @@
         android:orderInCategory="100"
         android:title="+书架"
         app:showAsAction="always" />
-    <!--<item
+    <item
         android:id="@+id/scanHistory"
         android:orderInCategory="101"
         android:title="浏览往期"
-        app:showAsAction="never" />
-    <item
+        app:showAsAction="always" />
+   <!-- <item
         android:id="@+id/scanIntro"
         android:orderInCategory="102"
         android:title="刊物介绍"

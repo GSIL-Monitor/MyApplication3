@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/navigation_recomm" android:icon="@drawable/navigation_recomm"
-        android:title="@string/title_recomm" />
+        android:title="@string/title_recomm"
+        android:checked="true"/>
     <item android:id="@+id/navigation_class" android:icon="@drawable/navigation_class"
         android:title="@string/title_class" />
 
