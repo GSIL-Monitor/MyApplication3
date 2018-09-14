@@ -78,14 +78,18 @@ public class MagazineHistoryActivity extends BasicActivity {
             try {
                 String html= OkHttpUtil.get(httpUrl);
                 Document document = Jsoup.parse(html);
-                Elements aList=document.getElementsByClass("selBox").first().getElementsByTag("a");
-                for (Element a : aList){
-                   HashMap map=new HashMap();
-                   map.put("text",a.text());
-                   map.put("href",DOMAIN_MAGAZINE+a.attr("href"));
-                   dataList.add(map);
+                Elements selBoxes=document.getElementsByClass("selBox");
+                if (selBoxes.size()>0){
+                    Elements aList=selBoxes.first().getElementsByTag("a");
+                    for (Element a : aList){
+                        HashMap map=new HashMap();
+                        map.put("text",a.text());
+                        map.put("href",DOMAIN_MAGAZINE+a.attr("href"));
+                        dataList.add(map);
 
+                    }
                 }
+
                 uiHandler.sendEmptyMessage(100);
             } catch (IOException e) {
                 e.printStackTrace();

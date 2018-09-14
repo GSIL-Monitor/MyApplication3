@@ -253,7 +253,6 @@ public class MagazineListFragment extends BaseFragment {
                 case 100:    //重新获取数据
                      reSetItems();
                      mRecyclerView.refreshComplete(REQUEST_COUNT);
-                  //   mLRecyclerViewAdapter.notifyDataSetChanged();
                     recycleViewAdapter=new MagazineListAdapter(getContext(),dataDisplayArray,manager);
 
                     mLRecyclerViewAdapter = new LRecyclerViewAdapter(recycleViewAdapter);
