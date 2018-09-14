@@ -101,7 +101,8 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                                    Utils.dismissDialog();
                                    finish();
                                }else{
-                                   Utils.showResultDialog(LoginActivity.this,"登录失败，请输入正确的用户名和密码！",null);
+                                   Utils.dismissDialog();
+                                   Utils.showResultDialog(LoginActivity.this,"用户名或密码错误，请重新输入！",null);
                                }
                             }
                         });
