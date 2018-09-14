@@ -11,6 +11,10 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Android 6.0 上权限分为<b>正常</b>和<b>危险</b>级别
@@ -74,7 +78,7 @@ public class PermissionHelper {
 	 * 这里我们演示如何在Android 6.0+上运行时申请权限
 	 */
 	public void applyPermissions() {
-		try {
+		/*try {
 			for (final PermissionModel model : mPermissionModels) {
 				if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(mActivity, model.permission)) {
 					ActivityCompat.requestPermissions(mActivity, new String[] { model.permission }, model.requestCode);
@@ -86,7 +90,20 @@ public class PermissionHelper {
 			}
 		} catch (Throwable e) {
 			Log.e(TAG, "", e);
+		}*/
+		List<String> lackedPermission = new ArrayList<String>();
+		for (final PermissionModel model : mPermissionModels) {
+			if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(mActivity, model.permission)) {
+				lackedPermission.add(model.permission);
+			}
 		}
+		if (lackedPermission.size() > 0){
+			// 请求所缺少的权限，在onRequestPermissionsResult中再看是否获得权限，如果获得权限就可以调用SDK，否则不要调用SDK。
+			String[] requestPermissions = new String[lackedPermission.size()];
+			lackedPermission.toArray(requestPermissions);
+			ActivityCompat.requestPermissions(mActivity,requestPermissions, 1024);
+		}
+
 	}
 
 	/**
@@ -97,7 +114,21 @@ public class PermissionHelper {
 	 * @param grantResults
 	 */
 	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-		switch (requestCode) {
+		if (requestCode==1024 && !isAllRequestedPermissionGranted()){
+			AlertDialog.Builder builder = new AlertDialog.Builder(mActivity).setTitle("权限申请")
+					.setMessage("请点击权限管理开启\"获取手机信息\"和\"读写手机存储\"权限,以正常使用本应用")
+					.setPositiveButton("去设置", new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							openApplicationSettings(REQUEST_OPEN_APPLICATION_SETTINGS_CODE);
+							//mActivity.finish();
+						}
+					});
+			builder.setCancelable(false);
+			builder.show();
+		}
+		/*switch (requestCode) {
 		case READ_PHONE_STATE_CODE:
 		case WRITE_EXTERNAL_STORAGE_CODE:
 			// 如果用户不允许，我们视情况发起二次请求或者引导用户到应用页面手动打开
@@ -151,7 +182,7 @@ public class PermissionHelper {
 				applyPermissions();
 			}
 			break;
-		}
+		}*/
 	}
 
 	/**
@@ -169,7 +200,8 @@ public class PermissionHelper {
 					mOnApplyPermissionListener.onAfterApplyAllPermission();
 				}
 			} else {
-				mActivity.finish();
+				//mActivity.finish();
+				Toast.makeText(mActivity,"由于缺少必要的权限，可能导致应用部分功能异常",Toast.LENGTH_LONG).show();
 			}
 			break;
 		}
@@ -198,8 +230,7 @@ public class PermissionHelper {
 	 */
 	private boolean openApplicationSettings(int requestCode) {
 		try {
-			Intent intent =
-					new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + mActivity.getPackageName()));
+			Intent intent =	new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + mActivity.getPackageName()));
 			intent.addCategory(Intent.CATEGORY_DEFAULT);
 
 			// Android L 之后Activity的启动模式发生了一些变化

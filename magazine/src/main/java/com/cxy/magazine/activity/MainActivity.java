@@ -226,7 +226,7 @@ public class MainActivity extends BasicActivity {
                 Log.d(LOG_TAG, "All of requested permissions has been granted, so run app logic directly.");
 
             } else {
-                // 如果还有权限为申请，而且系统版本大于23，执行申请权限逻辑
+                // 如果还有权限未申请，而且系统版本大于23，执行申请权限逻辑
                 Log.i(LOG_TAG, "Some of requested permissions hasn't been granted, so apply permissions first.");
                 mPermissionHelper.applyPermissions();
 
