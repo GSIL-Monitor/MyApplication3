@@ -5,10 +5,11 @@
 
     <TextView android:id="@+id/class_title"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:textSize="20sp"
+        android:layout_height="110dp"
+        android:textSize="18sp"
         android:background="@color/colorAccent"
         android:text="科技"
         android:textColor="#fff"
-        android:gravity="center_vertical|center_horizontal"/>
+        android:paddingTop="8dp"
+        android:paddingLeft="@dimen/dp_10"/>
 </LinearLayout>

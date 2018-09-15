@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,7 +59,7 @@ public class ClassFragment extends BaseFragment {
     private String errorMessage="出错了，请稍后重试！";
     private MagazineAdapter adapter=null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
-  //  private ACache mAcache;
+    private  GridLayoutManager manager=null;
     private Context context=null;
 
 
@@ -92,7 +93,7 @@ public class ClassFragment extends BaseFragment {
         return  view;
     }
     public void setLRecyclerview(){
-        GridLayoutManager manager=new GridLayoutManager(this.getContext(),3);
+        manager=new GridLayoutManager(this.getContext(),3);
         mLRecyclerview.setLayoutManager(manager);
         mLRecyclerview.setPullRefreshEnabled(false);
         int spacing = getResources().getDimensionPixelSize(R.dimen.dp_14);
@@ -190,7 +191,11 @@ public class ClassFragment extends BaseFragment {
 
     //adapter
     class MagazineAdapter extends RecyclerView.Adapter<MagazineAdapter.MyViewHolder>{
-
+        int[] backgroundRecources={R.drawable.cover_shizheng,R.drawable.cover_shangye,R.drawable.cover_wenxue,R.drawable.cover_sheying,
+                                     R.drawable.cover_xuesheng,R.drawable.cover_jiating,R.drawable.cover_lvyou,R.drawable.cover_renwen,
+                                     R.drawable.cover_wenzhai,R.drawable.cover_yishu,R.drawable.cover_nongye,R.drawable.cover_wenhua,
+                                     R.drawable.cover_zhichang, R.drawable.cover_yule, R.drawable.cover_xueshu, R.drawable.cover_junshi,
+                                     R.drawable.cover_qiche, R.drawable.cover_huanshi};
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             MyViewHolder holder = new MyViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.magazine_class_item, parent, false));
@@ -205,6 +210,16 @@ public class ClassFragment extends BaseFragment {
                 final  String href=dataJson.getString("href");
                 final  String title=dataJson.getString("text");
                 holder.tvClassName.setText(title);
+                //设置TextView背景图片
+                holder.tvClassName.setBackgroundResource(backgroundRecources[position]);
+                //设置TextView字体加粗，中文需这样设置
+                TextPaint tp = holder.tvClassName.getPaint();
+                tp.setFakeBoldText(true);
+                //动态设置TextView的高度,高度是宽度的4/5
+                int height=((manager.getWidth()-28))/3*4/5;
+                ViewGroup.LayoutParams param=holder.tvClassName.getLayoutParams();
+                param.height = height;
+                holder.tvClassName.setLayoutParams(param);
 
                 //设置点击事件
                 holder.tvClassName.setOnClickListener(new View.OnClickListener() {
