@@ -43,14 +43,6 @@ import com.google.android.gms.ads.AdView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
-import com.qq.e.ads.cfg.VideoOption;
-import com.qq.e.ads.nativ.ADSize;
-import com.qq.e.ads.nativ.NativeExpressAD;
-import com.qq.e.ads.nativ.NativeExpressADView;
-import com.qq.e.ads.nativ.NativeExpressMediaListener;
-import com.qq.e.comm.constants.AdPatternType;
-import com.qq.e.comm.pi.AdData;
-import com.qq.e.comm.util.AdError;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -101,8 +93,6 @@ public class MagazineContentActivity extends BasicActivity {
     private boolean isCollect = false;    //是否收藏
     private String intentUrl = "";
 
-    private NativeExpressAD nativeExpressAD;
-    private NativeExpressADView nativeExpressADView;
     private String TAG = "tencentAd";
     private int checkedIndex = 1;
     //广告id数组

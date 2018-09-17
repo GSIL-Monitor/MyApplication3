@@ -25,7 +25,6 @@ import com.cxy.magazine.util.NetWorkUtils;
 import com.cxy.magazine.util.PermissionHelper;
 import com.cxy.magazine.util.Utils;
 import com.google.android.gms.ads.MobileAds;
-import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,13 +112,6 @@ public class MainActivity extends BasicActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        boolean netConnect=NetWorkUtils.isNetworkConnected(this);
-        if (netConnect){
-            //小米更新
-           // XiaomiUpdateAgent.update(this);//这种情况下, 若本地版本是debug版本则使用沙盒环境，否则使用线上环境
-
-        }
-
 
 
 
