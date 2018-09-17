@@ -75,6 +75,7 @@ dependencies {
     /*compile 'com.android.support:design:26.3.1'*/
     /*  compile 'com.android.support:support-vector-drawable:26.3.1'*/
     /*compile 'com.android.support:support-v4:25.3.1'*/
+    implementation 'com.google.android.gms:play-services-ads:15.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     //butterknife

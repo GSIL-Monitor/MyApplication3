@@ -20,9 +20,11 @@ import com.cxy.magazine.fragment.ClassFragment;
 import com.cxy.magazine.fragment.MyFragment;
 import com.cxy.magazine.fragment.RecommFragment;
 import com.cxy.magazine.fragment.ShelfFragment;
+import com.cxy.magazine.util.Constants;
 import com.cxy.magazine.util.NetWorkUtils;
 import com.cxy.magazine.util.PermissionHelper;
 import com.cxy.magazine.util.Utils;
+import com.google.android.gms.ads.MobileAds;
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 import org.json.JSONException;
@@ -85,6 +87,9 @@ public class MainActivity extends BasicActivity {
 
         //初始化Bmob
         Bmob.initialize(this,BmobApplicationId,"bmob");
+
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, Constants.ADMOB_APP_ID);
         //获取FragmentManager管理器
         manager=getSupportFragmentManager();
 

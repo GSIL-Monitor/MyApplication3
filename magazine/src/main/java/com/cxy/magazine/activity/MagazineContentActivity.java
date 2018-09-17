@@ -37,6 +37,9 @@ import com.cxy.magazine.jsInterface.JavascriptInterface;
 import com.cxy.magazine.util.Constants;
 import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.Utils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
@@ -68,64 +71,67 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-public class MagazineContentActivity extends BasicActivity implements  NativeExpressAD.NativeExpressADListener{
+public class MagazineContentActivity extends BasicActivity implements NativeExpressAD.NativeExpressADListener {
 
-    private String httpUrl="";
+    private String httpUrl = "";
     private WebSettings mWebSettings;
 
-    @BindView(R.id.wv_content)  WebView mWebview;
-    @BindView(R.id.toolbar)  Toolbar toolbar;
-    @BindView(R.id.containerAd) ViewGroup adContainer;
+    @BindView(R.id.wv_content)
+    WebView mWebview;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.containerAd)
+    ViewGroup adContainer;
     @BindView(R.id.collectButton)
     ImageView collectButton;
     @BindView(R.id.recommTv)
     TextView recommTv;
     private User user;
-    private String articleObjectId=null;
+    private String articleObjectId = null;
 
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
-    private String title="",articleId="",time="";
-    private Integer recommCount=0;
-    private String articleRecommId=null;
-    private StringBuilder content=null;
-    private static final String MAGAZINE_URL="http://m.fx361.com";
-    private String htmlStr="<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
+    private String title = "", articleId = "", time = "";
+    private Integer recommCount = 0;
+    private String articleRecommId = null;
+    private StringBuilder content = null;
+    private static final String MAGAZINE_URL = "http://m.fx361.com";
+    private String htmlStr = "<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
             + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:200%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
             + "</style></head><body>";
-    private boolean isCollect=false;    //是否收藏
-    private String intentUrl="";
+    private boolean isCollect = false;    //是否收藏
+    private String intentUrl = "";
 
     private NativeExpressAD nativeExpressAD;
     private NativeExpressADView nativeExpressADView;
-    private String TAG="tencentAd";
+    private String TAG = "tencentAd";
     private int checkedIndex = 1;
     //广告id数组
-    private String[]  adIds={Constants.NativeExpressPosID1,Constants.NativeExpressPosID2,Constants.NativeExpressPosID3};
+    private String[] adIds = {Constants.NativeExpressPosID1, Constants.NativeExpressPosID2, Constants.NativeExpressPosID3};
+    @BindView(R.id.adView)
+    AdView mAdView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_magazine_content);
         ButterKnife.bind(this);
-       // getSupportActionBar().setTitle("");
+        // getSupportActionBar().setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setWebView();
-        intentUrl=getIntent().getStringExtra("url");
-        httpUrl=(MAGAZINE_URL + intentUrl).replace("page","news").replace("shtml","html");    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
-        articleId=intentUrl.split("/")[4].split(".shtml")[0];
+        intentUrl = getIntent().getStringExtra("url");
+        httpUrl = (MAGAZINE_URL + intentUrl).replace("page", "news").replace("shtml", "html");    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+        articleId = intentUrl.split("/")[4].split(".shtml")[0];
 
-        content=new StringBuilder(htmlStr);
-     //   mProgressDialog=ProgressDialog.show(this, null, "请稍后");
-        Utils.showTipDialog(MagazineContentActivity.this,"加载中", QMUITipDialog.Builder.ICON_TYPE_LOADING);
-        Thread getHtml=new GetHtml();
+        content = new StringBuilder(htmlStr);
+        //   mProgressDialog=ProgressDialog.show(this, null, "请稍后");
+        Utils.showTipDialog(MagazineContentActivity.this, "加载中", QMUITipDialog.Builder.ICON_TYPE_LOADING);
+        Thread getHtml = new GetHtml();
         getHtml.start();
 
-        user= BmobUser.getCurrentUser(User.class);
-
-
-
-
+        user = BmobUser.getCurrentUser(User.class);
 
 
     }
@@ -139,190 +145,181 @@ public class MagazineContentActivity extends BasicActivity implements  NativeExp
     }
 
     //查询该文章的收藏情况
-public void selectCollect(){
-    if (user!=null) {
-        BmobQuery<CollectBean> collctQuery = new BmobQuery<CollectBean>();
-        collctQuery.addWhereEqualTo("user", user);
-        collctQuery.addWhereEqualTo("articleId", articleId);
-        collctQuery.findObjects(new FindListener<CollectBean>() {
-            @Override
-            public void done(List<CollectBean> list, BmobException e) {
-                if (e == null && list != null) {
-                //    isFirst = true;
-                    if (list.size() == 1) {   //查询到收藏数据
-                      //  rbCollect.setChecked(true);
-                        articleObjectId = list.get(0).getObjectId();
-                        isCollect=true;
-                        collectButton.setImageResource(R.drawable.ic_collect_selected);
+    public void selectCollect() {
+        if (user != null) {
+            BmobQuery<CollectBean> collctQuery = new BmobQuery<CollectBean>();
+            collctQuery.addWhereEqualTo("user", user);
+            collctQuery.addWhereEqualTo("articleId", articleId);
+            collctQuery.findObjects(new FindListener<CollectBean>() {
+                @Override
+                public void done(List<CollectBean> list, BmobException e) {
+                    if (e == null && list != null) {
+                        //    isFirst = true;
+                        if (list.size() == 1) {   //查询到收藏数据
+                            //  rbCollect.setChecked(true);
+                            articleObjectId = list.get(0).getObjectId();
+                            isCollect = true;
+                            collectButton.setImageResource(R.drawable.ic_collect_selected);
 
+                        }
+                        //   isFirst = false;
+                    } else {
+                        Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
                     }
-                 //   isFirst = false;
-                } else {
-                    Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
                 }
-            }
-        });
+            });
+        }
     }
-}
 
-public void selectRecomm(){
-    BmobQuery<ArticleRecommBean> recommQuery=new BmobQuery<>();
-    recommQuery.addWhereEqualTo("articleId", articleId);
-    recommQuery.findObjects(new FindListener<ArticleRecommBean>() {
-        @Override
-        public void done(List<ArticleRecommBean> list, BmobException e) {
-            if (e==null){
-                if (list.size()>0){
-                    recommCount=list.get(0).getRecommCount();  //推荐次数
-                    articleRecommId=list.get(0).getObjectId();
-                    recommTv.setText("推荐"+recommCount);
-                }else{
-                    //插入该文章的评论数据
-                    ArticleRecommBean recommBean=new ArticleRecommBean();
-                    recommBean.setArticleId(articleId);
-                    recommBean.setArticleTitle(title);
-                    recommBean.setArticleTime(time);
-                    recommBean.setArticleUrl(intentUrl);
-                    recommBean.setRecommCount(0);
-                    recommBean.save(new SaveListener<String>() {
-                        @Override
-                        public void done(String objectId, BmobException e) {
-                            if (e==null){
-                                articleRecommId=objectId;
+    public void selectRecomm() {
+        BmobQuery<ArticleRecommBean> recommQuery = new BmobQuery<>();
+        recommQuery.addWhereEqualTo("articleId", articleId);
+        recommQuery.findObjects(new FindListener<ArticleRecommBean>() {
+            @Override
+            public void done(List<ArticleRecommBean> list, BmobException e) {
+                if (e == null) {
+                    if (list.size() > 0) {
+                        recommCount = list.get(0).getRecommCount();  //推荐次数
+                        articleRecommId = list.get(0).getObjectId();
+                        recommTv.setText("推荐" + recommCount);
+                    } else {
+                        //插入该文章的评论数据
+                        ArticleRecommBean recommBean = new ArticleRecommBean();
+                        recommBean.setArticleId(articleId);
+                        recommBean.setArticleTitle(title);
+                        recommBean.setArticleTime(time);
+                        recommBean.setArticleUrl(intentUrl);
+                        recommBean.setRecommCount(0);
+                        recommBean.save(new SaveListener<String>() {
+                            @Override
+                            public void done(String objectId, BmobException e) {
+                                if (e == null) {
+                                    articleRecommId = objectId;
+                                }
                             }
-                        }
-                    });  // end save
-                  }
-                }
-            }
-
-    });
-
-
-}
-
-@OnClick(R.id.collectView)
-public void collectClick(){
-
-            if (user!=null) {
-                if (!isCollect) {        //没有收藏
-                    //Utils.toastMessage(MagazineContentActivity.this,"选中");
-                    //收藏
-                    CollectBean collectBean = new CollectBean();
-                    collectBean.setUser(user);
-                    collectBean.setArticleUrl(intentUrl);
-                    collectBean.setArticleTitle(title);
-                    collectBean.setArticleId(articleId);
-                    collectBean.save(new SaveListener<String>() {
-                        @Override
-                        public void done(String objectId, BmobException e) {
-                            if (e == null) {
-                                Utils.toastMessage(MagazineContentActivity.this, "收藏文章成功");
-                                articleObjectId = objectId;
-                                collectButton.setImageResource(R.drawable.ic_collect_selected);
-                                isCollect=true;
-                            } else {
-                                Utils.toastMessage(MagazineContentActivity.this, "收藏文章失败:" + e.getMessage());
-
-                            }
-                        }
-                    });
-                } else{      //已收藏，删除收藏
-                    //     Utils.toastMessage(MagazineContentActivity.this,"取消");
-                    //删除收藏
-                    final CollectBean collectBean = new CollectBean();
-                    collectBean.setObjectId(articleObjectId);
-                    collectBean.delete(new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            if (e == null) {
-                                Utils.toastMessage(MagazineContentActivity.this, "取消收藏成功");
-                              //  rbCollect.setBackgroundResource(R.drawable.collect_no_selected);
-                                collectButton.setImageResource(R.drawable.ic_collect_no_selected);
-                                isCollect=false;
-                            } else {
-                                Utils.toastMessage(MagazineContentActivity.this, "取消收藏失败:" + e.getMessage());
-                            }
-                        }
-                    });
-
-                }
-            }else{
-                Utils.toastMessage(MagazineContentActivity.this,"请先返回登录，再收藏");
-            }
-
-
-}
-
-@OnClick(R.id.recommView)
-public void recommView(){
-    //TODO:推荐
-    Intent intent=new Intent(this,CommentActivity.class);
-    intent.putExtra("articleRecommId",articleRecommId);
-    startActivity(intent);
-   /* if (user!=null){
-        String defaultRecommMsg="这个家伙很懒，什么理由也没说";
-        final QMUIDialog.EditTextDialogBuilder builder =new  QMUIDialog.EditTextDialogBuilder(MagazineContentActivity.this).setTitle("推荐理由").setPlaceholder("总有一句话说到了你的心坎里").setDefaultText(defaultRecommMsg);
-        builder .addAction("取消", new QMUIDialogAction.ActionListener() {
-                       @Override
-                       public void onClick(QMUIDialog dialog, int index) {
-                           dialog.dismiss();
-                       }
-                   }).addAction("推荐", new QMUIDialogAction.ActionListener() {
-                    @Override
-                    public void onClick(final QMUIDialog dialog, int index) {
-                       RecommBean recommBean=new RecommBean();
-                       recommBean.setUser(user);
-                       recommBean.setComment(builder.getEditText().getText().toString());
-                       final ArticleRecommBean  articleRecommBean=new ArticleRecommBean();
-                       articleRecommBean.setObjectId(articleRecommId);
-                       recommBean.setArticleRecommBean(articleRecommBean);
-                       recommBean.save(new SaveListener<String>() {
-                           @Override
-                           public void done(String s, BmobException e) {
-                               dialog.dismiss();
-                               if (e==null){
-                                  // 更新推荐记录总数 +1
-                                   articleRecommBean.increment("recommCount");
-                                   articleRecommBean.update(new UpdateListener() {
-                                       @Override
-                                       public void done(BmobException e) {
-                                          if (e==null){
-                                              Utils.toastMessage(MagazineContentActivity.this,"你已成功推荐该篇文章");
-                                          }
-                                       }
-                                   });
-
-                               }else{
-                                   Utils.toastMessage(MagazineContentActivity.this,e.toString());
-                               }
-
-                           }
-                       });
+                        });  // end save
                     }
-                  }).create().show();
+                }
+            }
 
-    }else{
-        Utils.toastMessage(MagazineContentActivity.this,"请先返回登录，再来推荐");
-    }*/
-   // Utils.toastMessage(MagazineContentActivity.this,"推荐了这篇文章");
-}
+        });
+
+
+    }
+
+    @OnClick(R.id.collectView)
+    public void collectClick() {
+
+        if (user != null) {
+            if (!isCollect) {        //没有收藏
+                //Utils.toastMessage(MagazineContentActivity.this,"选中");
+                //收藏
+                CollectBean collectBean = new CollectBean();
+                collectBean.setUser(user);
+                collectBean.setArticleUrl(intentUrl);
+                collectBean.setArticleTitle(title);
+                collectBean.setArticleId(articleId);
+                collectBean.save(new SaveListener<String>() {
+                    @Override
+                    public void done(String objectId, BmobException e) {
+                        if (e == null) {
+                            Utils.toastMessage(MagazineContentActivity.this, "收藏文章成功");
+                            articleObjectId = objectId;
+                            collectButton.setImageResource(R.drawable.ic_collect_selected);
+                            isCollect = true;
+                        } else {
+                            Utils.toastMessage(MagazineContentActivity.this, "收藏文章失败:" + e.getMessage());
+
+                        }
+                    }
+                });
+            } else {      //已收藏，删除收藏
+                //     Utils.toastMessage(MagazineContentActivity.this,"取消");
+                //删除收藏
+                final CollectBean collectBean = new CollectBean();
+                collectBean.setObjectId(articleObjectId);
+                collectBean.delete(new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if (e == null) {
+                            Utils.toastMessage(MagazineContentActivity.this, "取消收藏成功");
+                            //  rbCollect.setBackgroundResource(R.drawable.collect_no_selected);
+                            collectButton.setImageResource(R.drawable.ic_collect_no_selected);
+                            isCollect = false;
+                        } else {
+                            Utils.toastMessage(MagazineContentActivity.this, "取消收藏失败:" + e.getMessage());
+                        }
+                    }
+                });
+
+            }
+        } else {
+            Utils.toastMessage(MagazineContentActivity.this, "请先返回登录，再收藏");
+        }
+
+
+    }
+
+    @OnClick(R.id.recommView)
+    public void recommView() {
+        //TODO:推荐
+        Intent intent = new Intent(this, CommentActivity.class);
+        intent.putExtra("articleRecommId", articleRecommId);
+        startActivity(intent);
+
+    }
 
 
     // 1.加载广告，先设置加载上下文环境和条件
     private void refreshAd() {
-        Random random=new Random();
-        int index=random.nextInt(3);
-        Log.i(TAG,"AD index:"+index);
+        Random random = new Random();
+        int index = random.nextInt(3);
+        Log.i(TAG, "AD index:" + index);
         //从3个id中随机取一个
-        String adId=adIds[index];
-        nativeExpressAD = new NativeExpressAD(MagazineContentActivity.this,new ADSize(ADSize.FULL_WIDTH,ADSize.AUTO_HEIGHT),Constants.APPID, adId, this);// 传入Activity
+        String adId = adIds[index];
+        nativeExpressAD = new NativeExpressAD(MagazineContentActivity.this, new ADSize(ADSize.FULL_WIDTH, ADSize.AUTO_HEIGHT), Constants.APPID, adId, this);// 传入Activity
         // 注意：如果您在联盟平台上新建原生模板广告位时，选择了“是”支持视频，那么可以进行个性化设置（可选）
    /*    nativeExpressAD.setVideoOption(new VideoOption.Builder()
                 .setAutoPlayPolicy(VideoOption.AutoPlayPolicy.WIFI) // WIFI环境下可以自动播放视频
                 .setAutoPlayMuted(true) // 自动播放时为静音
                 .build());*/
         nativeExpressAD.loadAD(1);
+    }
+
+    private void refreshAdmob() {
+
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+               Log.e("admob","广告加载失败");
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        });
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     @Override
@@ -399,7 +396,7 @@ public void recommView(){
     }
 
 
-    public void setWebView(){
+    public void setWebView() {
         mWebSettings = mWebview.getSettings();
         mWebSettings.setTextSize(WebSettings.TextSize.NORMAL);
         // 设置与Js交互的权限
@@ -432,31 +429,23 @@ public void recommView(){
     }
 
 
-
-
-
-
-    class GetHtml extends Thread{
+    class GetHtml extends Thread {
         @Override
         public void run() {
 
             try {
-                String html=OkHttpUtil.get(httpUrl);
-                if (!Utils.isEmpty(html)){
+                String html = OkHttpUtil.get(httpUrl);
+                if (!Utils.isEmpty(html)) {
                     Document docHtml = Jsoup.parse(html);
-                    Element mainDiv=docHtml.getElementsByClass("main").first();
-                    title=mainDiv.getElementsByClass("bt").first().text();  //文章标题   h3
-                    //TODO:获取时间
-                    time=mainDiv.getElementsByClass("sj").first().text();
+                    Element mainDiv = docHtml.getElementsByClass("main").first();
+                    title = mainDiv.getElementsByClass("bt").first().text();  //文章标题   h3
+                    time = mainDiv.getElementsByClass("sj").first().text();
                     mainDiv.getElementsByTag("h3").get(1).remove();
                     mainDiv.getElementsByClass("others").first().remove();
                     content.append(mainDiv.html());
                     content.append("</body></html>");
                     uiHandler.sendEmptyMessage(100);
                 }
-
-
-
 
 
             } catch (Exception e) {
@@ -466,25 +455,27 @@ public void recommView(){
         }
     }
 
-    Handler uiHandler=new Handler(){
+    Handler uiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
 
-            if (msg.what==100){
+            if (msg.what == 100) {
 
-              //  mProgressDialog.dismiss();
+                //  mProgressDialog.dismiss();
                 Utils.dismissDialog();
-                String[] imageUrls=Utils.returnImageUrlsFromHtml(content.toString());
-                mWebview.addJavascriptInterface(new JavascriptInterface(MagazineContentActivity.this,imageUrls), "imagelistner");
+                String[] imageUrls = Utils.returnImageUrlsFromHtml(content.toString());
+                mWebview.addJavascriptInterface(new JavascriptInterface(MagazineContentActivity.this, imageUrls), "imagelistner");
                 mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
-                //TODO:查询推荐情况
+                //查询推荐情况
                 selectRecomm();
-                //设置广告
-                refreshAd();
+                //TODO：设置腾讯广告
+                // refreshAd();
+                //设置Google广告
+                refreshAdmob();
             }
-            if (msg.what==101){
+            if (msg.what == 101) {
                 Utils.dismissDialog();
-                String error="<h3>抱歉，该篇文章暂时无法阅读！<h3>";
+                String error = "<h3>抱歉，该篇文章暂时无法阅读！<h3>";
                 mWebview.loadData(error, "text/html; charset=UTF-8", null);
                 //设置广告
                 refreshAd();
@@ -493,9 +484,7 @@ public void recommView(){
     };
 
 
-
-
-  @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
 
@@ -503,13 +492,14 @@ public void recommView(){
 
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
         }
         //设置字体大小
-        if (item.getItemId()==R.id.fontSize){
+        if (item.getItemId() == R.id.fontSize) {
 
             setFontSize();
         }
@@ -517,16 +507,16 @@ public void recommView(){
         return true;
     }
 
-    public void setFontSize(){
-        final String[] items = new String[]{"小号字", "中号字(默认)", "大号字","特大号字"};
+    public void setFontSize() {
+        final String[] items = new String[]{"小号字", "中号字(默认)", "大号字", "特大号字"};
         new QMUIDialog.CheckableDialogBuilder(MagazineContentActivity.this)
                 .setCheckedIndex(checkedIndex)
                 .addItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                     //   Toast.makeText(MagazineContentActivity.this, "你选择了 " + items[which], Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(MagazineContentActivity.this, "你选择了 " + items[which], Toast.LENGTH_SHORT).show();
                         //TODO:改变字体大小
-                        switch (which){
+                        switch (which) {
                             case 0:
                                 mWebSettings.setTextSize(WebSettings.TextSize.SMALLER);
                                 break;
@@ -542,7 +532,7 @@ public void recommView(){
 
                         }
 
-                        checkedIndex=which;
+                        checkedIndex = which;
                         dialog.dismiss();
                     }
                 })
@@ -568,25 +558,22 @@ public void recommView(){
         super.onDestroy();
 
         if (mWebview != null) {
-          //  mWebview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            //  mWebview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
             mWebview.clearHistory();
 
             ((ViewGroup) mWebview.getParent()).removeView(mWebview);
             mWebview.destroy();
             mWebview = null;
         }
-        Log.i(LOG_TAG,"MagazineContentActivity------->onDestroy");
+        Log.i(LOG_TAG, "MagazineContentActivity------->onDestroy");
 
         // 使用完了每一个NativeExpressADView之后都要释放掉资源
         if (nativeExpressADView != null) {
             nativeExpressADView.destroy();
-            Log.i(TAG,"广告销毁");
+            Log.i(TAG, "广告销毁");
         }
 
     }
-
-
-
 
 
 }
