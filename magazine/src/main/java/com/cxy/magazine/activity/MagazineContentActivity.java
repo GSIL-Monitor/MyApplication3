@@ -71,7 +71,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-public class MagazineContentActivity extends BasicActivity implements NativeExpressAD.NativeExpressADListener {
+public class MagazineContentActivity extends BasicActivity {
 
     private String httpUrl = "";
     private WebSettings mWebSettings;
@@ -128,8 +128,10 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
         content = new StringBuilder(htmlStr);
         //   mProgressDialog=ProgressDialog.show(this, null, "请稍后");
         Utils.showTipDialog(MagazineContentActivity.this, "加载中", QMUITipDialog.Builder.ICON_TYPE_LOADING);
+
         Thread getHtml = new GetHtml();
         getHtml.start();
+
 
         user = BmobUser.getCurrentUser(User.class);
 
@@ -270,24 +272,9 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
     }
 
 
-    // 1.加载广告，先设置加载上下文环境和条件
-    private void refreshAd() {
-        Random random = new Random();
-        int index = random.nextInt(3);
-        Log.i(TAG, "AD index:" + index);
-        //从3个id中随机取一个
-        String adId = adIds[index];
-        nativeExpressAD = new NativeExpressAD(MagazineContentActivity.this, new ADSize(ADSize.FULL_WIDTH, ADSize.AUTO_HEIGHT), Constants.APPID, adId, this);// 传入Activity
-        // 注意：如果您在联盟平台上新建原生模板广告位时，选择了“是”支持视频，那么可以进行个性化设置（可选）
-   /*    nativeExpressAD.setVideoOption(new VideoOption.Builder()
-                .setAutoPlayPolicy(VideoOption.AutoPlayPolicy.WIFI) // WIFI环境下可以自动播放视频
-                .setAutoPlayMuted(true) // 自动播放时为静音
-                .build());*/
-        nativeExpressAD.loadAD(1);
-    }
-
     private void refreshAdmob() {
 
+/*
 
         mAdView.setAdListener(new AdListener() {
             @Override
@@ -317,82 +304,10 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                 // to the app after tapping on an ad.
             }
         });
+*/
 
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-    }
-
-    @Override
-    public void onNoAD(AdError adError) {
-        Log.i(TAG, String.format("onADError, error code: %d, error msg: %s", adError.getErrorCode(), adError.getErrorMsg()));
-    }
-
-    @Override
-    public void onADLoaded(List<NativeExpressADView> adList) {
-        Log.i(TAG, "onADLoaded: " + adList.size());
-        // 释放前一个展示的NativeExpressADView的资源
-        if (nativeExpressADView != null) {
-            nativeExpressADView.destroy();
-        }
-
-        if (adContainer.getVisibility() != View.VISIBLE) {
-            adContainer.setVisibility(View.VISIBLE);
-        }
-
-        if (adContainer.getChildCount() > 0) {
-            adContainer.removeAllViews();
-        }
-
-        nativeExpressADView = adList.get(0);
-
-        // 广告可见才会产生曝光，否则将无法产生收益。
-        adContainer.addView(nativeExpressADView);
-        nativeExpressADView.render();
-    }
-
-    @Override
-    public void onRenderFail(NativeExpressADView adView) {
-        Log.i(TAG, "onRenderFail");
-    }
-
-    @Override
-    public void onRenderSuccess(NativeExpressADView adView) {
-        Log.i(TAG, "onRenderSuccess");
-    }
-
-    @Override
-    public void onADExposure(NativeExpressADView adView) {
-        Log.i(TAG, "onADExposure");
-    }
-
-    @Override
-    public void onADClicked(NativeExpressADView adView) {
-        Log.i(TAG, "onADClicked");
-    }
-
-    @Override
-    public void onADClosed(NativeExpressADView adView) {
-        Log.i(TAG, "onADClosed");
-        // 当广告模板中的关闭按钮被点击时，广告将不再展示。NativeExpressADView也会被Destroy，释放资源，不可以再用来展示。
-        if (adContainer != null && adContainer.getChildCount() > 0) {
-            adContainer.removeAllViews();
-            adContainer.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void onADLeftApplication(NativeExpressADView adView) {
-        Log.i(TAG, "onADLeftApplication");
-    }
-
-    @Override
-    public void onADOpenOverlay(NativeExpressADView adView) {
-        Log.i(TAG, "onADOpenOverlay");
-    }
-
-    @Override
-    public void onADCloseOverlay(NativeExpressADView adView) {
-        Log.i(TAG, "onADCloseOverlay");
     }
 
 
@@ -405,12 +320,6 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
         mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         //防止中文乱码
         mWebSettings.setDefaultTextEncodingName("UTF-8");
-        // 先载入JS代码
-        // 格式规定为:file:///android_asset/文件名.html
-        // mWebView.loadUrl("file:///android_asset/image.html");
-        //mWebView.loadUrl("http://www.toutiao.com/a6401738581286682881/#p=1");
-        //载入js
-        // mWebview.addJavascriptInterface(new JavascriptInterface(this,htmlStr), "imagelistner");
 
 
         mWebview.setWebViewClient(new WebViewClient() {
@@ -468,17 +377,15 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                 mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
                 //查询推荐情况
                 selectRecomm();
-                //TODO：设置腾讯广告
-                // refreshAd();
-                //设置Google广告
-                refreshAdmob();
+                //TODO：设置Google广告
+               refreshAdmob();
             }
             if (msg.what == 101) {
                 Utils.dismissDialog();
                 String error = "<h3>抱歉，该篇文章暂时无法阅读！<h3>";
                 mWebview.loadData(error, "text/html; charset=UTF-8", null);
                 //设置广告
-                refreshAd();
+                refreshAdmob();
             }
         }
     };
@@ -542,15 +449,6 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
     }
 
 
-  /*  @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && mWebview.canGoBack()) {
-            mWebview.goBack();
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }*/
 
     //销毁Webview
     @Override
@@ -567,12 +465,10 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
         }
         Log.i(LOG_TAG, "MagazineContentActivity------->onDestroy");
 
-        // 使用完了每一个NativeExpressADView之后都要释放掉资源
-        if (nativeExpressADView != null) {
-            nativeExpressADView.destroy();
-            Log.i(TAG, "广告销毁");
-        }
 
+        if (mAdView!=null){
+            mAdView.destroy();
+        }
     }
 
 

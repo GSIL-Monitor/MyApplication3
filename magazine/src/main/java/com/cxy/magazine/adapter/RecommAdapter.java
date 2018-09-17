@@ -11,7 +11,8 @@ import android.widget.TextView;
 
 import com.cxy.magazine.R;
 import com.cxy.magazine.bmobBean.ArticleRecommBean;
-import com.qq.e.ads.nativ.NativeExpressADView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,26 +31,24 @@ public class RecommAdapter extends  RecyclerView.Adapter<RecommAdapter.MyViewHol
     private List<Object> mData;
     static final int TYPE_DATA = 0;
     static final int TYPE_AD = 1;
-    private HashMap<NativeExpressADView, Integer> mAdViewPositionMap = new HashMap<NativeExpressADView, Integer>();
-
-    public RecommAdapter(Context context, List  recommBeanList,HashMap<NativeExpressADView, Integer> map) {
+    public RecommAdapter(Context context, List  recommBeanList) {
         this.mData = recommBeanList;
         this.context=context;
-        this.mAdViewPositionMap=map;
+
     }
     // 把返回的NativeExpressADView添加到数据集里面去
-    public void addADViewToPosition(int position, NativeExpressADView adView) {
-        if (position >= 0 && position < mData.size() && adView != null) {
-            mData.add(position, adView);
+    public void addADViewToPosition(int position,String adTAg) {
+        if (position >= 0 && position < mData.size() && adTAg != null) {
+            mData.add(position, adTAg);
         }
     }
 
     // 移除NativeExpressADView的时候是一条一条移除的
-    public void removeADView(int position, NativeExpressADView adView) {
+/*    public void removeADView(int position, NativeExpressADView adView) {
         mData.remove(position);
         this.notifyItemRemoved(position); // position为adView在当前列表中的位置
         this.notifyItemRangeChanged(0, mData.size() - 1);
-    }
+    }*/
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -67,22 +66,8 @@ public class RecommAdapter extends  RecyclerView.Adapter<RecommAdapter.MyViewHol
     public void onBindViewHolder(MyViewHolder holder, int position) {
            int type = getItemViewType(position);
         if (TYPE_AD == type) {
-            final NativeExpressADView adView = (NativeExpressADView) mData.get(position);
-            mAdViewPositionMap.put(adView, position); // 广告在列表中的位置是可以被更新的
-            if (holder.container.getChildCount() > 0 && holder.container.getChildAt(0) == adView) {
-                return;
-            }
-
-            if (holder.container.getChildCount() > 0) {
-                holder.container.removeAllViews();
-            }
-
-            if (adView.getParent() != null) {
-                ((ViewGroup) adView.getParent()).removeView(adView);
-            }
-
-            holder.container.addView(adView);
-            adView.render(); // 调用render方法后sdk才会开始展示广告
+            AdRequest adRequest = new AdRequest.Builder().build();
+            holder.mAdView.loadAd(adRequest);
         }else {
             ArticleRecommBean recommBean = (ArticleRecommBean)mData.get(position);
             holder.tvTitle.setText(recommBean.getArticleTitle());
@@ -102,7 +87,7 @@ public class RecommAdapter extends  RecyclerView.Adapter<RecommAdapter.MyViewHol
 
     @Override
     public int getItemViewType(int position) {
-        return mData.get(position) instanceof NativeExpressADView ? TYPE_AD : TYPE_DATA;
+        return (mData.get(position) instanceof String && ((String)mData.get(position)).equals("adview")) ? TYPE_AD : TYPE_DATA;
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder
@@ -114,7 +99,7 @@ public class RecommAdapter extends  RecyclerView.Adapter<RecommAdapter.MyViewHol
        // @BindView(R.id.recomm_count)
         TextView tvCount;
        // @BindView(R.id.express_ad_container)
-        ViewGroup container;
+       AdView mAdView;
 
 
 
@@ -125,7 +110,7 @@ public class RecommAdapter extends  RecyclerView.Adapter<RecommAdapter.MyViewHol
             tvTitle=(TextView)view.findViewById(R.id.recomm_title);
             tvTime=(TextView)view.findViewById(R.id.recomm_time);
             tvCount=(TextView)view.findViewById(R.id.recomm_count);
-            container=(ViewGroup)view.findViewById(R.id.express_ad_container);
+            mAdView=(AdView)view.findViewById(R.id.item_adView);
 
         }
     }

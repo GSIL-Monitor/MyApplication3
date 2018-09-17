@@ -42,10 +42,10 @@ public class FeedbackActivity extends BasicActivity {
         editWechat=(EditText)findViewById(R.id.edit_wechat);
         buttonCommit=(Button)findViewById(R.id.buttonCommit);
 
-        TextView tvPs=(TextView)findViewById(R.id.ps_tv);
+        //TextView tvPs=(TextView)findViewById(R.id.ps_tv);
        // tvPs.setText(R.string.downloadHint);
       //  tvPs.setAutoLinkMask(Linkify.WEB_URLS);
-        tvPs.setMovementMethod(LinkMovementMethod.getInstance());
+      //  tvPs.setMovementMethod(LinkMovementMethod.getInstance());
 
         buttonCommit.setOnClickListener(new View.OnClickListener() {
             String qq="",weChat="",email="",feedback="";

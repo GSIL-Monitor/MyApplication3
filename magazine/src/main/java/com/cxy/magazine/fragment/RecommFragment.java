@@ -17,6 +17,7 @@ import com.cxy.magazine.activity.CollectActivity;
 import com.cxy.magazine.activity.MagazineContentActivity;
 import com.cxy.magazine.adapter.RecommAdapter;
 import com.cxy.magazine.bmobBean.ArticleRecommBean;
+import com.cxy.magazine.bmobBean.RecommBean;
 import com.cxy.magazine.util.Constants;
 import com.cxy.magazine.view.SampleFooter;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
@@ -46,24 +47,22 @@ import cn.bmob.v3.listener.FindListener;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecommFragment extends BaseFragment implements NativeExpressAD.NativeExpressADListener{
+public class RecommFragment extends BaseFragment{
 
     private Unbinder unbinder;
     //public static final int MAX_ITEMS = 50;
     public static final int AD_COUNT = 5;    // 加载广告的条数，取值范围为[1, 10]
     public int  initAdPostion = 7; // 第一条广告的位置
-    public static int ITEMS_PER_AD = 8;     // 每间隔10个条目插入一条广告
+    public static int ITEMS_PER_AD = 8;     // 每间隔8个条目插入一条广告
+    public static int pageSize=50;
+    private int skip=0;
     private static final String TAG="tencentAd";
     @BindView(R.id.article_recomm_lr)
     LRecyclerView mLRecycleView;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
     private RecommAdapter recommAdapter=null;
-    private List<ArticleRecommBean> recommBeanList=null;
+    private List<Object> mData=null;
     private TextView tvFoot=null;
-    private int skip=0;
-    private NativeExpressAD mADManager;
-    private List<NativeExpressADView> mAdViewList;
-    private HashMap<NativeExpressADView, Integer> mAdViewPositionMap = new HashMap<NativeExpressADView, Integer>();
     public RecommFragment() {
         // Required empty public constructor
     }
@@ -87,8 +86,8 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
 
     public void setlRecyclerView(){
 
-        recommBeanList=new ArrayList<>();
-        recommAdapter=new RecommAdapter(getContext(),recommBeanList,mAdViewPositionMap);
+        mData=new ArrayList<>();
+        recommAdapter=new RecommAdapter(getContext(),mData);
         mLRecyclerViewAdapter=new LRecyclerViewAdapter(recommAdapter);
         mLRecycleView.setAdapter(mLRecyclerViewAdapter);
         mLRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -122,17 +121,17 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
                 //获取推荐数据
                 BmobQuery<ArticleRecommBean> bmobQuery=new BmobQuery<>();
                 //每次加载50条数据
-                bmobQuery.order("-recommCount").setSkip(skip).addWhereGreaterThan("recommCount",0).setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
+                bmobQuery.order("-recommCount").setSkip(skip).addWhereGreaterThan("recommCount",0).setLimit(pageSize).findObjects(new FindListener<ArticleRecommBean>() {
                     @Override
                     public void done(List<ArticleRecommBean> list, BmobException e) {
                         if (e==null){
                             if (list.size()>0){
-                                recommBeanList.addAll(list);
+                                mData.addAll(list);
                                 mLRecycleView.refreshComplete(50);  //刷新完成
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                                 skip+=list.size();
                                 //TODO:加载广告
-                                initNativeExpressAD();
+                                addAds();
 
                             }else{
                                 tvFoot.setText("没有更多数据了");
@@ -149,7 +148,7 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent=new Intent(getActivity(),MagazineContentActivity.class);
-                intent.putExtra("url",recommBeanList.get(position).getArticleUrl());
+                intent.putExtra("url",((ArticleRecommBean)mData.get(position)).getArticleUrl());
                 startActivity(intent);
             }
         });
@@ -158,105 +157,53 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
     }
     //刷新数据
     public  void refreshData(){
+        skip=0;
         //获取推荐数据
         BmobQuery<ArticleRecommBean> bmobQuery=new BmobQuery<>();
-        bmobQuery.setLimit(50).addWhereGreaterThan("recommCount",0).order("-recommCount").findObjects(new FindListener<ArticleRecommBean>() {
+        bmobQuery.setLimit(pageSize).addWhereGreaterThan("recommCount",0).order("-recommCount").findObjects(new FindListener<ArticleRecommBean>() {
             @Override
             public void done(List<ArticleRecommBean> list, BmobException e) {
                  if (e==null){
-                     recommBeanList.clear();
-                     recommBeanList.addAll(list);
+                     mData.clear();
+                     mData.addAll(list);
                      mLRecycleView.refreshComplete(50);  //刷新完成
                      mLRecyclerViewAdapter.notifyDataSetChanged();
                      skip+=list.size();
                      //重新设置广告初始位置
                      initAdPostion = 7;
-                     initNativeExpressAD();
+                     addAds();
                  }
             }
         });
     }
+   public void  addAds(){
+        for (int i=initAdPostion;i<mData.size();i+=ITEMS_PER_AD){
+            recommAdapter.addADViewToPosition(i,"adview");
+            initAdPostion = initAdPostion + ITEMS_PER_AD ;
+        }
 
-    private void initNativeExpressAD() {
-        ADSize adSize = new ADSize(ADSize.FULL_WIDTH, ADSize.AUTO_HEIGHT); // 消息流中用AUTO_HEIGHT
-        mADManager = new NativeExpressAD(getContext(), adSize, Constants.APPID, Constants.RECOMM_AD_ID, this);
-        mADManager.loadAD(AD_COUNT);
-    }
+        mLRecyclerViewAdapter.notifyDataSetChanged();
+   }
+
+
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
         // 使用完了每一个NativeExpressADView之后都要释放掉资源。
-        if (mAdViewList != null) {
+      /*  if (mAdViewList != null) {
             for (NativeExpressADView view : mAdViewList) {
                 view.destroy();
             }
-        }
+        }*/
+     /* for (int i=0;i<mData.size();i++){
+         if ((mData.get(i) instanceof String) && ((String)mData.get(i)).equals("adview")) {
+
+          }
+      }*/
     }
 
-    @Override
-    public void onNoAD(AdError adError) {
-        Log.i( TAG, String.format("onNoAD, error code: %d, error msg: %s", adError.getErrorCode(), adError.getErrorMsg()));
-    }
 
-    @Override
-    public void onADLoaded(List<NativeExpressADView> adList) {
-        Log.i(TAG, "onADLoaded: " + adList.size());
-        mAdViewList = adList;
-        for (int i = 0; i < mAdViewList.size(); i++) {
-
-            if (initAdPostion < recommBeanList.size()) {
-                NativeExpressADView view = mAdViewList.get(i);
-               // GDTLogger.i("ad load[" + i + "]: " + getAdInfo(view));
-                mAdViewPositionMap.put(view, initAdPostion); // 把每个广告在列表中位置记录下来
-                recommAdapter.addADViewToPosition(initAdPostion, mAdViewList.get(i));
-                initAdPostion = initAdPostion + ITEMS_PER_AD ;
-            }
-        }
-        mLRecyclerViewAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onRenderFail(NativeExpressADView nativeExpressADView) {
-        Log.i(TAG, "onRenderFail: " + nativeExpressADView.toString());
-    }
-
-    @Override
-    public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
-        Log.i(TAG, "onRenderSuccess: " + nativeExpressADView.toString() );
-    }
-
-    @Override
-    public void onADExposure(NativeExpressADView adView) {
-        Log.i(TAG, "onADExposure: " + adView.toString());
-    }
-
-    @Override
-    public void onADClicked(NativeExpressADView nativeExpressADView) {
-
-    }
-
-    @Override
-    public void onADClosed(NativeExpressADView adView) {
-        if (recommAdapter != null) {
-            int removedPosition = mAdViewPositionMap.get(adView);
-            recommAdapter.removeADView(removedPosition, adView);
-        }
-    }
-
-    @Override
-    public void onADLeftApplication(NativeExpressADView nativeExpressADView) {
-
-    }
-
-    @Override
-    public void onADOpenOverlay(NativeExpressADView nativeExpressADView) {
-
-    }
-
-    @Override
-    public void onADCloseOverlay(NativeExpressADView nativeExpressADView) {
-
-    }
 }

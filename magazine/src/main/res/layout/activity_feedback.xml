@@ -68,12 +68,12 @@
         android:layout_marginTop="8dp"
         android:hint="邮箱"
         style="@style/EditTextStyle"/>
-    <TextView
+    <!--<TextView
         android:id="@+id/ps_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
-        android:text="@string/downloadHint"/>
+        android:text="@string/downloadHint"/>-->
 
     <Button
         android:id="@+id/buttonCommit"
