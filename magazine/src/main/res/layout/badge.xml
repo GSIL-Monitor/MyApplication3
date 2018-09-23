@@ -1,7 +1,7 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_vertical">
     <!--<TextView
         android:id="@+id/msg"
@@ -16,5 +16,5 @@
         android:id="@+id/msg_notify_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/shape_msg"/>
+        app:srcCompat="@drawable/msg_notification"/>
 </LinearLayout>

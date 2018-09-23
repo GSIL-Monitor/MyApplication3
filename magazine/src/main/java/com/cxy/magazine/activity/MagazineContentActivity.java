@@ -37,9 +37,6 @@ import com.cxy.magazine.jsInterface.JavascriptInterface;
 import com.cxy.magazine.util.Constants;
 import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.Utils;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
@@ -107,8 +104,6 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
     private int checkedIndex = 1;
     //广告id数组
     private String[] adIds = {Constants.NativeExpressPosID1, Constants.NativeExpressPosID2, Constants.NativeExpressPosID3};
-    @BindView(R.id.adView)
-    AdView mAdView;
 
 
     @Override
@@ -286,7 +281,7 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
         nativeExpressAD.loadAD(1);
     }
 
-    private void refreshAdmob() {
+    /*private void refreshAdmob() {
 
 
         mAdView.setAdListener(new AdListener() {
@@ -320,7 +315,7 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
 
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-    }
+    }*/
 
     @Override
     public void onNoAD(AdError adError) {
@@ -469,9 +464,8 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                 //查询推荐情况
                 selectRecomm();
                 //TODO：设置腾讯广告
-                // refreshAd();
-                //设置Google广告
-                refreshAdmob();
+                 refreshAd();
+
             }
             if (msg.what == 101) {
                 Utils.dismissDialog();

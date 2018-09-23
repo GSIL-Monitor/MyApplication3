@@ -36,7 +36,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-public class CommentActivity extends AppCompatActivity {
+public class CommentActivity extends BasicActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

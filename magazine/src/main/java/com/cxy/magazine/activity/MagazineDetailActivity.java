@@ -177,7 +177,7 @@ public class MagazineDetailActivity extends BasicActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            MyApplication.getInstance().closeActivity(this);
+           finish();
         }
         return true;
     }

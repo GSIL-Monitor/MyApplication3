@@ -31,7 +31,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
-public class CollectActivity extends AppCompatActivity {
+public class CollectActivity extends BasicActivity {
 
     @BindView(R.id.LRecycleView)  LRecyclerView mLRecycleView;
     CollectAdapter collectAdapter=null;

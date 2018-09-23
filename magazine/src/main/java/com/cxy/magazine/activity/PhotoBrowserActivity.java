@@ -25,7 +25,7 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.util.FileUtils;
 
 
-public class PhotoBrowserActivity extends AppCompatActivity implements View.OnClickListener{
+public class PhotoBrowserActivity extends BasicActivity implements View.OnClickListener{
 
     private ImageView crossIv;
     private ViewPager mPager;

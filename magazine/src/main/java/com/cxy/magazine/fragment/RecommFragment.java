@@ -128,7 +128,7 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
                         if (e==null){
                             if (list.size()>0){
                                 recommBeanList.addAll(list);
-                                mLRecycleView.refreshComplete(50);  //刷新完成
+                                mLRecycleView.refreshComplete(list.size());  //刷新完成
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                                 skip+=list.size();
                                 //TODO:加载广告
@@ -160,13 +160,13 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
     public  void refreshData(){
         //获取推荐数据
         BmobQuery<ArticleRecommBean> bmobQuery=new BmobQuery<>();
-        bmobQuery.setLimit(50).addWhereGreaterThan("recommCount",0).order("-recommCount").findObjects(new FindListener<ArticleRecommBean>() {
+        bmobQuery.setLimit(50).addWhereGreaterThan("recommCount",0).order("-createdAt,-recommCount").findObjects(new FindListener<ArticleRecommBean>() {
             @Override
             public void done(List<ArticleRecommBean> list, BmobException e) {
                  if (e==null){
                      recommBeanList.clear();
                      recommBeanList.addAll(list);
-                     mLRecycleView.refreshComplete(50);  //刷新完成
+                     mLRecycleView.refreshComplete(list.size());  //刷新完成
                      mLRecyclerViewAdapter.notifyDataSetChanged();
                      skip+=list.size();
                      //重新设置广告初始位置

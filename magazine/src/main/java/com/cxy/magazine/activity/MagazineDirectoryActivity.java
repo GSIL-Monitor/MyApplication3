@@ -768,7 +768,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            MyApplication.getInstance().closeActivity(this);
+           finish();
         }
         if (item.getItemId() == R.id.addShelf) {
             // Util.toastMessage(MagazineDirectoryActivity.this,"加入书架");

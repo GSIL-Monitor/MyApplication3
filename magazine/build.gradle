@@ -8,8 +8,8 @@ android {
         applicationId "com.cxy.magazine"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 22
-        versionName "3.2"
+        versionCode 23
+        versionName "3.3"
 
         multiDexEnabled true
 
@@ -75,7 +75,6 @@ dependencies {
     /*compile 'com.android.support:design:26.3.1'*/
     /*  compile 'com.android.support:support-vector-drawable:26.3.1'*/
     /*compile 'com.android.support:support-v4:25.3.1'*/
-    implementation 'com.google.android.gms:play-services-ads:15.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     //butterknife
@@ -100,5 +99,5 @@ dependencies {
     //  compile 'com.android.support:multidex:1.0.1'
     //photoview
     implementation 'com.bm.photoview:library:1.4.1'
-
+    implementation files('libs/MiPush_SDK_Client_3_6_9.jar')
 }

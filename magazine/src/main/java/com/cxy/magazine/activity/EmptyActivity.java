@@ -11,7 +11,7 @@ import com.qmuiteam.qmui.widget.QMUITopBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EmptyActivity extends Activity {
+public class EmptyActivity extends BasicActivity {
 
     @BindView(R.id.topbar)
     QMUITopBar mTopBar;

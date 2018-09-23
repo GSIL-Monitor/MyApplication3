@@ -82,6 +82,9 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
     @BindView(R.id.tv_3month_current) TextView tv3current;
     @BindView(R.id.tv_6month_original) TextView tv6Original;
     @BindView(R.id.tv_6month_current) TextView tv6Current;
+    @BindView(R.id.tv_1month_intro) TextView tv1Intro;
+    @BindView(R.id.tv_3month_intro) TextView tv3Intro;
+    @BindView(R.id.tv_6month_intro) TextView tv6Intro;
 
     View contentView;
     RadioButton alipayBtn,wxpayBtn;
@@ -166,6 +169,8 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                                 if (originalPrice>0){    //判断是否有原价
                                     tv1Original.setText("¥"+originalPrice.toString());
                                     tv1Original.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG ); //中间横线
+
+                                    tv1Intro.setText(remark);
                                 }
 
 
@@ -177,6 +182,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                                 if (originalPrice>0){
                                     tv3Original.setText("¥"+originalPrice.toString());
                                     tv3Original.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG ); //中间横线
+                                    tv3Intro.setText(remark);
                                 }
 
 
@@ -189,6 +195,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                                 if (originalPrice>0){
                                     tv6Original.setText("¥"+originalPrice.toString());
                                     tv6Original.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG ); //中间横线
+                                    tv6Intro.setText(remark);
                                 }
 
 

@@ -24,7 +24,6 @@ import com.cxy.magazine.util.Constants;
 import com.cxy.magazine.util.NetWorkUtils;
 import com.cxy.magazine.util.PermissionHelper;
 import com.cxy.magazine.util.Utils;
-import com.google.android.gms.ads.MobileAds;
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 import org.json.JSONException;
@@ -89,7 +88,7 @@ public class MainActivity extends BasicActivity {
         Bmob.initialize(this,BmobApplicationId,"bmob");
 
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(this, Constants.ADMOB_APP_ID);
+     //   MobileAds.initialize(this, Constants.ADMOB_APP_ID);
         //获取FragmentManager管理器
         manager=getSupportFragmentManager();
 
@@ -117,8 +116,6 @@ public class MainActivity extends BasicActivity {
         if (netConnect){
             //小米更新
             XiaomiUpdateAgent.update(this);//这种情况下, 若本地版本是debug版本则使用沙盒环境，否则使用线上环境
-            //检查补丁更新
-            //   checkPatch();
         }
 
 
@@ -126,7 +123,7 @@ public class MainActivity extends BasicActivity {
 
     }
 
-    //检查补丁
+   /* //检查补丁
     public void checkPatch(){
 
         BmobQuery<PatchBean> query=new BmobQuery<PatchBean>();
@@ -161,9 +158,9 @@ public class MainActivity extends BasicActivity {
                   }
             }
         });
-    }
+    }*/
 
-    public void dowLoadFile(final PatchBean patchBean){
+  /*  public void dowLoadFile(final PatchBean patchBean){
         Utils.toastMessage(MainActivity.this,"正在下载更新");
         BmobFile file=patchBean.getPatchFile();
         final Integer currentVersion=patchBean.getCurrentVersion();
@@ -209,7 +206,7 @@ public class MainActivity extends BasicActivity {
                 Log.i(LOG_TAG,"下载进度："+value+","+newworkSpeed);
             }
         });
-    }
+    }*/
 
     public void checkPermmion(Activity activity){
         // 当系统为6.0以上时，需要申请权限

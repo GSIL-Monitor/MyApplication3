@@ -1,17 +1,23 @@
 package com.cxy.magazine;
 
+
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Process;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.Toast;
 
-import com.alipay.euler.andfix.patch.PatchManager;
 import com.cxy.magazine.activity.MainActivity;
-import com.cxy.magazine.util.Utils;
 import com.eagle.pay66.Pay66;
-
+import com.xiaomi.channel.commonutils.logger.LoggerInterface;
+import com.xiaomi.mipush.sdk.Logger;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -21,16 +27,14 @@ import java.util.List;
  * Created by cxy on 2018/1/17.
  */
 
-public class MyApplication extends MultiDexApplication {
+public class MyApplication extends Application {
     private static final String PAY_66_APPLICATION_ID="42cb2259320944d9a297ce09bf23e8eb";
     private static final String XIAOMI_APP_ID="2882303761517702196";
-    private static MainActivity sMainActivity = null;
+    private static final String XIAOMI_APP_KEY="5141770234196";
 
     private List<Activity> activitys = null;
-    private List<Activity> closeActivitys=null;
     private static MyApplication instance;
-    public static PatchManager mPatchManager;
-    public static String CURRENT_VERSION="";   //当前版本号
+    public static final String TAG="xiaomipush";
 
     @Override
     public void onCreate() {
@@ -39,28 +43,45 @@ public class MyApplication extends MultiDexApplication {
         //初始化66支付
         Pay66.init(PAY_66_APPLICATION_ID, getApplicationContext());
 
-      /*  try {
-            //初始化小米广告
-          //  MimoSdk.init(this, XIAOMI_APP_ID, "fake_app_key", "fake_app_token");
-            PackageInfo mPackageInfo=this.getPackageManager().getPackageInfo(this.getPackageName(),0);
-            CURRENT_VERSION=mPackageInfo.versionName;
-            Utils.CURREN_VERSION_CODE=mPackageInfo.versionCode;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+        //初始化push推送服务
+        if(shouldInit()) {
+            MiPushClient.registerPush(this, XIAOMI_APP_ID, XIAOMI_APP_KEY);
+        }
+        LoggerInterface newLogger = new LoggerInterface() {
+            @Override
+            public void setTag(String tag) {
+                // ignore
+            }
+            @Override
+            public void log(String content, Throwable t) {
+                Log.d(TAG, content, t);
+            }
+            @Override
+            public void log(String content) {
+                Log.d(TAG, content);
+            }
+        };
+        Logger.setLogger(this, newLogger);
 
-        //initAndFix();
+
 
     }
-    private void  initAndFix(){
-        mPatchManager = new PatchManager(this);
-        mPatchManager.init(CURRENT_VERSION);//current version
-        mPatchManager.loadPatch();
 
+    private boolean shouldInit() {
+        ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
+        List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
+        String mainProcessName = getPackageName();
+        int myPid = Process.myPid();
+        for (ActivityManager.RunningAppProcessInfo info : processInfos) {
+            if (info.pid == myPid && mainProcessName.equals(info.processName)) {
+                return true;
+            }
+        }
+        return false;
     }
+
     public MyApplication() {
         activitys = new LinkedList<Activity>();
-        closeActivitys=new ArrayList<>();
     }
 
     /**
@@ -81,29 +102,21 @@ public class MyApplication extends MultiDexApplication {
             }
         }
     }
-    public  void addCloseActivity(Activity activity){
-        if (!closeActivitys.contains(activity)){
-            closeActivitys.add(activity);
 
-        }
-    }
-    public void  closeActivities(){
-        for (Activity a:closeActivitys) {
-            a.finish();
-
-        }
-    }
-    public void closeActivity(Activity activity){
+/*    public void closeActivity(Activity activity){
         if (activitys.contains(activity)){
             activitys.remove(activity);
         }
         activity.finish();
-    }
+    }*/
     // 遍历所有Activity并finish
     public void exit() {
         if (activitys != null && activitys.size() > 0) {
             for (Activity activity : activitys) {
-                activity.finish();
+                if (activity!=null){
+                    activity.finish();
+                }
+
             }
         }
       // System.exit(0);
