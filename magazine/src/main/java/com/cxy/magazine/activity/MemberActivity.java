@@ -169,7 +169,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                                 if (originalPrice>0){    //判断是否有原价
                                     tv1Original.setText("¥"+originalPrice.toString());
                                     tv1Original.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG ); //中间横线
-
+                                    tv1Intro.setVisibility(View.VISIBLE);
                                     tv1Intro.setText(remark);
                                 }
 
@@ -182,6 +182,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                                 if (originalPrice>0){
                                     tv3Original.setText("¥"+originalPrice.toString());
                                     tv3Original.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG ); //中间横线
+                                    tv3Intro.setVisibility(View.VISIBLE);
                                     tv3Intro.setText(remark);
                                 }
 
@@ -195,6 +196,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                                 if (originalPrice>0){
                                     tv6Original.setText("¥"+originalPrice.toString());
                                     tv6Original.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG ); //中间横线
+                                    tv6Intro.setVisibility(View.GONE);
                                     tv6Intro.setText(remark);
                                 }
 

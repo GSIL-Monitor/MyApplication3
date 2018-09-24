@@ -90,9 +90,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="10sp"
-                android:text=""
+                android:text="优惠信息"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/colorFontDisable"/>
+                android:textColor="@color/colorFontDisable"
+                android:visibility="gone"/>
 
         </LinearLayout>
 
@@ -150,7 +151,8 @@
                 android:text=""
                 android:layout_marginTop="5dp"
                 android:textColor="@color/colorFontDisable"
-                android:id="@+id/tv_3month_intro"/>
+                android:id="@+id/tv_3month_intro"
+                android:visibility="gone"/>
 
         </LinearLayout>
 
@@ -208,7 +210,8 @@
                 android:textSize="10sp"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/colorFontDisable"
-                android:id="@+id/tv_6month_intro"/>
+                android:id="@+id/tv_6month_intro"
+                android:visibility="gone"/>
         </LinearLayout>
 
 
