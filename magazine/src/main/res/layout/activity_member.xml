@@ -77,7 +77,8 @@
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="10dp">
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical">
             <TextView
                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -137,7 +138,8 @@
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="10dp">
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -189,14 +191,14 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:background="#FFF"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -243,5 +245,14 @@
 
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="@string/recharge_hint"
+        android:gravity="center_horizontal"
+        android:textIsSelectable="true"
+        android:textColor="@color/colorFontDisable"/>
 
 </LinearLayout>

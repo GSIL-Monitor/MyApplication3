@@ -27,5 +27,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="recharge_hint">充值过程中遇到问题请联系客服QQ:1746569077</string>
 
 </resources>

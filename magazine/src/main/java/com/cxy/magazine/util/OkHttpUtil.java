@@ -2,6 +2,7 @@ package com.cxy.magazine.util;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -13,8 +14,10 @@ import okhttp3.Response;
  */
 
 public class OkHttpUtil {
-    public static final OkHttpClient client = new OkHttpClient();
-
+    public static final OkHttpClient client = new OkHttpClient.Builder() .connectTimeout(30, TimeUnit.SECONDS)
+                                                .readTimeout(30, TimeUnit.SECONDS)
+                                                .writeTimeout(30,TimeUnit.SECONDS)
+                                                .build();
     /**
      *
      * @param url
@@ -24,8 +27,8 @@ public class OkHttpUtil {
     public static String get(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
+                .addHeader("Connection", "close")
                 .build();
-
         Response response = client.newCall(request).execute();
         return response.body().string();
 

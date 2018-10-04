@@ -122,7 +122,7 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
                 //获取推荐数据
                 BmobQuery<ArticleRecommBean> bmobQuery=new BmobQuery<>();
                 //每次加载50条数据
-                bmobQuery.order("-recommCount").setSkip(skip).addWhereGreaterThan("recommCount",0).setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
+                bmobQuery.addWhereGreaterThan("recommCount",0).order("-updatedAt,-recommCount").setSkip(skip).setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
                     @Override
                     public void done(List<ArticleRecommBean> list, BmobException e) {
                         if (e==null){
@@ -160,7 +160,7 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
     public  void refreshData(){
         //获取推荐数据
         BmobQuery<ArticleRecommBean> bmobQuery=new BmobQuery<>();
-        bmobQuery.setLimit(50).addWhereGreaterThan("recommCount",0).order("-createdAt,-recommCount").findObjects(new FindListener<ArticleRecommBean>() {
+        bmobQuery.addWhereGreaterThan("recommCount",0).order("-updatedAt,-recommCount").setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
             @Override
             public void done(List<ArticleRecommBean> list, BmobException e) {
                  if (e==null){

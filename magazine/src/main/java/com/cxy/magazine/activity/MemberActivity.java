@@ -41,11 +41,9 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.util.OrderPreMessage;
 import com.cxy.magazine.util.ResponseParam;
 import com.cxy.magazine.util.Utils;
-import com.eagle.pay66.Pay66;
-import com.eagle.pay66.listener.CommonListener;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.payelves.sdk.EPay;
+import com.payelves.sdk.enums.EPayResult;
+import com.payelves.sdk.listener.PayResultListener;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
@@ -196,7 +194,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                                 if (originalPrice>0){
                                     tv6Original.setText("¥"+originalPrice.toString());
                                     tv6Original.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG ); //中间横线
-                                    tv6Intro.setVisibility(View.GONE);
+                                    tv6Intro.setVisibility(View.VISIBLE);
                                     tv6Intro.setText(remark);
                                 }
 
@@ -346,28 +344,57 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
         else if (view.getId()==R.id.btn1Month){
             payMoney.setText("¥"+currentOne);
             money=currentOne;
-            showDialog();
+          //  showDialog();
+            pay();
         }
         else if (view.getId()==R.id.btn3Month){
             payMoney.setText("¥"+currentThree);
             money=currentThree;
-            showDialog();
+          //  showDialog();
+            pay();
         }
         else if (view.getId()==R.id.btn6Month){
             payMoney.setText("¥"+currentSix);
             money=currentSix;
-            showDialog();
+          //  showDialog();
+            pay();
         }
-        else if (view.getId()==R.id.btnPay){
+      /*  else if (view.getId()==R.id.btnPay){
             // Utils.toastMessage(MemberActivity.this,"支付宝支付");
             bottomDialog.dismiss();
             // pay();  //Bmob支付
-            createOrder();
-        }
+          //  createOrder();
+        }*/
+    }
+
+    public void pay(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+
+        String subject="Magazine";
+        String body="Magazine Recharge";
+        int amount=new Double(money*100).intValue();
+       // int amount=1;
+        String orderId = sdf.format(new Date())+Utils.getFixLenthString(4);   //订单id
+        String payUserId =user.getObjectId();
+        String backPara = "";
+        EPay.getInstance(MemberActivity.this).pay(subject, body, amount, orderId, payUserId, backPara, new PayResultListener() {
+            @Override
+            public void onFinish(Context context, String orderId, String payUserId, EPayResult payResult, int payType, Integer amount) {
+                EPay.getInstance(context).closePayView();//关闭快捷支付页面
+                if(payResult.getCode() == EPayResult.SUCCESS_CODE.getCode()){
+                    //支付成功逻辑处理
+                   // Toast.makeText(MemberActivity.this, payResult.getMsg(), Toast.LENGTH_LONG).show();
+                    insertOrder(orderId);
+                }else if(payResult.getCode() == EPayResult.FAIL_CODE.getCode()){
+                    //支付失败逻辑处理
+                    Toast.makeText(MemberActivity.this, payResult.getMsg(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
 
-    public void createOrder(){
+   /* public void createOrder(){
         count=0;
         String message="";
 
@@ -426,8 +453,8 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
             }
         });//
     }
-
-    private void pay_66(String orderId, int consume){
+*/
+ /*   private void pay_66(String orderId, int consume){
         final String orderNumber=orderId;
         String payType = "AliPay";
 
@@ -499,7 +526,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                 Log.d(TAG_PAY_ORDER, "onSuccess---onCompleted");
             }
         });
-    }
+    }*/
 
 
     //创建订单记录
@@ -643,7 +670,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
      * 需要的话，则进行安装
      * @return true安装
      */
-    boolean isInstallPayPlugin(){
+    /*boolean isInstallPayPlugin(){
         try {
             PackageInfo packageInfo = getApplicationContext().getPackageManager().getPackageInfo("com.eagle.pay66safe", 0);
             Log.d(TAG_CREATE_ORDER, "versionCode = " + packageInfo.versionCode);
@@ -658,7 +685,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
     }
 
 
-    /**
+    *//**
      * 安装assets里的apk文件
      *
      */
@@ -678,7 +705,6 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
 
 
     }
-
     /**
      * 安装apk文件
      * @param fileName
@@ -798,7 +824,11 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_INSTALL) {
-            installPayPlugin();
+            if (resultCode==RESULT_OK ) {
+                installApk("db.db");
+            } else {
+                Utils.toastMessage(MemberActivity.this,"由于缺少权限，无法安装应用");
+            }
         }
     }
 }

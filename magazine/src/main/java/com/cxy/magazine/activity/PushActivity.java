@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -42,6 +43,7 @@ public class PushActivity extends BasicActivity {
 
         tvTitle.setText(title);
         tvContent.setText(description);
+        tvContent.setMovementMethod(LinkMovementMethod.getInstance());
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

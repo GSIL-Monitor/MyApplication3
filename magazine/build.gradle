@@ -8,8 +8,8 @@ android {
         applicationId "com.cxy.magazine"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 23
-        versionName "3.3"
+        versionCode 26
+        versionName "3.3.3"
 
         multiDexEnabled true
 
@@ -89,7 +89,7 @@ dependencies {
     //小米更新sdk
     implementation 'mi-appstore:xiaomi-update-sdk:2.8'
     //AndFix 热修复框架
-    implementation 'com.alipay.euler:andfix:0.5.0@aar'
+    //implementation 'com.alipay.euler:andfix:0.5.0@aar'
     //Glide库
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     //QMUI
@@ -100,4 +100,8 @@ dependencies {
     //photoview
     implementation 'com.bm.photoview:library:1.4.1'
     implementation files('libs/MiPush_SDK_Client_3_6_9.jar')
+
+    //支付精灵
+    compile 'com.payelves:sdk-release:3.2.2'
+
 }

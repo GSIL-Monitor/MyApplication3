@@ -14,7 +14,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cxy.magazine.activity.MainActivity;
-import com.eagle.pay66.Pay66;
+import com.payelves.sdk.EPay;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -41,7 +41,15 @@ public class MyApplication extends Application {
         super.onCreate();
 
         //初始化66支付
-        Pay66.init(PAY_66_APPLICATION_ID, getApplicationContext());
+      //  Pay66.init(PAY_66_APPLICATION_ID, getApplicationContext());
+
+        //初始化支付精灵
+        String openId = "vR7uw3MEF";
+        String token = "7188e8cb933b4e929d60ef80a748e938";
+        String appKey = "6955625076948993";
+        String channel = "xiaomi";
+
+        EPay.getInstance(getApplicationContext()).init(openId,token,appKey,channel);
 
         //初始化push推送服务
         if(shouldInit()) {

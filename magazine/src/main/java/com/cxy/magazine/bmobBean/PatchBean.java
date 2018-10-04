@@ -9,17 +9,10 @@ import cn.bmob.v3.datatype.BmobFile;
  */
 
 public class PatchBean extends BmobObject {
-    private Integer currentVersion;   //当前应用版本
     private Integer patchVersion;     //当前应用补丁版本
     private BmobFile patchFile;          //补丁文件
 
-    public Integer getCurrentVersion() {
-        return currentVersion;
-    }
 
-    public void setCurrentVersion(Integer currentVersion) {
-        this.currentVersion = currentVersion;
-    }
 
     public Integer getPatchVersion() {
         return patchVersion;

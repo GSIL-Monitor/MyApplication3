@@ -39,17 +39,6 @@ import com.cxy.magazine.bmobBean.BuyBean;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.OkHttpUtil;
-import com.cxy.magazine.util.ResponseParam;
-import com.cxy.magazine.util.Utils;
-import com.eagle.pay66.Pay66;
-import com.eagle.pay66.listener.CommonListener;
-import com.eagle.pay66.vo.OrderPreMessage;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

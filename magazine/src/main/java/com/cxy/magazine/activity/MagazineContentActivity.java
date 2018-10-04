@@ -91,9 +91,10 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
     private Integer recommCount = 0;
     private String articleRecommId = null;
     private StringBuilder content = null;
-    private static final String MAGAZINE_URL = "http://m.fx361.com";
+    //private static final String MAGAZINE_URL = "http://m.fx361.com";
+    private static final String MAGAZINE_URL = "http://www.fx361.com";
     private String htmlStr = "<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
-            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:200%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
+            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:200%;margin-top:30px;} img{width:100%;}  .time_source{font-size:15px;color:#a6a5a5;}"
             + "</style></head><body>";
     private boolean isCollect = false;    //是否收藏
     private String intentUrl = "";
@@ -117,7 +118,8 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setWebView();
         intentUrl = getIntent().getStringExtra("url");
-        httpUrl = (MAGAZINE_URL + intentUrl).replace("page", "news").replace("shtml", "html");    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+      //  httpUrl = (MAGAZINE_URL + intentUrl).replace("page", "news").replace("shtml", "html");    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+        httpUrl = MAGAZINE_URL + intentUrl;    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
         articleId = intentUrl.split("/")[4].split(".shtml")[0];
 
         content = new StringBuilder(htmlStr);
@@ -432,12 +434,13 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                 String html = OkHttpUtil.get(httpUrl);
                 if (!Utils.isEmpty(html)) {
                     Document docHtml = Jsoup.parse(html);
-                    Element mainDiv = docHtml.getElementsByClass("main").first();
-                    title = mainDiv.getElementsByClass("bt").first().text();  //文章标题   h3
-                    time = mainDiv.getElementsByClass("sj").first().text();
-                    mainDiv.getElementsByTag("h3").get(1).remove();
-                    mainDiv.getElementsByClass("others").first().remove();
-                    content.append(mainDiv.html());
+                    Element mainDiv = docHtml.getElementsByClass("detail_main").first();
+                    title = mainDiv.getElementsByTag("h1").first().text();  //文章标题   h3
+                    time = mainDiv.getElementsByClass("time_source").first().text();
+                    mainDiv.getElementsByClass("detail_body").first().getElementsByClass("other_pel mt80").remove();
+                    mainDiv.getElementsByClass("detail_body").first().getElementsByClass("txt").remove();
+
+                    content.append(mainDiv.html().replace("h3","h4").replace("h1","h3"));
                     content.append("</body></html>");
                     uiHandler.sendEmptyMessage(100);
                 }
