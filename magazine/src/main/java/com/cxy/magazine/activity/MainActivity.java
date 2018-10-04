@@ -142,11 +142,11 @@ public class MainActivity extends BasicActivity {
         query.findObjects(new FindListener<PatchBean>() {
             @Override
             public void done(List<PatchBean> list, BmobException e) {
-                  if (list!=null&&list.size()==1){   //服务器有有当前补丁的版本，判断是否需要下载补丁
+                  if (list!=null&&list.size()==1){
                       final PatchBean patchBean=list.get(0);
                       Integer remoteVersion=patchBean.getPatchVersion();
                       int currentVersion = BuildConfig.VERSION_CODE;
-                      if (remoteVersion>currentVersion){
+                      if (remoteVersion>currentVersion){   //服务器有新版本
                           //TODO:有新版本
                           Utils.showConfirmCancelDialog(MainActivity.this, "提示", "检查到新版本，是否下载？", new QMUIDialogAction.ActionListener() {
                               @Override
@@ -196,7 +196,7 @@ public class MainActivity extends BasicActivity {
 
                 }else{
                     Log.e(LOG_TAG,"下载失败："+e.getErrorCode()+","+e.getMessage());
-                 //   Utils.toastMessage(MainActivity.this,"下载失败："+e.getErrorCode()+","+e.getMessage());
+                    Utils.toastMessage(MainActivity.this,"下载失败："+e.getErrorCode()+","+e.getMessage());
                 }
             }
 
