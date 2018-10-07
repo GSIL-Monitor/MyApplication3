@@ -379,11 +379,11 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
         String backPara = "";
         EPay.getInstance(MemberActivity.this).pay(subject, body, amount, orderId, payUserId, backPara, new PayResultListener() {
             @Override
-            public void onFinish(Context context, String orderId, String payUserId, EPayResult payResult, int payType, Integer amount) {
+            public void onFinish(Context context, Long payId, String orderId, String payUserId, EPayResult payResult, int payType, Integer amount) {
                 EPay.getInstance(context).closePayView();//关闭快捷支付页面
                 if(payResult.getCode() == EPayResult.SUCCESS_CODE.getCode()){
                     //支付成功逻辑处理
-                   // Toast.makeText(MemberActivity.this, payResult.getMsg(), Toast.LENGTH_LONG).show();
+                    // Toast.makeText(MemberActivity.this, payResult.getMsg(), Toast.LENGTH_LONG).show();
                     insertOrder(orderId);
                 }else if(payResult.getCode() == EPayResult.FAIL_CODE.getCode()){
                     //支付失败逻辑处理

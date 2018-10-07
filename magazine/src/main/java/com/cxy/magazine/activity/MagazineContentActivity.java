@@ -283,41 +283,6 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
         nativeExpressAD.loadAD(1);
     }
 
-    /*private void refreshAdmob() {
-
-
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-               Log.e("admob","广告加载失败");
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Code to be executed when when the user is about to return
-                // to the app after tapping on an ad.
-            }
-        });
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-    }*/
 
     @Override
     public void onNoAD(AdError adError) {
@@ -395,7 +360,7 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
 
     public void setWebView() {
         mWebSettings = mWebview.getSettings();
-        mWebSettings.setTextSize(WebSettings.TextSize.NORMAL);
+      //  mWebSettings.setTextSize(WebSettings.TextSize.NORMAL);
         // 设置与Js交互的权限
         mWebSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
@@ -513,18 +478,27 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                     public void onClick(DialogInterface dialog, int which) {
                         //   Toast.makeText(MagazineContentActivity.this, "你选择了 " + items[which], Toast.LENGTH_SHORT).show();
                         //TODO:改变字体大小
+                        String html="";
                         switch (which) {
                             case 0:
-                                mWebSettings.setTextSize(WebSettings.TextSize.SMALLER);
+                               // mWebSettings.setTextSize(WebSettings.TextSize.SMALLER);
+                                html=content.toString().replace("18px","16px").replace("22px","20px");
+                                mWebview.loadData(html, "text/html; charset=UTF-8", null);
                                 break;
                             case 1:
-                                mWebSettings.setTextSize(WebSettings.TextSize.NORMAL);
+                               // mWebSettings.setTextSize(WebSettings.TextSize.NORMAL);
+                                html=content.toString().replace("18px","18px").replace("22px","20px");
+                                mWebview.loadData(html, "text/html; charset=UTF-8", null);
                                 break;
                             case 2:
-                                mWebSettings.setTextSize(WebSettings.TextSize.LARGER);
+                                html=content.toString().replace("18px","20px").replace("22px","24px");
+                                mWebview.loadData(html, "text/html; charset=UTF-8", null);
+                               // mWebSettings.setTextSize(WebSettings.TextSize.LARGER);
                                 break;
                             case 3:
-                                mWebSettings.setTextSize(WebSettings.TextSize.LARGEST);
+                                html=content.toString().replace("18px","22px").replace("22px","26px");
+                                mWebview.loadData(html, "text/html; charset=UTF-8", null);
+                              //  mWebSettings.setTextSize(WebSettings.TextSize.LARGEST);
                                 break;
 
                         }

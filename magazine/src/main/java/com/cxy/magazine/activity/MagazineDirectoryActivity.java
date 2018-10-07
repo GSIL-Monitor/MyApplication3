@@ -266,7 +266,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
         String backPara = "";
         EPay.getInstance(MagazineDirectoryActivity.this).pay(subject, body, amount, orderId, payUserId, backPara, new PayResultListener() {
             @Override
-            public void onFinish(Context context, String orderId, String payUserId, EPayResult payResult, int payType, Integer amount) {
+            public void onFinish(Context context, Long payId, String orderId, String payUserId, EPayResult payResult, int payType, Integer amount) {
                 EPay.getInstance(context).closePayView();//关闭快捷支付页面
                 if(payResult.getCode() == EPayResult.SUCCESS_CODE.getCode()){
 
@@ -276,6 +276,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
                     Toast.makeText(MagazineDirectoryActivity.this, payResult.getMsg(), Toast.LENGTH_LONG).show();
                 }
             }
+
         });
     }
 

@@ -93,15 +93,15 @@ dependencies {
     //Glide库
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     //QMUI
-    compile 'com.qmuiteam:qmui:1.1.0'
+    implementation 'com.qmuiteam:qmui:1.1.0'
     //ucrop
     implementation 'com.github.yalantis:ucrop:2.2.2'
     //  compile 'com.android.support:multidex:1.0.1'
     //photoview
     implementation 'com.bm.photoview:library:1.4.1'
-    implementation files('libs/MiPush_SDK_Client_3_6_9.jar')
+   // implementation files('libs/MiPush_SDK_Client_3_6_9.jar')
 
     //支付精灵
-    compile 'com.payelves:sdk-release:3.2.2'
+    implementation 'com.payelves:sdk-release:3.2.8'
 
 }
