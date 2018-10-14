@@ -9,6 +9,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,7 +28,7 @@ import java.util.List;
  * Created by cxy on 2018/1/17.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
     private static final String PAY_66_APPLICATION_ID="42cb2259320944d9a297ce09bf23e8eb";
     private static final String XIAOMI_APP_ID="2882303761517702196";
     private static final String XIAOMI_APP_KEY="5141770234196";

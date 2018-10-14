@@ -8,8 +8,8 @@ android {
         applicationId "com.cxy.magazine"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 26
-        versionName "3.3.3"
+        versionCode 27
+        versionName "3.3.4"
 
         multiDexEnabled true
 
@@ -96,7 +96,8 @@ dependencies {
     implementation 'com.qmuiteam:qmui:1.1.0'
     //ucrop
     implementation 'com.github.yalantis:ucrop:2.2.2'
-    //  compile 'com.android.support:multidex:1.0.1'
+    //适配低版本，重要
+    compile 'com.android.support:multidex:1.0.3'
     //photoview
     implementation 'com.bm.photoview:library:1.4.1'
    // implementation files('libs/MiPush_SDK_Client_3_6_9.jar')

@@ -168,7 +168,7 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
                      recommBeanList.addAll(list);
                      mLRecycleView.refreshComplete(list.size());  //刷新完成
                      mLRecyclerViewAdapter.notifyDataSetChanged();
-                     skip+=list.size();
+                     skip=list.size();
                      //重新设置广告初始位置
                      initAdPostion = 7;
                      initNativeExpressAD();

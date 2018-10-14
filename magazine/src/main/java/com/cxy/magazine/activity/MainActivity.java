@@ -164,7 +164,7 @@ public class MainActivity extends BasicActivity {
     public void dowLoadFile(BmobFile file){
       //  Utils.toastMessage(MainActivity.this,"正在下载更新");
 
-        Utils.showTipDialog(MainActivity.this,"正在下载", QMUITipDialog.Builder.ICON_TYPE_LOADING);
+        Utils.showTipDialog(MainActivity.this,"正在下载...", QMUITipDialog.Builder.ICON_TYPE_LOADING);
 
         //允许设置下载文件的存储路径，默认下载文件的目录为：context.getApplicationContext().getCacheDir()+"/bmob/"
         final File saveFile = new File(Environment.getExternalStorageDirectory(), file.getFilename());  //Environment.getExternalStorageDirectory()

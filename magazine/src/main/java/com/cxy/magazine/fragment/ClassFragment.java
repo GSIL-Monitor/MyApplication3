@@ -29,6 +29,7 @@ import com.cxy.magazine.util.Utils;
 import com.github.jdsjlzx.ItemDecoration.SpacesItemDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,6 +89,7 @@ public class ClassFragment extends BaseFragment {
    //     mAcache=ACache.get(getContext());
         magazineArray=new JSONArray();
         setLRecyclerview();
+        Utils.showTipDialog(getActivity(),"加载中...", QMUITipDialog.Builder.ICON_TYPE_LOADING);
         Thread thread=new getHtml();
         thread.start();
         return  view;
@@ -129,6 +131,7 @@ public class ClassFragment extends BaseFragment {
                 JSONArray magazineArrayCache=mAcache.getAsJSONArray("magazineArrayCache");
                 if (magazineArrayCache!=null && magazineArrayCache.length()>0){
                     magazineArray=magazineArrayCache;
+                    handler.sendEmptyMessage(LOAD_FINISHED);
                 }else{
                     if (NetWorkUtils.isNetworkConnected(context)) {
                         String html= OkHttpUtil.get(MAGAZIENE_URL);
@@ -151,12 +154,14 @@ public class ClassFragment extends BaseFragment {
                         }
                         magazineArray=magazineCache;    //等于缓存
                         mAcache.put("magazineArrayCache", magazineCache, 60 * ACache.TIME_DAY);   //缓存两个月
+
+                        handler.sendEmptyMessage(LOAD_FINISHED);
                     }else{
                         errorMessage="网络已断开，请检查网络连接";
                         handler.sendEmptyMessage(LOAD_ERROR);
                     }
                 }
-                handler.sendEmptyMessage(LOAD_FINISHED);
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -172,9 +177,11 @@ public class ClassFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             switch(msg.what){
                 case LOAD_FINISHED:
+                    Utils.dismissDialog();
                     mLRecyclerViewAdapter.notifyDataSetChanged();
                     break;
                 case LOAD_ERROR:
+                    Utils.dismissDialog();
                    Utils.toastMessage(getActivity(),errorMessage);
                    break;
 
