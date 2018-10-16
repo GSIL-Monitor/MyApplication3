@@ -12,6 +12,7 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.adapter.CollectAdapter;
 import com.cxy.magazine.adapter.MessageAdapter;
 import com.cxy.magazine.bmobBean.MsgNotification;
+import com.cxy.magazine.bmobBean.MsgReadRecord;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.util.Utils;
 import com.cxy.magazine.view.SampleFooter;
@@ -22,6 +23,8 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,6 +34,7 @@ import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
 
 public class MessageActivity extends BasicActivity {
@@ -73,7 +77,7 @@ public class MessageActivity extends BasicActivity {
         mLRecycleView.setLoadMoreEnabled(false);
         //设置间隔线
         DividerDecoration divider = new DividerDecoration.Builder(this)
-                .setHeight(R.dimen.default_divider_height)
+                .setHeight(R.dimen.thin_divider_height)
                 .setPadding(R.dimen.default_divider_padding)
                 .setColorResource(R.color.layoutBackground)
                 .build();
@@ -105,21 +109,67 @@ public class MessageActivity extends BasicActivity {
     }
 
     public void getAllData(){
-        User user= BmobUser.getCurrentUser(User.class);
-        BmobQuery<MsgNotification> query=new BmobQuery<MsgNotification>();
-        query.addWhereEqualTo("user",user);
-        query.findObjects(new FindListener<MsgNotification>() {
+        final User user= BmobUser.getCurrentUser(User.class);
+        BmobQuery<MsgNotification> query1=new BmobQuery<MsgNotification>();
+        query1.addWhereEqualTo("user",user);
+
+        BmobQuery<MsgNotification> query2=new BmobQuery<>();
+        query2.addWhereEqualTo("msgType",2);
+
+        List<BmobQuery<MsgNotification>> queries=new ArrayList<>();
+        queries.add(query1);
+        queries.add(query2);
+        BmobQuery<MsgNotification> mainQuery=new BmobQuery<>();
+        mainQuery.or(queries);
+
+        mainQuery.order("-createdAt").findObjects(new FindListener<MsgNotification>() {
             @Override
-            public void done(List<MsgNotification> list, BmobException e) {
-              if (e==null && list!=null){
+            public void done(final List<MsgNotification> list, BmobException e) {
+              if (e==null){
                   msgList.clear();
                   if (list.size()>0){
                       msgList.addAll(list);
+                      for (final MsgNotification msgNotification : list){
+                          if (null != msgNotification.getMsgType() && msgNotification.getMsgType()==2){
+                              BmobQuery<MsgReadRecord> recordQuery=new BmobQuery<>();
+                              MsgNotification  newMsg=new MsgNotification();
+                              recordQuery.addWhereEqualTo("msgNotification",msgNotification);
+                              recordQuery.addWhereEqualTo("user",user);
+
+                              recordQuery.count(MsgReadRecord.class, new CountListener() {
+                                  @Override
+                                  public void done(Integer integer, BmobException e) {
+                                      if (e==null && integer>0){
+                                          msgNotification.setRead(true);
+                                      }else{
+                                          msgNotification.setRead(false);
+                                      }
+                                    //  msgList.add(msgNotification);
+                                    //  msgList.addAll(list);
+                                      mLRecycleView.refreshComplete(1000);  //刷新完成
+                                      mLRecyclerAdapter.notifyDataSetChanged();
+                                  }
+                              });
+
+                          }
+                         /* else{
+                              msgList.add(msgNotification);
+                          }*/
+                      }
+                      //重新排序
+            /*          Collections.sort(msgList, new Comparator<MsgNotification>() {
+                          @Override
+                          public int compare(MsgNotification t1, MsgNotification t2) {
+                              return t1.getCreatedAt().compareTo(t2.getCreatedAt());
+                          }
+                      });*/
+
+                      mLRecycleView.refreshComplete(1000);  //刷新完成
+                      mLRecyclerAdapter.notifyDataSetChanged();
                   }else{
                       tvFoot.setText("你暂时没有收到新消息通知！");
                   }
-                  mLRecycleView.refreshComplete(1000);  //刷新完成
-                  mLRecyclerAdapter.notifyDataSetChanged();
+
               }else{
                   Utils.toastMessage(MessageActivity.this,"出错了："+e.getMessage());
               }

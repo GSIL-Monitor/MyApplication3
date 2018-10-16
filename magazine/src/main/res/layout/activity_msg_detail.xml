@@ -24,5 +24,6 @@
         android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
         android:text="删除"
-        style="@style/ButtonStyle"/>
+        style="@style/ButtonStyle"
+        android:visibility="gone"/>
 </RelativeLayout>

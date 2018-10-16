@@ -129,7 +129,7 @@ public class ClassFragment extends BaseFragment {
              //   Document docHtml=null;
               //  String magazineClass=mAcache.getAsString("magazineClass");
                 JSONArray magazineArrayCache=mAcache.getAsJSONArray("magazineArrayCache");
-                if (magazineArrayCache!=null && magazineArrayCache.length()>0){
+                if (magazineArrayCache!=null && magazineArrayCache.length()>=18){
                     magazineArray=magazineArrayCache;
                     handler.sendEmptyMessage(LOAD_FINISHED);
                 }else{

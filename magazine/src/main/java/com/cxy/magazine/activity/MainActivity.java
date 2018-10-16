@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -19,12 +21,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.cxy.magazine.BuildConfig;
 import com.cxy.magazine.MyApplication;
 import com.cxy.magazine.R;
+import com.cxy.magazine.bmobBean.MsgNotification;
+import com.cxy.magazine.bmobBean.MsgReadRecord;
 import com.cxy.magazine.bmobBean.PatchBean;
+import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.fragment.ClassFragment;
 import com.cxy.magazine.fragment.MyFragment;
 import com.cxy.magazine.fragment.RecommFragment;
@@ -36,7 +44,7 @@ import com.cxy.magazine.util.Utils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
-import com.xiaomi.market.sdk.XiaomiUpdateAgent;
+//import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,8 +55,10 @@ import java.util.List;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.DownloadFileListener;
 import cn.bmob.v3.listener.FindListener;
 
@@ -59,6 +69,7 @@ public class MainActivity extends BasicActivity {
     protected PermissionHelper mPermissionHelper;
     private  FragmentManager manager=null;
     private static final int REQUEST_INSTALL = 125;
+    private   BottomNavigationView navigation;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -95,7 +106,7 @@ public class MainActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         //初始化Bmob
@@ -110,32 +121,98 @@ public class MainActivity extends BasicActivity {
         if (fragment==null){
             showFragment(0);
         }
-
+        selectNoReadMsg();
 
 
         //检查权限
         checkPermmion(this);
 
-
-
     }
+    public  void  selectNoReadMsg() {
+        final User user = BmobUser.getCurrentUser(User.class);//获取自定义用户信息
+        if (null != user) {
+            BmobQuery<MsgNotification> msgQuery = new BmobQuery<>();
+            msgQuery.addWhereEqualTo("user", user);
+            msgQuery.addWhereEqualTo("isRead", false);
+            msgQuery.count(MsgNotification.class, new CountListener() {
+                @Override
+                public void done(Integer integer, BmobException e) {
+                    if (e == null) {
+                        if (integer > 0) {   //有未读消息
+                            setBadge();
+                        } else {
+                            selectSystemMsg(user);
+                        }
+                    } else {
+                        Utils.toastMessage(MainActivity.this, e.getMessage());
+                        Log.i("bmob", e.toString());
+                    }
+
+                }
+            });
+
+
+        }
+    }
+
+    public void selectSystemMsg( final User user){
+        BmobQuery<MsgNotification> msgQuery = new BmobQuery<>();
+        msgQuery.addWhereEqualTo("msgType",2);
+        msgQuery.count(MsgNotification.class, new CountListener() {
+            @Override
+            public void done(final Integer count1, BmobException e) {
+                //查询系统信息阅读记录
+                if (e==null){
+                    BmobQuery<MsgReadRecord>  recordQuery=new BmobQuery<>();
+                    recordQuery.addWhereEqualTo("user",user);
+                    recordQuery.count(MsgReadRecord.class, new CountListener() {
+                        @Override
+                        public void done(Integer count2, BmobException exception) {
+
+                            if (exception==null && count1>count2){   //有未读的系统消息
+                                setBadge();
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+    }
+
+    public void setBadge(){
+        //获取整个的NavigationView
+        BottomNavigationMenuView menuView = (BottomNavigationMenuView) navigation.getChildAt(0);
+
+        //这里就是获取所添加的每一个Tab(或者叫menu)，
+        View tab = menuView.getChildAt(3);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) tab;
+
+        //加载我们的角标View，新创建的一个布局
+        View badge = LayoutInflater.from(this).inflate(R.layout.badge, menuView, false);
+        ImageView msgImg = (ImageView) badge.findViewById(R.id.msg_notify_img);
+        msgImg.setVisibility(View.VISIBLE);
+        //添加到Tab上
+        itemView.addView(badge);
+    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        boolean netConnect=NetWorkUtils.isNetworkConnected(this);
+       /* boolean netConnect=NetWorkUtils.isNetworkConnected(this);
         if (netConnect){
             //小米更新
          //  XiaomiUpdateAgent.update(this);//这种情况下, 若本地版本是debug版本则使用沙盒环境，否则使用线上环境
 
-        }
+        }*/
 
 
 
 
     }
 
-    //检查补丁
+    //检查更新
     public void checkUpdate(){
 
         BmobQuery<PatchBean> query=new BmobQuery<PatchBean>();
@@ -254,7 +331,12 @@ public class MainActivity extends BasicActivity {
             if (mPermissionHelper.isAllRequestedPermissionGranted()) {
                 Log.d(LOG_TAG, "All of requested permissions has been granted, so run app logic directly.");
                 //检查更新
-                checkUpdate();
+                boolean netConnect=NetWorkUtils.isNetworkConnected(this);
+                if (netConnect){
+                    checkUpdate();
+
+                }
+
 
 
             } else {

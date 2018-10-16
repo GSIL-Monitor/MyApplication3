@@ -87,7 +87,7 @@ dependencies {
     //jsoup 爬虫
     implementation 'org.jsoup:jsoup:1.10.2'
     //小米更新sdk
-    implementation 'mi-appstore:xiaomi-update-sdk:2.8'
+   // implementation 'mi-appstore:xiaomi-update-sdk:2.8'
     //AndFix 热修复框架
     //implementation 'com.alipay.euler:andfix:0.5.0@aar'
     //Glide库

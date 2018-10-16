@@ -283,6 +283,7 @@ public class InviteActivity extends BasicActivity {
        msgNotification.setTitle("会员奖励到账通知");
        msgNotification.setDetail(messageTitle);
        msgNotification.setRead(false);
+       msgNotification.setMsgType(1);
        msgNotification.save(new SaveListener<String>() {
            @Override
            public void done(String s, BmobException e) {

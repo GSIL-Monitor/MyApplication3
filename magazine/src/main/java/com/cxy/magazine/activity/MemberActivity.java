@@ -652,6 +652,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
 
                 } catch (ParseException e1) {
                     e1.printStackTrace();
+                    Utils.showResultDialog(MemberActivity.this,"充值会员出错了，请联系客服！","提示");
                 }
 
             }else{
