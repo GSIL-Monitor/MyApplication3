@@ -6,30 +6,45 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.holder.Holder;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.cxy.magazine.R;
 import com.cxy.magazine.activity.ClassDetailActivity;
 import com.cxy.magazine.activity.MainActivity;
 import com.cxy.magazine.activity.SearchActivity;
 import com.cxy.magazine.util.ACache;
+import com.cxy.magazine.util.Constants;
 import com.cxy.magazine.util.NetWorkUtils;
 import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.Utils;
+import com.cxy.magazine.view.ClassFooter;
 import com.github.jdsjlzx.ItemDecoration.SpacesItemDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,9 +77,13 @@ public class ClassFragment extends BaseFragment {
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
     private  GridLayoutManager manager=null;
     private Context context=null;
+    private List<Integer> localImages=new ArrayList<>();
+    private ConvenientBanner convenientBanner=null;
+    @BindView(R.id.magazineRv)
+    LRecyclerView mLRecyclerview;
 
 
-    @BindView(R.id.magazineRv)  LRecyclerView mLRecyclerview;
+
     private Unbinder unbinder;
 
 
@@ -92,6 +111,7 @@ public class ClassFragment extends BaseFragment {
         Utils.showTipDialog(getActivity(),"加载中...", QMUITipDialog.Builder.ICON_TYPE_LOADING);
         Thread thread=new getHtml();
         thread.start();
+
         return  view;
     }
     public void setLRecyclerview(){
@@ -101,11 +121,75 @@ public class ClassFragment extends BaseFragment {
         int spacing = getResources().getDimensionPixelSize(R.dimen.dp_14);
         mLRecyclerview.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(),android.R.color.white));
 
-        mLRecyclerview.setHasFixedSize(true);
+    //    mLRecyclerview.setHasFixedSize(true);
+
+
         adapter=new MagazineAdapter();
         mLRecyclerViewAdapter=new LRecyclerViewAdapter(adapter);
         mLRecyclerview.setAdapter(mLRecyclerViewAdapter);
+        //添加footer
+        ClassFooter footer=new ClassFooter(getActivity());
+        //设置Banner
+        convenientBanner= (ConvenientBanner)footer.findViewById(R.id.convenientBanner);
+        //加载轮播图本地图片
+        loadImages();
+        convenientBanner.setPages(new CBViewHolderCreator() {
+            @Override
+            public LocalImageHolderView  createHolder(View itemView) {
+                return new LocalImageHolderView(itemView);
+            }
 
+            @Override
+            public int getLayoutId() {
+                return R.layout.item_banner;
+            }
+        }, localImages)
+                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+                .setPageIndicator(new int[]{ R.drawable.ic_indicator_noseleceted,R.drawable.ic_indicator_seleceted})
+//                        //设置指示器的方向
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
+                .setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                String miniappid="";
+                String path="";
+                if (position==0){
+                    //跳转诗词歌赋小程序
+                    miniappid=Constants.SHICI_APPID;
+                    path="pages/shiwen/shiwen";
+                }
+                if (position==1){
+                    //跳转语文助手小程序
+                   miniappid=Constants.YUWEN_APPID;
+                   path="pages/index/index";
+                }
+                //跳转小程序
+                navigateTominiApp(miniappid,path);
+            }
+        });
+        mLRecyclerViewAdapter.addFooterView(footer);
+
+    }
+
+    public void navigateTominiApp(String miniappId,String pagePath){
+
+        String appId = Constants.WX_APPID; // 填应用AppId
+        IWXAPI api = WXAPIFactory.createWXAPI(getActivity(), appId);
+
+        WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
+        req.userName = miniappId; // 填小程序原始id    贼坑
+        req.path =pagePath;                   //拉起小程序页面的可带参路径，不填默认拉起小程序首页   "pages/index/index";
+        req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE;// 可选打开 开发版，体验版和正式版
+        boolean result=api.sendReq(req);
+      //  Log.i("com.cxy.magazine","跳转结果"+result);
+    }
+
+    public void loadImages(){
+        //TODO:添加诗词歌赋 banner
+        localImages.add(R.drawable.shicibanner);
+        //TODO:添加语文助手 banner
+        localImages.add(R.drawable.yuwenbanner);
+        //localImages.add(R.drawable.cover_nongye);
     }
     @OnClick(R.id.rl_search)
     public void searchClick(){
@@ -189,6 +273,19 @@ public class ClassFragment extends BaseFragment {
         }
     };
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //banner开始自动翻页
+        convenientBanner.startTurning(3000);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //banner停止翻页
+        convenientBanner.stopTurning();
+    }
 
     @Override
     public void onDestroyView() {
@@ -264,4 +361,30 @@ public class ClassFragment extends BaseFragment {
         }
     }
 
+    public class LocalImageHolderView extends Holder<Integer>{
+
+
+        ImageView bannerImage;
+
+        public LocalImageHolderView(View itemView) {
+            super(itemView);
+            bannerImage=(ImageView)itemView.findViewById(R.id.image_banner);
+            bannerImage.setScaleType(ImageView.ScaleType.FIT_XY);
+        }
+
+        @Override
+        protected void initView(View itemView) {
+
+        }
+
+        @Override
+        public void updateUI(Integer data) {
+           bannerImage.setImageResource(data);
+        }
+    }
+
+
 }
+
+
+

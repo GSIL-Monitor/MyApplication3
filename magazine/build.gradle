@@ -93,16 +93,19 @@ dependencies {
     //Glide库
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     //QMUI
-    implementation 'com.qmuiteam:qmui:1.1.0'
+    implementation 'com.qmuiteam:qmui:1.1.3'
     //ucrop
     implementation 'com.github.yalantis:ucrop:2.2.2'
     //适配低版本，重要
-    compile 'com.android.support:multidex:1.0.3'
+    implementation 'com.android.support:multidex:1.0.3'
     //photoview
     implementation 'com.bm.photoview:library:1.4.1'
    // implementation files('libs/MiPush_SDK_Client_3_6_9.jar')
-
+   //轮播图控件
+    implementation 'com.bigkoo:ConvenientBanner:2.1.4'
     //支付精灵
-    implementation 'com.payelves:sdk-release:3.2.8'
+    implementation 'com.payelves:sdk-release:3.3.0'
+    //WeXin SDK
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 
 }

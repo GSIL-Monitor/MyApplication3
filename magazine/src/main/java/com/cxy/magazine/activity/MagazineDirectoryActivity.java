@@ -142,7 +142,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
 
 
-
+    TextView tvFoot;
     public void setRecycleView() {
 
 
@@ -184,8 +184,8 @@ public class MagazineDirectoryActivity extends BasicActivity {
         mRecyclerView.setLoadMoreEnabled(false);
         //add a FooterView
         SampleFooter footerView = new SampleFooter(this);
-        TextView tvFoot = (TextView) footerView.findViewById(R.id.tv_foot);
-        tvFoot.setText("没有更多数据了");
+        tvFoot = (TextView) footerView.findViewById(R.id.tv_foot);
+
         mLRecyclerViewAdapter.addFooterView(footerView);
 
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -531,6 +531,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
                 tv_title.setText(magazineTitle);
                 tv_time.setText(magazineTime + "目录");
                 mLRecyclerViewAdapter.notifyDataSetChanged();
+                tvFoot.setText("没有更多数据了");
             } else if (msg.what == 101) {
                 Utils.toastMessage(MagazineDirectoryActivity.this, "出错了,该杂志内容暂无法查看，换本杂志看看吧！");
             }
@@ -542,9 +543,9 @@ public class MagazineDirectoryActivity extends BasicActivity {
         // 为toolbar创建Menu
         String type = getIntent().getStringExtra("type");
         getMenuInflater().inflate(R.menu.menu_magazine_directory, menu);
-        if (type == null) {
+        /*if (type == null) {
             menu.removeItem(R.id.scanHistory);
-        }
+        }*/
         if ("shelf".equals(type)){  //从书架中进入，隐藏加入书架
             menu.removeItem(R.id.addShelf);
 

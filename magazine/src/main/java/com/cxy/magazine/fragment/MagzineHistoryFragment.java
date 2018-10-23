@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import android.support.v4.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

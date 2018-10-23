@@ -34,6 +34,7 @@ import com.cxy.magazine.bmobBean.MsgReadRecord;
 import com.cxy.magazine.bmobBean.PatchBean;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.fragment.ClassFragment;
+import com.cxy.magazine.fragment.FirstFragment;
 import com.cxy.magazine.fragment.MyFragment;
 import com.cxy.magazine.fragment.RecommFragment;
 import com.cxy.magazine.fragment.ShelfFragment;
@@ -64,7 +65,7 @@ import cn.bmob.v3.listener.FindListener;
 
 public class MainActivity extends BasicActivity {
 
-    private String tabs[]={"recomm","class","shelf","mine"};
+    private String tabs[]={"first","class","shelf","mine"};
     private static final String BmobApplicationId ="be69c91d46af21288d5b855ee9fe158e";
     protected PermissionHelper mPermissionHelper;
     private  FragmentManager manager=null;
@@ -225,7 +226,7 @@ public class MainActivity extends BasicActivity {
                       int currentVersion = BuildConfig.VERSION_CODE;
                       if (remoteVersion>currentVersion){   //服务器有新版本
                           //TODO:有新版本
-                          Utils.showConfirmCancelDialog(MainActivity.this, "提示", "检查到新版本，是否下载？", new QMUIDialogAction.ActionListener() {
+                          Utils.showConfirmCancelDialog(MainActivity.this, "提示", "检查到新版本(约7M)，是否下载？", new QMUIDialogAction.ActionListener() {
                               @Override
                               public void onClick(QMUIDialog dialog, int index) {
                                   //下载新版本
@@ -325,7 +326,12 @@ public class MainActivity extends BasicActivity {
         if (Build.VERSION.SDK_INT < 23) {
             // 如果系统版本低于23，直接跑应用的逻辑
             Log.d(LOG_TAG, "The api level of system is lower than 23, so run app logic directly.");
+            //检查更新
+            boolean netConnect=NetWorkUtils.isNetworkConnected(this);
+            if (netConnect){
+                checkUpdate();
 
+            }
         } else {
             // 如果权限全部申请了，那就直接跑应用逻辑
             if (mPermissionHelper.isAllRequestedPermissionGranted()) {
@@ -376,14 +382,14 @@ public class MainActivity extends BasicActivity {
         mPermissionHelper.onActivityResult(requestCode, resultCode, data);
     }
 
-    private RecommFragment recommFragment;
+    private FirstFragment firstFragment;
     private ClassFragment classFragment;
     private ShelfFragment shelfFragment;
     private MyFragment myFragment;
 
     public void showFragment(int index) {
         FragmentTransaction ft = manager.beginTransaction();
-        recommFragment=(RecommFragment) manager.findFragmentByTag(tabs[0]);
+        firstFragment=(FirstFragment) manager.findFragmentByTag(tabs[0]);
         classFragment=(ClassFragment)manager.findFragmentByTag(tabs[1]);
         shelfFragment=(ShelfFragment)manager.findFragmentByTag(tabs[2]);
         myFragment=(MyFragment)manager.findFragmentByTag(tabs[3]);
@@ -396,12 +402,12 @@ public class MainActivity extends BasicActivity {
                  * 如果Fragment为空，就新建一个实例
                  * 如果不为空，就将它从栈中显示出来
                  */
-                if (recommFragment == null) {
-                    RecommFragment recommFragment1 = new RecommFragment();
+                if (firstFragment == null) {
+                    FirstFragment recommFragment1 = new FirstFragment();
                     ft.add(R.id.content, recommFragment1,tabs[0]);
 
                 } else {
-                    ft.show(recommFragment);
+                    ft.show(firstFragment);
                 }
                 break;
             case 1:
@@ -434,8 +440,8 @@ public class MainActivity extends BasicActivity {
 
     public void hideFragment(FragmentTransaction ft) {
         //如果不为空，就先隐藏起来
-        if (recommFragment != null) {
-            ft.hide(recommFragment);
+        if (firstFragment != null) {
+            ft.hide(firstFragment);
         }
         if (classFragment != null) {
             ft.hide(classFragment);

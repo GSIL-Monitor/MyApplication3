@@ -33,7 +33,8 @@ import cn.bmob.v3.listener.FindListener;
 
 public class CollectActivity extends BasicActivity {
 
-    @BindView(R.id.LRecycleView)  LRecyclerView mLRecycleView;
+    @BindView(R.id.LRecycleView)
+    LRecyclerView mLRecycleView;
     CollectAdapter collectAdapter=null;
     LRecyclerViewAdapter mLRecyclerAdapter=null;
     List<CollectBean> collectBeanList=null;
