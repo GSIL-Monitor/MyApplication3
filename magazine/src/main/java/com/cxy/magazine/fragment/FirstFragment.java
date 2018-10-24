@@ -16,12 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.cxy.magazine.entity.RankEntity;
+import com.cxy.magazine.entity.RankListEntity;
 import com.cxy.magazine.entity.UpdateMagazine;
 import com.cxy.magazine.fragment.MagzineHistoryFragment;
 import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.Utils;
 
 import com.cxy.magazine.R;
+import com.qmuiteam.qmui.widget.QMUITabSegment;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -44,11 +47,15 @@ import butterknife.Unbinder;
 public class FirstFragment extends BaseFragment {
 
 
-    @BindView(R.id.tab_first)
+   /* @BindView(R.id.tab_first)
     TabLayout mTablayout;
     @BindView(R.id.vp_first)
-    ViewPager mContentViewPager;
+    ViewPager mContentViewPager;*/
 
+    @BindView(R.id.tabSegment)
+    QMUITabSegment mTabSegment;
+    @BindView(R.id.contentViewPager)
+    ViewPager mContentViewPager;
 
     public FirstFragment() {
         // Required empty public constructor
@@ -61,13 +68,22 @@ public class FirstFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_first, null);
         unbinder=ButterKnife.bind(this, rootView);
+        //设置 mTabSegment
+        mTabSegment.setHasIndicator(true);
+        mTabSegment.setIndicatorPosition(false);
+        mTabSegment.setIndicatorWidthAdjustContent(false);
+        mTabSegment.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        mTabSegment.setDefaultNormalColor(getResources().getColor(R.color.qmui_config_color_50_white));
+        mTabSegment.setDefaultSelectedColor(getResources().getColor(R.color.qmui_config_color_white));
+      //  mTabSegment.addTab(new QMUITabSegment.Tab(getString(R.string.tabSegment_item_1_title)));
+      //  mTabSegment.addTab(new QMUITabSegment.Tab(getString(R.string.tabSegment_item_2_title)));
         parseHtml();
         return rootView;
     }
 
     private List<String> dataList=new ArrayList<>();
     //排行榜数据
-    private  List<Map<String,Object>> randData=new ArrayList<>();
+    private RankListEntity rankListEntity=new RankListEntity();
     //更新榜数据
     private ArrayList<UpdateMagazine> updateData=new ArrayList<>();
 
@@ -83,19 +99,23 @@ public class FirstFragment extends BaseFragment {
                 try {
                     String html= OkHttpUtil.get(httpUrl);
                     Document document = Jsoup.parse(html);
+
                     //排行榜DIV
                     Element rankEle=document.getElementsByClass("wzph mt20").first();
                     //获取每天、每周、每月的排行榜
                     Elements rankElements=rankEle.getElementsByClass("tabItem");
+                    ArrayList<RankEntity> rankData=new ArrayList<>();
                     for (Element element : rankElements){
-                        Map<String,Object> rankItem=new HashMap<>();
-                        List<Map<String,String>> rankList=new ArrayList<>();
+                      //  Map<String,Object> rankItem=new HashMap<>();
+                        RankEntity rankEntity=new RankEntity();
+                        ArrayList<HashMap<String,String>> rankList=new ArrayList<>();
                         //获取表头
                         String tableHead=element.getElementsByClass("tabTit").first().text();
-                        rankItem.put("title",tableHead);
+                       // rankItem.put("title",tableHead);   //一月、一周、一天
+                        rankEntity.setTitle(tableHead);
                         Elements articleEles=element.getElementsByTag("tbody").first().getElementsByTag("tr");
                         for (Element articleEle : articleEles){
-                            Map<String,String> articleMap=new HashMap<>();
+                            HashMap<String,String> articleMap=new HashMap<>();
                             String title=articleEle.getElementsByTag("td").get(1).text();
                             String time=articleEle.getElementsByTag("td").get(2).text();
                             String href=articleEle.getElementsByTag("td").get(1).getElementsByTag("a").first().attr("href");
@@ -105,11 +125,14 @@ public class FirstFragment extends BaseFragment {
 
                             rankList.add(articleMap);
                         }
-                        rankItem.put("data",rankList);
+                        //rankItem.put("data",rankList);
+                        rankEntity.setData(rankList);
 
-                        randData.add(rankItem);
+                        rankData.add(rankEntity);
+
                     }
-
+                    //设置所有榜单数据
+                    rankListEntity.setRankEntityList(rankData);
                     //获取更新榜单
                     //获取右侧边栏
                     Element siderBar=document.getElementsByClass("sidebarR").first();
@@ -145,12 +168,13 @@ public class FirstFragment extends BaseFragment {
             if (msg.what==100){
                 ViewpagerAdapter viewpagerAdapter=new ViewpagerAdapter(getActivity().getSupportFragmentManager(),dataList);
                 mContentViewPager.setAdapter(viewpagerAdapter);
-                mTablayout.setupWithViewPager(mContentViewPager);
+                mTabSegment.setupWithViewPager(mContentViewPager);
             }
             if(msg.what==101){
                 ViewpagerAdapter viewpagerAdapter=new ViewpagerAdapter(getActivity().getSupportFragmentManager(),dataList);
                 mContentViewPager.setAdapter(viewpagerAdapter);
-                mTablayout.setupWithViewPager(mContentViewPager);
+                mTabSegment.setupWithViewPager(mContentViewPager);
+
             }
         }
     };
@@ -175,7 +199,7 @@ public class FirstFragment extends BaseFragment {
                 fragment= new RecommFragment();
             }
             if (position==1){
-                fragment= new RecommFragment();
+                fragment= RankFragment.newInstance(rankListEntity);
             }
             if (position==2){
                 fragment=UpdateFragment.newInstance(updateData);

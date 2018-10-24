@@ -57,6 +57,7 @@ public class UpdateFragment extends BaseFragment {
     public static UpdateFragment newInstance(ArrayList<UpdateMagazine> data) {
         UpdateFragment fragment = new UpdateFragment();
         Bundle args = new Bundle();
+
         args.putParcelableArrayList(ARG_PARAM,data);
         fragment.setArguments(args);
         return fragment;
