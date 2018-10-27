@@ -8,15 +8,16 @@
         android:id="@+id/article_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginTop="8dp"
+        android:textSize="@dimen/sub_title_text"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorFontText"
         android:text="文章标题"/>
     <TextView
         android:id="@+id/article_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:textColor="@color/colorFontDisable"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorFontHint"
         android:text="2018-08-17"
         android:gravity="right"/>
 

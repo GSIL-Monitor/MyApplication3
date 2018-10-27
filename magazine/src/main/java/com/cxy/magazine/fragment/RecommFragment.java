@@ -95,7 +95,7 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
 
         //设置间隔线
         DividerDecoration divider = new DividerDecoration.Builder(getActivity())
-                .setHeight(R.dimen.default_divider_height)
+                .setHeight(R.dimen.thin_divider_height)
                 .setPadding(R.dimen.default_divider_padding)
                 .setColorResource(R.color.layoutBackground)
                 .build();

@@ -320,6 +320,19 @@ public class Utils {
     }
 
     /**
+     * 校验邮箱
+     * @param email
+     * @return 校验通过返回true，否则返回false
+     */
+    public static boolean isEmail(String email){
+        String check = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        Pattern regex = Pattern.compile(check);
+        Matcher matcher = regex.matcher(email);
+        return  matcher.matches();
+
+    }
+
+    /**
      * 验证密码
      * @param password
      * @return 校验通过返回true，否则返回false

@@ -11,7 +11,7 @@
         android:id="@+id/scanHistory"
         android:orderInCategory="101"
         android:title="浏览往期"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
    <!-- <item
         android:id="@+id/scanIntro"
         android:orderInCategory="102"

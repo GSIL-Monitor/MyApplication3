@@ -23,6 +23,7 @@ import com.cxy.magazine.view.SampleFooter;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.qmuiteam.qmui.util.QMUIKeyboardHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,7 +140,8 @@ public class CommentActivity extends BasicActivity {
                                 if (e == null) {
                                     Utils.toastMessage(CommentActivity.this, "你已成功推荐该篇文章");
                                     //关闭键盘
-                                     hintKeyBoard();
+                                    // hintKeyBoard();
+                                    QMUIKeyboardHelper.hideKeyboard(editText);
                                      //输入框清空
                                     editText.setText("");
                                     commentList.add(0,recommBean);

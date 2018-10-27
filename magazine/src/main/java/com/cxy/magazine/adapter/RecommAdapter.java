@@ -24,19 +24,20 @@ import butterknife.ButterKnife;
  * 首页推荐Adapter
  */
 
-public class RecommAdapter extends  RecyclerView.Adapter<RecommAdapter.MyViewHolder> {
+public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.MyViewHolder> {
 
-    private Context context=null;
+    private Context context = null;
     private List<Object> mData;
     static final int TYPE_DATA = 0;
     static final int TYPE_AD = 1;
     private HashMap<NativeExpressADView, Integer> mAdViewPositionMap = new HashMap<NativeExpressADView, Integer>();
 
-    public RecommAdapter(Context context, List  recommBeanList,HashMap<NativeExpressADView, Integer> map) {
+    public RecommAdapter(Context context, List recommBeanList, HashMap<NativeExpressADView, Integer> map) {
         this.mData = recommBeanList;
-        this.context=context;
-        this.mAdViewPositionMap=map;
+        this.context = context;
+        this.mAdViewPositionMap = map;
     }
+
     // 把返回的NativeExpressADView添加到数据集里面去
     public void addADViewToPosition(int position, NativeExpressADView adView) {
         if (position >= 0 && position < mData.size() && adView != null) {
@@ -48,7 +49,7 @@ public class RecommAdapter extends  RecyclerView.Adapter<RecommAdapter.MyViewHol
     public void removeADView(int position, NativeExpressADView adView) {
         mData.remove(position);
         this.notifyItemRemoved(position); // position为adView在当前列表中的位置
-        this.notifyItemRangeChanged(0, mData.size() - 1);
+        this.notifyItemRangeChanged(0, mData.size() - 1);   //range 范围
     }
 
     @Override
@@ -65,7 +66,7 @@ public class RecommAdapter extends  RecyclerView.Adapter<RecommAdapter.MyViewHol
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-           int type = getItemViewType(position);
+        int type = getItemViewType(position);
         if (TYPE_AD == type) {
             final NativeExpressADView adView = (NativeExpressADView) mData.get(position);
             mAdViewPositionMap.put(adView, position); // 广告在列表中的位置是可以被更新的
@@ -83,8 +84,8 @@ public class RecommAdapter extends  RecyclerView.Adapter<RecommAdapter.MyViewHol
 
             holder.container.addView(adView);
             adView.render(); // 调用render方法后sdk才会开始展示广告
-        }else {
-            ArticleRecommBean recommBean = (ArticleRecommBean)mData.get(position);
+        } else {
+            ArticleRecommBean recommBean = (ArticleRecommBean) mData.get(position);
             holder.tvTitle.setText(recommBean.getArticleTitle());
             holder.tvTime.setText(recommBean.getArticleTime());
             holder.tvCount.setText(recommBean.getRecommCount().toString());
@@ -105,27 +106,24 @@ public class RecommAdapter extends  RecyclerView.Adapter<RecommAdapter.MyViewHol
         return mData.get(position) instanceof NativeExpressADView ? TYPE_AD : TYPE_DATA;
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder
-    {
-       // @BindView(R.id.recomm_title)
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        // @BindView(R.id.recomm_title)
         TextView tvTitle;
-      //  @BindView(R.id.recomm_time)
+        //  @BindView(R.id.recomm_time)
         TextView tvTime;
-       // @BindView(R.id.recomm_count)
+        // @BindView(R.id.recomm_count)
         TextView tvCount;
-       // @BindView(R.id.express_ad_container)
+        // @BindView(R.id.express_ad_container)
         ViewGroup container;
 
 
-
-        public MyViewHolder(View view)
-        {
+        public MyViewHolder(View view) {
             super(view);
             //ButterKnife.bind(this,view);
-            tvTitle=(TextView)view.findViewById(R.id.recomm_title);
-            tvTime=(TextView)view.findViewById(R.id.recomm_time);
-            tvCount=(TextView)view.findViewById(R.id.recomm_count);
-            container=(ViewGroup)view.findViewById(R.id.express_ad_container);
+            tvTitle = (TextView) view.findViewById(R.id.recomm_title);
+            tvTime = (TextView) view.findViewById(R.id.recomm_time);
+            tvCount = (TextView) view.findViewById(R.id.recomm_count);
+            container = (ViewGroup) view.findViewById(R.id.express_ad_container);
 
         }
     }

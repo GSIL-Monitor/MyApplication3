@@ -2,7 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/label_title"
+        android:layout_gravity="center"/>
     <TextView
         android:id="@+id/yilin_title"
         android:layout_width="match_parent"
@@ -10,7 +16,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:textSize="20sp"
-        android:textColor="#000"
+        android:textColor="@color/colorFontTitle"
         android:text="2017年"
-        android:paddingLeft="10dp" />
+        android:paddingLeft="0dp" />
 </LinearLayout>

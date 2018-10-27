@@ -13,6 +13,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,7 +45,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 
 
 public class SettingInfomationActivity extends BasicActivity implements View.OnClickListener {
-    private TextView btnLogout,tvBindPhone,tvModifyPsssword;
+    private TextView btnLogout,tvBindPhone,tvBindEmail,tvModifyPsssword;
     private User user=null;
     private View modifyView;
     private Dialog modifyDialog;
@@ -58,8 +59,9 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_infomation);
-     //   MyApplication.getInstance().addActivity(this);
-        getSupportActionBar().setTitle("修改个人信息");
+        getSupportActionBar().setTitle("我的收藏");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         initView();
         mDestinationUri = Uri.fromFile(new File(this.getCacheDir(), "cropImage.jpeg"));
         btnLogout.setOnClickListener(this);
@@ -69,6 +71,7 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
         btnModify.setOnClickListener(this);
         editUserName.setOnClickListener(this);
         headImage.setOnClickListener(this);
+        tvBindEmail.setOnClickListener(this);
 
       //  setInfo();
 
@@ -77,6 +80,7 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
     public void initView(){
         btnLogout=(TextView)findViewById(R.id.btn_logout);
         tvBindPhone=(TextView)findViewById(R.id.bindPhone);
+        tvBindEmail=(TextView)findViewById(R.id.bindEmail);
         tvModifyPsssword=(TextView)findViewById(R.id.modifyPassword);
         editUserName=(TextView)findViewById(R.id.tv_userName);
         headImage=(ImageView)findViewById(R.id.userImage);
@@ -107,6 +111,9 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
                 String phoneNumber=user.getMobilePhoneNumber();
                 tvBindPhone.setText(phoneNumber);
             }
+            if (!TextUtils.isEmpty(user.getEmail())){
+                tvBindEmail.setText(user.getEmail());
+            }
 
         }
     }
@@ -115,6 +122,14 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
     protected void onStart() {
         super.onStart();
         setInfo();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return true;
     }
 
     @Override
@@ -158,11 +173,58 @@ public class SettingInfomationActivity extends BasicActivity implements View.OnC
                 //TODO：修改用户头像
                 selectImage();
                 break;
+            case R.id.bindEmail:   //修改邮箱
+                bindEmail();
+             break;
 
 
         }
     }
+    private void  bindEmail(){
+        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(SettingInfomationActivity.this);
+        builder.setTitle("更改邮箱")
+                .setPlaceholder("在此输入您的新邮箱")
+                .setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .addAction("确定", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(final QMUIDialog dialog, int index) {
+                        final String email = builder.getEditText().getText().toString();
+                        if (!TextUtils.isEmpty(email) && Utils.isEmail(email)) {
+                            updateEmail(email,dialog);
 
+                        } else {
+                            Utils.toastMessage(SettingInfomationActivity.this,"请输入有效的邮箱地址");
+                        }
+                    }
+                })
+                .create().show();
+    }
+
+    private  void updateEmail(final String email,final QMUIDialog dialog){
+        //更新邮箱
+        User newUser=new User();
+        newUser.setEmail(email);
+        newUser.update(user.getObjectId(), new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                dialog.dismiss();
+
+                if (e==null){
+                    Utils.toastMessage(SettingInfomationActivity.this,"修改邮箱成功");
+                    tvBindEmail.setText(email);
+                }else{
+                    Utils.toastMessage(SettingInfomationActivity.this,"修改邮箱失败:"+e.getMessage());
+                }
+            }
+        });
+
+    }
     private void selectImage(){
 
         Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

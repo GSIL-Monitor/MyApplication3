@@ -25,6 +25,7 @@ import com.cxy.magazine.util.Utils;
 
 import com.cxy.magazine.R;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,6 +43,7 @@ import javax.mail.internet.NewsAddress;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.internal.Util;
 
 
 public class FirstFragment extends BaseFragment {
@@ -69,9 +71,9 @@ public class FirstFragment extends BaseFragment {
         View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_first, null);
         unbinder=ButterKnife.bind(this, rootView);
         //设置 mTabSegment
-        mTabSegment.setHasIndicator(true);
-        mTabSegment.setIndicatorPosition(false);
-        mTabSegment.setIndicatorWidthAdjustContent(false);
+      //    mTabSegment.setHasIndicator(true);
+     //   mTabSegment.setIndicatorPosition(false);
+     //      mTabSegment.setIndicatorWidthAdjustContent(false);
         mTabSegment.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         mTabSegment.setDefaultNormalColor(getResources().getColor(R.color.qmui_config_color_50_white));
         mTabSegment.setDefaultSelectedColor(getResources().getColor(R.color.qmui_config_color_white));
@@ -88,6 +90,7 @@ public class FirstFragment extends BaseFragment {
     private ArrayList<UpdateMagazine> updateData=new ArrayList<>();
 
     public void  parseHtml(){
+        Utils.showTipDialog(context,null, QMUITipDialog.Builder.ICON_TYPE_LOADING);
         final String httpUrl="http://www.fx361.com/";
         //首先添加热门推荐Fragment
         dataList.add("热门推荐");
@@ -122,7 +125,8 @@ public class FirstFragment extends BaseFragment {
                             articleMap.put("title",title);
                             articleMap.put("time",time);
                             articleMap.put("href",href);
-
+                            //设置类型
+                            articleMap.put("type","item");
                             rankList.add(articleMap);
                         }
                         //rankItem.put("data",rankList);
@@ -166,11 +170,13 @@ public class FirstFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what==100){
+                Utils.dismissDialog();
                 ViewpagerAdapter viewpagerAdapter=new ViewpagerAdapter(getActivity().getSupportFragmentManager(),dataList);
                 mContentViewPager.setAdapter(viewpagerAdapter);
                 mTabSegment.setupWithViewPager(mContentViewPager);
             }
             if(msg.what==101){
+                Utils.dismissDialog();
                 ViewpagerAdapter viewpagerAdapter=new ViewpagerAdapter(getActivity().getSupportFragmentManager(),dataList);
                 mContentViewPager.setAdapter(viewpagerAdapter);
                 mTabSegment.setupWithViewPager(mContentViewPager);
@@ -216,5 +222,15 @@ public class FirstFragment extends BaseFragment {
         public CharSequence getPageTitle(int position) {
             return datalist.get(position);
         }
+
+        //重写destroyItem方法，禁止重新加载fragment
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            //super.destroyItem(container, position, object);
+        }
     }
+
+
+
+
 }

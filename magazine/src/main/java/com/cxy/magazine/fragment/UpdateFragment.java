@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,16 @@ import com.cxy.magazine.activity.MagazineContentActivity;
 import com.cxy.magazine.activity.MagazineDirectoryActivity;
 import com.cxy.magazine.adapter.UpdateAdapter;
 import com.cxy.magazine.entity.UpdateMagazine;
+import com.cxy.magazine.util.Constants;
 import com.cxy.magazine.view.SampleFooter;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.qq.e.ads.nativ.ADSize;
+import com.qq.e.ads.nativ.NativeExpressAD;
+import com.qq.e.ads.nativ.NativeExpressADView;
+import com.qq.e.comm.util.AdError;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +54,8 @@ public class UpdateFragment extends BaseFragment {
     UpdateAdapter updateAdapter=null;
     LRecyclerViewAdapter mLRecyclerAdapter=null;
 
+    private List<NativeExpressADView> mAdViewList;
+    private HashMap<NativeExpressADView, Integer> mAdViewPositionMap = new HashMap<NativeExpressADView, Integer>();
 
     public UpdateFragment() {
         // Required empty public constructor
@@ -85,16 +93,17 @@ public class UpdateFragment extends BaseFragment {
     }
 
     public void setRecyclerView(){
-        updateAdapter=new UpdateAdapter(dataList,context);
+        updateAdapter=new UpdateAdapter(dataList,context,mAdViewPositionMap);
         mLRecyclerAdapter=new LRecyclerViewAdapter(updateAdapter);
         recyclerView.setAdapter(mLRecyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        //  mLRecycleView.setPullRefreshEnabled(true);
+        //禁止下拉刷新
+        recyclerView.setPullRefreshEnabled(false);
         //禁用自动加载更多功能
         recyclerView.setLoadMoreEnabled(false);
         //设置间隔线
         DividerDecoration divider = new DividerDecoration.Builder(context)
-                .setHeight(R.dimen.default_divider_height)
+                .setHeight(R.dimen.thin_divider_height)
                 .setPadding(R.dimen.default_divider_padding)
                 .setColorResource(R.color.layoutBackground)
                 .build();
@@ -116,11 +125,92 @@ public class UpdateFragment extends BaseFragment {
             }
         });
 
+       //加载广告 9条
+        initAd();
     }
+
+    private  static  final int AD_COUNT=9;
+    public void initAd(){
+        ADSize adSize = new ADSize(ADSize.FULL_WIDTH, ADSize.AUTO_HEIGHT); // 消息流中用AUTO_HEIGHT
+        AdListener adListener=new AdListener();
+        NativeExpressAD  mADManager = new NativeExpressAD(context, adSize, Constants.APPID, Constants.UPDATE_AD_ID, adListener);
+        mADManager.loadAD(AD_COUNT);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    class AdListener implements NativeExpressAD.NativeExpressADListener {
+
+        private  int initAdPostion=9;
+        private  static  final int ITEMS_PER_AD=10;
+        @Override
+        public void onNoAD(AdError adError) {
+
+        }
+
+        @Override
+        public void onADLoaded(List<NativeExpressADView> adList) {
+          //  Log.i(TAG, "onADLoaded: " + adList.size());
+            mAdViewList = adList;
+            for (int i = 0; i < mAdViewList.size(); i++) {
+
+                if (initAdPostion < dataList.size()+i) {
+                    NativeExpressADView view = mAdViewList.get(i);
+                    // GDTLogger.i("ad load[" + i + "]: " + getAdInfo(view));
+                    mAdViewPositionMap.put(view, initAdPostion); // 把每个广告在列表中位置记录下来
+                    updateAdapter.addADViewToPosition(initAdPostion, mAdViewList.get(i));
+                    initAdPostion = initAdPostion + ITEMS_PER_AD ;
+                }
+            }
+            mLRecyclerAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRenderFail(NativeExpressADView nativeExpressADView) {
+
+        }
+
+        @Override
+        public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
+
+        }
+
+        @Override
+        public void onADExposure(NativeExpressADView nativeExpressADView) {
+
+        }
+
+        @Override
+        public void onADClicked(NativeExpressADView nativeExpressADView) {
+
+        }
+
+        @Override
+        public void onADClosed(NativeExpressADView adView) {
+            if (updateAdapter != null) {
+                int removedPosition = mAdViewPositionMap.get(adView);
+                updateAdapter.removeADView(removedPosition, adView);
+            }
+        }
+
+        @Override
+        public void onADLeftApplication(NativeExpressADView nativeExpressADView) {
+
+        }
+
+        @Override
+        public void onADOpenOverlay(NativeExpressADView nativeExpressADView) {
+
+        }
+
+        @Override
+        public void onADCloseOverlay(NativeExpressADView nativeExpressADView) {
+
+        }
     }
 
 

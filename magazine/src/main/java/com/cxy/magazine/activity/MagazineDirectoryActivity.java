@@ -83,6 +83,7 @@ import com.payelves.sdk.enums.EPayResult;
 import com.payelves.sdk.listener.PayResultListener;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 
 public class MagazineDirectoryActivity extends BasicActivity {
@@ -135,25 +136,24 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
         // queryMemberState();
       //  checkBuyState();
-        setRecycleView();
+       // setRecycleView();
        // setBottomDialog();
+
+        //获取数据
+        getData();
 
     }
 
 
 
-    TextView tvFoot;
+   // TextView tvFoot;
     public void setRecycleView() {
 
-
+        tv_title.setText(magazineTitle);
         dataAdapter = new DataAdapter(dataList, this);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(dataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
-        /*//创建线性布局
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        //垂直方向
-        layoutManager.setOrientation(OrientationHelper.VERTICAL);*/
-        //给RecyclerView设置布局管理器
+        //创建线性布局
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //设置间隔线
@@ -168,23 +168,25 @@ public class MagazineDirectoryActivity extends BasicActivity {
         //add a HeaderView
         SampleHeader headerView = new SampleHeader(this);
         tv_time = (TextView) headerView.findViewById(R.id.tv_time);
+        tv_time.setText(magazineTime + "目录");
         mLRecyclerViewAdapter.addHeaderView(headerView);
 
         //禁用下拉刷新功能
-      //  mRecyclerView.setPullRefreshEnabled(false);
-        mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
+        mRecyclerView.setPullRefreshEnabled(false);
+       /* mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Thread thread = new GetData();
                 thread.start();
             }
-        });
-        mRecyclerView.refresh();
+        });*/
+     //   mRecyclerView.refresh();
         //禁用自动加载更多功能
         mRecyclerView.setLoadMoreEnabled(false);
         //add a FooterView
         SampleFooter footerView = new SampleFooter(this);
-        tvFoot = (TextView) footerView.findViewById(R.id.tv_foot);
+        TextView tvFoot = (TextView) footerView.findViewById(R.id.tv_foot);
+        tvFoot.setText("没有更多数据了");
 
         mLRecyclerViewAdapter.addFooterView(footerView);
 
@@ -469,7 +471,11 @@ public class MagazineDirectoryActivity extends BasicActivity {
 
     }
 
-
+    private void  getData(){
+        Utils.showTipDialog(MagazineDirectoryActivity.this,null, QMUITipDialog.Builder.ICON_TYPE_LOADING);
+        Thread thread=new GetData();
+        thread.start();
+    }
 
 
     class GetData extends Thread {
@@ -526,12 +532,9 @@ public class MagazineDirectoryActivity extends BasicActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            Utils.dismissDialog();
             if (msg.what == 100) {
-                mRecyclerView.refreshComplete(1000);
-                tv_title.setText(magazineTitle);
-                tv_time.setText(magazineTime + "目录");
-                mLRecyclerViewAdapter.notifyDataSetChanged();
-                tvFoot.setText("没有更多数据了");
+              setRecycleView();
             } else if (msg.what == 101) {
                 Utils.toastMessage(MagazineDirectoryActivity.this, "出错了,该杂志内容暂无法查看，换本杂志看看吧！");
             }

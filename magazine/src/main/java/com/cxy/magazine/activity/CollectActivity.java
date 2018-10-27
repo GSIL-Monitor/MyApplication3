@@ -97,7 +97,7 @@ public class CollectActivity extends BasicActivity {
         User user= BmobUser.getCurrentUser(User.class);
         BmobQuery<CollectBean> query=new BmobQuery<CollectBean>();
         query.addWhereEqualTo("user",user);
-        query.findObjects(new FindListener<CollectBean>() {
+        query.order("-createdAt").findObjects(new FindListener<CollectBean>() {
             @Override
             public void done(List<CollectBean> list, BmobException e) {
                 if (e==null && list!=null){

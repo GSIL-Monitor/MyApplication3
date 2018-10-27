@@ -6,4 +6,7 @@
     <dimen name="thin_divider_height">1dp</dimen>
     <dimen name="default_divider_padding">4dp</dimen>
     <dimen name="toolBarText">20sp</dimen>
+    <dimen name="title_text">18sp</dimen>
+    <dimen name="item_text">17sp</dimen>
+    <dimen name="sub_title_text">16sp</dimen>
 </resources>
