@@ -4,6 +4,8 @@ package com.cxy.magazine.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,18 +17,29 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.activity.MagazineContentActivity;
 import com.cxy.magazine.activity.MagazineDirectoryActivity;
 import com.cxy.magazine.adapter.UpdateAdapter;
+import com.cxy.magazine.entity.RankEntity;
 import com.cxy.magazine.entity.UpdateMagazine;
 import com.cxy.magazine.util.Constants;
+import com.cxy.magazine.util.OkHttpUtil;
+import com.cxy.magazine.util.Utils;
 import com.cxy.magazine.view.SampleFooter;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.qmuiteam.qmui.widget.QMUIEmptyView;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qq.e.ads.nativ.ADSize;
 import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeExpressADView;
 import com.qq.e.comm.util.AdError;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,13 +56,15 @@ import butterknife.Unbinder;
  */
 public class UpdateFragment extends BaseFragment {
 
-    private static final String ARG_PARAM = "data";
     private static final String DOMIAN = "http://www.fx361.com";
 
     private List<UpdateMagazine> dataList;
 
     @BindView(R.id.update_lr)
     LRecyclerView recyclerView;
+
+    @BindView(R.id.emptyView)
+    QMUIEmptyView emptyView;
 
     UpdateAdapter updateAdapter=null;
     LRecyclerViewAdapter mLRecyclerAdapter=null;
@@ -62,23 +77,20 @@ public class UpdateFragment extends BaseFragment {
     }
 
 
-    public static UpdateFragment newInstance(ArrayList<UpdateMagazine> data) {
+    public static UpdateFragment newInstance() {
         UpdateFragment fragment = new UpdateFragment();
-        Bundle args = new Bundle();
 
-        args.putParcelableArrayList(ARG_PARAM,data);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+    /*    if (getArguments() != null) {
             dataList = getArguments().getParcelableArrayList(ARG_PARAM);
             System.out.println("123");
 
-        }
+        }*/
     }
 
     private Unbinder unbinder=null;
@@ -88,10 +100,66 @@ public class UpdateFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View rootView= inflater.inflate(R.layout.fragment_update, container, false);
         unbinder=ButterKnife.bind(this,rootView);
-        setRecyclerView();
+        parseHtml();
         return  rootView;
     }
 
+    public void  parseHtml(){
+       // Utils.showTipDialog(context,"加载中", QMUITipDialog.Builder.ICON_TYPE_LOADING);
+        final String httpUrl="http://www.fx361.com/";
+        dataList=new ArrayList<>();
+        //解析排行榜数据和更新数据
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String html= OkHttpUtil.get(httpUrl);
+                    Document document = Jsoup.parse(html);
+
+
+                    //获取更新榜单
+                    //获取右侧边栏
+                    Element siderBar=document.getElementsByClass("sidebarR").first();
+                    Elements lis=siderBar.getElementsByClass("list_01").first().getElementsByTag("li");
+                    for (Element li : lis){
+                        UpdateMagazine updateMagazine=new UpdateMagazine();
+                        String tiltle=li.getElementsByTag("a").first().text();
+                        String href=li.getElementsByTag("a").first().attr("href");
+                        updateMagazine.setTitle(tiltle);
+                        updateMagazine.setHref(href);
+
+                        dataList.add(updateMagazine);
+                    }
+
+                    uiHandler.sendEmptyMessage(100);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    //Todo:解析排行榜数据失败
+                    uiHandler.sendEmptyMessage(101);
+                }
+
+
+            }
+        }).start();
+    }
+
+    private Handler uiHandler=new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+
+            if (msg.what==100){
+                emptyView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                setRecyclerView();
+            }
+            if (msg.what==101){
+                //Utils.showTipDialog(context,"加载数据失败，请稍后重试",QMUITipDialog.Builder.ICON_TYPE_FAIL);
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
+            }
+        }
+    };
     public void setRecyclerView(){
         updateAdapter=new UpdateAdapter(dataList,context,mAdViewPositionMap);
         mLRecyclerAdapter=new LRecyclerViewAdapter(updateAdapter);
@@ -119,9 +187,14 @@ public class UpdateFragment extends BaseFragment {
         mLRecyclerAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent=new Intent(activity, MagazineDirectoryActivity.class);
-                intent.putExtra("href",DOMIAN+dataList.get(position).getHref());
-                startActivity(intent);
+                if (mAdViewPositionMap.containsValue(position)){
+                    return;
+                }else{
+                    Intent intent=new Intent(activity, MagazineDirectoryActivity.class);
+                    intent.putExtra("href",DOMIAN+dataList.get(position).getHref());
+                    startActivity(intent);
+                }
+
             }
         });
 

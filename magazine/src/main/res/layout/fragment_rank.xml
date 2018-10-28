@@ -7,49 +7,21 @@
     android:orientation="vertical"
     tools:context=".fragment.RankFragment">
 
-    <!-- <android.support.design.widget.TabLayout
-         android:id="@+id/tab_rank"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:background="#fff"
-         app:tabIndicatorColor="@color/colorPrimary"
-         app:tabIndicatorHeight="3dp"
-         app:tabTextColor="@color/colorFontText"
-         app:tabSelectedTextColor="@color/colorPrimary"
-         app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
-         app:tabMode="scrollable">
-
-     </android.support.design.widget.TabLayout>
-     <android.support.v4.view.ViewPager
-         android:id="@+id/vp_rank"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content">
-
-     </android.support.v4.view.ViewPager>-->
-
-    <!--<com.qmuiteam.qmui.widget.QMUITabSegment
-        android:id="@+id/rankTabSegment"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/tab_panel_bg" />
--->
-    <!--<android.support.design.widget.TabLayout
-        android:id="@+id/rankTabSegment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabIndicatorHeight="3dp"
-        app:tabTextColor="@color/colorFontText"
-        app:tabSelectedTextColor="@color/colorPrimary"
-        app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
-        app:tabMode="fixed"/>-->
     <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/rank_lr"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical">
     </com.github.jdsjlzx.recyclerview.LRecyclerView>
+
+    <com.qmuiteam.qmui.widget.QMUIEmptyView
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/qmui_config_color_white"
+        app:qmui_detail_text="加载内容失败，请稍后重试"
+        app:qmui_title_text="提示"
+        android:visibility="gone"/>
 
 
 </LinearLayout>

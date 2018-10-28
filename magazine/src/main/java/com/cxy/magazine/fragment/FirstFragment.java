@@ -70,120 +70,32 @@ public class FirstFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_first, null);
         unbinder=ButterKnife.bind(this, rootView);
-        //设置 mTabSegment
-      //    mTabSegment.setHasIndicator(true);
-     //   mTabSegment.setIndicatorPosition(false);
-     //      mTabSegment.setIndicatorWidthAdjustContent(false);
-        mTabSegment.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        mTabSegment.setDefaultNormalColor(getResources().getColor(R.color.qmui_config_color_50_white));
-        mTabSegment.setDefaultSelectedColor(getResources().getColor(R.color.qmui_config_color_white));
-      //  mTabSegment.addTab(new QMUITabSegment.Tab(getString(R.string.tabSegment_item_1_title)));
-      //  mTabSegment.addTab(new QMUITabSegment.Tab(getString(R.string.tabSegment_item_2_title)));
-        parseHtml();
+
+        setmTabSegment();
         return rootView;
     }
 
-    private List<String> dataList=new ArrayList<>();
-    //排行榜数据
-    private RankListEntity rankListEntity=new RankListEntity();
-    //更新榜数据
-    private ArrayList<UpdateMagazine> updateData=new ArrayList<>();
-
-    public void  parseHtml(){
-        Utils.showTipDialog(context,null, QMUITipDialog.Builder.ICON_TYPE_LOADING);
-        final String httpUrl="http://www.fx361.com/";
-        //首先添加热门推荐Fragment
+    private void setmTabSegment(){
+        //设置 mTabSegment
+        //  mTabSegment.setHasIndicator(true);
+        // mTabSegment.setIndicatorPosition(false);
+        // mTabSegment.setIndicatorWidthAdjustContent(false);
+        mTabSegment.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        mTabSegment.setDefaultNormalColor(getResources().getColor(R.color.qmui_config_color_50_white));
+        mTabSegment.setDefaultSelectedColor(getResources().getColor(R.color.qmui_config_color_white));
+        List<String> dataList=new ArrayList<>();
         dataList.add("热门推荐");
-
-        //解析排行榜数据和更新数据
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String html= OkHttpUtil.get(httpUrl);
-                    Document document = Jsoup.parse(html);
-
-                    //排行榜DIV
-                    Element rankEle=document.getElementsByClass("wzph mt20").first();
-                    //获取每天、每周、每月的排行榜
-                    Elements rankElements=rankEle.getElementsByClass("tabItem");
-                    ArrayList<RankEntity> rankData=new ArrayList<>();
-                    for (Element element : rankElements){
-                      //  Map<String,Object> rankItem=new HashMap<>();
-                        RankEntity rankEntity=new RankEntity();
-                        ArrayList<HashMap<String,String>> rankList=new ArrayList<>();
-                        //获取表头
-                        String tableHead=element.getElementsByClass("tabTit").first().text();
-                       // rankItem.put("title",tableHead);   //一月、一周、一天
-                        rankEntity.setTitle(tableHead);
-                        Elements articleEles=element.getElementsByTag("tbody").first().getElementsByTag("tr");
-                        for (Element articleEle : articleEles){
-                            HashMap<String,String> articleMap=new HashMap<>();
-                            String title=articleEle.getElementsByTag("td").get(1).text();
-                            String time=articleEle.getElementsByTag("td").get(2).text();
-                            String href=articleEle.getElementsByTag("td").get(1).getElementsByTag("a").first().attr("href");
-                            articleMap.put("title",title);
-                            articleMap.put("time",time);
-                            articleMap.put("href",href);
-                            //设置类型
-                            articleMap.put("type","item");
-                            rankList.add(articleMap);
-                        }
-                        //rankItem.put("data",rankList);
-                        rankEntity.setData(rankList);
-
-                        rankData.add(rankEntity);
-
-                    }
-                    //设置所有榜单数据
-                    rankListEntity.setRankEntityList(rankData);
-                    //获取更新榜单
-                    //获取右侧边栏
-                    Element siderBar=document.getElementsByClass("sidebarR").first();
-                    Elements lis=siderBar.getElementsByClass("list_01").first().getElementsByTag("li");
-                    for (Element li : lis){
-                        UpdateMagazine updateMagazine=new UpdateMagazine();
-                        String tiltle=li.getElementsByTag("a").first().text();
-                        String href=li.getElementsByTag("a").first().attr("href");
-                        updateMagazine.setTitle(tiltle);
-                        updateMagazine.setHref(href);
-
-                        updateData.add(updateMagazine);
-                    }
-
-                    dataList.add("文章排行");
-                    dataList.add("最近更新");
-                    uiHandler.sendEmptyMessage(100);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    //Todo:解析排行榜和更新失败，只显示热门推荐
-                    uiHandler.sendEmptyMessage(101);
-                }
-
-
-            }
-        }).start();
+        dataList.add("文章排行");
+        dataList.add("最近更新");
+        ViewpagerAdapter viewpagerAdapter=new ViewpagerAdapter(getActivity().getSupportFragmentManager(),dataList);
+        mContentViewPager.setAdapter(viewpagerAdapter);
+        mTabSegment.setupWithViewPager(mContentViewPager);
     }
 
 
-    private Handler uiHandler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what==100){
-                Utils.dismissDialog();
-                ViewpagerAdapter viewpagerAdapter=new ViewpagerAdapter(getActivity().getSupportFragmentManager(),dataList);
-                mContentViewPager.setAdapter(viewpagerAdapter);
-                mTabSegment.setupWithViewPager(mContentViewPager);
-            }
-            if(msg.what==101){
-                Utils.dismissDialog();
-                ViewpagerAdapter viewpagerAdapter=new ViewpagerAdapter(getActivity().getSupportFragmentManager(),dataList);
-                mContentViewPager.setAdapter(viewpagerAdapter);
-                mTabSegment.setupWithViewPager(mContentViewPager);
 
-            }
-        }
-    };
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -199,16 +111,15 @@ public class FirstFragment extends BaseFragment {
 
         @Override
         public Fragment getItem(int position) {
-           // return MagzineHistoryFragment.newInstance(maplist.get(position).get("href").toString());
             Fragment fragment=null;
             if (position==0){
                 fragment= new RecommFragment();
             }
             if (position==1){
-                fragment= RankFragment.newInstance(rankListEntity);
+                fragment= RankFragment.newInstance();
             }
             if (position==2){
-                fragment=UpdateFragment.newInstance(updateData);
+                fragment=UpdateFragment.newInstance();
             }
             return fragment;
         }
@@ -226,7 +137,7 @@ public class FirstFragment extends BaseFragment {
         //重写destroyItem方法，禁止重新加载fragment
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            //super.destroyItem(container, position, object);
+        //   super.destroyItem(container, position, object);
         }
     }
 

@@ -148,9 +148,14 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent=new Intent(getActivity(),MagazineContentActivity.class);
-                intent.putExtra("url",recommBeanList.get(position).getArticleUrl());
-                startActivity(intent);
+                if (mAdViewPositionMap.containsValue(position)){
+                   return;
+                }else{
+                    Intent intent=new Intent(getActivity(),MagazineContentActivity.class);
+                    intent.putExtra("url",recommBeanList.get(position).getArticleUrl());
+                    startActivity(intent);
+                }
+
             }
         });
         mLRecycleView.refresh();
