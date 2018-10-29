@@ -22,7 +22,7 @@ import okhttp3.Route;
 
 public class OkHttpUtil {
     public static final OkHttpClient client = new OkHttpClient.Builder()
-                                                 .connectTimeout(30, TimeUnit.SECONDS)
+                                                 .connectTimeout(15, TimeUnit.SECONDS)
                                                  .readTimeout(30, TimeUnit.SECONDS)
                                                  .writeTimeout(30,TimeUnit.SECONDS)
                                                  .build();
@@ -34,7 +34,7 @@ public class OkHttpUtil {
         }
     };*/
     public static final OkHttpClient client2 = new OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30,TimeUnit.SECONDS)
             .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("47.88.54.113", 8081)))

@@ -26,6 +26,7 @@ import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.google.gson.JsonArray;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -249,7 +250,11 @@ public class MagazineListFragment extends BaseFragment {
                     setAdapter();
                     break;
                 case 101:   //发生错误
-                    Utils.toastMessage(getActivity(),"出错了，请稍后再试");
+                   // Utils.toastMessage(getActivity(),"出错了，请稍后再试");
+                    Utils.showTipDialog(context,"加载数据失败", QMUITipDialog.Builder.ICON_TYPE_FAIL);
+                    mRecyclerView.refreshComplete(0);// REQUEST_COUNT为每页加载数量
+                    mLRecyclerViewAdapter.notifyDataSetChanged();
+
             }
         }
     };
