@@ -57,13 +57,20 @@ public class OkHttpUtil {
      * @return
      * @throws IOException
      */
-    public static String get(String url) throws IOException {
+    public static String get(String url) throws Exception {
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Connection", "close")
                 .build();
         Response response = client.newCall(request).execute();
-        return response.body().string();
+        if (response.code()!=200){
+            response.close();
+            throw new Exception("网络连接失败，StatusCode="+response.code());
+        }
+
+        String data=response.body().string();
+        response.close();
+        return data;
 
     }
 
@@ -88,7 +95,9 @@ public class OkHttpUtil {
                 .build();
 
         Response response = client.newCall(request).execute();
-        return response.body().string();
+        String data=response.body().string();
+        response.close();
+        return data;
 
     }
 

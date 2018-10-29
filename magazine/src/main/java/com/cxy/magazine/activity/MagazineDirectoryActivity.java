@@ -519,7 +519,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
                 handler.sendEmptyMessage(100);
 
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 handler.sendEmptyMessage(101);
             }

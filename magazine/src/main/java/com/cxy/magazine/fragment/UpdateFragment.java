@@ -132,7 +132,7 @@ public class UpdateFragment extends BaseFragment {
                     }
 
                     uiHandler.sendEmptyMessage(100);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     //Todo:解析排行榜数据失败
                     uiHandler.sendEmptyMessage(101);

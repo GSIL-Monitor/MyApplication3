@@ -145,7 +145,7 @@ public class RankFragment extends BaseFragment {
 
                     }
                     uiHandler.sendEmptyMessage(100);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     uiHandler.sendEmptyMessage(101);
                 }

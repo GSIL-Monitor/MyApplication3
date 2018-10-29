@@ -72,6 +72,7 @@ public class MagazineListAdapter extends RecyclerView.Adapter<MagazineListAdapte
                     .load(jsonObject.getString("imageSrc"))
                     .placeholder(R.drawable.default_book)
                     .error(R.drawable.default_book)
+                    .override(width,height)
                     .into(holder.imCover);
         } catch (JSONException e) {
             e.printStackTrace();
