@@ -40,6 +40,7 @@ import com.cxy.magazine.fragment.RecommFragment;
 import com.cxy.magazine.fragment.ShelfFragment;
 import com.cxy.magazine.util.Constants;
 import com.cxy.magazine.util.NetWorkUtils;
+import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.PermissionHelper;
 import com.cxy.magazine.util.Utils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -107,8 +108,12 @@ public class MainActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //检查连接性
+        checkNetworkConnected();
+
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
 
         //初始化Bmob
         Bmob.initialize(this,BmobApplicationId,"bmob");
@@ -354,6 +359,16 @@ public class MainActivity extends BasicActivity {
         }
     }
 
+    private void checkNetworkConnected(){
+        final String domain="http://www.fx361.com/";
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+               OkHttpUtil.checkConnected(domain);
+
+            }
+        }).start();
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

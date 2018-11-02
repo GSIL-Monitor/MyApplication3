@@ -11,7 +11,8 @@
         android:id="@+id/update_lr"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical">
+        android:scrollbars="vertical"
+        android:visibility="gone">
 
     </com.github.jdsjlzx.recyclerview.LRecyclerView>
     <com.qmuiteam.qmui.widget.QMUIEmptyView
@@ -21,5 +22,5 @@
         android:background="@color/qmui_config_color_white"
         app:qmui_detail_text="加载内容失败，请稍后重试"
         app:qmui_title_text="提示"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 </LinearLayout>

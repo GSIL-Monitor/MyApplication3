@@ -105,7 +105,7 @@ public class UpdateFragment extends BaseFragment {
     }
 
     public void  parseHtml(){
-       // Utils.showTipDialog(context,"加载中", QMUITipDialog.Builder.ICON_TYPE_LOADING);
+        emptyView.show(true);
         final String httpUrl="http://www.fx361.com/";
         dataList=new ArrayList<>();
         //解析排行榜数据和更新数据
@@ -157,6 +157,12 @@ public class UpdateFragment extends BaseFragment {
                 //Utils.showTipDialog(context,"加载数据失败，请稍后重试",QMUITipDialog.Builder.ICON_TYPE_FAIL);
                 recyclerView.setVisibility(View.GONE);
                 emptyView.setVisibility(View.VISIBLE);
+                emptyView.show(false, "加载失败", "请检查网络是否能正常连接", "点击重试", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        parseHtml();
+                    }
+                });
             }
         }
     };

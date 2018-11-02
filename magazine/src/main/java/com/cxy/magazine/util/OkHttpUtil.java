@@ -1,6 +1,10 @@
 package com.cxy.magazine.util;
 import android.support.annotation.Nullable;
 
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -22,10 +26,12 @@ import okhttp3.Route;
 
 public class OkHttpUtil {
     public static final OkHttpClient client = new OkHttpClient.Builder()
-                                                 .connectTimeout(15, TimeUnit.SECONDS)
+                                                 .connectTimeout(30, TimeUnit.SECONDS)
                                                  .readTimeout(30, TimeUnit.SECONDS)
                                                  .writeTimeout(30,TimeUnit.SECONDS)
                                                  .build();
+    private static int isConnected=0;
+    private static String SERVER_URL="http://38.21.240.36:8081/gethtml?url=";
    /* Authenticator authenticator=new Authenticator() {
         @Override
         protected PasswordAuthentication getPasswordAuthentication() {
@@ -33,22 +39,12 @@ public class OkHttpUtil {
             return authentication;
         }
     };*/
-    public static final OkHttpClient client2 = new OkHttpClient.Builder()
+    /*public static final OkHttpClient client2 = new OkHttpClient.Builder()
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30,TimeUnit.SECONDS)
-            .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("47.88.54.113", 8081)))
-            .proxyAuthenticator(new okhttp3.Authenticator() {
-                @Nullable
-                @Override
-                public Request authenticate(Route route, Response response) throws IOException {
-                    String credential = Credentials.basic(null, "cxycxycxy");
-                    return response.request().newBuilder()
-                            .header("Proxy-Authorization", credential)
-                            .build();
-                }
-            })
-            .build();
+            .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("38.21.240.36", 3128)))
+            .build();*/
     //
 
     /**8081
@@ -58,8 +54,14 @@ public class OkHttpUtil {
      * @throws IOException
      */
     public static String get(String url) throws Exception {
+        String httpUrl=url;
+        if (isConnected==0){
+            httpUrl=SERVER_URL+url;
+        }else {
+            httpUrl=url;
+        }
         Request request = new Request.Builder()
-                .url(url)
+                .url(httpUrl)
                 .addHeader("Connection", "close")
                 .build();
         Response response = client.newCall(request).execute();
@@ -67,13 +69,61 @@ public class OkHttpUtil {
             response.close();
             throw new Exception("网络连接失败，StatusCode="+response.code());
         }
+        String data=null;
+        if (httpUrl.equals(url)){
+            data=response.body().string();
+        }
+        if (httpUrl.equals(SERVER_URL+url)){
+            String result=response.body().string();
+            JsonParser jsonParser=new JsonParser();
+            JsonObject jsonObject=jsonParser.parse(result).getAsJsonObject();
+            String errCode=jsonObject.get("errCode").getAsString();
+            if (errCode.equals("0000")){
+                data=jsonObject.get("data").getAsString();
+            }else{
+                throw new Exception("获取内容失败");
+            }
+        }
 
-        String data=response.body().string();
+
         response.close();
         return data;
 
     }
 
+    /**
+     * 检查域名的连接
+     * @param domain
+     */
+    public static void checkConnected(String domain){
+
+        Request request = new Request.Builder()
+                .url(domain)
+                .addHeader("Connection", "close")
+                .build();
+        Response response = null;
+        try {
+             response = client.newCall(request).execute();
+             if (response.code()==200){
+                isConnected=1;
+             }else{
+                isConnected=0;
+             }
+        } catch (IOException e) {
+            e.printStackTrace();
+           isConnected=0;
+
+        }finally {
+            if (response!=null){
+                response.close();
+            }
+
+        }
+
+
+
+
+    }
 
     /**
      *
