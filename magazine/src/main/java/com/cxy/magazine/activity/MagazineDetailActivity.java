@@ -82,11 +82,7 @@ public class MagazineDetailActivity extends BasicActivity {
     TextView tv_intro;
     private String httpUrl = "";
     private String magazineTitle = "", magazineIntro = "", magazineTime = "", magazineHistoryHref = "", coverImageUrl = "";
-   // private Bitmap bookCover;
-    private String magazineId;
-    private static final String TAG_CREATE_ORDER = "createOrder";
-    private static final String TAG_PAY_ORDER = "payOrder";
-    private User user;
+
 
 
     @Override
@@ -113,9 +109,7 @@ public class MagazineDetailActivity extends BasicActivity {
 
         httpUrl = getIntent().getStringExtra("href");   //http://www.fx361.com/bk/sdzx/index.html
         String[] names=httpUrl.split("//")[1].split("/");
-        if (names.length>=4){
-            magazineId=names[2]+names[3].split(".html")[0];
-        }
+
 
 
         Thread thread=new GetData();
@@ -134,23 +128,7 @@ public class MagazineDetailActivity extends BasicActivity {
         startActivity(intent);
     }
 
-   //购买书籍
-  /* @OnClick(R.id.buy)
-   public void buy(){
-        user= BmobUser.getCurrentUser(User.class);
-       if (user == null) {   //未登录
-           Utils.showConfirmCancelDialog(MagazineDetailActivity.this, "提示", "请先登录！", new QMUIDialogAction.ActionListener() {
-               @Override
-               public void onClick(QMUIDialog dialog, int i) {
-                   Intent intent1 = new Intent(MagazineDetailActivity.this, LoginActivity.class);
-                   startActivity(intent1);
-               }
-           });
-       } else {
-           showDialog();
-       }
 
-   }*/
 
 
     //浏览往期

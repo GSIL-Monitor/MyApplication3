@@ -186,11 +186,15 @@ public class MagazineListFragment extends BaseFragment {
            @Override
            public void onItemClick(View view, int position) {
                try {
+                   //跳转目录页
                    Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
                    JSONObject jsonObject=dataDisplayArray.getJSONObject(position);
                    //   HashMap hashMap=dataDisplayList.get(position);
-                   String href=jsonObject.getString("href");    //hashMap.get("href").toString();
-                   intent.putExtra("href",href);
+                   String href=jsonObject.getString("href");
+                   String time=jsonObject.getString("time");  // 2018年42期
+                   String timeTemp=time.replace("年","").replace("期","");
+                   String directoryUrl=href.replace("index",timeTemp);
+                   intent.putExtra("href",directoryUrl);
                    startActivity(intent);
                } catch (JSONException e) {
                    e.printStackTrace();

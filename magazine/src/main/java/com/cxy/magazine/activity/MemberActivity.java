@@ -238,7 +238,7 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                         memberList=list;
                         if (list.size() <= 0) {  //未开通会员
                             memberInfo.setText("未开通会员");
-                        } else if (list.size() == 1) {
+                        } else if (list.size() >= 1) {
                             Member queryMember = list.get(0);
                             String finishTime = queryMember.getFinishTime();
                             Calendar nowCal = Calendar.getInstance();  //当前时间
@@ -264,15 +264,16 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
                             }
 
 
-                        }else{   //该用户的会员记录有一条以上
+                        }
+                       /* else{   //该用户的会员记录有一条以上
 
                             Utils.toastMessage(MemberActivity.this, "查询会员状态出错，请联系客服！");
-                            //TODO:设置充值按钮不可用
 
-                        }
+
+                        }*/
                     } else {
                         Utils.toastMessage(MemberActivity.this, "查询会员状态出错，请稍候重试！");
-                        //TODO:设置充值按钮不可用
+
                     }
                 }
             });
