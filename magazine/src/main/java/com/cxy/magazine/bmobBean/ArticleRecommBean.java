@@ -11,6 +11,8 @@ public class ArticleRecommBean extends BmobObject {
     private String articleTitle;
     private String articleTime;
     private String articleId;
+    //赞总数
+    private Integer praiseCount;
     //推荐次数
     private Integer recommCount;
 
@@ -52,5 +54,13 @@ public class ArticleRecommBean extends BmobObject {
 
     public void setRecommCount(Integer recommCount) {
         this.recommCount = recommCount;
+    }
+
+    public Integer getPraiseCount() {
+        return praiseCount;
+    }
+
+    public void setPraiseCount(Integer praiseCount) {
+        this.praiseCount = praiseCount;
     }
 }

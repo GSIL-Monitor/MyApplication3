@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.cxy.magazine.R;
 import com.cxy.magazine.bmobBean.FeedbackBean;
-import com.cxy.magazine.emailUtil.EmailUtil;
 import com.cxy.magazine.util.Utils;
 import com.google.gson.JsonObject;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;

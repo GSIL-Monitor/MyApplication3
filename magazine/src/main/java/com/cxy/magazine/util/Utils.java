@@ -67,6 +67,20 @@ public class Utils {
         dialog.show();
 
     }
+    public static final void showResultDialog(Context context, String msg, String title, QMUIDialogAction.ActionListener listener) {
+        if(msg == null) return;
+        QMUIDialog.MessageDialogBuilder messageDialogBuilder=new QMUIDialog.MessageDialogBuilder(context);
+        QMUIDialog dialog;
+        messageDialogBuilder.setMessage(msg);
+        messageDialogBuilder.setTitle(title);
+        // messageDialogBuilder.setLeftAction("确定",null);
+        messageDialogBuilder.addAction("知道了", listener);
+
+        dialog= messageDialogBuilder.create();
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+
+    }
 
     public static final void showTipDialog(Context context, String message,int iconType) {
         dismissDialog();
@@ -279,7 +293,7 @@ public class Utils {
 
 
     public static  boolean isEmpty(String s){
-        if(s!=null&&s.length()>0){
+        if(s!=null && s.trim().length()>0){
             return false;
         }else{
             return true;

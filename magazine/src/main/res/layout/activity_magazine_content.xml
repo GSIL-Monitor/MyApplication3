@@ -52,11 +52,12 @@
         android:gravity="right"
         android:paddingBottom="3dp">
         <LinearLayout
-            android:id="@+id/recommView"
+            android:id="@+id/praiseView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginRight="30dp">
+            android:layout_marginRight="30dp"
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -65,10 +66,32 @@
                 android:layout_gravity="center_horizontal"/>
 
             <TextView
+                android:id="@+id/praiseTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0赞"
+                android:textSize="10sp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/recommView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="30dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                app:srcCompat="@drawable/ic_comment"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
                 android:id="@+id/recommTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="推荐0"
+                android:text="0评论"
                 android:textSize="10sp"
                 />
         </LinearLayout>

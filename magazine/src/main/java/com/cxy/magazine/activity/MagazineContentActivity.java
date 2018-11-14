@@ -83,12 +83,14 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
     ImageView collectButton;
     @BindView(R.id.recommTv)
     TextView recommTv;
+    @BindView(R.id.praiseTv)
+    TextView praiseTv;
     private User user;
     private String articleObjectId = null;
 
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     private String title = "", articleId = "", time = "";
-    private Integer recommCount = 0;
+    private Integer recommCount = 0,praiseCount=0;
     private String articleRecommId = null;
     private StringBuilder content = null;
     //private static final String MAGAZINE_URL = "http://m.fx361.com";
@@ -177,8 +179,14 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                 if (e == null) {
                     if (list.size() > 0) {
                         recommCount = list.get(0).getRecommCount();  //推荐次数
+                        Integer  resultPraiseCount=list.get(0).getPraiseCount();   //赞的总次数
                         articleRecommId = list.get(0).getObjectId();
-                        recommTv.setText("推荐" + recommCount);
+                        recommTv.setText( recommCount+"评论");
+                        if (resultPraiseCount!=null){
+                            praiseCount=resultPraiseCount;
+                            praiseTv.setText(praiseCount+"赞");
+                        }
+
                     } else {
                         //插入该文章的评论数据
                         ArticleRecommBean recommBean = new ArticleRecommBean();
@@ -187,6 +195,7 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                         recommBean.setArticleTime(time);
                         recommBean.setArticleUrl(intentUrl);
                         recommBean.setRecommCount(0);
+                        recommBean.setPraiseCount(0);
                         recommBean.save(new SaveListener<String>() {
                             @Override
                             public void done(String objectId, BmobException e) {
@@ -259,10 +268,32 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
 
     @OnClick(R.id.recommView)
     public void recommView() {
-        //TODO:推荐
         Intent intent = new Intent(this, CommentActivity.class);
         intent.putExtra("articleRecommId", articleRecommId);
         startActivity(intent);
+
+    }
+
+    //TODO:点赞
+    @OnClick(R.id.praiseView)
+    public  void  praiseArticle(){
+          ArticleRecommBean articleRecommBean=new ArticleRecommBean();
+          articleRecommBean.setObjectId(articleRecommId);
+         // articleRecommBean.increment("praiseCount");
+          articleRecommBean.setPraiseCount(praiseCount+1);
+          articleRecommBean.update(new UpdateListener() {
+              @Override
+              public void done(BmobException e) {
+                  if (e==null){
+                      praiseCount+=1;
+                      praiseTv.setText(praiseCount+"赞");
+                      Utils.showTipDialog(MagazineContentActivity.this,"点赞成功！",QMUITipDialog.Builder.ICON_TYPE_SUCCESS);
+
+                  }else{
+                      Log.e(LOG_TAG,"点赞失败："+e.toString());
+                  }
+              }
+          });
 
     }
 

@@ -152,17 +152,8 @@ public class MessageActivity extends BasicActivity {
                               });
 
                           }
-                         /* else{
-                              msgList.add(msgNotification);
-                          }*/
+
                       }
-                      //重新排序
-            /*          Collections.sort(msgList, new Comparator<MsgNotification>() {
-                          @Override
-                          public int compare(MsgNotification t1, MsgNotification t2) {
-                              return t1.getCreatedAt().compareTo(t2.getCreatedAt());
-                          }
-                      });*/
 
                       mLRecycleView.refreshComplete(1000);  //刷新完成
                       mLRecyclerAdapter.notifyDataSetChanged();

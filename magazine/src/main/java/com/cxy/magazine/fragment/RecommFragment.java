@@ -119,10 +119,22 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
             @Override
             public void onLoadMore() {
                 tvFoot.setText("正在加载更多数据...");
-                //获取推荐数据
-                BmobQuery<ArticleRecommBean> bmobQuery=new BmobQuery<>();
+                //获取推荐数据：查询点赞数或评论大于0的文章
+                BmobQuery<ArticleRecommBean> bmobQuery1=new BmobQuery<>();
+                bmobQuery1.addWhereGreaterThan("praiseCount",0);
+
+                BmobQuery<ArticleRecommBean> bmobQuery2=new BmobQuery<>();
+                bmobQuery2.addWhereGreaterThan("recommCount",0);
+
+                List<BmobQuery<ArticleRecommBean>> queries = new ArrayList<BmobQuery<ArticleRecommBean>>();
+                queries.add(bmobQuery1);
+                queries.add(bmobQuery2);
+
+                BmobQuery<ArticleRecommBean> mainQuery = new BmobQuery<ArticleRecommBean>();
+                mainQuery.or(queries);
+
                 //每次加载50条数据
-                bmobQuery.addWhereGreaterThan("recommCount",0).order("-updatedAt,-recommCount").setSkip(skip).setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
+                mainQuery.order("-updatedAt,-recommCount").setSkip(skip).setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
                     @Override
                     public void done(List<ArticleRecommBean> list, BmobException e) {
                         if (e==null){
@@ -163,9 +175,37 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
     }
     //刷新数据
     public  void refreshData(){
-        //获取推荐数据
-        BmobQuery<ArticleRecommBean> bmobQuery=new BmobQuery<>();
-        bmobQuery.addWhereGreaterThan("recommCount",0).order("-updatedAt,-recommCount").setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
+        //获取推荐数据：查询点赞数或评论大于0的文章
+        BmobQuery<ArticleRecommBean> bmobQuery1=new BmobQuery<>();
+        bmobQuery1.addWhereGreaterThan("praiseCount",0);
+
+        BmobQuery<ArticleRecommBean> bmobQuery2=new BmobQuery<>();
+        bmobQuery2.addWhereGreaterThan("recommCount",0);
+
+        List<BmobQuery<ArticleRecommBean>> queries = new ArrayList<BmobQuery<ArticleRecommBean>>();
+        queries.add(bmobQuery1);
+        queries.add(bmobQuery2);
+
+        BmobQuery<ArticleRecommBean> mainQuery = new BmobQuery<ArticleRecommBean>();
+        mainQuery.or(queries);
+
+        mainQuery.order("-praiseCount,-recommCount").setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
+            @Override
+            public void done(List<ArticleRecommBean> list, BmobException e) {
+                if (e==null){
+                    recommBeanList.clear();
+                    recommBeanList.addAll(list);
+                    mLRecycleView.refreshComplete(list.size());  //刷新完成
+                    mLRecyclerViewAdapter.notifyDataSetChanged();
+                    skip=list.size();
+                    //重新设置广告初始位置
+                    initAdPostion = 7;
+                    initNativeExpressAD();
+                }
+            }
+        });
+
+      /*  bmobQuery.addWhereGreaterThan("praiseCount",0).addWhereGreaterThan("recommCount",0).order("-praiseCount,-recommCount").setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
             @Override
             public void done(List<ArticleRecommBean> list, BmobException e) {
                  if (e==null){
@@ -179,7 +219,7 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
                      initNativeExpressAD();
                  }
             }
-        });
+        });*/
     }
 
     private void initNativeExpressAD() {

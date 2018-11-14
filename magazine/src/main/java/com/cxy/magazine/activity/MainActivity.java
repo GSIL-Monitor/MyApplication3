@@ -164,14 +164,14 @@ public class MainActivity extends BasicActivity {
     public void selectSystemMsg( final User user){
         BmobQuery<MsgNotification> msgQuery = new BmobQuery<>();
         msgQuery.addWhereEqualTo("msgType",2);
-        msgQuery.count(MsgNotification.class, new CountListener() {
+        msgQuery.count(MsgNotification.class, new CountListener() {  //统计系统消息的总数
             @Override
             public void done(final Integer count1, BmobException e) {
                 //查询系统信息阅读记录
                 if (e==null){
                     BmobQuery<MsgReadRecord>  recordQuery=new BmobQuery<>();
                     recordQuery.addWhereEqualTo("user",user);
-                    recordQuery.count(MsgReadRecord.class, new CountListener() {
+                    recordQuery.count(MsgReadRecord.class, new CountListener() {  //统计该用户已读的系统消息数量
                         @Override
                         public void done(Integer count2, BmobException exception) {
 
@@ -231,7 +231,7 @@ public class MainActivity extends BasicActivity {
                       int currentVersion = BuildConfig.VERSION_CODE;
                       if (remoteVersion>currentVersion){   //服务器有新版本
                           //TODO:有新版本
-                          Utils.showConfirmCancelDialog(MainActivity.this, "提示", "检查到新版本(约7M)，是否下载？", new QMUIDialogAction.ActionListener() {
+                          Utils.showConfirmCancelDialog(MainActivity.this, "提示", "检查到新版本(约6M)，是否下载？", new QMUIDialogAction.ActionListener() {
                               @Override
                               public void onClick(QMUIDialog dialog, int index) {
                                   //下载新版本

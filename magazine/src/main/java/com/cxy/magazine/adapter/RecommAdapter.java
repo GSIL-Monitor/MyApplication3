@@ -13,6 +13,8 @@ import com.cxy.magazine.R;
 import com.cxy.magazine.bmobBean.ArticleRecommBean;
 import com.qq.e.ads.nativ.NativeExpressADView;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -88,7 +90,18 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.MyViewHold
             ArticleRecommBean recommBean = (ArticleRecommBean) mData.get(position);
             holder.tvTitle.setText(recommBean.getArticleTitle());
             holder.tvTime.setText(recommBean.getArticleTime());
-            holder.tvCount.setText(recommBean.getRecommCount().toString());
+            Integer recommCount=recommBean.getRecommCount();
+            Integer praiseCount=recommBean.getPraiseCount();
+            if (recommCount==null){
+                recommCount=0;
+            }
+           if (praiseCount==null){
+                praiseCount=0;
+
+           }
+            holder.tvRecommCount.setText(recommCount.toString());
+            holder.tvPraiseCount.setText(praiseCount.toString());
+
         }
     }
 
@@ -112,7 +125,9 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.MyViewHold
         //  @BindView(R.id.recomm_time)
         TextView tvTime;
         // @BindView(R.id.recomm_count)
-        TextView tvCount;
+        TextView tvRecommCount;
+
+        TextView tvPraiseCount;
         // @BindView(R.id.express_ad_container)
         ViewGroup container;
 
@@ -122,7 +137,8 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.MyViewHold
             //ButterKnife.bind(this,view);
             tvTitle = (TextView) view.findViewById(R.id.recomm_title);
             tvTime = (TextView) view.findViewById(R.id.recomm_time);
-            tvCount = (TextView) view.findViewById(R.id.recomm_count);
+            tvRecommCount = (TextView) view.findViewById(R.id.recomm_count);
+            tvPraiseCount=(TextView)view.findViewById(R.id.praise_count);
             container = (ViewGroup) view.findViewById(R.id.express_ad_container);
 
         }
