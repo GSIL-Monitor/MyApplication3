@@ -305,7 +305,7 @@ public class MainActivity extends BasicActivity {
      * @param file  待读取的文件
      * @return  格式化后的文件读取路径
      */
-    public static Uri dealUri_N(Context context, Intent intent, File file){
+    public  Uri dealUri_N(Context context, Intent intent, File file){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
             //添加这一句表示对目标应用临时授权该Uri所代表的文件
             if (intent != null)

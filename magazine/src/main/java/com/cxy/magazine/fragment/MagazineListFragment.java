@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,21 +55,21 @@ public class MagazineListFragment extends BaseFragment {
   //  public static final String MAGAZIENE_URL="http://www.fx361.com";
 
     /**服务器端一共多少条数据*/
-    private static  int TOTAL_COUNTER = 0;
+    private  int TOTAL_COUNTER = 0;
 
     /**每一页展示多少条数据*/
     private static final int REQUEST_COUNT = 10;
 
     /**当前指针*/
-    private static int mCurrentCounter = 0;
+    private int mCurrentCounter = 0;
     private MagazineListAdapter recycleViewAdapter=null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
 
 
 
-    private JSONArray dataArray=new JSONArray();     //总数据
+    private ArrayList<HashMap<String,String>> dataArray=new ArrayList();     //总数据
 
-    private JSONArray dataDisplayArray=new JSONArray();
+    private  ArrayList<HashMap<String,String>> dataDisplayArray=new ArrayList();
 
 
     private Context context;
@@ -103,7 +104,7 @@ public class MagazineListFragment extends BaseFragment {
         if (getArguments() != null) {
             htmlUrl = getArguments().getString(HTTP_URL);
             String[] tempArray=htmlUrl.split("//")[1].split("/");
-            cacheKey=tempArray[1]+tempArray[2].split(".html")[0];
+            cacheKey=tempArray[1]+tempArray[2].split(".html")[0]+"List";
 
         }
 
@@ -161,8 +162,6 @@ public class MagazineListFragment extends BaseFragment {
                     // loading more
 
                     addItems();
-                    mRecyclerView.refreshComplete(REQUEST_COUNT);// REQUEST_COUNT为每页加载数量
-                    mLRecyclerViewAdapter.notifyDataSetChanged();
                 } else {
                     //the end
                     mRecyclerView.setNoMore(true);
@@ -185,33 +184,30 @@ public class MagazineListFragment extends BaseFragment {
        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
            @Override
            public void onItemClick(View view, int position) {
-               try {
+
                    //跳转目录页
                    Intent intent=new Intent(getActivity(), MagazineDetailActivity.class);
-                   JSONObject jsonObject=dataDisplayArray.getJSONObject(position);
+                   HashMap<String,String> dataMap=dataDisplayArray.get(position);
                    //   HashMap hashMap=dataDisplayList.get(position);
-                   String href=jsonObject.getString("href");
-                   String time=jsonObject.getString("time");  // 2018年42期
+                   String href=dataMap.get("href");
+                   String time=dataMap.get("time");  // 2018年42期
                    String timeTemp=time.replace("年","").replace("期","");
                    String directoryUrl=href.replace("index",timeTemp);
                    intent.putExtra("href",directoryUrl);
                    startActivity(intent);
-               } catch (JSONException e) {
-                   e.printStackTrace();
-               }
 
 
            }
        });
 
+       Object cacheArray= mAcache.getAsObject(cacheKey);
 
-       JSONArray cacheArray=mAcache.getAsJSONArray(cacheKey);
-       if (cacheArray!=null&&cacheArray.length()>0){
-           dataArray=cacheArray;
-           TOTAL_COUNTER=dataArray.length();
+       if (cacheArray!=null){
+           dataArray=(ArrayList<HashMap<String,String>>) cacheArray;
+           TOTAL_COUNTER=dataArray.size();
            addItems();
-           mRecyclerView.refreshComplete(REQUEST_COUNT);
-           mLRecyclerViewAdapter.notifyDataSetChanged();
+        /*   mRecyclerView.refreshComplete(REQUEST_COUNT);
+           mLRecyclerViewAdapter.notifyDataSetChanged();*/
        }else{
            //缓存为空，获取数据
            mRecyclerView.refresh();
@@ -223,15 +219,23 @@ public class MagazineListFragment extends BaseFragment {
    private void addItems(){
        int currentSize = mCurrentCounter;
        for (int i = currentSize; i < currentSize+REQUEST_COUNT; i++){
-           try {
-               if (i<dataArray.length() && dataArray.getJSONObject(i)!=null){
-                   dataDisplayArray.put(dataArray.getJSONObject(i));
+
+               if (i<dataArray.size() && dataArray.get(i)!=null){
+                   dataDisplayArray.add(dataArray.get(i));
                    mCurrentCounter += 1;
                }
-           } catch (JSONException e) {
-               e.printStackTrace();
-           }
+
        }
+       if (mRecyclerView!=null){
+           mRecyclerView.post(new Runnable() {
+               public void run() {
+                   mLRecyclerViewAdapter.notifyDataSetChanged();
+                   mRecyclerView.refreshComplete(REQUEST_COUNT);  //刷新完成
+               }
+           });
+       }
+
+
    }
 
 
@@ -243,15 +247,14 @@ public class MagazineListFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
-                case 100:    //重新获取数据
+                case 100:
+                    //重新获取数据
                     mCurrentCounter=0;
                     //清空数据
-                    dataDisplayArray=new JSONArray();
+                    dataDisplayArray.clear();
                     addItems();
-                  //  mRecyclerView.refreshComplete(REQUEST_COUNT);  //刷新完成
-                  //  mLRecyclerViewAdapter.notifyDataSetChanged();
-                    //重新设置Adapter
-                    setAdapter();
+
+
                     break;
                 case 101:   //发生错误
                    // Utils.toastMessage(getActivity(),"出错了，请稍后再试");
@@ -273,14 +276,13 @@ public class MagazineListFragment extends BaseFragment {
 
             @Override
             public void run() {
-                super.run();
-                mCurrentCounter = 0;
-                dataArray=new JSONArray();
-                dataDisplayArray=new JSONArray();
+
+                dataArray.clear();
+
                 try {
                     if (htmlUrl.equals("http://www.fx361.com/bk/hqsb/")){  //环球时报，特殊处理
-                        JSONObject jsonObject=new JSONObject();
-
+                      //  JSONObject jsonObject=new JSONObject();
+                        HashMap<String,String> objectMap=new HashMap<>();
                         String html= OkHttpUtil.get(htmlUrl);
                         Document docHtml = Jsoup.parse(html);
                         Element introDiv = docHtml.getElementsByClass("magBox1").first();
@@ -288,11 +290,11 @@ public class MagazineListFragment extends BaseFragment {
                         String coverImageUrl = introDiv.getElementsByTag("a").first().attr("href");
                         String magazineTitle = docHtml.getElementsByTag("h3").first().text();
                        //String href = docHtml.getElementsByClass("btn_history act_history").first().attr("href");   //没有前缀
-                        jsonObject.put("name",magazineTitle);
-                        jsonObject.put("href","http://www.fx361.com/bk/hqsb/index.html");
-                        jsonObject.put("imageSrc",coverImageUrl);
-                        jsonObject.put("time",magazineTime);
-                        dataArray.put(jsonObject);
+                        objectMap.put("name",magazineTitle);
+                        objectMap.put("href","http://www.fx361.com/bk/hqsb/index.html");
+                        objectMap.put("imageSrc",coverImageUrl);
+                        objectMap.put("time",magazineTime);
+                        dataArray.add(objectMap);
 
 
                     }else{
@@ -302,18 +304,18 @@ public class MagazineListFragment extends BaseFragment {
                         for (Element ul : uls){
                             Elements lis=ul.getElementsByTag("li");
                             for (Element li : lis){
-                                JSONObject jsonObject=new JSONObject();
+                                HashMap<String,String> jsonMap=new HashMap<>();
                                 Element a=li.select("p.pel_m_pic").get(0).getElementsByTag("a").get(0);
 
-                                jsonObject.put("href",ClassFragment.MAGAZIENE_URL+a.attr("href"));
-                                jsonObject.put("imageSrc",a.getElementsByTag("img").get(0).attr("src"));
+                                jsonMap.put("href",ClassFragment.MAGAZIENE_URL+a.attr("href"));
+                                jsonMap.put("imageSrc",a.getElementsByTag("img").get(0).attr("src"));
 
                                 Element p2=li.select("p.pel_name").get(0);
-                                jsonObject.put("name",p2.text());
+                                jsonMap.put("name",p2.text());
 
                                 Element p3=li.select("p.pel_time").get(0);
-                                jsonObject.put("time",p3.text());
-                                dataArray.put(jsonObject);
+                                jsonMap.put("time",p3.text());
+                                dataArray.add(jsonMap);
 
 
                             }
@@ -322,7 +324,8 @@ public class MagazineListFragment extends BaseFragment {
 
                     //缓存数据
                     mAcache.put(cacheKey,dataArray);
-                    TOTAL_COUNTER=dataArray.length();
+
+                    TOTAL_COUNTER=dataArray.size();
                     handler.sendEmptyMessage(100);
 
 

@@ -1,5 +1,6 @@
 package com.cxy.magazine.activity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -82,7 +83,7 @@ public class MagazineDetailActivity extends BasicActivity {
     TextView tv_intro;
     private String httpUrl = "";
     private String magazineTitle = "", magazineIntro = "", magazineTime = "", magazineHistoryHref = "", coverImageUrl = "";
-
+    private Activity activity=null;
 
 
     @Override
@@ -93,7 +94,7 @@ public class MagazineDetailActivity extends BasicActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        activity=this;
         //获取屏幕宽度
         WindowManager m = (WindowManager)this.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -175,18 +176,22 @@ public class MagazineDetailActivity extends BasicActivity {
     }
 
     Handler handler=new Handler(){
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what==100){
-                Glide.with(MagazineDetailActivity.this)
-                        .load(coverImageUrl)
-                        .placeholder(R.drawable.default_book)
-                        .error(R.drawable.default_book)
-                        .into(im_cover);
-                tv_title.setText(magazineTitle);
-                tv_time.setText("更新至"+magazineTime);
-                tv_intro.setText(magazineIntro);
+                if (!isDestroy(activity)){
+                    Glide.with(activity)
+                            .load(coverImageUrl)
+                            .placeholder(R.drawable.default_book)
+                            .error(R.drawable.default_book)
+                            .into(im_cover);
+                    tv_title.setText(magazineTitle);
+                    tv_time.setText("更新至"+magazineTime);
+                    tv_intro.setText(magazineIntro);
+                }
+
             }else if (msg.what==101){
             //    tv_addShelf.setEnabled(false);
                 tv_startRead.setEnabled(false);
@@ -196,6 +201,16 @@ public class MagazineDetailActivity extends BasicActivity {
             }
         }
     };
+
+    //判断Activity是否Destroy
+    public static boolean isDestroy(Activity activity) {
+        if (activity == null || activity.isFinishing() || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 }
 

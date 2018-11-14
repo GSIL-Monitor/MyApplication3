@@ -438,9 +438,12 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
             if (msg.what == 101) {
                 Utils.dismissDialog();
                 String error = "<h3>抱歉，该篇文章暂时无法阅读！<h3>";
-                mWebview.loadData(error, "text/html; charset=UTF-8", null);
-                //设置广告
-                refreshAd();
+                if (mWebview!=null){
+                    mWebview.loadData(error, "text/html; charset=UTF-8", null);
+                    //设置广告
+                    refreshAd();
+                }
+
             }
         }
     };

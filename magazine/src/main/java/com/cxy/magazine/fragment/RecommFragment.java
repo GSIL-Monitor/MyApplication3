@@ -52,7 +52,7 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
     //public static final int MAX_ITEMS = 50;
     public static final int AD_COUNT = 5;    // 加载广告的条数，取值范围为[1, 10]
     public int  initAdPostion = 7; // 第一条广告的位置
-    public static int ITEMS_PER_AD = 8;     // 每间隔10个条目插入一条广告
+    public static final int ITEMS_PER_AD = 8;     // 每间隔10个条目插入一条广告
     private static final String TAG="tencentAd";
     @BindView(R.id.article_recomm_lr)
     LRecyclerView mLRecycleView;
