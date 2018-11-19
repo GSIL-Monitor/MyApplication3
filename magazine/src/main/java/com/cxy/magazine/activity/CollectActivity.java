@@ -31,9 +31,10 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
-public class CollectActivity extends AppCompatActivity {
+public class CollectActivity extends BasicActivity {
 
-    @BindView(R.id.LRecycleView)  LRecyclerView mLRecycleView;
+    @BindView(R.id.LRecycleView)
+    LRecyclerView mLRecycleView;
     CollectAdapter collectAdapter=null;
     LRecyclerViewAdapter mLRecyclerAdapter=null;
     List<CollectBean> collectBeanList=null;
@@ -62,7 +63,7 @@ public class CollectActivity extends AppCompatActivity {
         mLRecycleView.setLoadMoreEnabled(false);
         //设置间隔线
         DividerDecoration divider = new DividerDecoration.Builder(this)
-                .setHeight(R.dimen.default_divider_height)
+                .setHeight(R.dimen.thin_divider_height)
                 .setPadding(R.dimen.default_divider_padding)
                 .setColorResource(R.color.layoutBackground)
                 .build();
@@ -96,7 +97,7 @@ public class CollectActivity extends AppCompatActivity {
         User user= BmobUser.getCurrentUser(User.class);
         BmobQuery<CollectBean> query=new BmobQuery<CollectBean>();
         query.addWhereEqualTo("user",user);
-        query.findObjects(new FindListener<CollectBean>() {
+        query.order("-createdAt").findObjects(new FindListener<CollectBean>() {
             @Override
             public void done(List<CollectBean> list, BmobException e) {
                 if (e==null && list!=null){

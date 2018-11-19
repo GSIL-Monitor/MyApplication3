@@ -67,6 +67,20 @@ public class Utils {
         dialog.show();
 
     }
+    public static final void showResultDialog(Context context, String msg, String title, QMUIDialogAction.ActionListener listener) {
+        if(msg == null) return;
+        QMUIDialog.MessageDialogBuilder messageDialogBuilder=new QMUIDialog.MessageDialogBuilder(context);
+        QMUIDialog dialog;
+        messageDialogBuilder.setMessage(msg);
+        messageDialogBuilder.setTitle(title);
+        // messageDialogBuilder.setLeftAction("确定",null);
+        messageDialogBuilder.addAction("知道了", listener);
+
+        dialog= messageDialogBuilder.create();
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+
+    }
 
     public static final void showTipDialog(Context context, String message,int iconType) {
         dismissDialog();
@@ -91,22 +105,6 @@ public class Utils {
                 }
             }).start();
 
-        }
-
-
-
-        if (iconType!=QMUITipDialog.Builder.ICON_TYPE_LOADING){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(1500);
-                        tipDialog.dismiss();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
         }
 
 
@@ -295,7 +293,7 @@ public class Utils {
 
 
     public static  boolean isEmpty(String s){
-        if(s!=null&&s.length()>0){
+        if(s!=null && s.trim().length()>0){
             return false;
         }else{
             return true;
@@ -331,8 +329,23 @@ public class Utils {
      * @return 校验通过返回true，否则返回false
      */
     public static boolean isMobile(String mobile) {
-        String REGEX_MOBILE = "^((17[0-9])|(14[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
-        return Pattern.matches(REGEX_MOBILE, mobile);
+        Pattern p = Pattern.compile("^[1][3,4,5,7,8][0-9]{9}$"); // 验证手机号
+        Matcher m = p.matcher(mobile);
+        boolean result = m.matches();
+        return  result;
+    }
+
+    /**
+     * 校验邮箱
+     * @param email
+     * @return 校验通过返回true，否则返回false
+     */
+    public static boolean isEmail(String email){
+        String check = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        Pattern regex = Pattern.compile(check);
+        Matcher matcher = regex.matcher(email);
+        return  matcher.matches();
+
     }
 
     /**

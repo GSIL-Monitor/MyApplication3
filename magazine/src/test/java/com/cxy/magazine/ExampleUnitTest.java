@@ -4,6 +4,8 @@ import com.cxy.magazine.util.Utils;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -52,7 +54,19 @@ public class ExampleUnitTest {
             System.out.println("随机数："+r);
         }
 
+    }
 
-
+    @Test
+    public void  testList(){
+        List<String> list=new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        for (String i : list){
+            i+="1";
+        }
+        for (String i: list){
+            System.out.println("i="+i);
+        }
     }
 }

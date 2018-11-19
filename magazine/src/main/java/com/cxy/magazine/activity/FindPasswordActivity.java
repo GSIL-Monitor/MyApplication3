@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.Utils;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.BmobUser;
@@ -91,48 +93,70 @@ public class FindPasswordActivity extends BasicActivity implements View.OnClickL
                     }
                 });
             }else{
-                Utils.showResultDialog(FindPasswordActivity.this,"请输入有效的手机号！",null);
+                Utils.toastMessage(FindPasswordActivity.this,"请输入有效的手机号");
             }
         }
 
         if (v.getId()==R.id.btn_resetPassword){
+            phoneNumber=etPhoneNumber.getText().toString();
             phoneVertifyCode=etPhoneCode.getText().toString();
-           final String email=etEmail.getText().toString();
+            final String email=etEmail.getText().toString();
 
              if (!Utils.isEmpty(phoneNumber)){
-                 if (!Utils.isEmpty(phoneVertifyCode)){
-                     //手机号重置密码
-                     User.resetPasswordBySMSCode(phoneVertifyCode, Utils.encryptBySHA("1234567"), new UpdateListener() {
+
+                 if (Utils.isMobile(phoneNumber)){
+                     if (!Utils.isEmpty(phoneVertifyCode)){
+                         //手机号重置密码
+                         User.resetPasswordBySMSCode(phoneVertifyCode, Utils.encryptBySHA("1234567"), new UpdateListener() {
+                             @Override
+                             public void done(BmobException ex) {
+                                 if(ex==null){
+                                     Log.i("smile", "密码重置成功");
+                                     Utils.showResultDialog(FindPasswordActivity.this, "密码已被重置为：1234567！请及时修改你的密码", null, new QMUIDialogAction.ActionListener() {
+                                         @Override
+                                         public void onClick(QMUIDialog dialog, int index) {
+                                             finish();
+                                         }
+                                     });
+                                 }else{
+                                     Utils.showResultDialog(FindPasswordActivity.this,"密码重置失败：code ="+ex.getErrorCode()+",msg = "+ex.getLocalizedMessage(),null);
+                                     Log.i("smile", "重置失败：code ="+ex.getErrorCode()+",msg = "+ex.getLocalizedMessage());
+                                 }
+                             }
+                         });
+
+                     }else {
+                         Utils.toastMessage(FindPasswordActivity.this,"请输入验证码");
+                     }
+                 }else{
+                     Utils.toastMessage(FindPasswordActivity.this,"请输入有效的手机号");
+                 }
+
+
+             }
+            else if (!Utils.isEmpty(email)){
+                 if (!Utils.isEmail(email)){
+                     Utils.toastMessage(FindPasswordActivity.this,"请输入有效的邮箱");
+                 }else{
+                     //邮箱重置密码
+                     BmobUser.resetPasswordByEmail(email, new UpdateListener() {
+
                          @Override
-                         public void done(BmobException ex) {
-                             if(ex==null){
-                                 Log.i("smile", "密码重置成功");
-                                 Utils.showResultDialog(FindPasswordActivity.this,"密码已被重置为：1234567！请及时修改你的密码",null);
+                         public void done(BmobException e) {
+                             if(e==null){
+                                 Utils.showResultDialog(FindPasswordActivity.this, "重置密码请求成功，请到" + email + "邮箱进行密码重置操作", null, new QMUIDialogAction.ActionListener() {
+                                     @Override
+                                     public void onClick(QMUIDialog dialog, int index) {
+                                         finish();
+                                     }
+                                 });
                              }else{
-                                 Utils.showResultDialog(FindPasswordActivity.this,"密码重置失败：code ="+ex.getErrorCode()+",msg = "+ex.getLocalizedMessage(),null);
-                                 Log.i("smile", "重置失败：code ="+ex.getErrorCode()+",msg = "+ex.getLocalizedMessage());
+                                 Utils.toastMessage(FindPasswordActivity.this,"重置失败"+e.getMessage());
                              }
                          }
                      });
-
-                 }else {
-                     Utils.showResultDialog(FindPasswordActivity.this,"请输入手机验证码",null);
                  }
 
-             }
-             if (!Utils.isEmpty(email)){
-                 //邮箱重置密码
-                 BmobUser.resetPasswordByEmail(email, new UpdateListener() {
-
-                     @Override
-                     public void done(BmobException e) {
-                         if(e==null){
-                             Utils.showResultDialog(FindPasswordActivity.this,"重置密码请求成功，请到" + email + "邮箱进行密码重置操作",null);
-                         }else{
-                             Utils.toastMessage(FindPasswordActivity.this,"重置失败"+e.getMessage());
-                         }
-                     }
-                 });
 
              }else{
                  Utils.showResultDialog(FindPasswordActivity.this,"请输入手机或者邮箱，用以重置密码",null);

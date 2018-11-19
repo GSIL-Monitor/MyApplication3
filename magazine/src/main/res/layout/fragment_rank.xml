@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragment.RankFragment">
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/rank_lr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:visibility="gone">
+    </com.github.jdsjlzx.recyclerview.LRecyclerView>
+
+    <com.qmuiteam.qmui.widget.QMUIEmptyView
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/qmui_config_color_white"
+        app:qmui_detail_text="加载内容失败，请稍后重试"
+        app:qmui_title_text="提示"
+        android:visibility="visible"/>
+
+
+</LinearLayout>

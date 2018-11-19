@@ -17,10 +17,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cxy.magazine.R;
-import com.cxy.magazine.emailUtil.EmailUtil;
+import com.cxy.magazine.bmobBean.FeedbackBean;
 import com.cxy.magazine.util.Utils;
 import com.google.gson.JsonObject;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 
 public class FeedbackActivity extends BasicActivity {
@@ -57,7 +60,7 @@ public class FeedbackActivity extends BasicActivity {
                 email=editEmail.getText().toString();
                 if (feedback.length()>0){
                  //   Utils.showProgressDialog(FeedbackActivity.this,"正在发送，请稍候");
-                    Utils.showTipDialog(FeedbackActivity.this,"正在发送，请稍候", QMUITipDialog.Builder.ICON_TYPE_LOADING);
+                 /*   Utils.showTipDialog(FeedbackActivity.this,"正在发送，请稍候", QMUITipDialog.Builder.ICON_TYPE_LOADING);
                     Thread thread=new Thread(new Runnable() {
                        @Override
                        public void run() {
@@ -77,7 +80,35 @@ public class FeedbackActivity extends BasicActivity {
                    }) ;
 
                     thread.start();
+                  */
 
+                    FeedbackBean feedbackBean=new FeedbackBean();
+                    feedbackBean.setFeedBackContent(feedback);
+                    feedbackBean.setEmail(email);
+                    feedbackBean.setQq(qq);
+                    feedbackBean.setWechat(weChat);
+
+                    feedbackBean.save(new SaveListener<String>() {
+                        @Override
+                        public void done(String s, BmobException e) {
+                             if (e==null){
+                                 AlertDialog.Builder builder=new AlertDialog.Builder(FeedbackActivity.this);
+                                 builder.setMessage("反馈成功，感谢你的反馈！");
+                                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                     @Override
+                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                        finish();
+                                     }
+                                 });
+
+                                 AlertDialog alertDialog=builder.create();
+                                 alertDialog.setCancelable(false);
+                                 alertDialog.show();
+                             }  else{
+                                 new AlertDialog.Builder(FeedbackActivity.this).setMessage("提交失败，请稍候重试！").setPositiveButton("确定", null).create().show();
+                             }
+                        }
+                    });
 
 
                 }else{
@@ -89,7 +120,7 @@ public class FeedbackActivity extends BasicActivity {
 
 
 
-    private Handler mUIHandler = new Handler() {
+    /*private Handler mUIHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             Utils.dismissDialog();
@@ -115,7 +146,7 @@ public class FeedbackActivity extends BasicActivity {
                     break;
             }
         }
-    };
+    };*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

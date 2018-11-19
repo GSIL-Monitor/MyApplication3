@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.Utils;
+import com.qmuiteam.qmui.util.QMUIKeyboardHelper;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.exception.BmobException;
@@ -166,22 +169,27 @@ public class RegisterActivity extends BasicActivity implements View.OnClickListe
                     });
 
                 }else{
-                    user.setEmail(email);
-                    user.signUp(new SaveListener<Object>() {
-                        @Override
-                        public void done(Object o, BmobException e) {
-                            if (e==null){
-                                new AlertDialog.Builder(RegisterActivity.this).setMessage("注册成功！请返回登录").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        finish();
-                                    }
-                                }).create().show();
-                            }else{
-                                Utils.showResultDialog(RegisterActivity.this,"注册失败："+e.getErrorCode()+","+e.getMessage(),null);
+                    if (Utils.isEmail(email)){
+                        user.setEmail(email);
+                        user.signUp(new SaveListener<Object>() {
+                            @Override
+                            public void done(Object o, BmobException e) {
+                                if (e==null){
+                                    new AlertDialog.Builder(RegisterActivity.this).setMessage("注册成功！请返回登录").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            finish();
+                                        }
+                                    }).create().show();
+                                }else{
+                                    Utils.showResultDialog(RegisterActivity.this,"注册失败："+e.getErrorCode()+","+e.getMessage(),null);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }else{
+                        Utils.showTipDialog(RegisterActivity.this,"无效的邮箱地址", QMUITipDialog.Builder.ICON_TYPE_FAIL);
+                    }
+
                 }
 
 

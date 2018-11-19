@@ -91,7 +91,7 @@ public class MagazineHistoryActivity extends BasicActivity {
                 }
 
                 uiHandler.sendEmptyMessage(100);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 uiHandler.sendEmptyMessage(101);
 

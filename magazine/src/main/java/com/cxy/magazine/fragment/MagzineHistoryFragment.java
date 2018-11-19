@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import android.support.v4.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -127,7 +127,7 @@ public class MagzineHistoryFragment extends BaseFragment {
                   dataDisplayList.add(map);
                   uiHandler.sendEmptyMessage(100);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 uiHandler.sendEmptyMessage(101);
             }

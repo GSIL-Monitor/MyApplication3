@@ -32,7 +32,7 @@
            android:id="@+id/tv"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:text="你的联系方式（选填）："
+           android:text="你的联系方式（请至少填写一个）："
            android:layout_marginTop="15dp"
            android:textColor="#000"
            android:textSize="17sp"

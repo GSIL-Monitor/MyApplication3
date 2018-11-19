@@ -33,6 +33,7 @@ import com.cxy.magazine.activity.InviteActivity;
 import com.cxy.magazine.activity.MainActivity;
 import com.cxy.magazine.activity.MessageActivity;
 import com.cxy.magazine.bmobBean.MsgNotification;
+import com.cxy.magazine.bmobBean.MsgReadRecord;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.MyApplication;
 import com.cxy.magazine.R;
@@ -52,6 +53,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BatchResult;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListListener;
 
@@ -367,35 +369,60 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
         final ImageView msgImg = (ImageView) msgLayout.findViewById(R.id.msg_notify_img);
 
         if (user != null) {
+
+
             BmobQuery<MsgNotification> msgQuery = new BmobQuery<>();
             msgQuery.addWhereEqualTo("user", user);
-            msgQuery.findObjects(new FindListener<MsgNotification>() {
+            msgQuery.addWhereEqualTo("isRead",false);
+            msgQuery.count(MsgNotification.class, new CountListener() {
                 @Override
-                public void done(List<MsgNotification> list, BmobException e) {
-                    if (e == null && list != null) {
-                        boolean hasNotRead = false;
-                        if (list.size() > 0) {
-                            for (MsgNotification msg : list) {
-                                if (!msg.getRead()) {
-                                    hasNotRead = true;
-                                    break;
-                                }
-                            }
-
-                        }
-                        if (hasNotRead) {
+                public void done(Integer integer, BmobException e) {
+                    if (e==null){
+                        if (integer>0){   //有未读消息
                             msgImg.setVisibility(View.VISIBLE);
-                        } else {
-                            msgImg.setVisibility(View.GONE);
+                        }else{
+                            selectSystemMsg(msgImg);
                         }
-                    } else {
+                    }else{
                         Utils.toastMessage(getActivity(), e.getMessage());
                         Log.i("bmob", e.toString());
                     }
+
                 }
             });
+
+
         } else {   //没有登陆
             msgImg.setVisibility(View.GONE);
         }
+    }
+
+    public void selectSystemMsg(final ImageView msgImg){
+        BmobQuery<MsgNotification> msgQuery = new BmobQuery<>();
+        msgQuery.addWhereEqualTo("msgType",2);
+        msgQuery.count(MsgNotification.class, new CountListener() {
+            @Override
+            public void done(final Integer count1, BmobException e) {
+                 //查询系统信息阅读记录
+                if (e==null){
+                    BmobQuery<MsgReadRecord>  recordQuery=new BmobQuery<>();
+                    recordQuery.addWhereEqualTo("user",user);
+                    recordQuery.count(MsgReadRecord.class, new CountListener() {
+                        @Override
+                        public void done(Integer count2, BmobException exception) {
+
+                            if (exception==null && count1>count2){   //有未读的系统消息
+                                msgImg.setVisibility(View.VISIBLE);
+                            }else{
+                                msgImg.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+                }else{
+                    msgImg.setVisibility(View.GONE);
+                }
+
+            }
+        });
     }
 }

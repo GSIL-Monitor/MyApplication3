@@ -1,5 +1,6 @@
 package com.cxy.magazine.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import com.cxy.magazine.view.SampleFooter;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.qmuiteam.qmui.util.QMUIKeyboardHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +39,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-public class CommentActivity extends AppCompatActivity {
+public class CommentActivity extends BasicActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -136,6 +139,11 @@ public class CommentActivity extends AppCompatActivity {
                             public void done(BmobException e) {
                                 if (e == null) {
                                     Utils.toastMessage(CommentActivity.this, "你已成功推荐该篇文章");
+                                    //关闭键盘
+                                    // hintKeyBoard();
+                                    QMUIKeyboardHelper.hideKeyboard(editText);
+                                     //输入框清空
+                                    editText.setText("");
                                     commentList.add(0,recommBean);
                                     mAdapter.notifyDataSetChanged();
                                 }
@@ -149,6 +157,19 @@ public class CommentActivity extends AppCompatActivity {
         }
     }
 
+    //关闭键盘
+    public void hintKeyBoard() {
+        //拿到InputMethodManager
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //如果window上view获取焦点 && view不为空
+        if (imm.isActive() && getCurrentFocus() != null) {
+            //拿到view的token 不为空
+            if (getCurrentFocus().getWindowToken() != null) {
+                //表示软键盘窗口总是隐藏，除非开始时以SHOW_FORCED显示。
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

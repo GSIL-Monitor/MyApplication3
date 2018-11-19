@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,12 +31,12 @@ import butterknife.ButterKnife;
 
 public class MagazineListAdapter extends RecyclerView.Adapter<MagazineListAdapter.MyViewHolder>{
     private Context context;
-    private JSONArray dataDisplayList;
+    private ArrayList<HashMap<String,String>> dataDisplayList;
     private GridLayoutManager gridLayoutManager;
 
   //  private Bitmap defaultImage;
 
-    public MagazineListAdapter(Context context, JSONArray dataDisplayList, GridLayoutManager gridLayoutManager) {
+    public MagazineListAdapter(Context context, ArrayList<HashMap<String,String>> dataDisplayList, GridLayoutManager gridLayoutManager) {
         this.context = context;
         this.dataDisplayList = dataDisplayList;
         this.gridLayoutManager=gridLayoutManager;
@@ -53,11 +54,11 @@ public class MagazineListAdapter extends RecyclerView.Adapter<MagazineListAdapte
         //final HashMap hashMap=dataDisplayList.get(position);
         //final String imageSrc=hashMap.get("imageSrc").toString();
 
-        try {
-            JSONObject jsonObject=dataDisplayList.getJSONObject(position);
 
-            holder.tvCoverName.setText(jsonObject.getString("name"));    //hashMap.get("name").toString()
-            holder.tvCoverOrder.setText("更新至"+jsonObject.getString("time"));                         //hashMap.get("time").toString()
+           // JSONObject jsonObject=dataDisplayList.getJSONObject(position);
+            HashMap<String,String> jsonObject=dataDisplayList.get(position);
+            holder.tvCoverName.setText(jsonObject.get("name"));    //hashMap.get("name").toString()
+            holder.tvCoverOrder.setText("更新至"+jsonObject.get("time"));                         //hashMap.get("time").toString()
 
 
             int width=(gridLayoutManager.getWidth()-120)/2;
@@ -69,22 +70,21 @@ public class MagazineListAdapter extends RecyclerView.Adapter<MagazineListAdapte
 
 
             Glide.with(context)
-                    .load(jsonObject.getString("imageSrc"))
+                    .load(jsonObject.get("imageSrc"))
                     .placeholder(R.drawable.default_book)
                     .error(R.drawable.default_book)
+                    .override(width,height)
                     .into(holder.imCover);
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
 
-    }
+
 
 
 
     @Override
     public int getItemCount() {
-        return dataDisplayList.length();
+        return dataDisplayList.size();
     }
 
 

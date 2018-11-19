@@ -12,6 +12,8 @@ public class MsgNotification extends BmobObject {
    private String detail;
    private Boolean isRead;  //是否已读
 
+    private Integer msgType;  //消息类型，1普通类型，2系统通知
+
     public User getUser() {
         return user;
     }
@@ -42,5 +44,13 @@ public class MsgNotification extends BmobObject {
 
     public void setRead(Boolean read) {
         isRead = read;
+    }
+
+    public Integer getMsgType() {
+        return msgType;
+    }
+
+    public void setMsgType(Integer msgType) {
+        this.msgType = msgType;
     }
 }

@@ -6,7 +6,7 @@
     <color name="layoutBackground">#e2e2e2</color>
     <color name="colorFontText">#373737</color>
     <color name="colorFontTitle">#000</color>
-    <color name="colorFontHint">#A9A9A9</color>
-    <color name="colorFontDisable">#747474</color>
+    <color name="colorFontHint">#747474</color>
+    <color name="colorFontDisable">#545353</color>
 
 </resources>

@@ -2,41 +2,66 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/dp_10">
+    android:paddingTop="@dimen/dp_10"
+    android:paddingLeft="@dimen/dp_10"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingBottom="2dp">
   <TextView
       android:id="@+id/recomm_title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="文章标题"
-      android:textSize="18sp"/>
+      android:textSize="@dimen/item_text"/>
     <TextView
         android:id="@+id/recomm_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recomm_title"
         android:text="2018-08-17 03:43:28 博客天下2018年15期"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="15dp"
         android:textColor="@color/colorFontDisable"
-        />
+       />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recomm_time"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/dp_10"
         android:gravity="right">
+        <TextView
+            android:id="@+id/praise_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/colorFontHint"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/tv_praise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="赞"
+            android:layout_toRightOf="@id/praise_count"
+            android:layout_marginLeft="6dp"
+            android:textColor="@color/colorFontHint"
+            android:textSize="14sp"/>
+
         <TextView
             android:id="@+id/recomm_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="50" />
+            android:text="0"
+            android:textColor="@color/colorFontHint"
+            android:textSize="14sp"
+            android:layout_toRightOf="@id/tv_praise"
+            android:layout_marginLeft="20dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="推荐"
+            android:text="评论"
             android:layout_toRightOf="@id/recomm_count"
-            android:layout_marginLeft="6dp"/>
+            android:layout_marginLeft="6dp"
+            android:textColor="@color/colorFontHint"
+            android:textSize="14sp"/>
 
     </RelativeLayout>
 </RelativeLayout>

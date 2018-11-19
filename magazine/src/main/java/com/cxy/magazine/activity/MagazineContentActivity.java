@@ -37,9 +37,6 @@ import com.cxy.magazine.jsInterface.JavascriptInterface;
 import com.cxy.magazine.util.Constants;
 import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.Utils;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
@@ -86,17 +83,20 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
     ImageView collectButton;
     @BindView(R.id.recommTv)
     TextView recommTv;
+    @BindView(R.id.praiseTv)
+    TextView praiseTv;
     private User user;
     private String articleObjectId = null;
 
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     private String title = "", articleId = "", time = "";
-    private Integer recommCount = 0;
+    private Integer recommCount = 0,praiseCount=0;
     private String articleRecommId = null;
     private StringBuilder content = null;
-    private static final String MAGAZINE_URL = "http://m.fx361.com";
+    //private static final String MAGAZINE_URL = "http://m.fx361.com";
+    private static final String MAGAZINE_URL = "http://www.fx361.com";
     private String htmlStr = "<html><head><meta charset=\"utf-8\"><style type=\"text/css\">"
-            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:200%;margin-top:30px;} img{width:100%;}  .sj{font-size:15px;color:#a6a5a5;}"
+            + "body{margin-left:15px;margin-right:12px;}h3{font-size:22px;} p{font-size:18px;color:#373737;line-height:200%;margin-top:30px;} img{width:100%;}  .time_source{font-size:15px;color:#a6a5a5;}"
             + "</style></head><body>";
     private boolean isCollect = false;    //是否收藏
     private String intentUrl = "";
@@ -107,8 +107,6 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
     private int checkedIndex = 1;
     //广告id数组
     private String[] adIds = {Constants.NativeExpressPosID1, Constants.NativeExpressPosID2, Constants.NativeExpressPosID3};
-    @BindView(R.id.adView)
-    AdView mAdView;
 
 
     @Override
@@ -122,7 +120,8 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setWebView();
         intentUrl = getIntent().getStringExtra("url");
-        httpUrl = (MAGAZINE_URL + intentUrl).replace("page", "news").replace("shtml", "html");    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+      //  httpUrl = (MAGAZINE_URL + intentUrl).replace("page", "news").replace("shtml", "html");    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
+        httpUrl = MAGAZINE_URL + intentUrl;    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
         articleId = intentUrl.split("/")[4].split(".shtml")[0];
 
         content = new StringBuilder(htmlStr);
@@ -180,8 +179,14 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                 if (e == null) {
                     if (list.size() > 0) {
                         recommCount = list.get(0).getRecommCount();  //推荐次数
+                        Integer  resultPraiseCount=list.get(0).getPraiseCount();   //赞的总次数
                         articleRecommId = list.get(0).getObjectId();
-                        recommTv.setText("推荐" + recommCount);
+                        recommTv.setText( recommCount+"评论");
+                        if (resultPraiseCount!=null){
+                            praiseCount=resultPraiseCount;
+                            praiseTv.setText(praiseCount+"赞");
+                        }
+
                     } else {
                         //插入该文章的评论数据
                         ArticleRecommBean recommBean = new ArticleRecommBean();
@@ -190,6 +195,7 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                         recommBean.setArticleTime(time);
                         recommBean.setArticleUrl(intentUrl);
                         recommBean.setRecommCount(0);
+                        recommBean.setPraiseCount(0);
                         recommBean.save(new SaveListener<String>() {
                             @Override
                             public void done(String objectId, BmobException e) {
@@ -262,10 +268,32 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
 
     @OnClick(R.id.recommView)
     public void recommView() {
-        //TODO:推荐
         Intent intent = new Intent(this, CommentActivity.class);
         intent.putExtra("articleRecommId", articleRecommId);
         startActivity(intent);
+
+    }
+
+    //TODO:点赞
+    @OnClick(R.id.praiseView)
+    public  void  praiseArticle(){
+          ArticleRecommBean articleRecommBean=new ArticleRecommBean();
+          articleRecommBean.setObjectId(articleRecommId);
+         // articleRecommBean.increment("praiseCount");
+          articleRecommBean.setPraiseCount(praiseCount+1);
+          articleRecommBean.update(new UpdateListener() {
+              @Override
+              public void done(BmobException e) {
+                  if (e==null){
+                      praiseCount+=1;
+                      praiseTv.setText(praiseCount+"赞");
+                      Utils.showTipDialog(MagazineContentActivity.this,"点赞成功！",QMUITipDialog.Builder.ICON_TYPE_SUCCESS);
+
+                  }else{
+                      Log.e(LOG_TAG,"点赞失败："+e.toString());
+                  }
+              }
+          });
 
     }
 
@@ -286,41 +314,6 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
         nativeExpressAD.loadAD(1);
     }
 
-    private void refreshAdmob() {
-
-
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-               Log.e("admob","广告加载失败");
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Code to be executed when when the user is about to return
-                // to the app after tapping on an ad.
-            }
-        });
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-    }
 
     @Override
     public void onNoAD(AdError adError) {
@@ -398,7 +391,7 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
 
     public void setWebView() {
         mWebSettings = mWebview.getSettings();
-        mWebSettings.setTextSize(WebSettings.TextSize.NORMAL);
+      //  mWebSettings.setTextSize(WebSettings.TextSize.NORMAL);
         // 设置与Js交互的权限
         mWebSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
@@ -437,12 +430,13 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                 String html = OkHttpUtil.get(httpUrl);
                 if (!Utils.isEmpty(html)) {
                     Document docHtml = Jsoup.parse(html);
-                    Element mainDiv = docHtml.getElementsByClass("main").first();
-                    title = mainDiv.getElementsByClass("bt").first().text();  //文章标题   h3
-                    time = mainDiv.getElementsByClass("sj").first().text();
-                    mainDiv.getElementsByTag("h3").get(1).remove();
-                    mainDiv.getElementsByClass("others").first().remove();
-                    content.append(mainDiv.html());
+                    Element mainDiv = docHtml.getElementsByClass("detail_main").first();
+                    title = mainDiv.getElementsByTag("h1").first().text();  //文章标题   h3
+                    time = mainDiv.getElementsByClass("time_source").first().text();
+                    mainDiv.getElementsByClass("detail_body").first().getElementsByClass("other_pel mt80").remove();
+                    mainDiv.getElementsByClass("detail_body").first().getElementsByClass("txt").remove();
+
+                    content.append(mainDiv.html().replace("h3","h4").replace("h1","h3"));
                     content.append("</body></html>");
                     uiHandler.sendEmptyMessage(100);
                 }
@@ -469,16 +463,18 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                 //查询推荐情况
                 selectRecomm();
                 //TODO：设置腾讯广告
-                // refreshAd();
-                //设置Google广告
-                refreshAdmob();
+                 refreshAd();
+
             }
             if (msg.what == 101) {
                 Utils.dismissDialog();
                 String error = "<h3>抱歉，该篇文章暂时无法阅读！<h3>";
-                mWebview.loadData(error, "text/html; charset=UTF-8", null);
-                //设置广告
-                refreshAd();
+                if (mWebview!=null){
+                    mWebview.loadData(error, "text/html; charset=UTF-8", null);
+                    //设置广告
+                    refreshAd();
+                }
+
             }
         }
     };
@@ -516,18 +512,27 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                     public void onClick(DialogInterface dialog, int which) {
                         //   Toast.makeText(MagazineContentActivity.this, "你选择了 " + items[which], Toast.LENGTH_SHORT).show();
                         //TODO:改变字体大小
+                        String html="";
                         switch (which) {
                             case 0:
-                                mWebSettings.setTextSize(WebSettings.TextSize.SMALLER);
+                               // mWebSettings.setTextSize(WebSettings.TextSize.SMALLER);
+                                html=content.toString().replace("18px","16px").replace("22px","20px");
+                                mWebview.loadData(html, "text/html; charset=UTF-8", null);
                                 break;
                             case 1:
-                                mWebSettings.setTextSize(WebSettings.TextSize.NORMAL);
+                               // mWebSettings.setTextSize(WebSettings.TextSize.NORMAL);
+                                html=content.toString().replace("18px","18px").replace("22px","20px");
+                                mWebview.loadData(html, "text/html; charset=UTF-8", null);
                                 break;
                             case 2:
-                                mWebSettings.setTextSize(WebSettings.TextSize.LARGER);
+                                html=content.toString().replace("18px","20px").replace("22px","24px");
+                                mWebview.loadData(html, "text/html; charset=UTF-8", null);
+                               // mWebSettings.setTextSize(WebSettings.TextSize.LARGER);
                                 break;
                             case 3:
-                                mWebSettings.setTextSize(WebSettings.TextSize.LARGEST);
+                                html=content.toString().replace("18px","22px").replace("22px","26px");
+                                mWebview.loadData(html, "text/html; charset=UTF-8", null);
+                              //  mWebSettings.setTextSize(WebSettings.TextSize.LARGEST);
                                 break;
 
                         }

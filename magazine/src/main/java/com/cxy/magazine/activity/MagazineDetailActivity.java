@@ -1,5 +1,6 @@
 package com.cxy.magazine.activity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,17 +40,6 @@ import com.cxy.magazine.bmobBean.BuyBean;
 import com.cxy.magazine.bmobBean.User;
 import com.cxy.magazine.R;
 import com.cxy.magazine.util.OkHttpUtil;
-import com.cxy.magazine.util.ResponseParam;
-import com.cxy.magazine.util.Utils;
-import com.eagle.pay66.Pay66;
-import com.eagle.pay66.listener.CommonListener;
-import com.eagle.pay66.vo.OrderPreMessage;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -93,11 +83,7 @@ public class MagazineDetailActivity extends BasicActivity {
     TextView tv_intro;
     private String httpUrl = "";
     private String magazineTitle = "", magazineIntro = "", magazineTime = "", magazineHistoryHref = "", coverImageUrl = "";
-   // private Bitmap bookCover;
-    private String magazineId;
-    private static final String TAG_CREATE_ORDER = "createOrder";
-    private static final String TAG_PAY_ORDER = "payOrder";
-    private User user;
+    private Activity activity=null;
 
 
     @Override
@@ -108,7 +94,7 @@ public class MagazineDetailActivity extends BasicActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        activity=this;
         //获取屏幕宽度
         WindowManager m = (WindowManager)this.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -124,9 +110,7 @@ public class MagazineDetailActivity extends BasicActivity {
 
         httpUrl = getIntent().getStringExtra("href");   //http://www.fx361.com/bk/sdzx/index.html
         String[] names=httpUrl.split("//")[1].split("/");
-        if (names.length>=4){
-            magazineId=names[2]+names[3].split(".html")[0];
-        }
+
 
 
         Thread thread=new GetData();
@@ -145,23 +129,7 @@ public class MagazineDetailActivity extends BasicActivity {
         startActivity(intent);
     }
 
-   //购买书籍
-  /* @OnClick(R.id.buy)
-   public void buy(){
-        user= BmobUser.getCurrentUser(User.class);
-       if (user == null) {   //未登录
-           Utils.showConfirmCancelDialog(MagazineDetailActivity.this, "提示", "请先登录！", new QMUIDialogAction.ActionListener() {
-               @Override
-               public void onClick(QMUIDialog dialog, int i) {
-                   Intent intent1 = new Intent(MagazineDetailActivity.this, LoginActivity.class);
-                   startActivity(intent1);
-               }
-           });
-       } else {
-           showDialog();
-       }
 
-   }*/
 
 
     //浏览往期
@@ -177,7 +145,7 @@ public class MagazineDetailActivity extends BasicActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            MyApplication.getInstance().closeActivity(this);
+           finish();
         }
         return true;
     }
@@ -208,18 +176,22 @@ public class MagazineDetailActivity extends BasicActivity {
     }
 
     Handler handler=new Handler(){
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what==100){
-                Glide.with(MagazineDetailActivity.this)
-                        .load(coverImageUrl)
-                        .placeholder(R.drawable.default_book)
-                        .error(R.drawable.default_book)
-                        .into(im_cover);
-                tv_title.setText(magazineTitle);
-                tv_time.setText("更新至"+magazineTime);
-                tv_intro.setText(magazineIntro);
+                if (!isDestroy(activity)){
+                    Glide.with(activity)
+                            .load(coverImageUrl)
+                            .placeholder(R.drawable.default_book)
+                            .error(R.drawable.default_book)
+                            .into(im_cover);
+                    tv_title.setText(magazineTitle);
+                    tv_time.setText("更新至"+magazineTime);
+                    tv_intro.setText(magazineIntro);
+                }
+
             }else if (msg.what==101){
             //    tv_addShelf.setEnabled(false);
                 tv_startRead.setEnabled(false);
@@ -229,6 +201,16 @@ public class MagazineDetailActivity extends BasicActivity {
             }
         }
     };
+
+    //判断Activity是否Destroy
+    public static boolean isDestroy(Activity activity) {
+        if (activity == null || activity.isFinishing() || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 }
 

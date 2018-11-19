@@ -160,12 +160,6 @@
         <activity
             android:name=".activity.BasicActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="com.eagle.pay66.PayActivity"
-            android:exported="true" /> <!-- 66支付 -->
-        <activity
-            android:name=".activity.MemberActivity"
-            android:parentActivityName=".activity.MainActivity" />
         <activity android:name=".activity.CompositionDetailActivity" />
         <activity
             android:name=".activity.FindPasswordActivity"

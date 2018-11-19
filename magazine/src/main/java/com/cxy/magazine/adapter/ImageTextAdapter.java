@@ -102,7 +102,7 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.MyVi
         @BindView(R.id.coverOrder) TextView tvCoverOrder;
         @BindView(R.id.coverImage)
         ImageView imCover;
-        Bitmap bitmap;
+     //   Bitmap bitmap;
      //   String imTag="";
 
 

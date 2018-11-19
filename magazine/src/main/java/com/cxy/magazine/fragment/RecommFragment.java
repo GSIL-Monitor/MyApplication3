@@ -52,7 +52,7 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
     //public static final int MAX_ITEMS = 50;
     public static final int AD_COUNT = 5;    // 加载广告的条数，取值范围为[1, 10]
     public int  initAdPostion = 7; // 第一条广告的位置
-    public static int ITEMS_PER_AD = 8;     // 每间隔10个条目插入一条广告
+    public static final int ITEMS_PER_AD = 8;     // 每间隔10个条目插入一条广告
     private static final String TAG="tencentAd";
     @BindView(R.id.article_recomm_lr)
     LRecyclerView mLRecycleView;
@@ -95,7 +95,7 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
 
         //设置间隔线
         DividerDecoration divider = new DividerDecoration.Builder(getActivity())
-                .setHeight(R.dimen.default_divider_height)
+                .setHeight(R.dimen.thin_divider_height)
                 .setPadding(R.dimen.default_divider_padding)
                 .setColorResource(R.color.layoutBackground)
                 .build();
@@ -119,16 +119,28 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
             @Override
             public void onLoadMore() {
                 tvFoot.setText("正在加载更多数据...");
-                //获取推荐数据
-                BmobQuery<ArticleRecommBean> bmobQuery=new BmobQuery<>();
+                //获取推荐数据：查询点赞数或评论大于0的文章
+                BmobQuery<ArticleRecommBean> bmobQuery1=new BmobQuery<>();
+                bmobQuery1.addWhereGreaterThan("praiseCount",0);
+
+                BmobQuery<ArticleRecommBean> bmobQuery2=new BmobQuery<>();
+                bmobQuery2.addWhereGreaterThan("recommCount",0);
+
+                List<BmobQuery<ArticleRecommBean>> queries = new ArrayList<BmobQuery<ArticleRecommBean>>();
+                queries.add(bmobQuery1);
+                queries.add(bmobQuery2);
+
+                BmobQuery<ArticleRecommBean> mainQuery = new BmobQuery<ArticleRecommBean>();
+                mainQuery.or(queries);
+
                 //每次加载50条数据
-                bmobQuery.order("-recommCount").setSkip(skip).addWhereGreaterThan("recommCount",0).setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
+                mainQuery.order("-updatedAt,-recommCount").setSkip(skip).setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
                     @Override
                     public void done(List<ArticleRecommBean> list, BmobException e) {
                         if (e==null){
                             if (list.size()>0){
                                 recommBeanList.addAll(list);
-                                mLRecycleView.refreshComplete(50);  //刷新完成
+                                mLRecycleView.refreshComplete(list.size());  //刷新完成
                                 mLRecyclerViewAdapter.notifyDataSetChanged();
                                 skip+=list.size();
                                 //TODO:加载广告
@@ -148,9 +160,14 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent=new Intent(getActivity(),MagazineContentActivity.class);
-                intent.putExtra("url",recommBeanList.get(position).getArticleUrl());
-                startActivity(intent);
+                if (mAdViewPositionMap.containsValue(position)){
+                   return;
+                }else{
+                    Intent intent=new Intent(getActivity(),MagazineContentActivity.class);
+                    intent.putExtra("url",recommBeanList.get(position).getArticleUrl());
+                    startActivity(intent);
+                }
+
             }
         });
         mLRecycleView.refresh();
@@ -158,23 +175,51 @@ public class RecommFragment extends BaseFragment implements NativeExpressAD.Nati
     }
     //刷新数据
     public  void refreshData(){
-        //获取推荐数据
-        BmobQuery<ArticleRecommBean> bmobQuery=new BmobQuery<>();
-        bmobQuery.setLimit(50).addWhereGreaterThan("recommCount",0).order("-recommCount").findObjects(new FindListener<ArticleRecommBean>() {
+        //获取推荐数据：查询点赞数或评论大于0的文章
+        BmobQuery<ArticleRecommBean> bmobQuery1=new BmobQuery<>();
+        bmobQuery1.addWhereGreaterThan("praiseCount",0);
+
+        BmobQuery<ArticleRecommBean> bmobQuery2=new BmobQuery<>();
+        bmobQuery2.addWhereGreaterThan("recommCount",0);
+
+        List<BmobQuery<ArticleRecommBean>> queries = new ArrayList<BmobQuery<ArticleRecommBean>>();
+        queries.add(bmobQuery1);
+        queries.add(bmobQuery2);
+
+        BmobQuery<ArticleRecommBean> mainQuery = new BmobQuery<ArticleRecommBean>();
+        mainQuery.or(queries);
+
+        mainQuery.order("-praiseCount,-recommCount").setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
+            @Override
+            public void done(List<ArticleRecommBean> list, BmobException e) {
+                if (e==null){
+                    recommBeanList.clear();
+                    recommBeanList.addAll(list);
+                    mLRecycleView.refreshComplete(list.size());  //刷新完成
+                    mLRecyclerViewAdapter.notifyDataSetChanged();
+                    skip=list.size();
+                    //重新设置广告初始位置
+                    initAdPostion = 7;
+                    initNativeExpressAD();
+                }
+            }
+        });
+
+      /*  bmobQuery.addWhereGreaterThan("praiseCount",0).addWhereGreaterThan("recommCount",0).order("-praiseCount,-recommCount").setLimit(50).findObjects(new FindListener<ArticleRecommBean>() {
             @Override
             public void done(List<ArticleRecommBean> list, BmobException e) {
                  if (e==null){
                      recommBeanList.clear();
                      recommBeanList.addAll(list);
-                     mLRecycleView.refreshComplete(50);  //刷新完成
+                     mLRecycleView.refreshComplete(list.size());  //刷新完成
                      mLRecyclerViewAdapter.notifyDataSetChanged();
-                     skip+=list.size();
+                     skip=list.size();
                      //重新设置广告初始位置
                      initAdPostion = 7;
                      initNativeExpressAD();
                  }
             }
-        });
+        });*/
     }
 
     private void initNativeExpressAD() {
