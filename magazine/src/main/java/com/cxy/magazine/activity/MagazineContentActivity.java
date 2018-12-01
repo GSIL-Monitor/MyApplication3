@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -54,6 +55,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Evaluator;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Random;
 
@@ -107,7 +109,7 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
     private int checkedIndex = 1;
     //广告id数组
     private String[] adIds = {Constants.NativeExpressPosID1, Constants.NativeExpressPosID2, Constants.NativeExpressPosID3};
-
+    private UiHandler uiHandler=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +127,9 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
         articleId = intentUrl.split("/")[4].split(".shtml")[0];
 
         content = new StringBuilder(htmlStr);
-        //   mProgressDialog=ProgressDialog.show(this, null, "请稍后");
+        uiHandler=new UiHandler(this);
         Utils.showTipDialog(MagazineContentActivity.this, "加载中", QMUITipDialog.Builder.ICON_TYPE_LOADING);
+
         Thread getHtml = new GetHtml();
         getHtml.start();
 
@@ -449,33 +452,41 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
         }
     }
 
-    Handler uiHandler = new Handler() {
+    private static class UiHandler extends Handler {
+        private final WeakReference<MagazineContentActivity> weakReference;
+        private UiHandler(MagazineContentActivity magazineContentActivity){
+            weakReference=new WeakReference<>(magazineContentActivity);
+        }
         @Override
         public void handleMessage(Message msg) {
+            MagazineContentActivity contentActivity=weakReference.get();
+            if (contentActivity!=null){
+                if (msg.what == 100) {
 
-            if (msg.what == 100) {
+                    //  mProgressDialog.dismiss();
+                    Utils.dismissDialog();
+                    String[] imageUrls = Utils.returnImageUrlsFromHtml(contentActivity.content.toString());
+                    contentActivity.mWebview.addJavascriptInterface(new JavascriptInterface(contentActivity, imageUrls), "imagelistner");
+                    contentActivity.mWebview.loadData(contentActivity.content.toString(), "text/html; charset=UTF-8", null);
+                    //查询推荐情况
+                    contentActivity.selectRecomm();
+                    //TODO：设置腾讯广告
+                    contentActivity.refreshAd();
 
-                //  mProgressDialog.dismiss();
-                Utils.dismissDialog();
-                String[] imageUrls = Utils.returnImageUrlsFromHtml(content.toString());
-                mWebview.addJavascriptInterface(new JavascriptInterface(MagazineContentActivity.this, imageUrls), "imagelistner");
-                mWebview.loadData(content.toString(), "text/html; charset=UTF-8", null);
-                //查询推荐情况
-                selectRecomm();
-                //TODO：设置腾讯广告
-                 refreshAd();
-
-            }
-            if (msg.what == 101) {
-                Utils.dismissDialog();
-                String error = "<h3>抱歉，该篇文章暂时无法阅读！<h3>";
-                if (mWebview!=null){
-                    mWebview.loadData(error, "text/html; charset=UTF-8", null);
-                    //设置广告
-                    refreshAd();
                 }
+                if (msg.what == 101) {
+                    Utils.dismissDialog();
+                    String error = "<h3>抱歉，该篇文章暂时无法阅读！<h3>";
+                    if (contentActivity.mWebview!=null){
+                        contentActivity.mWebview.loadData(error, "text/html; charset=UTF-8", null);
+                        //设置广告
+                        contentActivity.refreshAd();
+                    }
 
+                }
             }
+
+
         }
     };
 
@@ -558,15 +569,17 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
     }*/
 
     //销毁Webview
+
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+
 
         if (mWebview != null) {
-            //  mWebview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
-            mWebview.clearHistory();
-
             ((ViewGroup) mWebview.getParent()).removeView(mWebview);
+            mWebview.stopLoading();
+            mWebview.getSettings().setJavaScriptEnabled(false);
+            mWebview.clearHistory();
+            mWebview.removeAllViews();
             mWebview.destroy();
             mWebview = null;
         }
@@ -574,9 +587,12 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
 
         // 使用完了每一个NativeExpressADView之后都要释放掉资源
         if (nativeExpressADView != null) {
+            ((ViewGroup) nativeExpressADView.getParent()).removeView(nativeExpressADView);
             nativeExpressADView.destroy();
+            nativeExpressADView=null;
             Log.i(TAG, "广告销毁");
         }
+        super.onDestroy();
 
     }
 

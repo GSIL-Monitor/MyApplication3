@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <group android:checkableBehavior="single">
         <!--<item android:id="@+id/composition"
@@ -43,10 +44,10 @@
                 android:icon="@drawable/ic_menu_share"
                 android:title="邀请好友(邀请好友，各得3天会员)"/>
 
-            <!--<item
-                android:id="@+id/drawMember"
-                android:icon="@drawable/ic_menu_share"
-                android:title="免费抽会员"/>-->
+            <item
+                android:id="@+id/recommend"
+                android:icon="@drawable/ic_menu_recomm"
+                android:title="去给个好评"/>
 
             <item
                 android:id="@+id/exit"

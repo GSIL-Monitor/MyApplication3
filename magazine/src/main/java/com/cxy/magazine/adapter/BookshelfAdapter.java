@@ -74,6 +74,7 @@ public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyVi
                 .load(imageSrc)
                 .placeholder(R.drawable.default_book)
                 .error(R.drawable.default_book)
+                .override(width,height)
                 .into(holder.imCover);
 
 

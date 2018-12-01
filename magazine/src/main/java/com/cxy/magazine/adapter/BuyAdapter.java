@@ -73,6 +73,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.MyViewHolder>{
                 .load(imageSrc)
                 .placeholder(R.drawable.default_book)
                 .error(R.drawable.default_book)
+                .override(width,height)
                 .into(holder.imCover);
 
       /*  //新的线程中根据url获取图片

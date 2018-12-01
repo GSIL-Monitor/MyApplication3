@@ -6,8 +6,10 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -161,25 +163,19 @@ public class Utils {
     /**
      * 打印消息并且用Toast显示消息
      *
-     * @param activity
+     * @param context
      * @param message
      * @param logLevel
      *            填d, w, e分别代表debug, warn, error; 默认是debug
      */
-    public static final void toastMessage(final Activity activity,
+    public static final void toastMessage(final Context context,
                                           final String message, String logLevel) {
-        if ("w".equals(logLevel)) {
-            Log.w("sdkDemo", message);
-        } else if ("e".equals(logLevel)) {
-            Log.e("sdkDemo", message);
-        } else {
-            Log.d("sdkDemo", message);
-        }
+
         if (mToast != null) {
                     mToast.cancel();
                     mToast = null;
         }
-        mToast = Toast.makeText(activity, message, Toast.LENGTH_SHORT);
+        mToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         mToast.show();
 
     }
@@ -187,13 +183,13 @@ public class Utils {
     /**
      * 打印消息并且用Toast显示消息
      *
-     * @param activity
+     * @param context
      * @param message
      *            填d, w, e分别代表debug, warn, error; 默认是debug
      */
-    public static final void toastMessage(final Activity activity,
+    public static final void toastMessage(final Context context,
                                           final String message) {
-        toastMessage(activity, message, null);
+        toastMessage(context, message, null);
     }
 
     /**
@@ -380,6 +376,31 @@ public class Utils {
         }
         return imageSrcList.toArray(new String[imageSrcList.size()]);
     }
+
+    /**
+     * 跳转应用商店.
+     *
+     * @param context   {@link Context}
+     * @param appPkg    包名
+     * @param marketPkg 应用商店包名
+     * @return {@code true} 跳转成功 <br> {@code false} 跳转失败
+     */
+    public static boolean toMarket(Context context, String appPkg, String marketPkg) {
+        Uri uri = Uri.parse("market://details?id=" + appPkg);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (marketPkg != null) {// 如果没给市场的包名，则系统会弹出市场的列表让你进行选择。
+            intent.setPackage(marketPkg);
+        }
+        try {
+            context.startActivity(intent);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
 
 
 }

@@ -4,19 +4,19 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
+   <!-- <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="————————小程序推广————————"
         android:textAlignment="center"
-        android:textColor="@color/colorFontDisable"/>
+        android:textColor="@color/colorFontDisable"/>-->
 
     <com.bigkoo.convenientbanner.ConvenientBanner
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/convenientBanner"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="190dp"
         app:canLoop="true"
-        android:layout_marginTop="@dimen/dp_10"/>
+        android:layout_marginTop="0dp"/>
 
 </LinearLayout>

@@ -34,7 +34,7 @@
                 android:paddingBottom="20dp"
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingRight="@dimen/dp_10"
-                android:paddingTop="10dp"></WebView>
+                android:paddingTop="10dp"/>
 
             <FrameLayout
                 android:id="@+id/containerAd"

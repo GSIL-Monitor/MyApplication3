@@ -27,6 +27,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -48,6 +49,7 @@ public class SearchActivity extends BasicActivity {
     //private List<HashMap> datalist=null;
     private List<JSONObject> dataShowList=null;
     private JSONArray dataArray=null;
+    private MyHandler myHandler=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class SearchActivity extends BasicActivity {
         dataShowList=new ArrayList<JSONObject>();
         dataArray=new JSONArray();
         //  mCache=ACache.get(this.getActivity());
+        myHandler=new MyHandler(this);
         Thread thread=new GetAllData();
         thread.start();
 
@@ -175,24 +178,32 @@ public class SearchActivity extends BasicActivity {
                     Log.i("com.cxy.magzine","缓存不为空");
                     dataArray=dataCacheArray;
                 }
-                handler.sendEmptyMessage(100);
+                myHandler.sendEmptyMessage(100);
             } catch (Exception e) {
                 e.printStackTrace();
-                handler.sendEmptyMessage(101);
+                myHandler.sendEmptyMessage(101);
             }
         }
     }
 
-    private Handler handler=new Handler(){
+    private static class MyHandler extends Handler{
+        private final WeakReference<SearchActivity> weakReference;
+        private MyHandler(SearchActivity searchActivity){
+            weakReference=new WeakReference<>(searchActivity);
+        }
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what==100){
-                setSearchView();
+            SearchActivity searchActivity=weakReference.get();
+            if (searchActivity!=null){
+                if (msg.what==100){
+                    searchActivity.setSearchView();
+                }
+                if (msg.what==101){
+                    Utils.toastMessage(searchActivity,"出错了，请稍后重试！");
+                }
             }
-            if (msg.what==101){
-                Utils.toastMessage(SearchActivity.this,"出错了，请稍后重试！");
-            }
+
+
         }
     };
 }

@@ -3,6 +3,7 @@ package com.cxy.magazine.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,12 +29,17 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.cxy.magazine.R;
 import com.cxy.magazine.activity.ClassDetailActivity;
 import com.cxy.magazine.activity.MainActivity;
 import com.cxy.magazine.activity.SearchActivity;
 import com.cxy.magazine.util.ACache;
 import com.cxy.magazine.util.Constants;
+import com.cxy.magazine.util.ImageUtil;
 import com.cxy.magazine.util.NetWorkUtils;
 import com.cxy.magazine.util.OkHttpUtil;
 import com.cxy.magazine.util.Utils;
@@ -55,9 +61,15 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,7 +97,7 @@ public class ClassFragment extends BaseFragment {
 
 
     private Unbinder unbinder;
-
+    private MyHandler handler=null;
 
 
     public ClassFragment() {
@@ -109,6 +121,7 @@ public class ClassFragment extends BaseFragment {
         magazineArray=new JSONArray();
         setLRecyclerview();
         Utils.showTipDialog(getActivity(),"加载中...", QMUITipDialog.Builder.ICON_TYPE_LOADING);
+        handler=new MyHandler(this);
         Thread thread=new getHtml();
         thread.start();
 
@@ -167,7 +180,7 @@ public class ClassFragment extends BaseFragment {
                 navigateTominiApp(miniappid,path);
             }
         });
-        mLRecyclerViewAdapter.addFooterView(footer);
+        mLRecyclerViewAdapter.addHeaderView(footer);
 
     }
 
@@ -205,8 +218,23 @@ public class ClassFragment extends BaseFragment {
 
     }
 
+   /*public void  sysncData(){
 
-    class  getHtml extends Thread{
+       int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
+       int KEEP_ALIVE_TIME = 1;
+       TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
+       BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<Runnable>();
+       ExecutorService executorService = new ThreadPoolExecutor(NUMBER_OF_CORES,
+               NUMBER_OF_CORES*2, KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_UNIT, taskQueue,
+               new BackgroundThreadFactory(), new DefaultRejectedExecutionHandler());
+                    //执行任务
+       executorService.execute(new Runnnable() {
+
+       })
+
+
+   }*/
+    private class  getHtml extends Thread{
         @Override
         public void run() {
             try {
@@ -256,20 +284,29 @@ public class ClassFragment extends BaseFragment {
         }
     }
 
-    Handler handler=new Handler(){
+    private  static class MyHandler extends Handler{
+        private final WeakReference<ClassFragment> mFragment;
+
+        private MyHandler(ClassFragment fragment){
+            mFragment=new WeakReference<>(fragment);
+        }
         @Override
         public void handleMessage(Message msg) {
-            switch(msg.what){
-                case LOAD_FINISHED:
-                    Utils.dismissDialog();
-                    mLRecyclerViewAdapter.notifyDataSetChanged();
-                    break;
-                case LOAD_ERROR:
-                    Utils.dismissDialog();
-                   Utils.toastMessage(getActivity(),errorMessage);
-                   break;
+            ClassFragment fragment=mFragment.get();
+            if (fragment!=null){
+                switch(msg.what){
+                    case LOAD_FINISHED:
+                        Utils.dismissDialog();
+                        fragment.mLRecyclerViewAdapter.notifyDataSetChanged();
+                        break;
+                    case LOAD_ERROR:
+                        Utils.dismissDialog();
+                        Utils.toastMessage(fragment.context,fragment.errorMessage);
+                        break;
 
+                }
             }
+
         }
     };
 
@@ -307,23 +344,35 @@ public class ClassFragment extends BaseFragment {
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
+        public void onBindViewHolder(final MyViewHolder holder, int position) {
             try {
                 // final HashMap dataMap=magazineList.get(position);
                 JSONObject dataJson=magazineArray.getJSONObject(position);
                 final  String href=dataJson.getString("href");
                 final  String title=dataJson.getString("text");
                 holder.tvClassName.setText(title);
-                //设置TextView背景图片
-                holder.tvClassName.setBackgroundResource(backgroundRecources[position]);
+
                 //设置TextView字体加粗，中文需这样设置
                 TextPaint tp = holder.tvClassName.getPaint();
                 tp.setFakeBoldText(true);
                 //动态设置TextView的高度,高度是宽度的4/5
-                int height=((manager.getWidth()-28))/3*4/5;
+                int width=((manager.getWidth()-28))/3;
+                int height=width*4/5;
                 ViewGroup.LayoutParams param=holder.tvClassName.getLayoutParams();
                 param.height = height;
                 holder.tvClassName.setLayoutParams(param);
+
+                //设置TextView背景图片
+                //压缩图片
+               // Bitmap bitmap= ImageUtil.decodeSampledBitmapFromResource(getResources(),backgroundRecources[position],width,height);
+                Glide.with(context).load(backgroundRecources[position])
+                      .into(new SimpleTarget<GlideDrawable>(width,height) {
+                          @Override
+                          public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                              holder.tvClassName.setBackgroundDrawable(resource);
+                          }
+                      });
+
 
                 //设置点击事件
                 holder.tvClassName.setOnClickListener(new View.OnClickListener() {
@@ -361,7 +410,7 @@ public class ClassFragment extends BaseFragment {
         }
     }
 
-    public class LocalImageHolderView extends Holder<Integer>{
+    private class LocalImageHolderView extends Holder<Integer>{
 
 
         ImageView bannerImage;
@@ -379,7 +428,8 @@ public class ClassFragment extends BaseFragment {
 
         @Override
         public void updateUI(Integer data) {
-           bannerImage.setImageResource(data);
+           //bannerImage.setImageResource(data);
+           Glide.with(context).load(data).into(bannerImage);
         }
     }
 

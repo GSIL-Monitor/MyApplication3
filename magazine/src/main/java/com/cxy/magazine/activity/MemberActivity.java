@@ -51,6 +51,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -101,13 +102,13 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
     private List<Member> memberList=new ArrayList<Member>();
 
     private static final int REQUEST_INSTALL = 124;
-
+    private MyHandler handler=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member);
         initView();
-
+        handler=new MyHandler(this);
 
     }
 
@@ -308,17 +309,24 @@ public class MemberActivity extends BasicActivity implements View.OnClickListene
 
 
 
-    private Handler handler=new Handler(){
+    private static class MyHandler extends Handler{
+        private final WeakReference<MemberActivity> weakReference;
+        private MyHandler(MemberActivity memberActivity){
+            weakReference=new WeakReference<>(memberActivity);
+        }
         @Override
         public void handleMessage(Message msg) {
+           MemberActivity memberActivity=weakReference.get();
+           if (memberActivity!=null){
+               switch (msg.what) {
+                   case IMAGE_LOAD_FINISHED:
+                       memberActivity.imageView.setImageBitmap(memberActivity.headImage);
+                       memberActivity.mCache.put("headImageBitmap",memberActivity.headImage);
+                       break;
+               }
+           }
 
 
-            switch (msg.what) {
-                case IMAGE_LOAD_FINISHED:
-                    imageView.setImageBitmap(headImage);
-                    mCache.put("headImageBitmap",headImage);
-                    break;
-            }
 
         }
 

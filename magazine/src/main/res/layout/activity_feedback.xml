@@ -1,90 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.FeedbackActivity"
-    android:padding="10dp"
-    android:orientation="vertical">
+    tools:context=".activity.FeedbackActivity">
 
-    <EditText
-        android:id="@+id/edit_feedback"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:textSize="15sp"
-        android:hint="@string/feedbackHint"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/edit_bg"
-        android:padding="5dp"/>
-   <!-- <TextView
-        android:id="@+id/tv2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/QQHint"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/edit_feedback"
-        android:textIsSelectable="true"/>-->
-
-    <TextView
-           android:id="@+id/tv"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:text="你的联系方式（请至少填写一个）："
-           android:layout_marginTop="15dp"
-           android:textColor="#000"
-           android:textSize="17sp"
-           />
-
-
-    <EditText
-        android:id="@+id/edit_qq"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="@dimen/dp_10"
-        android:inputType="number"
-        android:hint="QQ"
-        android:layout_marginTop="10dp"
-        style="@style/EditTextStyle"/>
-
-    <EditText
-        android:id="@+id/edit_wechat"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="@dimen/dp_10"
-        android:inputType="textPersonName"
-        android:layout_marginTop="8dp"
-        android:hint="微信"
-        style="@style/EditTextStyle"/>
-
-    <EditText
-        android:id="@+id/edit_mail"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="@dimen/dp_10"
-        android:inputType="textEmailAddress"
-        android:layout_marginTop="8dp"
-        android:hint="邮箱"
-        style="@style/EditTextStyle"/>
-    <TextView
-        android:id="@+id/ps_tv"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_10"
-        android:text="@string/downloadHint"/>
+        android:padding="10dp"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/buttonCommit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="提交"
-        style="@style/ButtonStyle"
-        android:layout_marginTop="80dp"
-        android:layout_gravity="center_horizontal"/>
+        <EditText
+            android:id="@+id/edit_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:textSize="15sp"
+            android:hint="@string/feedbackHint"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edit_bg"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="你的联系方式（请至少填写一个）："
+            android:layout_marginTop="15dp"
+            android:textColor="#000"
+            android:textSize="17sp"
+            />
+
+
+        <EditText
+            android:id="@+id/edit_qq"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="@dimen/dp_10"
+            android:inputType="number"
+            android:hint="QQ"
+            android:layout_marginTop="10dp"
+            style="@style/EditTextStyle"/>
+
+        <EditText
+            android:id="@+id/edit_wechat"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="@dimen/dp_10"
+            android:inputType="textPersonName"
+            android:layout_marginTop="8dp"
+            android:hint="微信"
+            style="@style/EditTextStyle"/>
+
+        <EditText
+            android:id="@+id/edit_mail"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="@dimen/dp_10"
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="8dp"
+            android:hint="邮箱"
+            style="@style/EditTextStyle"/>
+        <TextView
+            android:id="@+id/ps_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/downloadHint"/>
+
+        <Button
+            android:id="@+id/buttonCommit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提交"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="60dp"
+            android:layout_gravity="center_horizontal"/>
 
 
 
 
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
+
