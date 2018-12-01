@@ -4,12 +4,15 @@ package com.cxy.magazine.activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.service.carrier.CarrierService;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.util.AndroidException;
 import android.util.Log;
@@ -18,6 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -26,6 +31,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,6 +93,8 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
     TextView recommTv;
     @BindView(R.id.praiseTv)
     TextView praiseTv;
+    @BindView(R.id.sv_content)
+    NestedScrollView scrollView;
     private User user;
     private String articleObjectId = null;
 
@@ -120,6 +128,7 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setStatusColor();
         setWebView();
         intentUrl = getIntent().getStringExtra("url");
       //  httpUrl = (MAGAZINE_URL + intentUrl).replace("page", "news").replace("shtml", "html");    //(MAGAZINE_URL + url).replace("page","news").replace("shtml","html");
@@ -138,6 +147,21 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
 
     }
 
+    /**
+     * 设置状态栏颜色
+     */
+    private void setStatusColor() {
+        //因为这是API23之后才能改变的，所以要判断版本
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // 设置状态栏底色颜色
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().setStatusBarColor(Color.WHITE);
+            //设置状态栏文字为黑色
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+        }
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -290,7 +314,7 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                   if (e==null){
                       praiseCount+=1;
                       praiseTv.setText(praiseCount+"赞");
-                      Utils.showTipDialog(MagazineContentActivity.this,"点赞成功！",QMUITipDialog.Builder.ICON_TYPE_SUCCESS);
+                      Utils.showTipDialog(MagazineContentActivity.this,"点赞成功",QMUITipDialog.Builder.ICON_TYPE_SUCCESS);
 
                   }else{
                       Log.e(LOG_TAG,"点赞失败："+e.toString());
@@ -466,12 +490,15 @@ public class MagazineContentActivity extends BasicActivity implements NativeExpr
                     //  mProgressDialog.dismiss();
                     Utils.dismissDialog();
                     String[] imageUrls = Utils.returnImageUrlsFromHtml(contentActivity.content.toString());
-                    contentActivity.mWebview.addJavascriptInterface(new JavascriptInterface(contentActivity, imageUrls), "imagelistner");
-                    contentActivity.mWebview.loadData(contentActivity.content.toString(), "text/html; charset=UTF-8", null);
-                    //查询推荐情况
-                    contentActivity.selectRecomm();
-                    //TODO：设置腾讯广告
-                    contentActivity.refreshAd();
+                    if( contentActivity.mWebview !=null){
+                        contentActivity.mWebview.addJavascriptInterface(new JavascriptInterface(contentActivity, imageUrls), "imagelistner");
+                        contentActivity.mWebview.loadData(contentActivity.content.toString(), "text/html; charset=UTF-8", null);
+                        //查询推荐情况
+                        contentActivity.selectRecomm();
+                        //TODO：设置腾讯广告
+                        contentActivity.refreshAd();
+                    }
+
 
                 }
                 if (msg.what == 101) {

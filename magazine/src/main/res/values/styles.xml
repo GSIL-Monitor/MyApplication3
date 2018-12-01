@@ -10,14 +10,11 @@
 
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorFontText</item>
-        <item name="colorAccent">@color/colorPrimaryDark</item>
+    <style name="AppTheme.LightNoActionBar" parent="QMUI.Compat.NoActionBar">
 
-
-
+        <item name="colorPrimaryDark">#fff</item>
+        <item name="android:statusBarColor">#fff</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
 
