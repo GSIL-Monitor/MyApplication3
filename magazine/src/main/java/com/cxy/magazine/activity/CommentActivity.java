@@ -103,7 +103,7 @@ public class CommentActivity extends BasicActivity {
             @Override
             public void done(List<RecommBean> list, BmobException e) {
                if (e==null){
-                   getSupportActionBar().setTitle("共"+list.size()+"次推荐");
+                   getSupportActionBar().setTitle("共"+list.size()+"次评论");
                    commentList.addAll(list);
                  //  mRecycleView.refreshComplete(50);  //刷新完成
                    mAdapter.notifyDataSetChanged();
