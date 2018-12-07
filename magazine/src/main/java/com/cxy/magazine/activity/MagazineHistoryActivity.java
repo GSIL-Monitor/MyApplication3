@@ -24,6 +24,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +48,7 @@ public class MagazineHistoryActivity extends BasicActivity {
 
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    private UiHandler uiHandler=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class MagazineHistoryActivity extends BasicActivity {
         tvTitle.setText(getIntent().getStringExtra("title"));
         dataList=new ArrayList<HashMap>();
         httpUrl=DOMAIN_MAGAZINE+getIntent().getStringExtra("historyUrl");
+        uiHandler=new UiHandler(this);
         Thread thread=new GetHtml();
         thread.start();
     }
@@ -99,26 +102,29 @@ public class MagazineHistoryActivity extends BasicActivity {
         }
     }
 
-    private Handler uiHandler=new Handler(){
+    private static class UiHandler extends Handler{
+        private final WeakReference<MagazineHistoryActivity> weakReference;
+        private UiHandler(MagazineHistoryActivity historyActivity){
+            weakReference=new WeakReference<>(historyActivity);
+        }
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what==100){
 
-               /* for (int i=0;i<dataList.size();i++){
-                    tabLayout.addTab( tabLayout.newTab().setText(dataList.get(i).get("text").toString()));
-                }*/
-
-                viewPager.setAdapter(new ViewpagerAdapter(getSupportFragmentManager(),dataList));
-                //绑定
-                tabLayout.setupWithViewPager(viewPager);
-            }else if(msg.what==101){
-                Utils.toastMessage(MagazineHistoryActivity.this,"出错了,该杂志内容暂无法查看，换本杂志看看吧！");
+            final MagazineHistoryActivity magazineHistoryActivity=weakReference.get();
+            if (magazineHistoryActivity!=null){
+                if (msg.what==100){
+                    magazineHistoryActivity.viewPager.setAdapter(new ViewpagerAdapter(magazineHistoryActivity.getSupportFragmentManager(),magazineHistoryActivity.dataList));
+                    //绑定
+                    magazineHistoryActivity.tabLayout.setupWithViewPager(magazineHistoryActivity.viewPager);
+                }else if(msg.what==101){
+                    Utils.toastMessage(magazineHistoryActivity,"出错了,该杂志内容暂无法查看，换本杂志看看吧！");
+                }
             }
+
         }
     };
 
-    private class ViewpagerAdapter extends FragmentPagerAdapter {
+    private static class ViewpagerAdapter extends FragmentPagerAdapter {
         private List<HashMap> datalist;
         public ViewpagerAdapter(FragmentManager fm,List<HashMap> list) {
             super(fm);

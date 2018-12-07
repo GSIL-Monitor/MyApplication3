@@ -57,6 +57,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -106,15 +107,8 @@ public class MagazineDirectoryActivity extends BasicActivity {
     Toolbar toolbar;
 
     private TextView tv_time;
-    //购买底部框
-   /* View contentView;
-    RadioButton alipayBtn,wxpayBtn;
-    Dialog bottomDialog;*/
-    double money=2;
-    TextView  payMoney;
-    Button payBtn;
-    private static final String alipayPackageName = "com.eg.android.AlipayGphone";
-    private static final String wxpayPackageName = "com.tencent.mm";
+    private double money=2;
+   private MyHandler handler=null;
 
 
     @Override
@@ -134,10 +128,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
         magazineId=names[2]+names[3].split(".html")[0];
 
 
-        // queryMemberState();
-      //  checkBuyState();
-       // setRecycleView();
-       // setBottomDialog();
+        handler=new MyHandler(this);
 
         //获取数据
         getData();
@@ -528,16 +519,24 @@ public class MagazineDirectoryActivity extends BasicActivity {
         }
     }
 
-    Handler handler = new Handler() {
+    private static class MyHandler extends Handler{
+        private final WeakReference<MagazineDirectoryActivity> weakReference;
+        private MyHandler(MagazineDirectoryActivity directoryActivity){
+            weakReference=new WeakReference<>(directoryActivity);
+        }
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            Utils.dismissDialog();
-            if (msg.what == 100) {
-              setRecycleView();
-            } else if (msg.what == 101) {
-                Utils.toastMessage(MagazineDirectoryActivity.this, "出错了,该杂志内容暂无法查看，换本杂志看看吧！");
+            MagazineDirectoryActivity directoryActivity=weakReference.get();
+            if (directoryActivity!=null){
+                Utils.dismissDialog();
+                if (msg.what == 100) {
+                    directoryActivity.setRecycleView();
+                } else if (msg.what == 101) {
+                    Utils.toastMessage(directoryActivity, "出错了,该杂志内容暂无法查看，换本杂志看看吧！");
+                }
             }
+
+
         }
     };
 

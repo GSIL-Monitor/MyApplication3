@@ -47,6 +47,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                //头像不为null
                Glide.with(context)
                        .load(user.getHeadImageUrl())
+                       .override(50,50)
                        .into(holder.headView);
 
            }

@@ -40,6 +40,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,6 +107,7 @@ public class RankFragment extends BaseFragment {
       //  Utils.showTipDialog(context,"加载中", QMUITipDialog.Builder.ICON_TYPE_LOADING);
         emptyView.show(true);
         final String httpUrl="http://www.fx361.com/";
+        final MyHandler uiHandler=new MyHandler(this);
 
         //解析排行榜数据和更新数据
         new Thread(new Runnable() {
@@ -157,27 +159,34 @@ public class RankFragment extends BaseFragment {
         }).start();
     }
 
-    private Handler uiHandler=new Handler(){
+    private static class MyHandler extends Handler{
+        private final WeakReference<RankFragment> fragmentWeakReference;
+        private MyHandler(RankFragment rankFragment){
+            fragmentWeakReference=new WeakReference<>(rankFragment);
+        }
         @Override
         public void handleMessage(Message msg) {
-           // Utils.dismissDialog();
-            if (msg.what==100){
-                emptyView.setVisibility(View.GONE);
-                lRecyclerView.setVisibility(View.VISIBLE);
-                setlRecyclerView();
-            }
-            if (msg.what==101){
-                //Utils.showTipDialog(context,"加载数据失败，请稍后重试",QMUITipDialog.Builder.ICON_TYPE_FAIL);
-                lRecyclerView.setVisibility(View.GONE);
-                emptyView.setVisibility(View.VISIBLE);
-                emptyView.show(false, "加载失败", "请检查网络是否能正常连接", "点击重试", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        parseHtml();
-                    }
-                });
+           final RankFragment rankFragment=fragmentWeakReference.get();
+           if (rankFragment!=null){
+               if (msg.what==100){
+                   rankFragment.emptyView.setVisibility(View.GONE);
+                   rankFragment.lRecyclerView.setVisibility(View.VISIBLE);
+                   rankFragment.setlRecyclerView();
+               }
+               if (msg.what==101){
+                   //Utils.showTipDialog(context,"加载数据失败，请稍后重试",QMUITipDialog.Builder.ICON_TYPE_FAIL);
+                   rankFragment.lRecyclerView.setVisibility(View.GONE);
+                   rankFragment.emptyView.setVisibility(View.VISIBLE);
+                   rankFragment.emptyView.show(false, "加载失败", "请检查网络是否能正常连接", "点击重试", new View.OnClickListener() {
+                       @Override
+                       public void onClick(View view) {
+                           rankFragment.parseHtml();
+                       }
+                   });
 
-            }
+               }
+           }
+
         }
     };
 

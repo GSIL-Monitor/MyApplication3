@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.cxy.magazine.bmobBean.MsgNotification;
 import com.cxy.magazine.bmobBean.User;
-import com.eagle.pay66.Pay66;
 
 import org.junit.Before;
 import org.junit.Test;

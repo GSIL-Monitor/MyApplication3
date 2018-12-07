@@ -242,35 +242,43 @@ public class MagazineListFragment extends BaseFragment {
 
 
 
-    private Handler handler=new Handler(){
+    private  static class  MyHandler extends Handler {
+        private final WeakReference<MagazineListFragment> listFragment;
+        private MyHandler(MagazineListFragment listFragment){
+            this.listFragment=new WeakReference<>(listFragment);
+        }
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case 100:
-                    //重新获取数据
-                    mCurrentCounter=0;
-                    //清空数据
-                    dataDisplayArray.clear();
-                    addItems();
+            MagazineListFragment fragment=listFragment.get();
+           if (listFragment!=null){
+               switch (msg.what) {
+                   case 100:
+                       //重新获取数据
+                       fragment.mCurrentCounter = 0;
+                       //清空数据
+                       fragment.dataDisplayArray.clear();
+                       fragment.addItems();
 
 
-                    break;
-                case 101:   //发生错误
-                   // Utils.toastMessage(getActivity(),"出错了，请稍后再试");
-                    Utils.showTipDialog(context,"加载数据失败", QMUITipDialog.Builder.ICON_TYPE_FAIL);
-                    mRecyclerView.refreshComplete(0);// REQUEST_COUNT为每页加载数量
-                    mLRecyclerViewAdapter.notifyDataSetChanged();
+                       break;
+                   case 101:   //发生错误
+                       // Utils.toastMessage(getActivity(),"出错了，请稍后再试");
+                       Utils.showTipDialog(fragment.context, "加载数据失败", QMUITipDialog.Builder.ICON_TYPE_FAIL);
+                       fragment.mRecyclerView.refreshComplete(0);// REQUEST_COUNT为每页加载数量
+                       fragment.mLRecyclerViewAdapter.notifyDataSetChanged();
+               }
+           }
 
-            }
         }
-    };
 
+    }
 
     /**
      * 请求网络
      */
     private void requestData() {
+
+        final MyHandler handler=new MyHandler(this);
 
         new Thread() {
 

@@ -44,6 +44,7 @@ import com.cxy.magazine.util.Utils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,10 +67,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
     private View layoutView;
     private ImageView headImageView;
     private Bitmap headImage;
-    private Drawable defaultHeadImage;
     private static final int IMAGE_LOAD_FINISHED = 100;
 
-    //  private mAcache mAcache;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,13 +84,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
         tvLogin = (TextView) layoutView.findViewById(R.id.tv_login);
         headImageView = (ImageView) layoutView.findViewById(R.id.userImage);
         navigationView = (NavigationView) layoutView.findViewById(R.id.nav_view);
-
-
-        //   mAcache=mAcache.get(this.getContext());
-
-        //获取默认用户头像
-       // Resources resources = this.getResources();
-       // defaultHeadImage = DrawableCompat.
+       // navigationView.setItemIconTintList(null);
 
 
         // setUserInfo();
@@ -128,17 +121,12 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
 
             //获取用户头像
             if (!Utils.isEmpty(user.getHeadImageUrl())) {
-               /* headImage = mAcache.getAsBitmap("headImageBitmap");  //从缓存中获取用户头像
-                if (headImage != null) {
-                    headImageView.setImageBitmap(headImage);
-                } else {
-                    Thread thread = new GetImageThread();
-                    thread.start();
-                }*/
+
 
                 Glide.with(context)
                         .load(user.getHeadImageUrl())
                         .error(R.drawable.ic_head)
+                        .override(60,60)
                         .into(headImageView);
 
 
@@ -152,7 +140,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
 
     }
 
-    class GetImageThread extends Thread {
+   /* class GetImageThread extends Thread {
         @Override
         public void run() {
 
@@ -162,24 +150,31 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
             }
 
         }
-    }
+    }*/
 
 
-    private Handler handler = new Handler() {
+    /*private static class MyHandler extends Handler {
+        private final WeakReference<MyFragment> fragmentWeakReference;
+        private MyHandler(MyFragment myFragment){
+            fragmentWeakReference=new WeakReference<>(myFragment);
+        }
         @Override
         public void handleMessage(Message msg) {
-
-
-            switch (msg.what) {
-                case IMAGE_LOAD_FINISHED:
-                    headImageView.setImageBitmap(headImage);
-                    mAcache.put("headImageBitmap", headImage);
-                    break;
+            MyFragment myFragment=fragmentWeakReference.get();
+            if (myFragment!=null){
+                switch (msg.what) {
+                    case IMAGE_LOAD_FINISHED:
+                        headImageView.setImageBitmap(myFragment.headImage);
+                        myFragment.mAcache.put("headImageBitmap", myFragment.headImage);
+                        break;
+                }
             }
+
+
 
         }
 
-    };
+    };*/
 
 
     @Override
@@ -282,7 +277,12 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
                 startActivity(intent1);
             }
         }
-
+        if (id==R.id.recommend){
+           boolean result=Utils.toMarket(context,"com.cxy.magazine",null);
+           if (!result){
+               Utils.toastMessage(context,"没有找到该应用,请到正确的应用商店");
+           }
+        }
        /* //测试
         if (id==R.id.test){
             //发送消息
@@ -293,75 +293,6 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, Na
 
         return true;
     }
-
-  /*  public void  insertMessages(){
-
-        BmobQuery<User> userQuery=new BmobQuery<User>();
-        userQuery.setLimit(500);
-        userQuery.setSkip(400);
-
-        userQuery.findObjects(new FindListener<User>() {
-            @Override
-            public void done(List<User> list, BmobException e) {
-                Log.i("bmob","查询成功:"+list.size());
-                if (e==null){
-                    List<BmobObject> msgList=new ArrayList<BmobObject>();
-                    for (User user : list){
-                        //发送消息
-                        MsgNotification msg=new MsgNotification();
-                        msg.setUser(user);
-                        msg.setTitle("紧急通知");
-                        msg.setDetail("近期有用户反映，充值成功之后，会员并未到账，对此我们深表歉意，开发人员正在紧张排查中。如果有用户再遇到此类问题，请及时联系我们，" +
-                                "可以通过用户反馈中的渠道联系我们，也可以直接通过QQ号：1746569077联系。杂志天下向广大用户声明，我们绝不会坑用户一分钱，感谢大家的支持！");
-                        msg.setRead(false);
-
-                        msgList.add(msg);
-
-                    }
-                    int index=0;
-                    for (int i=index;i<msgList.size();i++){
-                        List<BmobObject> newMsgList=new ArrayList<BmobObject>();
-                        if (index+40<msgList.size()){
-                            newMsgList=msgList.subList(index,index+40);
-                        }else{
-                            newMsgList=msgList.subList(index, msgList.size());
-                        }
-
-                        index+=40;
-
-                        //批量插入
-                        new BmobBatch().insertBatch(newMsgList).doBatch(new QueryListListener<BatchResult>() {
-                            @Override
-                            public void done(List<BatchResult> list, BmobException e) {
-                                if(e==null){
-
-                                    for(int i=0;i<list.size();i++){
-                                        BatchResult result = list.get(i);
-                                        BmobException ex =result.getError();
-                                        if(ex==null){
-                                            Log.i("bmob","第"+i+"个数据批量添加成功："+result.getCreatedAt()+","+result.getObjectId()+","+result.getUpdatedAt());
-                                        }else{
-                                            Log.i("bmob","第"+i+"个数据批量添加失败："+ex.getMessage()+","+ex.getErrorCode());
-                                        }
-                                    }
-                                }else{
-                                    Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
-                                }
-
-
-                            }
-
-
-                        });
-
-
-
-                    }
-
-                }
-            }
-        });
-    }*/
 
     public void setMessgae() {
         final LinearLayout msgLayout = (LinearLayout) navigationView.getMenu().findItem(R.id.messageNotification).getActionView();

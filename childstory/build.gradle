@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+
+
+
+    defaultConfig {
+        applicationId "com.example.childstory"
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation "com.android.support:recyclerview-v7:27.1.0"
+    implementation "com.android.support:appcompat-v7:27.1.0"
+    implementation "com.android.support:design:27.1.0"
+    implementation "com.android.support:support-vector-drawable:27.1.0"
+    implementation "com.android.support:support-v4:27.1.0"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:0.4'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
+    //Glide库
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    //QMUI
+    implementation 'com.qmuiteam:qmui:1.1.5'
+    //fastjson
+    implementation 'com.alibaba:fastjson:1.2.54'
+    //butterknife
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+}

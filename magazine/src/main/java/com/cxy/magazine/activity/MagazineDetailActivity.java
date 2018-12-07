@@ -2,6 +2,7 @@ package com.cxy.magazine.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.assist.AssistStructure;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,6 +49,7 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,8 +85,8 @@ public class MagazineDetailActivity extends BasicActivity {
     TextView tv_intro;
     private String httpUrl = "";
     private String magazineTitle = "", magazineIntro = "", magazineTime = "", magazineHistoryHref = "", coverImageUrl = "";
-    private Activity activity=null;
 
+   private MyHandler handler=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +96,7 @@ public class MagazineDetailActivity extends BasicActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        activity=this;
+
         //获取屏幕宽度
         WindowManager m = (WindowManager)this.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -112,7 +114,7 @@ public class MagazineDetailActivity extends BasicActivity {
         String[] names=httpUrl.split("//")[1].split("/");
 
 
-
+        handler=new MyHandler(this);
         Thread thread=new GetData();
         thread.start();
 
@@ -125,6 +127,9 @@ public class MagazineDetailActivity extends BasicActivity {
     @OnClick(R.id.start_read)
     public void  startRead(){
         Intent intent=new Intent(MagazineDetailActivity.this,MagazineDirectoryActivity.class);
+        //替换index
+        String time=magazineTime.replace("年","").replace("期","");
+        httpUrl=httpUrl.replace("index",time);
         intent.putExtra("href",httpUrl);
         startActivity(intent);
     }
@@ -175,30 +180,38 @@ public class MagazineDetailActivity extends BasicActivity {
 
     }
 
-    Handler handler=new Handler(){
+    private  static  class MyHandler extends Handler{
+
+        private final WeakReference<MagazineDetailActivity> weakReference;
+        private MyHandler(MagazineDetailActivity detailActivity){
+            weakReference= new WeakReference<>(detailActivity);
+        }
 
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what==100){
-                if (!isDestroy(activity)){
-                    Glide.with(activity)
-                            .load(coverImageUrl)
-                            .placeholder(R.drawable.default_book)
-                            .error(R.drawable.default_book)
-                            .into(im_cover);
-                    tv_title.setText(magazineTitle);
-                    tv_time.setText("更新至"+magazineTime);
-                    tv_intro.setText(magazineIntro);
-                }
+            MagazineDetailActivity detailActivity=weakReference.get();
+            if (detailActivity!=null){
+                if (msg.what==100){
+                    if (!isDestroy(detailActivity)){
+                        Glide.with(detailActivity)
+                                .load(detailActivity.coverImageUrl)
+                                .placeholder(R.drawable.default_book)
+                                .error(R.drawable.default_book)
+                                .into(detailActivity.im_cover);
+                        detailActivity.tv_title.setText(detailActivity.magazineTitle);
+                        detailActivity.tv_time.setText("更新至"+detailActivity.magazineTime);
+                        detailActivity.tv_intro.setText(detailActivity.magazineIntro);
+                    }
 
-            }else if (msg.what==101){
-            //    tv_addShelf.setEnabled(false);
-                tv_startRead.setEnabled(false);
-                tv_watchHistory.setEnabled(false);
-             //   Utils.toastMessage(MagazineDetailActivity.this,"亲，出错了，该杂志内容暂时无法阅读，换一本吧！");
-                tv_intro.setText("亲，出错了，该杂志内容暂时无法阅读，换一本吧！");
+                }else if (msg.what==101){
+                    //    tv_addShelf.setEnabled(false);
+                    detailActivity.tv_startRead.setEnabled(false);
+                    detailActivity.tv_watchHistory.setEnabled(false);
+                    //   Utils.toastMessage(MagazineDetailActivity.this,"亲，出错了，该杂志内容暂时无法阅读，换一本吧！");
+                    detailActivity.tv_intro.setText("亲，出错了，该杂志内容暂时无法阅读，换一本吧！");
+                }
             }
+
         }
     };
 

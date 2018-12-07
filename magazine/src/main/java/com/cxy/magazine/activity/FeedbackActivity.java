@@ -3,13 +3,10 @@ package com.cxy.magazine.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,9 +15,6 @@ import android.widget.TextView;
 
 import com.cxy.magazine.R;
 import com.cxy.magazine.bmobBean.FeedbackBean;
-import com.cxy.magazine.util.Utils;
-import com.google.gson.JsonObject;
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
@@ -120,33 +114,6 @@ public class FeedbackActivity extends BasicActivity {
 
 
 
-    /*private Handler mUIHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            Utils.dismissDialog();
-            switch (msg.what) {
-                case 1:
-
-                    AlertDialog.Builder builder=new AlertDialog.Builder(FeedbackActivity.this);
-                    builder.setMessage("反馈成功，感谢你的反馈！");
-                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent=new Intent(FeedbackActivity.this,MainActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-
-                    AlertDialog alertDialog=builder.create();
-                    alertDialog.setCancelable(false);
-                    alertDialog.show();
-                    break;
-                case 0:
-                    new AlertDialog.Builder(FeedbackActivity.this).setMessage("提交失败，请稍候重试！").setPositiveButton("确定", null).create().show();
-                    break;
-            }
-        }
-    };*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

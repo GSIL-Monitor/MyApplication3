@@ -26,6 +26,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +49,7 @@ public class MagzineHistoryFragment extends BaseFragment {
 
     private ImageTextAdapter recycleViewAdapter=null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
+    private MyHandler uiHandler;
 
     public MagzineHistoryFragment() {
         // Required empty public constructor
@@ -77,6 +79,7 @@ public class MagzineHistoryFragment extends BaseFragment {
         unbinder= ButterKnife.bind(this,view);
         dataDisplayList=new ArrayList<HashMap>();
         setmRecyclerView();
+        uiHandler=new MyHandler(this);
         Thread thread=new getHtml();
         thread.start();
         return view;
@@ -135,15 +138,23 @@ public class MagzineHistoryFragment extends BaseFragment {
         }
     }
 
-    private Handler uiHandler=new Handler(){
+    private static class MyHandler extends Handler{
+        private final WeakReference<MagzineHistoryFragment> fragmentWeakReference;
+        private MyHandler(MagzineHistoryFragment historyFragment){
+            fragmentWeakReference=new WeakReference<>(historyFragment);
+        }
         @Override
         public void handleMessage(Message msg) {
-           if (msg.what==100){
-               mLRecyclerViewAdapter.notifyDataSetChanged();
-           }
-           if(msg.what==101){
-               Utils.toastMessage(getActivity(),"出错了,该内容暂时无法查看！");
-           }
+            MagzineHistoryFragment historyFragment=fragmentWeakReference.get();
+            if (historyFragment!=null){
+                if (msg.what==100){
+                    historyFragment.mLRecyclerViewAdapter.notifyDataSetChanged();
+                }
+                if(msg.what==101){
+                    Utils.toastMessage(historyFragment.context,"出错了,该内容暂时无法查看！");
+                }
+            }
+
         }
     };
 
