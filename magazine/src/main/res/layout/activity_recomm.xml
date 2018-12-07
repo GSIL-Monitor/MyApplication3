@@ -31,7 +31,7 @@
            android:id="@+id/recomm_edit"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
-           android:hint="说点儿推荐理由吧"
+           android:hint="写下你的评论"
            android:layout_marginRight="40dp"/>
        <ImageView
            android:id="@+id/recomm_iv"
