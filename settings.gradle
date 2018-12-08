@@ -1,2 +1,2 @@
-include ':magazine', ':childstory'
-include ':gDTUnionDemo'
+include ':ShiCi',':magazine','childStory'
+

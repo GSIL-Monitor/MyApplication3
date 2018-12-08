@@ -1,4 +1,4 @@
-package com.example.childstory.fragment;
+package com.cxy.childstory.fragment;
 
 
 import android.os.Bundle;
@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.childstory.R;
-import com.example.childstory.base.BaseFragment;
+import com.cxy.childstory.R;
+import com.cxy.childstory.base.BaseFragment;
 
 import butterknife.ButterKnife;
 

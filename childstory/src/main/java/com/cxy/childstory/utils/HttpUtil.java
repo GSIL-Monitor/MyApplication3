@@ -1,4 +1,4 @@
-package com.cxy.yuwen.tool;
+package com.cxy.childstory.utils;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import okhttp3.Response;
  * Created by cxy on 2017/4/3.
  */
 
-public class OkHttpUtil {
+public class HttpUtil {
     public static final OkHttpClient client = new OkHttpClient();
 
     /**
@@ -21,7 +21,7 @@ public class OkHttpUtil {
      * @return
      * @throws IOException
      */
-    public static String get(String url) throws Exception {
+    public static String get(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -39,7 +39,7 @@ public class OkHttpUtil {
      * @return
      * @throws IOException
      */
-    public static String get(String url,Map<String,Object> params) throws Exception {
+    public static String get(String url,Map<String,Object> params) throws IOException {
 
         StringBuilder visitUrl=new StringBuilder(url+"?");
         for (Map.Entry<String,Object> entry:params.entrySet()){   //遍历参数map
@@ -66,7 +66,7 @@ public class OkHttpUtil {
         try {
             String data=get(url,params);
             System.out.println(data);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

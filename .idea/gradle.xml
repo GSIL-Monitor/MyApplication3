@@ -9,8 +9,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/ShiCi" />
             <option value="$PROJECT_DIR$/childstory" />
-            <option value="$PROJECT_DIR$/gDTUnionDemo" />
             <option value="$PROJECT_DIR$/magazine" />
           </set>
         </option>

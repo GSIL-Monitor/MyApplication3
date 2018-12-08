@@ -1,4 +1,4 @@
-package com.example.childstory;
+package com.cxy.childstory;
 
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -11,9 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.childstory.R;
-import com.example.childstory.fragment.StoryMineFragment;
-import com.example.childstory.fragment.StoryTypeFragment;
+import com.cxy.childstory.R;
+import com.cxy.childstory.fragment.StoryMineFragment;
+import com.cxy.childstory.fragment.StoryTypeFragment;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 
