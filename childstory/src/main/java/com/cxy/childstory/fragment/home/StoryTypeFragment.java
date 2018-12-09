@@ -1,6 +1,7 @@
-package com.cxy.childstory.fragment;
+package com.cxy.childstory.fragment.home;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -20,13 +21,18 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.cxy.childstory.R;
+import com.cxy.childstory.activity.StoryTypeDetailActivity;
 import com.cxy.childstory.base.BaseFragment;
 import com.cxy.childstory.decorator.GridDividerItemDecoration;
 import com.cxy.childstory.model.ReturnBody;
 import com.cxy.childstory.model.StoryType;
 import com.cxy.childstory.utils.Constants;
+import com.cxy.childstory.utils.DialogUtil;
 import com.cxy.childstory.utils.HttpUtil;
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -62,6 +68,7 @@ public class StoryTypeFragment extends BaseFragment {
         View rootView=inflater.inflate(R.layout.fragment_story_type, container,false);
         unbinder=ButterKnife.bind(this,rootView);
         initTopBar();
+        QMUIStatusBarHelper.translucent(this.getActivity());
         initRecyclerView();
 
         ObtainData obtainData=new ObtainData();
@@ -82,20 +89,33 @@ public class StoryTypeFragment extends BaseFragment {
         typeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Toast.makeText(getContext(), "onItemClick" + position, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), "onItemClick" + position, Toast.LENGTH_SHORT).show();
+                StoryType storyType = typeList.get(position);
+                String typeName = storyType.getName();
+                Intent intent = new Intent(getContext(), StoryTypeDetailActivity.class);
+                intent.putExtra("typeName",typeName);
+                startActivity(intent);
             }
         });
+
 
         mRecyclerView.setAdapter(typeAdapter);
         int spanCount = 3;
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
         mRecyclerView.addItemDecoration(new GridDividerItemDecoration(getContext(), spanCount));
-
+        mRecyclerView.setHasFixedSize(true);
     }
 
     private  class ObtainData extends AsyncTask<Void, Integer, String>{
 
         private String obtainUrl= Constants.DOMAIN+"/type/selectall";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //显示进度框
+            DialogUtil.showTipDialog(getContext(),"加载中...", QMUITipDialog.Builder.ICON_TYPE_LOADING);
+        }
 
         @Override
         protected String doInBackground(Void... voids) {
@@ -111,6 +131,7 @@ public class StoryTypeFragment extends BaseFragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            DialogUtil.dismissDialog();
             if (s!=null){
                 Type type = new TypeReference<ReturnBody<List<StoryType>>>() {}.getType();
                 ReturnBody<List<StoryType>> typeReturnBody=JSON.parseObject(s, type);

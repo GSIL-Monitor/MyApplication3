@@ -1,29 +1,25 @@
 package com.cxy.childstory;
 
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 
-import com.cxy.childstory.R;
-import com.cxy.childstory.fragment.StoryMineFragment;
-import com.cxy.childstory.fragment.StoryTypeFragment;
+import com.cxy.childstory.base.BaseActivity;
+import com.cxy.childstory.fragment.home.StoryMineFragment;
+import com.cxy.childstory.fragment.home.StoryTypeFragment;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.pager)
     ViewPager mViewPager;
@@ -68,15 +64,15 @@ public class MainActivity extends AppCompatActivity {
 //        );
 
         QMUITabSegment.Tab component = new QMUITabSegment.Tab(
-                ContextCompat.getDrawable(this, R.mipmap.icon_tabbar_component),
-                ContextCompat.getDrawable(this, R.mipmap.icon_tabbar_component_selected),
-                "Components", false
+                ContextCompat.getDrawable(this, R.drawable.ic_tabbar_type),
+                ContextCompat.getDrawable(this, R.drawable.ic_tabbar_type_selected),
+                "分类", false
         );
 
         QMUITabSegment.Tab util = new QMUITabSegment.Tab(
-                ContextCompat.getDrawable(this, R.mipmap.icon_tabbar_util),
-                ContextCompat.getDrawable(this, R.mipmap.icon_tabbar_util_selected),
-                "Helper", false
+                ContextCompat.getDrawable(this, R.drawable.ic_tabbar_mine),
+                ContextCompat.getDrawable(this, R.drawable.ic_tabbar_mine_selected),
+                "我的", false
         );
       /*  QMUITabSegment.Tab lab = new QMUITabSegment.Tab(
                 ContextCompat.getDrawable(this, R.mipmap.icon_tabbar_lab),

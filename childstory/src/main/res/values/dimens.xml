@@ -25,4 +25,12 @@
     <!-- Span Utils 各种 Span 工具 -->
     <dimen name="spanUtils_column_marginBottom">35dp</dimen>
     <dimen name="spanUtils_common_textSize">16sp</dimen>
+
+    <!--Text Size-->
+    <dimen name="title_size">20dp</dimen>
+    <dimen name="sub_title_size">19dp</dimen>
+    <dimen name="content_size">19dp</dimen>
+    <dimen name="content_sub_size">17dp</dimen>
+    <dimen name="simple_intro_size">15dp</dimen>
+    <dimen name="line_span">10dp</dimen>
 </resources>

@@ -3,18 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    tools:context=".fragment.home.StoryTypeFragment">
 
     <com.qmuiteam.qmui.widget.QMUITopBar
         android:id="@+id/topbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/qmui_topbar_height" />
+        android:layout_height="?attr/qmui_topbar_height"
+        android:fitsSystemWindows="true"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/qmui_topbar_height" />
-
-
+        android:layout_marginTop="?attr/qmui_topbar_height"
+        android:fitsSystemWindows="true"/>
 </FrameLayout>

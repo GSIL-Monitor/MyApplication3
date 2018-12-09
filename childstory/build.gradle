@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.example.childstory"
+        applicationId "com.cxy.childstory"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
