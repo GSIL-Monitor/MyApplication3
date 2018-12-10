@@ -1,6 +1,8 @@
 package com.cxy.childstory.activity;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -50,7 +52,7 @@ public class StoryDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         story=getIntent().getParcelableExtra("story");
         initTopBar();
-        setData();
+        initData();
 
     }
 
@@ -66,7 +68,7 @@ public class StoryDetailActivity extends BaseActivity {
         }
 
     }
-    private void setData(){
+    private void initData(){
         if (!TextUtils.isEmpty(story.getSummary())){
             storySummary.setText(story.getSummary());
         }
@@ -77,9 +79,23 @@ public class StoryDetailActivity extends BaseActivity {
         if (!TextUtils.isEmpty(story.getImagePath())){
             Glide.with(this).load(story.getImagePath()).into(storyImage);
         }
-        List<String> audioList=story.getAudioPaths();
+        final List<String> audioList=story.getAudioPaths();
         if (audioList!=null && audioList.size()>0){
-            //TODO:播放音乐
+            //TODO:监听播放音频事件
+            playFb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //播放音频
+                    String audio1=audioList.get(0);
+                    Intent mIntent = new Intent();
+                    mIntent.setAction(android.content.Intent.ACTION_VIEW);
+                    Uri uri = Uri.parse(audio1);  //替换成audiopath
+                    mIntent.setDataAndType(uri , "audio/mp3");
+                    startActivity(mIntent);
+
+
+                }
+            });
         }else{
             //隐藏播放按钮
             playFb.hide();
@@ -87,7 +103,7 @@ public class StoryDetailActivity extends BaseActivity {
 
         List<String> sectionList=story.getChildStoryIds();
         if (sectionList!=null && sectionList.size()>0){
-            String desciption="<<"+story.getTitle()+">>"+"列表";
+            String desciption="<<"+story.getTitle()+">>"+" 列表";
             QMUIGroupListView.Section section=QMUIGroupListView.newSection(this).setTitle(desciption);
             for (int i=0;i<sectionList.size();i++){
                 String title=story.getTitle()+"：第"+(i+1)+"章";
