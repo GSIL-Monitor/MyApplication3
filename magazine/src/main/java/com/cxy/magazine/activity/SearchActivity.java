@@ -6,9 +6,10 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
-import android.widget.SearchView;
+
 
 import com.cxy.magazine.R;
 import com.cxy.magazine.adapter.SearchAdapter;
@@ -142,7 +143,7 @@ public class SearchActivity extends BasicActivity {
                 if (Pattern.matches(pattern,content)){
                     dataShowList.add(dataArray.getJSONObject(i));
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

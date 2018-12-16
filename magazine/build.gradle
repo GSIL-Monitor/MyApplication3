@@ -8,8 +8,8 @@ android {
         applicationId "com.cxy.magazine"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 32
-        versionName "3.3.9"
+        versionCode 33
+        versionName "3.4.0"
 
         multiDexEnabled true
 
@@ -22,6 +22,7 @@ android {
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
         }
     }
+
     //为了解决部分第三方库重复打包了META-INF的问题
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
@@ -47,6 +48,8 @@ android {
             jniLibs.srcDirs = ['libs']//将so文件目录指向libs目录
         }
     }
+
+
 }
 repositories {
     flatDir {

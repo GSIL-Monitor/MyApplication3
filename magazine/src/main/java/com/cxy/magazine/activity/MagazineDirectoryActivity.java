@@ -561,6 +561,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
         if (item.getItemId() == android.R.id.home) {
            finish();
         }
+
         if (item.getItemId() == R.id.addShelf) {
             // Util.toastMessage(MagazineDirectoryActivity.this,"加入书架");
 
@@ -589,7 +590,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
                     public void done(String s, BmobException e) {
 
                         if (e == null) {
-                           ArrayList<Bookshelf> shelfList=null;
+                        /*   ArrayList<Bookshelf> shelfList=null;
                            Object object=mCache.getAsObject("shelfCache");
                            if (object==null){
                                shelfList=new ArrayList<Bookshelf>();
@@ -598,7 +599,7 @@ public class MagazineDirectoryActivity extends BasicActivity {
                            }
                            shelfList.add(0,bookshelf);
                         //   shelfList.add(bookshelf);
-                           mCache.put("shelfCache",shelfList);
+                           mCache.put("shelfCache",shelfList);*/
                            Snackbar.make(tv_title, "已将该杂志加入书架", Snackbar.LENGTH_LONG).setAction("", null).show();
                         } else {
                             Utils.toastMessage(MagazineDirectoryActivity.this, e.getMessage());

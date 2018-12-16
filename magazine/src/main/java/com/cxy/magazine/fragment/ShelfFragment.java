@@ -80,7 +80,6 @@ public class ShelfFragment extends BaseFragment {
         View view= inflater.inflate(R.layout.fragment_shelf, container, false);
         unbinder= ButterKnife.bind(this,view);
         bookList=new ArrayList<Bookshelf>();
-     //   getAllBook();
         setRecyclerView();
         return  view;
     }
@@ -97,19 +96,9 @@ public class ShelfFragment extends BaseFragment {
         user = BmobUser.getCurrentUser(User.class);
         if (user == null) {
             mRecyclerView.refreshComplete(1);
-          /*  Utils.showConfirmCancelDialog(getActivity(), "提示", "请先登录,以同步书架！", new QMUIDialogAction.ActionListener() {
-                @Override
-                public void onClick(QMUIDialog dialog, int index) {
-
-                    needInit=true;
-                    Intent intent1 = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(intent1);
-                }
-
-            });*/
-          mRecyclerView.setVisibility(View.GONE);
-          emptyView.setVisibility(View.VISIBLE);
-          emptyView.show(false, "提示", "请先登录,以同步书架！", "去登录", new View.OnClickListener() {
+            mRecyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+            emptyView.show(false, "提示", "请先登录,以同步书架！", "去登录", new View.OnClickListener() {
               @Override
               public void onClick(View view) {
                   needInit=true;
@@ -134,11 +123,10 @@ public class ShelfFragment extends BaseFragment {
                             Log.i("bmob", "查询成功：共" + queryList.size() + "条数据。");
 
                             bookList.addAll(queryList);
-                            mAcache.put("shelfCache",bookList);
+                         //   mAcache.put("shelfCache",bookList);
                             mRecyclerView.refreshComplete(1000);
                             mLRecyclerViewAdapter.notifyDataSetChanged();
                             if(queryList.size()<=0){
-                              //  Utils.showResultDialog(getActivity(),"你的书架空空如也，快去添加几本吧","提示");
                                 mRecyclerView.setVisibility(View.GONE);
                                 emptyView.setVisibility(View.VISIBLE);
                                 emptyView.show(null,"你的书架空空如也，快去添加几本吧");
@@ -147,8 +135,6 @@ public class ShelfFragment extends BaseFragment {
 
                         } else {
                             Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
-                           // Toast.makeText(getContext(), "出错了，请稍候再试！", Toast.LENGTH_SHORT).show();
-                         //   QMUIEmptyView emptyView=new QMUIEmptyView(getActivity());
                             mRecyclerView.setVisibility(View.GONE);
                             emptyView.setVisibility(View.VISIBLE);
                             emptyView.show(null,"出错了，请稍候再试！");
@@ -172,8 +158,8 @@ public class ShelfFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         if (needInit) {
-            Object shelfObject = mAcache.getAsObject("shelfCache");
-            if (shelfObject != null ) {
+         //   Object shelfObject = mAcache.getAsObject("shelfCache");
+          /*  if (shelfObject != null ) {
                 bookList.clear();
                 ArrayList<Bookshelf> tempBookList = (ArrayList<Bookshelf>) shelfObject;
                 bookList.addAll(tempBookList);
@@ -190,7 +176,10 @@ public class ShelfFragment extends BaseFragment {
                     mRecyclerView.refresh();
 
 
-            }
+            }*/
+            mRecyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+            mRecyclerView.refresh();
         }
 
     }
@@ -253,7 +242,7 @@ public class ShelfFragment extends BaseFragment {
                              if (e==null){
                                  Utils.toastMessage(getActivity(),"删除书籍成功");
                                  bookList.remove(position);
-                                 mAcache.put("shelfCache",bookList);
+                               //  mAcache.put("shelfCache",bookList);
                                  mLRecyclerViewAdapter.notifyDataSetChanged();
                              }else{
                                 Utils.toastMessage(getActivity(),e.getMessage());
