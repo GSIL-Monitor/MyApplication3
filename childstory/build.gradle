@@ -16,6 +16,11 @@ android {
 
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -31,6 +36,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation "com.android.support:recyclerview-v7:28.0.0"
     implementation "com.android.support:appcompat-v7:28.0.0"
+    implementation 'com.android.support:support-media-compat:28.0.0'
     implementation "com.android.support:design:28.0.0"
     implementation "com.android.support:support-vector-drawable:28.0.0"
     implementation "com.android.support:support-v4:28.0.0"
@@ -51,6 +57,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.6.0'
     //BaseRecyclerViewAdapterHelper
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.44'
+    //implementation 'com.lzx:MusicLibrary:x.y.z'
+    /*   implementation 'com.lzx:MusicLibrary:1.4.9'*/
 
 
 }

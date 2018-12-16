@@ -1,5 +1,9 @@
 package com.cxy.childstory;
 
+import android.annotation.TargetApi;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -39,29 +43,13 @@ public class MainActivity extends BaseActivity {
         initPagers();
     }
 
+
+
     private void initTabs() {
         int normalColor = QMUIResHelper.getAttrColor(this, R.attr.qmui_config_color_gray_6);
         int selectColor = QMUIResHelper.getAttrColor(this, R.attr.qmui_config_color_blue);
         mTabSegment.setDefaultNormalColor(normalColor);
         mTabSegment.setDefaultSelectedColor(selectColor);
-//        mTabSegment.setDefaultTabIconPosition(QMUITabSegment.ICON_POSITION_BOTTOM);
-
-//        // 如果你的 icon 显示大小和实际大小不吻合:
-//        // 1. 设置icon 的 bounds
-//        // 2. Tab 使用拥有5个参数的构造器
-//        // 3. 最后一个参数（setIntrinsicSize）设置为false
-//        int iconShowSize = QMUIDisplayHelper.dp2px(getContext(), 20);
-//        Drawable normalDrawable = ContextCompat.getDrawable(getContext(), R.mipmap.icon_tabbar_component);
-//        normalDrawable.setBounds(0, 0, iconShowSize, iconShowSize);
-//        Drawable selectDrawable = ContextCompat.getDrawable(getContext(), R.mipmap.icon_tabbar_component_selected);
-//
-//        selectDrawable.setBounds(0, 0, iconShowSize, iconShowSize);
-//
-//        QMUITabSegment.Tab component = new QMUITabSegment.Tab(
-//                normalDrawable,
-//                normalDrawable,
-//                "Components", false, false
-//        );
 
         QMUITabSegment.Tab component = new QMUITabSegment.Tab(
                 ContextCompat.getDrawable(this, R.drawable.ic_tabbar_type),
@@ -82,6 +70,23 @@ public class MainActivity extends BaseActivity {
         mTabSegment.addTab(component)
                 .addTab(util);
 
+        //创建通知栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "audio";
+            String channelName = "音频播放";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            createNotificationChannel(channelId, channelName, importance);
+
+        }
+
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private void createNotificationChannel(String channelId, String channelName, int importance) {
+        NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.createNotificationChannel(channel);
     }
 
     private void initPagers() {

@@ -7,8 +7,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission  android:name = "android.permission.GET_TASKS"/>
 
     <application
+        android:name=".StoryApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -28,9 +30,24 @@
         <service
             android:name=".service.PlayAudioService"
             android:enabled="true"
-            android:exported="false">
+            android:exported="false"></service>
 
-        </service>
+        <activity android:name=".audio.PlayerActivity"
+            android:launchMode="singleInstance">
+
+        </activity>
+        <receiver android:name=".audio.AudioPlayer$AudioBroadcastReceiver">
+
+            <!-- android:priority属性是设置此接收者的优先级（从-1000到1000） -->
+            <intent-filter android:priority="20">
+                <action android:name="com.cxy.child.story.action.audio"/>
+            </intent-filter>
+        </receiver>
+      <!--  <receiver android:name=".audio.PlayerActivity$MessageRecevier">
+            <intent-filter>
+                <action android:name="com.cxy.childstory.audio.PlayerActivity"/>
+            </intent-filter>
+        </receiver>-->
     </application>
 
 </manifest>

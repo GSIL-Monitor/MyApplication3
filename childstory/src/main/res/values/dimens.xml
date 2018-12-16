@@ -33,4 +33,9 @@
     <dimen name="content_sub_size">17dp</dimen>
     <dimen name="simple_intro_size">15dp</dimen>
     <dimen name="line_span">10dp</dimen>
+
+    <!--layout-->
+    <dimen name="default_padding">10dp</dimen>
+    <dimen name="default_margin">10dp</dimen>
+
 </resources>

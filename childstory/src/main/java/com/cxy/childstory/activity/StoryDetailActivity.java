@@ -1,43 +1,36 @@
 package com.cxy.childstory.activity;
 
-import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.cxy.childstory.MainActivity;
 import com.cxy.childstory.R;
+import com.cxy.childstory.audio.AudioPlayer;
 import com.cxy.childstory.base.BaseActivity;
 import com.cxy.childstory.model.Story;
-import com.cxy.childstory.model.StorySection;
-import com.cxy.childstory.service.PlayAudioService;
-import com.qmuiteam.qmui.widget.QMUIAppBarLayout;
-import com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout;
-import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class StoryDetailActivity extends BaseActivity {
+public class StoryDetailActivity extends BaseActivity  {
 
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
@@ -47,26 +40,11 @@ public class StoryDetailActivity extends BaseActivity {
     TextView storySummary;
     @BindView(R.id.tv_content)
     TextView storyContent;
-  /*  @BindView(R.id.fb_audio)
-    FloatingActionButton playFb;*/
+    @BindView(R.id.fb_audio)
+    FloatingActionButton playFb;
     @BindView(R.id.groupListView)
     QMUIGroupListView  mGroupListView;
 
-    @BindView(R.id.play_audio_view)
-    View playAutoView;
-    @BindView(R.id.iv_play)
-    ImageView imagePlay;
-    @BindView(R.id.iv_play_list)
-    ImageView imagePlayList;
-    @BindView(R.id.iv_play_last)
-    ImageView imagePlayLast;
-    @BindView(R.id.iv_play_next)
-    ImageView imagePlayNext;
-    @BindView(R.id.iv_play_stop)
-    ImageView imagePlayStop;
-
-    private PlayAudioService playAudioService;
-    private boolean mBound = false;
     private List<String> audioList;
 
 
@@ -108,7 +86,7 @@ public class StoryDetailActivity extends BaseActivity {
         audioList=story.getAudioPaths();
         if (audioList==null || audioList.size()<=0){
             //隐藏播放layout
-            playAutoView.setVisibility(View.GONE);
+            playFb.hide();
         }
 
         List<String> sectionList=story.getChildStoryIds();
@@ -136,86 +114,40 @@ public class StoryDetailActivity extends BaseActivity {
             }
             section.addTo(mGroupListView);
         }
+
     }
 
-    boolean isFirstPlay=true;
+
+    AudioPlayer audioPlayer=null;
     //播放
-    @OnClick(R.id.iv_play)
+    @OnClick(R.id.fb_audio)
     public void play(View v){
         Toast.makeText(StoryDetailActivity.this,"开始播放音频",Toast.LENGTH_LONG).show();
-        if (isFirstPlay){
-            Intent intent = new Intent(this, PlayAudioService.class);
-            startService(intent);
-            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-        }else{
-            if (mBound){
-                playAudioService.continuePlayAudio();
-            }
-        }
 
-        imagePlay.setVisibility(View.GONE);
-        imagePlayStop.setVisibility(View.VISIBLE);
+        audioPlayer=AudioPlayer.getInstance(getApplicationContext());
+        Story audioStory=new Story();
+        audioStory.setTitle(story.getTitle());
+        audioStory.setAudioPaths(story.getAudioPaths());
+        audioStory.setImagePath(story.getImagePath());
 
-       /* if (playAudioService==null){
-            Intent intent = new Intent(this, PlayAudioService.class);
-            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-        }
-        if (!isPlay){   //状态是暂停则播放
-            if (mBound){
-              imagePlay.setImageResource(R.drawable.ic_play);
-              playAudioService.playAudio(audioList);
-            }
-        }
-        if (isPlay){  //状态是播放则暂停
-            if (mBound){
-                imagePlay.setImageResource(R.drawable.ic_play_list_disable);
-                playAudioService.stopPlayAudio();
-            }
-        }*/
+        audioPlayer.playAudio(audioStory);
+
+
     }
 
-    //点击暂停播放按钮
-    @OnClick(R.id.iv_play_stop)
-    public void stopPlay(){
-        if (mBound){
-            playAudioService.stopPlayAudio();
-            //隐藏暂停播放
-            imagePlayStop.setVisibility(View.GONE);
-            //显示播放按钮
-            imagePlay.setVisibility(View.VISIBLE);
-        }
-    }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mBound) {
-            unbindService(mConnection);
-            mBound = false;
-        }
+       /* if (audioPlayer!=null){
+            audioPlayer.unBindService();
+        }*/
+
     }
 
-    /** Defines callbacks for service binding, passed to bindService() */
-    private ServiceConnection mConnection = new ServiceConnection() {
 
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            PlayAudioService.PlayAudioBinder binder = (PlayAudioService.PlayAudioBinder) service;
-            playAudioService = binder.getService();
-            mBound = true;
-            isFirstPlay=false;
-            //绑定后播放音频
 
-            playAudioService.playAudio(audioList);
 
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
 
 }

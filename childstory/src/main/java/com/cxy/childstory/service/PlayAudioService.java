@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,15 +15,22 @@ public class PlayAudioService extends Service {
     final MediaPlayer mediaPlayer=new MediaPlayer();
     private List<String> audioPaths;
     private int mCounter=0;
+    
+    private static final String LOG_TAG="PlayAudioService";
+    
+
+
 
     @Override
     public void onCreate() {
        // mediaPlayer = new MediaPlayer();
+        Log.i(LOG_TAG,"onCreate()---->"+Thread.currentThread().getName());
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 //  开始播放
                 mediaPlayer.start();
+
             }
         });
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -46,7 +54,7 @@ public class PlayAudioService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        Log.i(LOG_TAG,"onStartCommand()---->"+Thread.currentThread().getName());
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -65,10 +73,10 @@ public class PlayAudioService extends Service {
         }
 
     }
-    public void stopPlayAudio(){
+    public void pausePlayAudio(){
         if (mediaPlayer.isPlaying()){
             mediaPlayer.pause();
-        }
+            }
     }
     public void continuePlayAudio(){
         if (!mediaPlayer.isPlaying()){
@@ -84,6 +92,7 @@ public class PlayAudioService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.i(LOG_TAG,"onBind()---->"+Thread.currentThread().getName());
        return  mBinder;
     }
 
